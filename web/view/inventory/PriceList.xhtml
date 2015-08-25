@@ -1,0 +1,294 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <h:head>
+        <title>Lista de Precios</title>
+        <!--<style type="text/css">
+            .ui-panel .ui-panel-titlebar {
+                padding: 0;
+            }
+        </style>-->
+    </h:head>
+
+    <body>
+        <ui:composition template="./../../template.xhtml">
+            <ui:define name="content">
+                <h:form id="frmPriceList">
+                    <!-- Toolbar-->
+                    <p:toolbar id="toolbarBill">
+                        <f:facet name="left">
+                            <p:focus context="toolbarBill"/>
+                            Lista de Precios
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                                <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document"  process="@this" actionListener="#{priceListBean.botonNuevo}"
+                                             update="frmPriceList">
+
+                            </p:commandButton>
+
+                                <p:commandButton tabindex="-1" type="button" title="Print" icon="ui-icon-print" />
+                        </f:facet>
+                    </p:toolbar>
+
+                    <p:spacer height="20" width="0"></p:spacer>
+
+                    <!-- Div Principal -->
+                    <div class="ui-grid ui-grid-responsive">
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Nombre Lista Nueva" for="newList"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="newList" value="#{priceListBean.newList}"/>
+                            </div>
+                        </div>
+                        <p:spacer height="#{salesBean.spacer}" width="0"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Nombre Lista Base" for="newBase"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:selectOneMenu id="newBase" style="width: 94%" value="#{priceListBean.newBase}">
+                                    <f:selectItem itemLabel="Seleccione lista Base"/>
+                                    <f:selectItems value="#{priceListBean.listPriceList}" var="list" itemLabel="#{list.listname}" itemValue="#{list.listnum}"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <p:spacer height="#{salesBean.spacer}" width="0"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Factor Lista Nueva" for="newFactor"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="newFactor" value="#{priceListBean.newFactor}"/>
+                            </div>
+
+                            <div class="ui-grid-col-2">
+                                <p:commandButton value="Agregar" icon="ui-icon-check" process="@this newList newBase newFactor"
+                                                 validateClient="true" actionListener="#{priceListBean.accionAgreagar}"/>
+                            </div>
+                        </div>
+                        <p:spacer height="25" width="0"/>
+                        <!-- Data Table Detalles -->
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12">
+
+                                <p:contextMenu for="tableDetailPrice">
+                                    <p:menuitem value="Eliminar"  icon="ui-icon-close" actionListener="#{priceListBean.confirmDelete}" update="@this tableDetailPrice" process="@this tableDetailPrice">
+
+                                    </p:menuitem>
+                                </p:contextMenu> 
+
+                                <p:dataTable  editable="true" id="tableDetailPrice" var="Art" value="#{priceListBean.listaDetalles}" rowKey="#{Art.listnum}" 
+                                              selection="#{priceListBean.selectPriceList}" rowIndexVar="rowIndex" selectionMode="single" scrollable="true" scrollHeight="250"
+                                              emptyMessage="No hay registros" style="width: 1050px"> 
+
+                                    <p:ajax event="rowSelect"  process="@this tableDetailPrice"/>
+
+                                    <p:column headerText="#" style="width: 2%">
+                                        <h:outputText value="#{rowIndex+1}" />
+                                    </p:column>
+
+                                    <p:column headerText="" style=" width: 2%">
+                                        <p:commandButton icon="ui-icon-search" actionListener="#{priceListBean.showList}" process="@this tableDetailPrice"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="Codigo" style="width: 3%">
+                                        <h:outputText value="#{Art.listnum}" />
+                                    </p:column>
+
+                                    <p:column headerText="Nombre Lista" style="width: 10%">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{Art.listname}" />
+                                            </f:facet>
+                                            <f:facet name="input" >
+                                                <p:inputText value="#{Art.listname}" style="width: 75%"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Lista Base" style="width: 10%">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <p:selectOneMenu  value="#{Art.base_num}" disabled="true" style="width: 100%">
+                                                    <f:selectItems value="#{priceListBean.listPriceList}" var="list" itemLabel="#{list.listname}" itemValue="#{list.listnum}"/>
+                                                </p:selectOneMenu>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:selectOneMenu  value="#{Art.base_num}" style="width: 100%">
+                                                    <f:selectItems value="#{priceListBean.listPriceList}" var="list" itemLabel="#{list.listname}" itemValue="#{list.listnum}"/>
+                                                </p:selectOneMenu>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Factor Lista " style="width: 6%">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{Art.factor}" />
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{Art.factor}" style="width: 75%"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Editar" style="width:5%" rendered="#{Art.listnum == 2 or Art.listnum == 1? false:true}"> 
+                                        <p:rowEditor /> 
+                                    </p:column>
+
+                                </p:dataTable>
+
+                            </div>
+                        </div>
+                        <p:spacer height="40" width="0"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12">
+                                <p:commandButton id="btnAceptar" value="Guardar" actionListener="#{priceListBean.botonPrincipal}"/>
+                                <p:defaultCommand target="btnAceptar" />
+                            </div>
+                        </div>
+
+                    <!-- Div Principal -->
+                    </div>
+
+                </h:form>
+
+                <h:form id="fdlgDetail">
+                    <p:dialog id="dlgList" closeOnEscape="true" position="top" header="#{priceListBean.selectPriceList.listname}" widgetVar="dlgDetalles" modal="true"  width="1000" height="450" resizable="true">
+
+                        <div class="ui-grid-responsive">
+                            <div class="ui-grid-col-12">
+                                <p:dataTable editable="true" id="tableDet" var="Rec" value="#{priceListBean.listaHijos}"  scrollable="true" scrollHeight="99%" style="height: 99%"
+                                             rowKey="#{Rec.itemcode}" rowIndexVar="rowIndex" selection="#{priceListBean.selectHijo}" selectionMode="multiple" rows="10"
+                                             paginator="true"
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15"
+                                             resizableColumns="true" liveResize="true">
+
+                                    <p:ajax event="rowSelect"  process="@this"/>
+
+                                    <p:column headerText="#" style="width: 3%">
+                                        <h:outputText value="#{rowIndex + 1}" />
+                                    </p:column>
+
+                                    <p:column headerText="Codigo" style="width: 10%" sortBy="#{Rec.itemcode}" filterBy="#{Rec.itemcode}">
+                                        <h:outputText value="#{Rec.itemcode}" />
+                                    </p:column>
+
+                                    <p:column headerText="Descripcion" style="width: 25%" sortBy="#{Rec.dscription}" filterBy="#{Rec.dscription}" >
+                                        <h:outputText value="#{Rec.dscription}" />
+                                    </p:column>
+
+                                    <p:column headerText="Factor" sortBy="#{Rec.factor}" style="width: 7%; text-align: right">
+                                        <h:outputText value="#{Rec.factor}" />
+                                    </p:column>
+
+                                    <p:column headerText="Precio" sortBy="#{Rec.price}" style="width: 7%; text-align: right">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{Rec.price}" />
+                                            </f:facet>
+
+                                            <f:facet name="input">
+                                                <p:inputText id="priceChange" label="Precio" value="#{Rec.price}" style="width: 75%">
+                                                    <p:ajax event="keyup" listener="#{priceListBean.priceChange}" />
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Editar"  style="width:6%;text-align:center" >
+                                        <p:rowEditor rendered="#{Rec.pricelist == 1 or Rec.pricelist == 2? false:true}"/> 
+                                        <p:outputLabel value="No editable" rendered="#{Rec.pricelist == 1 or Rec.pricelist == 2? true:false}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Manual"  style="width:6%;text-align:center">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <p:selectBooleanCheckbox value="#{Rec.ovrwritten == true? priceListBean.vTrue :priceListBean.vFalse}" disabled="true"/>
+                                            </f:facet>
+
+                                            <f:facet name="input"> 
+                                                <p:selectBooleanCheckbox value="#{Rec.ovrwritten == true? priceListBean.vTrue :priceListBean.vFalse}">
+                                                    <p:ajax event="change" listener="#{priceListBean.checkChange}" />
+                                                </p:selectBooleanCheckbox>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </div>
+                        </div>
+                        <f:facet name="footer">
+                            <p:commandButton value="Actualizar" actionListener="#{priceListBean.btnActualizarH}" style="left: initial"/>
+                        </f:facet>
+
+                    </p:dialog> 
+                </h:form>
+
+                <h:form>
+                    <p:dialog id="dlgC" header="Confirmacion" widgetVar="dlg9" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Confirma que desea guardar los cambios?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{priceListBean.confirmDialog}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{goodsReceiptBean.cancelDialog}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+
+                <h:form>
+                    <p:dialog header="Confirmacion" widgetVar="dlgC2" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Confirma que desea Eliminar la lista?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{priceListBean.confirmDialog}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{goodsReceiptBean.cancelDialog}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+
+</ui:composition>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RepIncomeStatement_sr" language="groovy" pageWidth="572" pageHeight="752" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="8bd7083f-f0fa-4dec-a9a6-c6fac5ed9643">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="PWHERECUENTAS" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PLEVELS" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select acctcode,acctname,currtotal,fathernum,endtotal,levels,grpline,groupmask
+ from cat_acc0_account
+where $P!{PWHERECUENTAS} and levels=$P{PLEVELS}]]>
+	</queryString>
+	<field name="acctcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Código de cuenta]]></fieldDescription>
+	</field>
+	<field name="acctname" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre de cuenta]]></fieldDescription>
+	</field>
+	<field name="currtotal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Saldo actual]]></fieldDescription>
+	</field>
+	<field name="fathernum" class="java.lang.String">
+		<fieldDescription><![CDATA[Clave de cuenta superior]]></fieldDescription>
+	</field>
+	<field name="endtotal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Saldo inicial]]></fieldDescription>
+	</field>
+	<field name="levels" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Nivel de cuenta]]></fieldDescription>
+	</field>
+	<field name="grpline" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número de serie en grupo]]></fieldDescription>
+	</field>
+	<field name="groupmask" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Máscara de grupo]]></fieldDescription>
+	</field>
+	<variable name="sumendtotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{endtotal}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="253" height="20" uuid="d461fca9-40fd-447d-88ae-c610b317fc63"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acctname}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.0000">
+				<reportElement x="253" y="0" width="100" height="20" uuid="bb8afa64-86fa-4e11-b6f0-27eb2afcddfd"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{endtotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

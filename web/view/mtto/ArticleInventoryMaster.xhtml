@@ -1,0 +1,321 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"></link>
+        <title>Maestro de productos</title>
+
+
+
+    </h:head>
+    <body>
+
+        <ui:composition template="./../../template.xhtml">
+
+            <ui:define name="content">
+
+                <h:form id="frmArticles">   
+
+                    <p:toolbar>
+                        <f:facet name="left">
+                            Maestro de Articulos
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                            <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document" actionListener="#{articles.botonNuevo}" process="@this articleCode description padre:inventoryMeasureUnit" 
+                                             update="frmArticles">
+
+                            </p:commandButton>
+
+                            <p:commandButton tabindex="-1" title="Buscar" icon="ui-icon-search" actionListener="#{articles.botonBuscar}" process="@this articleCode description padre:inventoryMeasureUnit"
+                                             update="frmArticles">
+
+                            </p:commandButton>    
+
+
+
+                        </f:facet>
+                    </p:toolbar>
+                    <p:spacer width="0" height="15"/>
+                    <div class="ui-grid ui-grid-responsive">
+
+                        <script>
+                            function printObjectPdf() {
+                                try {
+                                    alert('entro');
+                                    document.getElementById('idPdf').Print();
+                                    alert('entro');
+                                }
+                                catch (e) {
+                                    alert('no funciona');
+                                }
+                            }
+                        </script>
+                        <!--
+                        <p:media id="qwe" value="http://localhost:8585/sifcoappFE/servlets/report/PDF?faces-redirect=true" 
+                                 width="100%" height="100%" player="pdf" >  
+                        </p:media>
+                        <p:commandButton value="Print" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                            <p:printer target="qwe" />
+                        </p:commandButton>
+
+                        <p:commandButton value="Print" onclick="PF('qwer').show();" oncomplete="printObjectPdf();"/> 
+                        <p:dialog id="barcode" widgetVar="qwer">
+                            <object id="idPdf" type="application/pdf" data="/sifcoappFE/servlets/report/PDF?faces-redirect=true" height="300px" width="100%" >
+                            </object>
+                        </p:dialog>
+                        -->
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1">
+                                <p:spacer width="12" height="0"/>
+                                <p:outputLabel  value="Codigo: " for="articleCode"/>
+                            </div>
+                            <div class="ui-grid-col-4">
+                                <p:spacer width="25" height="0"/>
+                                <p:inputText maxlength="20" id="articleCode" value="#{articles.itemcode}" readonly ="#{articles.disable}" size="25" /> 
+                                <p:commandButton tabindex="-1" title="Print" icon="ui-icon-print" actionListener="#{articles.PrintBarCode}" ajax="false"/>
+                            </div>
+                            <div class="ui-grid-col-1">
+                                <p:spacer width="15" height="0"/>
+                                <p:outputLabel  value="Inventario: " for="isInventory"/>
+                            </div>
+                            <div class="ui-grid-col-1">
+                                <p:spacer width="20" height="0"/>
+                                <p:selectBooleanCheckbox value="#{articles.invitem}" id="isInventory"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h:panelGrid columns="4" cellpadding="10">
+                        <p:outputLabel  value="Descripcion: " for="description"/>
+                        <p:inputText maxlength="128" id="description" value="#{articles.itemname}" size="50"/>   
+                        <p:outputLabel  value="Venta: " for="isSales"/>
+                        <p:selectBooleanCheckbox value="#{articles.sellitem}" id="isSales"/>                            
+                        <p:outputLabel  value="Clase: " for="articlesClass"/>
+                        <p:selectOneMenu id="articlesClass"  style="width:150px" value="#{articles.itemtype}">
+                            <f:selectItem itemLabel="Seleccione la clase" itemValue="-1" />
+                            <f:selectItems value="#{articles.articleClassLst}" var="model" itemLabel="#{model.catvalue}" itemValue="#{model.catcode}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel  value="Compras: " for="isShopping"/>
+                        <p:selectBooleanCheckbox value="#{articles.prchitem}" id="isShopping"/>
+                        <p:outputLabel  value="Grupo: " for="articlesGroup"/>
+                        <p:selectOneMenu id="articlesGroup"  style="width:150px" value="#{articles.itemgroup}">
+                            <f:selectItem itemLabel="Seleccione el Grupo" itemValue="-1" />
+                            <f:selectItems value="#{articles.articleGroupLst}" var="model" itemLabel="#{model.catvalue}" itemValue="#{model.catcode}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel  value="Activo Fijo: " for="asset"/>
+                        <p:selectBooleanCheckbox value="#{articles.asset}" id="asset"/>
+
+                    </h:panelGrid>
+
+                    <p:tabView dynamic="false" cache="true" id="padre">
+
+                        <p:tab title="General" id="hijo1" disabled="#{articles.btn1}">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <p:outputLabel  value="Sujeto a Retencion de impuesto " for="taxRetention"/>
+                                <p:selectBooleanCheckbox value="#{articles.writable}" id="taxRetention"/>
+
+                                <p:outputLabel  value="Id Adicional:" for="sww"/>                               
+                                <p:inputText id="sww" value="#{articles.sww}"  />                             
+
+                                <p:selectOneRadio id="isActive" value="#{articles.validfor}">
+                                    <f:selectItem itemLabel="Activo" itemValue="true" />
+                                    <f:selectItem itemLabel="Inactivo" itemValue="false" />
+                                </p:selectOneRadio>
+                                <p:outputLabel value="&#10;"/>
+
+                            </h:panelGrid>
+                        </p:tab>
+                        <p:tab title="Compras" id="hijo2" disabled="#{articles.btn1}">
+                            <h:panelGrid columns="2" cellpadding="10">
+
+                                <p:outputLabel  value="Proveedor Defecto" for="shoppingDefaultProv"/>                               
+                                <p:inputText id="shoppingDefaultProv" value="#{articles.cardcode}"/>   
+
+                                <p:outputLabel  value="Catalogo Fabricante: " for="manufacturedCatalog"/>
+                                <p:inputText id="manufacturedCatalog" value="#{articles.suppcatnum}"  /> 
+
+                                <p:outputLabel  value="Unidad de Medida: " for="shoppingMeasureUnit"/>                               
+                                <p:inputText id="shoppingMeasureUnit" value="#{articles.buyunitmsr}"></p:inputText> 
+
+                                <p:outputLabel  value="Articulos por Unidad: " for="articlesPerUnit"/>                               
+                                <p:inputText id="articlesPerUnit" value="#{articles.numinbuy}"  /> 
+                            </h:panelGrid>
+
+                        </p:tab>
+                        <p:tab title="Ventas" id="hijo3" disabled="#{articles.btn1}">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <p:outputLabel  value="Unidad de Medida: " for="shoppingMeasureUnit"/>                               
+                                <p:inputText id="salesMeasureUnit" value="#{articles.salesMeasureUnit}"></p:inputText>
+
+                                <p:outputLabel  value="Articulos por Unidad: " for="salesArticlesPerUnit"/>                               
+                                <p:inputText id="salesArticlesPerUnit" value="#{articles.salpackun}"  />                                         
+
+                                <p:outputLabel  value="Impuesto: "/> 
+                                <p:selectOneMenu id="impuestoIVA"  style="width:150px" value="#{articles.vatgourpsa}">
+                                    <f:selectItem itemLabel="Seleccione Impuesto" itemValue="-1" />
+                                    <f:selectItems value="#{articles.vatgourpsaList}" var="model" itemLabel="#{model.catcode}" itemValue="#{model.catcode}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                        </p:tab>
+                        <p:tab title="Inventario" id="hijo4" disabled="#{articles.btn1}">
+                            <h:panelGrid columns="4" cellpadding="10">
+                                <p:outputLabel  value="Unidad de Medida: " for="inventoryMeasureUnit"/>                                    
+                                <p:inputText id="inventoryMeasureUnit" value="#{articles.invtryuom}" ></p:inputText>
+                                <p:spacer width="30px"></p:spacer>
+                                <p:outputLabel  value="Costo Promedio: #{articles.promCost}" />
+                            </h:panelGrid>
+                            <br></br>
+                            <p:dataTable var="branchart" value="#{articles.listaGeneral}" id="table" scrollable="true" scrollHeight="185">
+                                <p:column headerText="Codigo">
+                                    <h:outputText value="#{branchart.whscode}" />
+                                </p:column>
+
+                                <p:column headerText="Nombre">
+                                    <h:outputText value="#{branchart.whsname}" />
+                                </p:column>
+
+                                <p:column headerText="Bloqueado">
+                                    <p:selectBooleanCheckbox value="#{branchart.locked}" id="marked"/>                                           
+                                </p:column>
+
+                                <p:column headerText="Existencia">
+                                    <h:outputText value="#{branchart.onhand}" />
+                                </p:column>
+
+                                <p:column headerText="Maximo">
+                                    <h:inputText value="#{branchart.maxstock}" id="maximo"/>
+                                </p:column>
+
+                                <p:column headerText="Minimo">
+                                    <h:inputText value="#{branchart.minstock}" id="minimo" />
+                                </p:column>
+
+                                <p:column headerText="Asociado">
+                                    <p:selectBooleanCheckbox value="#{branchart.isasociated}" id="isasociated"/>
+                                </p:column>
+
+                            </p:dataTable>
+
+                        </p:tab>
+                    </p:tabView> 
+
+                    <br></br> 
+
+                    <p:commandButton tabindex="0" id="botonPrincipal" value="#{articles.botonEstado}" actionListener="#{articles.botonPrincipal}" 
+                                     process="@all"  >
+                    </p:commandButton>
+                    <p:defaultCommand target="botonPrincipal" />
+
+                </h:form>
+
+                <p:dialog closeOnEscape="true" header="Confirmacion" widgetVar="dlg10" width="230" modal="true" resizable="false">
+                    <h:form id="dialo10">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Se perderan los datos ingresados, Desea continuar?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{articles.confirmDialog2}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{articles.cancelDialog2}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel>
+                    </h:form>
+                </p:dialog>
+
+                <p:dialog closeOnEscape="true" header="Confirmacion" widgetVar="dlg9" width="230" modal="true" resizable="false">
+                    <h:form id="dialo9">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea guardar los cambios?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{articles.confirmDialog}"/>
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{articles.cancelDialog}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </h:form>
+                </p:dialog>
+
+                <p:dialog closeOnEscape="true" header="Datos encontrados" widgetVar="dlg33" modal="true" height="100%"  width="1105" id="frmTable">
+                    <h:form id="dialodatos">   
+                        <p:dataTable id="tableDialog" var="Rec" value="#{articles.listaBusquedaTable}"  scrollable="true" scrollHeight="100%" style="height: 100%" 
+                                     selection="#{articles.selectArticle}" rowKey="#{Rec.itemCode}" selectionMode="single" rowIndexVar="rowIndex" 
+                                     paginator="true" rows="10"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15"
+                                     resizableColumns="true" liveResize="true">
+
+                            <p:ajax event="rowDblselect"  process="@this" listener="#{articles.selectDialog}"/>
+
+                            <p:column headerText="#" style="width: 40px">
+                                <h:outputText value="#{rowIndex + 1}" />
+                            </p:column>
+                            <p:column headerText="Código"  sortBy="#{Rec.itemCode}" filterBy="#{Rec.itemCode}" style="width: 150px">
+                                <h:outputText value="#{Rec.itemCode}" />
+                            </p:column>
+
+                            <p:column headerText="Descripción" sortBy="#{Rec.itemName}" filterBy="#{Rec.itemName}">
+                                <h:outputText value="#{Rec.itemName}" />
+                            </p:column>
+
+                            <p:column headerText="Clase" sortBy="#{Rec.itemType}" style="width: 60px" >
+                                <h:outputText value="#{Rec.itemType}" />
+                            </p:column>
+
+                            <p:column headerText="Grupo" sortBy="#{Rec.itmsIsGrpCod}" style="width: 60px" >
+                                <h:outputText value="#{Rec.itmsIsGrpCod}"/>
+                            </p:column>
+
+                            <p:column headerText="Inventario" sortBy="#{Rec.invntItem}" style="width: 60px">
+                                <h:outputText value="#{Rec.invntItem}" />
+                            </p:column>
+
+                            <p:column headerText="Venta" sortBy="#{Rec.sellItem}" style="width: 60px">
+                                <h:outputText value="#{Rec.sellItem}" />
+                            </p:column>
+
+                            <p:column headerText="Compra" sortBy="#{Rec.prchseItem}" style="width: 60px">
+                                <h:outputText value="#{Rec.prchseItem}" />
+                            </p:column>
+
+                            <p:column headerText="Activo Fijo" sortBy="#{Rec.assetItem}" style="width: 60px">
+                                <h:outputText value="#{Rec.assetItem}" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>  
+                </p:dialog> 
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</ui:composition>

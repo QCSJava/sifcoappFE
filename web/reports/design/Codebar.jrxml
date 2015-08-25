@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Codebar" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9a1e9c8d-2fef-4117-aaf9-4d1aa5153d90">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="itemcode" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select $P{itemcode} p1, $P{itemcode} p2, $P{itemcode} p3, $P{itemcode} p4, $P{itemcode} p5, $P{itemcode} p6]]>
+	</queryString>
+	<field name="p1" class="java.lang.String"/>
+	<field name="p2" class="java.lang.String"/>
+	<field name="p3" class="java.lang.String"/>
+	<field name="p4" class="java.lang.String"/>
+	<field name="p5" class="java.lang.String"/>
+	<field name="p6" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="81" splitType="Stretch">
+			<textField>
+				<reportElement x="11" y="0" width="82" height="58" uuid="307a35c1-e556-4822-98e4-eeac4f9a3fd7"/>
+				<textElement>
+					<font fontName="BarCode 128" size="48"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{?column?}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="116" y="0" width="100" height="58" uuid="fb3d3038-6857-4b78-9dff-aa1e992ce55e"/>
+				<textElement>
+					<font fontName="BarCode 128" size="48"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{p2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="227" y="0" width="100" height="58" uuid="0a262965-a5e3-4700-9eca-ffeff9076929"/>
+				<textElement>
+					<font fontName="BarCode 128" size="48"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{p3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="345" y="0" width="100" height="58" uuid="a1bf3208-f181-414e-adeb-2a29e9f5c3d8"/>
+				<textElement>
+					<font fontName="BarCode 128" size="48"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{p4}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="458" y="0" width="100" height="58" uuid="cc8650d4-c6cb-44cb-8bc9-1ced8d690cb2"/>
+				<textElement>
+					<font fontName="BarCode 128" size="48"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{p5}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

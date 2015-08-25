@@ -1,0 +1,186 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <body>
+
+        <ui:composition template="./../../template.xhtml">
+            <ui:define name="content">
+                <h:form id="form" >
+                    <p:tab title="Mantenimiento de Catalogo">
+                        <p:toolbar>
+                            <f:facet name="left">
+                                Mantenimiento de Catalogo
+                                <span class="ui-separator">
+                                    <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                                </span>
+                                <p:commandButton title="Nuevo" icon="ui-icon-document" actionListener="#{user.doNew}" update="growl" process="@this" >
+                                    <p:ajax update="form" resetValues="true" />
+                                </p:commandButton>
+
+                                <p:commandButton title="Guardar" icon="ui-icon-disk" actionListener="#{catalog.doSave}" update="growl" resetValues="true" >
+                                    <f:ajax render="nickname" resetValues="true"/>
+                                    <f:ajax render="username" resetValues="true"/>
+                                    <f:ajax render="lastname" resetValues="true"/>
+                                    <f:ajax render="profilecode" resetValues="true"/>
+                                    <f:ajax render="password" resetValues="true"/>
+                                    <f:ajax render="passwordConfirm" resetValues="true"/>
+                                </p:commandButton>
+
+                                <p:growl id="growl" showDetail="true" />
+                            </f:facet>
+                        </p:toolbar>
+
+                        <p:growl id="msgs" showDetail="true" />
+                        <p:tabView dynamic="true" cache="true">
+                            <p:tab title="Mantenimiento Catalogo" >
+
+                                <p:panelGrid columns="2" style="width:80%" >
+                                    <p:outputLabel  value="Tabla : " for="tableCatalog" />
+                                    <p:selectOneMenu id="tableCatalog" style="width:300px" value="#{catalog.tableCatalog}" required="true">
+                                        <p:ajax  listener="#{catalog.onCatalogChange}" update="catalog" /><!-- Invoca el metodo onCatalogoChange-->
+                                        <f:selectItem itemLabel="Seleccione Tabla" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems value="#{catalog.catlgLst}" var="model" itemLabel="#{model.description}" itemValue="#{model.code}" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel  value="Codigo : " for="catalogCode"/>
+                                    <p:inputText id="catalogCode" value="#{catalog.catcode}"  required="true"/>
+
+                                    <p:outputLabel  value="Valor 1 : " for="catvalue"/>
+                                    <p:inputText id="catvalue" value="#{catalog.catvalue}"  required="true"/>
+
+                                    <p:outputLabel  value="Valor 2 : " for="catvalue2"/>
+                                    <p:inputText id="catvalue2" value="#{catalog.catvalue2}"  />
+
+                                    <p:outputLabel  value="Valor 3: " for="catvalue3"/>
+                                    <p:inputText id="catvalue3" value="#{catalog.catvalue3}"  />
+
+
+                                    <p:outputLabel  value="Estado : " for="catstatus"/>
+                                    <p:selectOneMenu id="catstatus"  style="width:150px" value="#{catalog.catstatus}">
+                                        <f:selectItem itemLabel="Activo" itemValue="A" />
+                                        <f:selectItem itemLabel="Inactivo" itemValue="I" />                   
+                                    </p:selectOneMenu>
+
+                                    <p:spacer/>
+                                    <p:commandButton value="Agregar" actionListener="#{catalog.doSave()}" 
+                                                     process="@this, tableCatalog catalogCode catvalue catvalue2 catvalue3 catstatus"/>
+                                    
+                                </p:panelGrid>
+                                
+                                <p:spacer height="30px;"/>
+                                
+                                <p:dataTable  id="catalog" var="catalog" value="#{catalog.catalogoClassLst}"  widgetVar="50" style="width: 700px;" editable="true"
+                                              emptyMessage="Seleccione una tabla">
+                                    <f:facet name="header"> 
+                                        Mantenimiento de Catalogo
+                                    </f:facet>
+                                    <p:ajax event="rowEdit" listener="#{catalogoBean.onRowEdit}"  /> 
+                                    <p:ajax event="rowEditCancel" listener="#{catalogoBean.onRowCancel}"  /> -->
+                                    
+                                    <p:column>
+                                        <f:facet name="header"> 
+                                            <h:outputText value="Codigo" /> 
+                                        </f:facet>
+                                        <p:cellEditor> 
+                                            <f:facet name="output"> 
+                                                <h:outputText value="#{catalog.catcode}" /> 
+                                            </f:facet> 
+                                            <f:facet name="input"> 
+                                                <p:inputText id="catcode" value="#{catalog.catcode}" style="width:100%" disabled="true"/> 
+                                            </f:facet> 
+                                        </p:cellEditor> 
+                                    </p:column>
+                                    
+                                    <p:column>
+                                        <f:facet name="header"> 
+                                            <h:outputText value="Codigo Tabla" /> 
+                                        </f:facet>
+                                        <p:cellEditor> 
+                                            <f:facet name="output"> 
+                                                <h:outputText value="#{catalog.tablecode}" /> 
+                                            </f:facet> 
+                                            <f:facet name="input"> 
+                                                <p:inputText id="tablecode" value="#{catalog.tablecode}" style="width:100%" disabled="true"/> 
+                                            </f:facet> 
+                                        </p:cellEditor> 
+                                    </p:column>
+                                    
+                                    <p:column>
+                                        <f:facet name="header"> 
+                                            <h:outputText value="Valor 1" /> 
+                                        </f:facet>
+                                        <p:cellEditor> 
+                                            <f:facet name="output"> 
+                                                <h:outputText value="#{catalog.catvalue}" /> 
+                                            </f:facet> 
+                                            <f:facet name="input"> 
+                                                <p:inputText value="#{catalog.catvalue}" style="width:100%"/> 
+                                            </f:facet> 
+                                        </p:cellEditor> 
+                                    </p:column>
+                                    
+                                    <p:column>
+                                        <f:facet name="header"> 
+                                            <h:outputText value="Valor 2" /> 
+                                        </f:facet>
+                                        <p:cellEditor> 
+                                            <f:facet name="output"> 
+                                                <h:outputText value="#{catalog.catvalue2}" /> 
+                                            </f:facet> 
+                                            <f:facet name="input"> 
+                                                <p:inputText value="#{catalog.catvalue3}" style="width:100%"/> 
+                                            </f:facet> 
+                                        </p:cellEditor> 
+                                    </p:column>
+                                    
+                                    <p:column>
+                                        <f:facet name="header"> 
+                                            <h:outputText value="Valor 3" /> 
+                                        </f:facet>
+                                        <p:cellEditor> 
+                                            <f:facet name="output"> 
+                                                <h:outputText value="#{catalog.catvalue3}" /> 
+                                            </f:facet> 
+                                            <f:facet name="input"> 
+                                                <p:inputText value="#{catalog.catvalue3}" style="width:100%"/> 
+                                            </f:facet> 
+                                        </p:cellEditor> 
+                                    </p:column>
+                                    
+                                    <p:column>
+                                        <f:facet name="header"> 
+                                            <h:outputText value="Estado" /> 
+                                        </f:facet>
+                                        <p:cellEditor> 
+                                            <f:facet name="output"> 
+                                                <h:outputText value="#{catalog.catstatus}" /> 
+                                            </f:facet> 
+                                            <f:facet name="input"> 
+                                                <p:selectOneMenu id="catalogClassLst3"  style="width:150px" value="#{catalog.catstatus}">
+                                                    <f:selectItem itemLabel="Activo" itemValue="A" />
+                                                    <f:selectItem itemLabel="Inactivo" itemValue="I" />
+                                                </p:selectOneMenu>
+                                            </f:facet> 
+                                        </p:cellEditor> 
+                                    </p:column>
+                                    
+                                    <p:column headerText="Options" style="width:50px"> 
+                                        <p:rowEditor /> 
+                                    </p:column> 
+                                    
+                                </p:dataTable>
+                            </p:tab>
+                        </p:tabView>
+
+                    </p:tab>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

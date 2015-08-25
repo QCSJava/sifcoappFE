@@ -1,0 +1,352 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+        <ui:composition template="./../../template.xhtml">
+            <ui:define name="content"> 
+                <h:form id="formReceipt">
+                    <!--  -->
+
+                    <p:toolbar id="toolbar1">
+
+                        <f:facet name="left">
+                            <p:focus context="toolbar1"/>
+                            Entradas de Inventario 
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                            <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document" actionListener="#{goodsReceiptBean.botonNuevo}" process="@this" 
+                                             update="formReceipt">
+
+                            </p:commandButton>
+
+                            <p:commandButton tabindex="-1" title="Buscar" icon="ui-icon-search" actionListener="#{goodsReceiptBean.botonBuscar}" process="@this" 
+                                             update="formReceipt">
+
+                            </p:commandButton>
+                            <p:commandButton tabindex="-1" type="button" title="Print" icon="ui-icon-print" />
+                        </f:facet>
+                    </p:toolbar>
+
+                    <p:spacer height="20" width="0"></p:spacer>
+
+                    <!-- disabled="#'{goodsReceiptBean.disable}" -->
+                    <div class="ui-grid ui-grid-responsive">
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2"><h:outputText  value="No."></h:outputText></div>
+                            <div class="ui-grid-col-2"><p:inputText id="docEntry" size="10" value="#{goodsReceiptBean.docNum}" disabled="#{goodsReceiptBean.docEntryState}"></p:inputText></div>
+                            <div class="ui-grid-col-4"></div>
+                            <div class="ui-grid-col-2"><h:outputText value="Fecha Contabilizacion" ></h:outputText></div>
+                            <div class="ui-grid-col-2"><p:calendar id="FechaCont" value="#{goodsReceiptBean.fechaConta}" showOn="button" size="10"  pattern="dd/MM/yyyy" disabled="#{goodsReceiptBean.disable}"/></div>
+                        </div>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2"> <h:outputText value="Almacen Destino"></h:outputText></div>
+                            <div class="ui-grid-col-2">
+                                <p:selectOneMenu id="almDest" value="#{goodsReceiptBean.almDest}" style="width:60%" valueChangeListener="#{goodsReceiptBean.stateChangeListener}" disabled="#{goodsReceiptBean.disable}">
+                                    <f:selectItem itemLabel="Almacen" itemValue="-1" />
+                                    <f:selectItems value="#{goodsReceiptBean.listaAlmacenes}" var="model" itemLabel="#{model.whscode}" itemValue="#{model.whscode}"/>
+                                    <p:ajax event="change" update="nameAlm"/>
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="ui-grid-col-4">
+                                <h:outputText  id="nameAlm" value="#{goodsReceiptBean.nomAlmacen}"></h:outputText>
+                            </div>
+
+                            <div class="ui-grid-col-2"><h:outputText value="Fecha Documento"/></div>
+                            <div class="ui-grid-col-2"><p:calendar id="FechaDoc" value="#{goodsReceiptBean.fechaDoc}" showOn="button" size="10" pattern="dd/MM/yyyy" locale="es" disabled="#{goodsReceiptBean.disable}"/></div>
+                        </div>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-8"></div>
+                            <div class="ui-grid-col-2"><h:outputText value="Referencia"  ></h:outputText></div>
+                            <div class="ui-grid-col-2"><p:inputText maxlength="11" id="Referencia" value="#{goodsReceiptBean.refe}" size="10" ></p:inputText></div>
+
+                        </div>
+
+                        <!-- FOCUS -->
+                        <p:focus for="CodigoDetalle "/>
+
+                        <!-- Boton agregar al data table -->
+
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12"><p:spacer height="20"/></div>
+                        </div>
+
+                        <div class="ui-grid-row">    
+                            <div class="ui-grid-col-2"><h:outputText value="Codigo"/></div>
+                            <div class="ui-grid-col-3"><p:spacer width="7%" height="0"/><h:outputText value="Nombre Articulo"/></div>
+                            <div class="ui-grid-col-1"><h:outputText value="Cantidad"/></div>
+                            <div class="ui-grid-col-1"><p:spacer width="20%" height="0"/><h:outputText value="Precio"/></div>
+                            <div class="ui-grid-col-1"><p:spacer width="30%" height="0"/><h:outputText value="Total"/></div>
+                            <div class="ui-grid-col-4"><h:outputText value="Unidad Medida"/>
+                                <p:spacer width="15" height="0"/>
+                                <h:outputText value="Existencia"/>
+                                <p:spacer width="15" height="0"/>
+                                <h:outputText value="Costo Promedio"/>
+                            </div>
+
+                        </div>
+
+                        <div class="ui-grid-row">
+
+                            <div class="ui-grid-col-2">
+                                <p:autoComplete scrollHeight="250" tabindex="6" required="true" id="CodigoDetalle" forceSelection="true" minQueryLength="3" value="#{goodsReceiptBean.newCod}"
+                                                completeMethod="#{goodsReceiptBean.completeCode}" effect="fade" size="25" label="Codigo" disabled="#{goodsReceiptBean.disableComun}">
+                                    <p:ajax event="itemSelect" listener="#{goodsReceiptBean.findArticle}" update="nameDetalle, newUnidad, CodigoDetalle, newExistencia, newCostoProm" />
+                                </p:autoComplete>
+                            </div>
+                            <div class="ui-grid-col-3">
+                                <p:spacer width="15" height="0"/>
+                                <p:autoComplete scrollHeight="250" tabindex="7" required="true" id="nameDetalle" forceSelection="true" minQueryLength="3" value="#{goodsReceiptBean.newNomArt}"
+                                                completeMethod="#{goodsReceiptBean.completeText}" effect="fade" size="35" label="Nombre Articulo" disabled="#{goodsReceiptBean.disableComun}">
+                                    <p:ajax event="itemSelect" listener="#{goodsReceiptBean.findArticle}" update="nameDetalle, CodigoDetalle, newUnidad, newExistencia, newCostoProm" />
+                                </p:autoComplete>
+                            </div>
+                            <div class="ui-grid-col-1">
+                                <p:inputText tabindex="8" required="true" id="cantDetalle" value="#{goodsReceiptBean.newCantidad}" label="Cantidad" size="10" disabled="#{goodsReceiptBean.disableComun}" >
+                                    <p:ajax event="blur" update="newTotal" listener="#{goodsReceiptBean.calcularTotal}"/>
+                                </p:inputText>
+
+                            </div>
+                            <p:spacer width="15" height="0"/>
+                            <div class="ui-grid-col-1">
+                                <p:inputText tabindex="9" required="true" id="newPrecio" value="#{goodsReceiptBean.newPrecio}" label="Precio" size="10" disabled="#{goodsReceiptBean.disableComun}">
+                                    <p:ajax event="blur" update="newTotal" listener="#{goodsReceiptBean.calcularTotal}"/>
+                                </p:inputText>
+                            </div>
+                            <p:spacer width="15" height="0"/>
+                            <div class="ui-grid-col-1">
+                                <h:outputText id="newTotal"         value="#{goodsReceiptBean.newTotal}"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <h:outputText id="newUnidad"        value="#{goodsReceiptBean.newUnidad}"/>
+                                <p:spacer width="45%" height="0"/>
+                                <h:outputText id="newExistencia"    value="#{goodsReceiptBean.newExistencia}"/>
+
+                            </div>
+                            <div class="ui-grid-col-1">
+                                <h:outputText id="newCostoProm"    value="#{goodsReceiptBean.newCostoPromedio}"/>
+                            </div>
+                            <p:spacer width="15" height="0"/>
+
+                        </div>
+                        <p:spacer width="0" height="5"/>
+                        <!-- Encebezado CUENTA -->
+                        <div class="ui-grid-row">    
+                            <div class="ui-grid-col-2"><h:outputText value="Cuenta"/></div>
+                            <div class="ui-grid-col-3"><p:spacer width="7%" height="0"/><h:outputText value="Nombre Cuenta"/></div>
+
+                        </div>
+
+                        <!-- Inputs de cuenta -->
+                        <div class="ui-grid-row">
+
+                            <div class="ui-grid-col-2">
+                                <p:autoComplete tabindex="10" scrollHeight="250" required="true" id="newCodCuenta" forceSelection="true" minQueryLength="2" value="#{goodsReceiptBean.newCodCuenta}" disabled="#{goodsReceiptBean.disableComun}"
+                                                completeMethod="#{goodsReceiptBean.completeCode2}" effect="fade" size="25" label="Codigo Cuenta">
+                                    <p:ajax event="itemSelect" listener="#{goodsReceiptBean.findAccount}" update="newCodCuenta newNomCuenta" />
+                                </p:autoComplete>
+                            </div>
+                            <div class="ui-grid-col-3">
+                                <p:spacer width="15" height="0"/>
+                                <p:autoComplete tabindex="11" scrollHeight="250"  required="true" id="newNomCuenta" forceSelection="true" minQueryLength="2" value="#{goodsReceiptBean.newNomCuenta}" disabled="#{goodsReceiptBean.disableComun}"
+                                                completeMethod="#{goodsReceiptBean.completeName}" effect="fade" size="35" label="Nombre Cuenta">
+                                    <p:ajax event="itemSelect" listener="#{goodsReceiptBean.findAccount}" update="newCodCuenta newNomCuenta" />
+                                </p:autoComplete>
+                            </div>
+                            <div class="ui-grid-col-1">
+                                <p:commandButton tabindex="12" id="botonAgregar" actionListener="#{goodsReceiptBean.accionAgregar}" value="Agregar"   icon="ui-icon-check" validateClient="true"
+                                                 update="@parent table, CodigoDetalle, nameDetalle, cantDetalle, newPrecio, newTotal, newUnidad, newExistencia"
+                                                 process="@this CodigoDetalle  nameDetalle cantDetalle newPrecio newCodCuenta newNomCuenta" disabled="#{goodsReceiptBean.disableComun}">
+                                </p:commandButton>
+
+                            </div>
+                        </div>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12"><p:spacer height="20"></p:spacer></div>
+                        </div>
+
+                        <div class="ui-grid-row" id="contex">
+                            <div class="ui-grid-col-12">
+
+                                <p:contextMenu for="table" rendered="#{goodsReceiptBean.rendered}">
+                                    <p:menuitem value="Eliminar"  icon="ui-icon-close" actionListener="#{goodsReceiptBean.deleteDetalle}"
+                                                update="@this table" process="@this table">
+                                    </p:menuitem>
+                                </p:contextMenu>    
+
+                                <p:dataTable id="table" var="Art" value="#{goodsReceiptBean.listaDetalles}" rowKey="#{Art.linenum}" 
+                                             selection="#{goodsReceiptBean.selectDetail}" rowIndexVar="rowIndex" selectionMode="single" scrollable="true" scrollHeight="250"
+                                             disabledSelection="#{goodsReceiptBean.disable}" emptyMessage="No hay registros">
+
+                                    <p:ajax event="rowSelect"  process="@this" update="table"/>
+
+                                    <p:column headerText="#" style="width: 3%; font-size: #{commonBean.sizeFont1}">
+                                        <h:outputText value="#{rowIndex+1}" />
+                                    </p:column>
+                                    <p:column headerText="Codigo" style="width: 12%; font-size: #{commonBean.sizeFont1}">
+                                        <h:outputText value="#{Art.itemcode}" />
+                                    </p:column>
+
+                                    <p:column headerText="Nombre Articulo" style="width: 25%; font-size: #{commonBean.sizeFont1}">
+                                        <h:outputText value="#{Art.dscription}" />
+                                    </p:column>
+
+                                    <p:column headerText="Cantidad" style="width: 8%; font-size:#{commonBean.sizeFont1}">
+                                        <h:outputText value="#{Art.quantity}" style="float:right">
+                                            <f:convertNumber minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}" />
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="Precio Unitario" style="width: 8%; font-size: #{commonBean.sizeFont1}">
+                                        <p:outputLabel value="#{Art.price}" style="float:right">
+                                            <f:convertNumber type="currency" currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}" />
+                                        </p:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="Total" style="width: 8%; font-size: #{commonBean.sizeFont1}">
+                                        <p:outputLabel  value="#{Art.linetotal}" style="float:right">
+                                            <f:convertNumber type="currency" currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                        </p:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="Unidad de medida" style="width: 10%; font-size: #{commonBean.sizeFont1}">
+                                        <h:outputText  value="#{Art.unitmsr}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="Cuenta" style="width: 10%; font-size: #{commonBean.sizeFont1}">
+                                        <h:outputText  value="#{Art.acctcode}"/>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </div>
+                        </div>
+
+                        <div class="ui-grid ui-grid-responsive">
+                            <div class="ui-grid-col-12"><h:outputText value="Comentarios"  /></div>
+                        </div>
+
+                        <div class="ui-grid ui-grid-responsive">
+                            <div class="ui-grid-col-12"><p:inputTextarea maxlength="254" id="coment" rows="3" cols="80" value="#{goodsReceiptBean.comentario}" /></div>
+                        </div>
+
+                        <div class="ui-grid ui-grid-responsive">
+                            <div class="ui-grid-col-12"><p:spacer height="20"></p:spacer></div>
+                        </div>
+
+                        <!-- BOTON PRINCIPAL -->
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1">
+                                <p:commandButton tabindex="0" id="botonPrincipal" value="#{goodsReceiptBean.botonEstado}" actionListener="#{goodsReceiptBean.botonPrincipal}" update="tableDialog docEntry botonPrincipal table botonAgregar FechaDoc FechaCont almDest coment Referencia "
+                                                 process="@this Referencia coment docEntry FechaCont FechaDoc almDest"  >
+
+                                </p:commandButton>
+                                <p:defaultCommand target="botonPrincipal" />
+                            </div>
+                            <div class="ui-grid-col-5"></div>
+                        </div>
+
+                        <p:dialog closeOnEscape="true" header="Datos encontrados" widgetVar="dlg2" modal="true"  width="1000" height="250" >
+                            <p:dataTable id="tableDialog" var="Rec" value="#{goodsReceiptBean.listaBusquedaTable}"  scrollable="true" scrollHeight="90%"
+                                         selection="#{goodsReceiptBean.selectReceipt}" rowKey="#{Rec.docentry}" selectionMode="single" rowIndexVar="rowIndex" >
+
+                                <p:ajax event="rowDblselect"  process="@this" listener="#{goodsReceiptBean.selectDialog}"/>
+
+                                <p:column headerText="#" style="width: 10px">
+                                    <h:outputText value="#{rowIndex + 1}" />
+                                </p:column>
+                                <p:column headerText="No" style="width: 30px" sortBy="#{Rec.docnum}">
+                                    <h:outputText value="#{Rec.docnum}" />
+                                </p:column>
+
+                                <p:column headerText="Almacen Destino" sortBy="#{Rec.towhscode}">
+                                    <h:outputText value="#{Rec.towhscode}" />
+                                </p:column>
+
+                                <p:column headerText="Fecha Contabilizacion" sortBy="#{Rec.docdate}" >
+                                    <h:outputText value="#{Rec.docdate}" >
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Fecha Documento" sortBy="#{Rec.docduedate}" >
+                                    <h:outputText value="#{Rec.docduedate}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Referencia" sortBy="#{Rec.ref1}">
+                                    <h:outputText value="#{Rec.ref1}" />
+                                </p:column>
+
+                                <p:column headerText="Comentarios" sortBy="#{Rec.comments}">
+                                    <h:outputText value="#{Rec.comments}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:dialog> 
+
+                    </div>
+                </h:form>
+
+                <h:form>
+                    <p:dialog closeOnEscape="true" header="Confirmacion" widgetVar="dlg9" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea guardar los cambios?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{goodsReceiptBean.confirmDialog}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{goodsReceiptBean.cancelDialog}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+                <h:form>
+                    <p:dialog closeOnEscape="true" header="Confirmacion" widgetVar="dlg10" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Se perderan los datos ingresados, Desea continuar?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{goodsReceiptBean.confirmDialog2}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{goodsReceiptBean.cancelDialog2}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>            
+            </ui:define>
+        </ui:composition>   
+    </body>
+
+</ui:composition>

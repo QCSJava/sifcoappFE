@@ -1,0 +1,388 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Maestro de Socios de Negocio</title>
+    </h:head>
+
+    <body>
+
+        <ui:composition template="./../../template.xhtml">
+
+            <ui:define name="content">
+
+                <h:form id="frmPartner">   
+
+                    <p:toolbar>
+                        <f:facet name="left">
+                            Maestro de Socios de Negocio
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                            <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document" actionListener="#{businessPartner.botonNuevo}" process="@this idpartner idnombre" 
+                                             >
+                                <p:ajax update=":frmDialog:dialogo01" resetValues="true" />
+                            </p:commandButton>
+
+                            <p:commandButton tabindex="-1" title="Buscar" icon="ui-icon-search" actionListener="#{businessPartner.botonBuscar}" process="@this idpartner idnombre"
+                                             >
+
+                            </p:commandButton>    
+
+                            <p:commandButton tabindex="-1" type="button" title="Print" icon="ui-icon-print" />
+                        </f:facet>
+                    </p:toolbar>
+
+                    <br></br>
+
+                    <div class="ui-grid ui-grid-responsive">
+                        <div class="ui-grid-row" style="padding-left: 20px">
+                            <div class="ui-grid-col-2"><h:outputText  value="Código"></h:outputText></div>
+                            <div class="ui-grid-col-2" style="width: 150px"><p:inputText id="idpartner" value="#{businessPartner.cardcode}" disabled ="#{businessPartner.disable}"  /> </div>
+                            <div class="ui-grid-col-2">
+                                <p:selectOneMenu id="idtipo"  style="width:110px" value="#{businessPartner.cardtype}" disabled ="#{businessPartner.disable}">
+                                    <f:selectItem itemValue="C" itemLabel="Cliente" />
+                                    <f:selectItem itemValue="P" itemLabel="Proveedor" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="ui-grid-row" style="padding-left: 20px">
+                            <div class="ui-grid-col-2"><h:outputText  value="Nombre"></h:outputText></div>
+                            <div class="ui-grid-col-4" style="padding-bottom: 2px"><p:inputText id="idnombre" value="#{businessPartner.cardname}"  style="width: 60%"  /> </div>
+                            <div class="ui-grid-col-2"><h:outputText  value="Saldo de cuenta"></h:outputText></div>
+                            <div class="ui-grid-col-4"><p:inputText id="idsaldo" readonly="true" value="#{businessPartner.balance}" /> </div>
+                        </div>
+                        <div class="ui-grid-row" style="padding-left: 20px">
+                            <div class="ui-grid-col-2"><h:outputText  value="Grupo"></h:outputText></div>
+                            <div class="ui-grid-col-4">
+                                <p:selectOneMenu id="idgrupo"  style="width:150px" value="#{businessPartner.groupcode}">
+                                    <f:selectItem itemLabel="Seleccione Grupo" itemValue="-1" />
+                                    <f:selectItems value="#{businessPartner.businessGroupLst}" var="model" itemLabel="#{model.catvalue}" itemValue="#{model.catcode}"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div> 
+                        <div class="ui-grid-row" style="padding-left: 20px">
+                            <div class="ui-grid-col-2"><h:outputText  value="RFC"></h:outputText></div>
+                            <div class="ui-grid-col-4"><p:inputText id="idrfc" value="#{businessPartner.addid}"   /> </div>
+                        </div>
+                        <br></br>
+                        <p:tabView dynamic="false" cache="true" id="padre" >
+                            <p:tab title="General">
+                                <br></br>
+                                <div class="ui-grid-row" style="padding-bottom: 2px">
+                                    <div class="ui-grid-col-2"><p:outputLabel  value="Teléfono 1"/></div>
+                                    <div class="ui-grid-col-4"><p:inputText id="idtel1"  value="#{businessPartner.phone1}"  /></div>
+                                    <div class="ui-grid-col-2"><p:outputLabel  value="Persona de contacto"/></div>
+                                    <div class="ui-grid-col-4"><p:inputText id="idcontacto" value="#{businessPartner.cntctprsn}" style="width: 60%" /></div>
+                                </div>
+                                <div class="ui-grid-row" style="padding-bottom: 2px">
+                                    <div class="ui-grid-col-2"><p:outputLabel  value="Teléfono 2"/></div>
+                                    <div class="ui-grid-col-4"><p:inputText id="idtel2" value="#{businessPartner.phone2}"  /></div>
+                                    <div class="ui-grid-col-2"><p:outputLabel  value="NRC"/></div>
+                                    <div class="ui-grid-col-4"><p:inputText id="idnrc" value="#{businessPartner.ninum}"  /></div>
+                                </div>
+                                <div class="ui-grid-row" style="padding-bottom: 2px">
+                                    <div class="ui-grid-col-2"><p:outputLabel  value="Teléfono móvil"/></div>
+                                    <div class="ui-grid-col-4"><p:inputText id="idcel" value="#{businessPartner.cellular}"  /></div>
+                                </div>
+                                <div class="ui-grid-row" style="padding-bottom: 2px">
+                                    <div class="ui-grid-col-2"><p:outputLabel  value="Fax"/></div>
+                                    <div class="ui-grid-col-4"><p:inputText id="idfax" value="#{businessPartner.fax}"  /></div>
+                                </div>
+                                <div class="ui-grid-row" style="padding-bottom: 2px">
+                                    <div class="ui-grid-col-2"><p:outputLabel  value="Correo electrónico"/></div>
+                                    <div class="ui-grid-col-4"><p:inputText id="idemail" value="#{businessPartner.e_mail}"  /></div>
+                                    <div class="ui-grid-col-2"><p:outputLabel  value="Comentarios"/></div>
+                                    <div class="ui-grid-col-4"><p:inputTextarea id="idcomen" rows="2" cols="30" value="#{businessPartner.notes}"  /></div>
+                                </div>
+                                <div class="ui-grid-row" style="padding-bottom: 2px">
+                                    <div class="ui-grid-col-2"><p:outputLabel  value="Sitio web"/></div>
+                                    <div class="ui-grid-col-4"><p:inputText id="idweb" value="#{businessPartner.mailaddres}"  /></div>
+                                </div>
+                                <div class="ui-grid-row" style="padding-bottom: 2px">
+                                    <div class="ui-grid-col-2"><h:outputText  value="Ramo"></h:outputText></div>
+                                    <div class="ui-grid-col-4">
+                                        <p:selectOneMenu id="idramo"  style="width:150px" value="#{businessPartner.industryc}">
+                                            <f:selectItem itemLabel="Seleccione Ramo" itemValue="" noSelectionOption="true"/>
+                                            <f:selectItems value="#{businessPartner.ramoLst}" var="model2" itemLabel="#{model2.catvalue}" itemValue="#{model2.catcode}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                    <div class="ui-grid-col-2"><p:outputLabel  value="DUI"/></div>
+                                    <div class="ui-grid-col-4"><p:inputText id="iddui" value="#{businessPartner.ninum}"  /></div>
+                                </div>
+                                <br></br>
+                                <div class="ui-grid-row" style="padding-bottom: 2px">
+                                    <p:selectOneRadio id="isActive" value="#{businessPartner.validfor}">
+                                        <f:selectItem itemLabel="Activo" itemValue="true" />
+                                        <f:selectItem itemLabel="Inactivo" itemValue="false" />
+                                    </p:selectOneRadio>
+                                </div>
+                            </p:tab>
+                            <p:tab title="Condiciones de Pago">
+                                <br></br>
+                                <div class="ui-grid-row" style="padding-bottom: 2px">
+                                    <div class="ui-grid-col-2"><h:outputText  value="Condiciones de pago"></h:outputText></div>
+                                    <div class="ui-grid-col-4">
+                                        <p:selectOneMenu id="idpago"  style="width:150px" value="#{businessPartner.pymcode}">
+                                            <f:selectItem itemLabel="Seleccione pago" itemValue="" noSelectionOption="true"/>
+                                            <f:selectItems value="#{businessPartner.condicionPagoLst}" var="model3" itemLabel="#{model3.catvalue}" itemValue="#{model3.catcode}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="ui-grid-row" style="padding-bottom: 2px">
+                                    <div class="ui-grid-col-2"><h:outputText  value="Lista de precios"></h:outputText></div>
+                                    <div class="ui-grid-col-4">
+                                        <p:selectOneMenu id="idprecio"  style="width:150px" value="#{businessPartner.listnum}">
+                                            <f:selectItem itemLabel="Seleccione Lista" itemValue="" noSelectionOption="true"/>
+                                            <f:selectItems value="#{businessPartner.listPriceList}" var="model4" itemLabel="#{model4.listname}" itemValue="#{model4.listnum}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="ui-grid-row" style="padding-bottom: 2px">
+                                    <div class="ui-grid-col-2"><p:outputLabel  value="Limite de crédito"/></div>
+                                    <div class="ui-grid-col-4"><p:inputText id="idlimite" value="#{businessPartner.creditline}"  /></div>
+                                </div>
+                            </p:tab>
+                            <p:tab title="Finanzas">
+                                <br></br>
+                                <div class="ui-grid-row" style="padding-bottom: 2px">
+                                    <div class="ui-grid-col-2">
+                                        <p:outputLabel value="SN de agrupacion" />
+                                    </div>
+                                    <div class="ui-grid-col-2">
+                                        <p:autoComplete id="SNagroup" size="25" forceSelection="true" minQueryLength="2" value="#{businessPartner.fathercard}"
+                                                        completeMethod="#{businessPartner.completeCode}" effect="fade" label="Codigo"  scrollHeight="250">
+                                        </p:autoComplete>
+                                    </div>
+                                </div>
+                                <p:spacer width="0" height="0"/>
+                                <div class="ui-grid-row" style="padding-bottom: 2px">
+                                    <div class="ui-grid-col-2">
+                                        <p:outputLabel  value="Cuentas asociadas"/>
+                                    </div>
+                                    <div class="ui-grid-col-4">
+                                        <!-- id="idasociadas" value="..." type="button" onclick="PF('dlg01').show();" update=":frmDialog:accTable" -->
+                                        <p:commandButton id="idasociadas" value="..." action="#{businessPartner.businessAcc()}"> 
+                                        </p:commandButton>
+                                    </div>
+                                    <div class="ui-grid-col-2"> 
+                                        <p:outputLabel  value="Sujeto a Retencion de impuesto " />
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:selectBooleanCheckbox value="#{businessPartner.wtliable}" id="taxRetention"/>
+                                    </div>
+                                </div>
+                                <p:spacer width="0" height="0"/>
+                                <div class="ui-grid-row" style="padding-bottom: 2px">
+                                    <div class="ui-grid-col-2"><p:outputLabel  value="Cuenta de deudor/acreedor"/></div>
+                                    <div class="ui-grid-col-2" style="width: 150px">
+                                        <p:autoComplete id="idproveedores" size="25" forceSelection="true" minQueryLength="2" value="#{businessPartner.debpayacct}"
+                                                        completeMethod="#{businessPartner.completeCode}" effect="fade" label="Codigo" scrollHeight="250">
+                                        </p:autoComplete>
+                                    </div>
+                                </div>
+                                <!-- Campo oculto RETENCION DE IMPUESTO -->
+                                <!--
+                               <div class="ui-grid-row" style="padding-bottom: 2px">
+                                   <div class="ui-grid-col-2"><p:outputLabel  value="Indicador de impuesto"/></div>
+                                   <div class="ui-grid-col-4">
+                                       <p:selectOneMenu  id="idindica"  style="width:150px" value="#/{businessPartner.vatgroup}">
+                                          <f:selectItem itemLabel="Seleccione Indicador" itemValue="" noSelectionOption="true"/>
+                                          <f:selectItems value="#/{businessPartner.indicadorImpLst}" var="model5" itemLabel="#/{model5.catvalue}" itemValue="#/{model5.catcode}"/>
+                                      </p:selectOneMenu>
+                                   </div>-->
+                                <!-- Campo oculto RETENCION DE IMPUESTO -->
+                                <!-- <div class="ui-grid-col-2"><p:outputLabel  value="Indicadores de retención perm"/></div>
+                                  
+                                 <div class="ui-grid-col-4">
+                                     <p:commandButton tabindex="0" id="idindicador" value="..."  process="@this"> 
+                                    </p:commandButton>
+                                 </div>-->
+
+                            </p:tab>
+                        </p:tabView>
+                        <br></br>
+                        <div class="ui-grid-row">
+                            <p:commandButton tabindex="0" id="botonPrincipal" value="#{businessPartner.botonEstado}" actionListener="#{businessPartner.botonPrincipal}" 
+                                             process="@this    idpartner idnombre idtipo idgrupo idrfc padre:idtel1 padre:idtel2 padre:idcel padre:idfax padre:idemail padre:idweb 
+                                             padre:idcontacto padre:isActive padre:idcontacto padre:idnrc padre:idcomen padre:iddui  
+                                             padre:idlimite padre:taxRetention padre:idproveedores padre:SNagroup padre:idramo padre:idpago 
+                                             padre:idprecio  :frmDialog:Codigocuenta :frmDialog:nombrecuenta 
+                                             "  update=":frmDialog:dialogo01">
+
+                            </p:commandButton>
+                            <p:defaultCommand target="botonPrincipal" />
+                        </div>
+                    </div>
+
+
+                </h:form>
+
+                <h:form id="frmDialog">
+                    <p:dialog  header="Cuentas Asociadas - Proveedores" id="dialogo01" widgetVar="dlg01" modal="true"  width="1000" height="250" closeOnEscape="true"
+                              >
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1"><p:spacer/></div>
+                            <div class="ui-grid-col-4">
+                                <p:outputLabel value="Numero" for="inNumero"/>
+                                <p:spacer height="0" width="60"/>
+                                <p:outputLabel value="Codigo" for="Codigocuenta"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Nombre Cuenta" for="nombrecuenta"/>
+                            </div>
+                        </div>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1"><p:spacer/> </div>
+                            <div class="ui-grid-col-4">
+                                <p:inputText id="inNumero" size="8" value="#{businessPartner.inNumero}"/>
+                                <p:spacer height="0" width="35"/>
+                                <p:autoComplete id="Codigocuenta" size="25" forceSelection="true" minQueryLength="2" value="#{businessPartner.codigoCuenta}"
+                                                completeMethod="#{businessPartner.completeCode}" effect="fade" label="Codigo" scrollHeight="250">
+                                    <p:ajax event="itemSelect" listener="#{businessPartner.findAccount}" update="Codigocuenta nombrecuenta"/>
+                                </p:autoComplete>
+                            </div>
+
+                            <div class="ui-grid-col-5">
+                                <p:autoComplete id="nombrecuenta" size="50" forceSelection="true" minQueryLength="2" value="#{businessPartner.nombreCuenta}"
+                                                completeMethod="#{businessPartner.completeText}" effect="fade" label="Cuenta" scrollHeight="250">
+                                    <p:ajax event="itemSelect" listener="#{businessPartner.findAccount}" update="Codigocuenta nombrecuenta" />
+                                </p:autoComplete>
+                            </div>
+                            <div class="ui-grid-col-1">
+                                <p:commandButton value="Agregar" action="#{businessPartner.addAcc()}" process="@this, inNumero Codigocuenta nombrecuenta"
+                                                 update="inNumero Codigocuenta nombrecuenta accTable"/>
+                            </div>
+                        </div>
+
+                        <p:spacer width="0" height="20"/>
+
+                        <p:contextMenu for="accTable">
+                            <p:menuitem value="Borrar" update="accTable" icon="ui-icon-close" actionListener="#{businessPartner.deleteAcc}" process="@this accTable"/>
+                        </p:contextMenu>
+
+                        <p:dataTable  id="accTable" var="Rec"  scrollable="true" scrollHeight="100%" value="#{businessPartner.listaAccAddTable}"
+                                      selectionMode="single" selection="#{businessPartner.selectAcc}" rowIndexVar="rowIndex" emptyMessage="Agregar cuentas" rowKey="#{Rec.acctype}">
+
+                            <p:column headerText="#" style="width: 2%">
+                                <h:outputText value="#{rowIndex + 1}" />
+                            </p:column>
+
+                            <p:column headerText="No" style="width: 5%" sortBy="#{Rec.acctype}" >
+                                <h:outputText value="#{Rec.acctype}" />
+                            </p:column>
+
+                            <p:column headerText="Codigo Cuenta" sortBy="#{Rec.acctcode}"  style="width: 10%">
+                                <h:outputText value="#{Rec.acctcode}" />
+                            </p:column>
+                            <p:column headerText="Nombre Cuenta" sortBy="#{Rec.cardcode}" style="width: 30%">
+                                <h:outputText value="#{Rec.cardcode}" />
+                            </p:column>
+                            <p:column headerText="Saldo" sortBy="#{Rec.balance}" style="width: 10%">
+                                <h:outputText value="#{Rec.balance}" />
+                            </p:column>
+
+                        </p:dataTable>
+
+                    </p:dialog> 
+                </h:form>
+
+                <h:form id="dialo10">
+                    <p:dialog closeOnEscape="true" header="Confirmacion" widgetVar="dlg10" width="230" modal="true" resizable="false">
+
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Se perderan los datos ingresados, Desea continuar?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{businessPartner.confirmDialog2}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{businessPartner.cancelDialog2}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel>
+                    </p:dialog>
+                </h:form>
+
+                <h:form id="dialo9">
+                    <p:dialog closeOnEscape="true" header="Confirmacion" widgetVar="dlg9" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea guardar los cambios?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{businessPartner.confirmDialog}"/>
+                                    </div>
+                                    <div class="ui-grid-col-4">
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{businessPartner.cancelDialog}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+
+                <h:form id="frmsoc">
+                    <!-- Dialogo lista de socios --> 
+                    <p:dialog closeOnEscape="true" position="top" header="Socios de negocio" widgetVar="dlgListBusiness" modal="true"  width="900" height="250px" >
+                        <p:dataTable  id="businesstable" var="Rec" value="#{businessPartner.listaBusquedaTable}"  scrollable="true" scrollHeight="100%"
+                                      selection="#{businessPartner.selectBusiness}" rowKey="#{Rec.cardcode}" selectionMode="single" rowIndexVar="rowIndex" >
+
+                            <p:ajax event="rowDblselect"  process="@this" listener="#{businessPartner.selectDialogBill}"/>
+
+                            <p:column headerText="#" style="width: 2%">
+                                <h:outputText value="#{rowIndex + 1}" />
+                            </p:column>
+
+                            <p:column headerText="No" style="width: 5%" sortBy="#{Rec.cardcode}" filterBy="#{Rec.cardcode}">
+                                <h:outputText value="#{Rec.cardcode}" />
+                            </p:column>
+
+                            <p:column headerText="Socio de Negocio" sortBy="#{Rec.cardname}" filterBy="#{Rec.cardname}" style="width: 10%">
+                                <h:outputText value="#{Rec.cardname}" />
+                            </p:column>
+                            <p:column headerText="Tipo de Socio" sortBy="#{Rec.cardtype}" style="width: 5%">
+                                <h:outputText value="#{Rec.cardtype}" />
+                            </p:column>
+                            <p:column headerText="Grupo" sortBy="#{Rec.groupcode}" style="width: 5%">
+                                <h:outputText value="#{Rec.groupcode}" />
+                            </p:column>
+
+                            <p:column headerText="RFC" sortBy="#{Rec.addid}" style="width: 5%">
+                                <h:outputText value="#{Rec.addid}" />
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:dialog> 
+                </h:form>
+
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</ui:composition>

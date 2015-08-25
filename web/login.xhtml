@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+        <script name="jquery/jquery.js" library="primefaces"></script>
+        <title>login</title>
+    </h:head>
+    <h:body>
+        <h:form id="loginForm">         
+            <p:growl id="msg" showDetail="true" life="1000" />
+            <p:panel header="Acceso Usuario"  style="width: 360px; margin: 0 auto;">
+                <p:focus for="username"/>
+                <h:panelGrid id="loginPanel" columns="2">
+                    
+                    
+                    <h:outputText value="Usuario" />
+ 
+                    <p:inputText id="username" value="#{loginBean2.uname}" ></p:inputText>
+ 
+                    <p:spacer></p:spacer>
+ 
+                    <p:message for="username" ></p:message>
+ 
+                    <h:outputText value="Contraseña" />
+ 
+                    <p:password id="password" value="#{loginBean2.password}"  feedback="false"></p:password>
+ 
+                    <p:spacer></p:spacer>
+ 
+                    <p:message for="password"></p:message>
+ 
+                    <p:spacer></p:spacer>
+ 
+                    <p:commandButton id="botonLog" style="margin: 0 auto; background-color: #c2dfef" action="#{loginBean2.loginProject}" value="Ingresar" update="loginForm" ajax="true"></p:commandButton>
+ 
+                </h:panelGrid>
+ 
+            </p:panel>
+ 
+        </h:form>
+ 
+    </h:body>
+ 
+</html>

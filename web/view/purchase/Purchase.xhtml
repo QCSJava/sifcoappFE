@@ -1,0 +1,512 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Compras</title>
+        <!--<style type="text/css">
+            .ui-panel .ui-panel-titlebar {
+                padding: 0;
+            }
+        </style>-->
+    </h:head>
+
+    <body>
+        <ui:composition template="./../../template.xhtml">
+            <ui:define name="content">
+                <h:form id="frmPurchase">
+                    <p:toolbar id="toolbarBill">
+                        <f:facet name="left">
+                            <p:focus context="toolbarBill"/>
+                            Factura de Proveedores
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                            <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document" actionListener="#{purchaseBean.botonNuevo}"
+                                             update="frmPurchase, newCod newNomArt newCantidad newPrecio newTotal newUnidad newExistencia"
+                                             process="@this,   inTipoDoc inEquipo  inReferencia">
+
+                            </p:commandButton>
+
+                            <p:commandButton tabindex="-1" title="Buscar" icon="ui-icon-search"  process="@this" actionListener="#{purchaseBean.botonBuscar}"
+                                             update="frmPurchase">
+
+                            </p:commandButton>
+                            <p:commandButton tabindex="-1" type="button" title="Print" icon="ui-icon-print" />
+                        </f:facet>
+                    </p:toolbar>
+
+                    <p:spacer height="20" width="0"></p:spacer>
+                    <p:focus for="newCod"/>
+                    <!-- Div Principal -->
+                    <div class="ui-grid ui-grid-responsive">
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2"><p:outputLabel value="No." for="inNo" /></div>
+                            <div class="ui-grid-col-2"><p:inputText  id="inNo" disabled="#{purchaseBean.disabledDocNum}" size="15" value="#{purchaseBean.docNum}"/></div>
+                            <div class="ui-grid-col-1"><p:outputLabel value="Estado" for="inEstado"/></div>
+                            <div class="ui-grid-col-3">
+                                <p:selectOneMenu  id="inEstado" value="#{purchaseBean.estadoDoc}" disabled="#{purchaseBean.disabledDocNum}" style="width:55%">
+                                    <f:selectItem itemLabel="Estado Documento" itemValue="-1" />
+                                    <f:selectItems value="#{purchaseBean.lstEstados}" var="typeDoc" itemLabel="#{typeDoc.value}" itemValue="#{typeDoc.code}"/>
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="ui-grid-col-2"><p:outputLabel value="Fecha Contabilizacion" for="f1"/></div>
+                            <div class="ui-grid-col-2"><p:calendar  id="f1" showOn="button" size="16"  pattern="dd/MM/yyyy" value="#{purchaseBean.fechaConta}" disabled="#{purchaseBean.disabledSearch}"/></div>
+                        </div>
+                        <p:spacer height="#{purchaseBean.spacer}" width="0"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2"><p:outputLabel value="Socio de Negocio" for="inSocio"/></div>
+                            <div class="ui-grid-col-2">
+                                <p:autoComplete  disabled="#{purchaseBean.selected}" required="#{purchaseBean.required1}" id="inSocio" forceSelection="true" minQueryLength="3" value="#{purchaseBean.socioNeg}"
+                                                 completeMethod="#{purchaseBean.compSocioName}" effect="fade" size="30" label="Socio de Negocio" 
+                                                 valueChangeListener="#{purchaseBean.stateChange3}">
+                                    <p:ajax event="itemSelect" listener="#{purchaseBean.selectSocio}" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad newPrecio newImpuesto" />
+                                </p:autoComplete>
+                            </div>
+                            <div class="ui-grid-col-4"></div>
+                            <div class="ui-grid-col-2"><p:outputLabel value="Fecha Documento" for="f2"/></div>
+                            <div class="ui-grid-col-2"><p:calendar  id="f2" showOn="button" size="16"  pattern="dd/MM/yyyy" value="#{purchaseBean.fechaDoc}" disabled="#{purchaseBean.disabledSearch}"/></div>
+                        </div>
+                        <p:spacer height="#{purchaseBean.spacer}" width="0"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Codigo Socio" for="inCodSocio"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:autoComplete  disabled="#{purchaseBean.selected}" required="#{purchaseBean.required1}" id="inCodSocio" forceSelection="true" minQueryLength="3" value="#{purchaseBean.codSocio}"
+                                                 completeMethod="#{purchaseBean.compSocioCode}" effect="fade" size="15" label="Socio de Negocio" 
+                                                 valueChangeListener="#{purchaseBean.stateChange4}">
+                                    <p:ajax event="itemSelect" listener="#{purchaseBean.selectSocioCod}" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad newPrecio newImpuesto" />
+                                </p:autoComplete>
+                            </div>
+                            <div class="ui-grid-col-4">
+                                
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Fecha Vencimiento" for="f3"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:calendar  id="f3" showOn="button" size="16"  pattern="dd/MM/yyyy" value="#{purchaseBean.fechaVen}" disabled="#{purchaseBean.disabledSearch}"/>
+                            </div>
+                        </div>
+                        <p:spacer height="#{purchaseBean.spacer}" width="0"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Equipo" for="inEquipo"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText  maxlength="11" id="inEquipo" size="15" value="#{purchaseBean.equipo}" disabled="false"/>
+                            </div>
+                            <div class="ui-grid-col-4"></div>
+                            <div class="ui-grid-col-2"><p:outputLabel value="Tipo Documento" for="inTipoDoc"/></div>
+                            <div class="ui-grid-col-2">
+                                <p:selectOneMenu  id="inTipoDoc" style="width:80%" value="#{purchaseBean.tipoDoc}" disabled="#{purchaseBean.disabledSearch}">
+                                    <f:selectItem itemLabel="Tipo Documento" itemValue="#{0}" />
+                                    <f:selectItems value="#{purchaseBean.lstTipoDoc}" var="typeDoc" itemLabel="#{typeDoc.catvalue}" itemValue="#{typeDoc.catcode}"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <p:spacer height="#{purchaseBean.spacer}" width="0"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Referencia" for="inReferencia"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText  maxlength="11" id="inReferencia" size="15" value="#{purchaseBean.refe}"/>
+                            </div>
+                            <div class="ui-grid-col-4"></div>
+                            <div class="ui-grid-col-2"><p:outputLabel value="Forma de pago" for="inForPago"/></div>
+                            <div class="ui-grid-col-2">
+                                <p:selectOneMenu  id="inForPago" style="width:80%" value="#{purchaseBean.formaPago}" required="#{purchaseBean.required1}" disabled="#{purchaseBean.selected}" valueChangeListener="#{purchaseBean.stateChange1}">
+                                    <f:selectItem itemLabel="Forma de pago" itemValue="#{0}" />
+                                    <f:selectItems value="#{purchaseBean.lstTipoPago}" var="typePay" itemLabel="#{typePay.catvalue}" itemValue="#{typePay.catcode}"/>
+                                    <p:ajax event="change" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad newPrecio newImpuesto"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <p:spacer height="#{purchaseBean.spacer}" width="0"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2"></div>
+                            <div class="ui-grid-col-2"></div>
+                            <div class="ui-grid-col-4"></div>
+                            <div class="ui-grid-col-2"><p:outputLabel value="Almacen" for="inAlm"/></div>
+                            <div class="ui-grid-col-2">
+                                <p:selectOneMenu  id="inAlm" value="#{purchaseBean.alm}" style="width:80%" required="#{purchaseBean.required1}" disabled="#{purchaseBean.selected}" valueChangeListener="#{purchaseBean.stateChange2}">
+                                    <f:selectItem itemLabel="Almacen" itemValue="-1" />
+                                    <f:selectItems value="#{purchaseBean.listaAlmacenes}" var="model" itemLabel="#{model.whscode}" itemValue="#{model.whscode}"/>
+                                    <p:ajax event="change" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad newPrecio newImpuesto" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+
+                        <p:spacer height="35" width="0"/>
+
+                        <!-- Encebezado detalles -->
+                        <div class="ui-grid-row">    
+                            <div class="ui-grid-col-2"><h:outputText value="Codigo"/></div>
+                            <div class="ui-grid-col-3"><p:spacer width="7%" height="0"/><h:outputText value="Nombre Articulo"/></div>
+                            <div class="ui-grid-col-1"><h:outputText value="Cantidad"/></div>
+                            <div class="ui-grid-col-1"><p:spacer width="20%" height="0"/><h:outputText value="Precio"/></div>
+                            <div class="ui-grid-col-1"><p:spacer width="30%" height="0"/><h:outputText value="Total"/></div>
+                            <div class="ui-grid-col-4"><h:outputText value="Unidad Medida"/>
+                                <p:spacer width="15" height="0"/>
+                                <h:outputText value="Existencia"/>
+                                <p:spacer width="15" height="0"/>
+
+                            </div>
+                        </div>
+
+                        <!-- Inputs de detalles -->
+                        <p:focus for="newCod"/>
+
+                        <div class="ui-grid-row">
+
+                            <div class="ui-grid-col-2">
+                                <p:autoComplete tabindex="12" scrollHeight="250" widgetVar="getFocus" required="true" id="newCod" forceSelection="true" minQueryLength="3" value="#{purchaseBean.newCod}" disabled="#{purchaseBean.disabledComun}"
+                                                completeMethod="#{goodsReceiptBean.completeCode}" effect="fade" size="25" label="Codigo">
+                                    <p:ajax event="itemSelect" listener="#{purchaseBean.findArticle}" update="newCod newNomArt newUnidad newExistencia newPrecio" />
+                                </p:autoComplete>
+                            </div>
+                            <div class="ui-grid-col-3">
+                                <p:spacer width="15" height="0"/>
+                                <p:autoComplete tabindex="13" scrollHeight="250" required="true" id="newNomArt" forceSelection="true" minQueryLength="3" value="#{purchaseBean.newNomArt}" disabled="#{purchaseBean.disabledComun}"
+                                                completeMethod="#{goodsReceiptBean.completeText}" effect="fade" size="35" label="Nombre Articulo">
+                                    <p:ajax event="itemSelect" listener="#{purchaseBean.findArticle}" update="newCod newNomArt newUnidad newExistencia newPrecio" />
+                                </p:autoComplete>
+                            </div>
+                            <div class="ui-grid-col-1">
+                                <p:inputText tabindex="14" required="true" id="newCantidad" value="#{purchaseBean.newCantidad}" label="Cantidad" size="10" disabled="#{purchaseBean.disabledComun}">
+                                    <p:ajax event="keyup" update="newTotal" listener="#{purchaseBean.calcularTotal}"/>
+                                </p:inputText>
+
+                            </div>
+                            <p:spacer width="15" height="0"/>
+                            <div class="ui-grid-col-1">
+
+                                <p:inputText tabindex="15" required="true" id="newPrecio" value="#{purchaseBean.newPrecio}" label="Precio" size="10" disabled="#{purchaseBean.disabledComun}">
+                                    <p:ajax event="keyup" update="newTotal" listener="#{purchaseBean.calcularTotal}"/>
+                                </p:inputText>
+
+                            </div>
+                            <p:spacer width="15" height="0"/>
+                            <div class="ui-grid-col-1">
+                                <h:outputText id="newTotal"         value="#{purchaseBean.newTotal}">
+                                    <f:convertNumber minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                </h:outputText>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <h:outputText id="newUnidad"        value="#{purchaseBean.newUnidad}"/>
+                                <p:spacer width="45%" height="0"/>
+                                <h:outputText id="newExistencia"    value="#{purchaseBean.newExistencia}"/>
+
+                            </div>
+
+                            <!-- Boton AGREGAR -->
+                            <div class="ui-grid-col-1">
+                                <p:commandButton tabindex="19" id="botonAgregar" actionListener="#{purchaseBean.accionAgregar}" value="Agregar"   icon="ui-icon-check" disabled="#{purchaseBean.disabledComun}"
+                                                 validateClient="true" process="@this newCod newNomArt newCantidad inForPago inAlm newImpuesto"
+                                                 update="tableDetailBill newCod newNomArt newCantidad newPrecio newTotal newUnidad newExistencia
+                                                 inGravadas inExcentas inIVA inRetencion inFovial inCotrans inTotal newImpuesto">
+
+                                </p:commandButton>
+
+                            </div>
+                        </div>
+                        <p:spacer height="5" width="0"/>
+                        <!-- Encebezado CUENTA -->
+                        <div class="ui-grid-row">    
+                            <div class="ui-grid-col-1"><h:outputText value="Impuesto"/></div>
+                        </div>
+
+                        <!-- Inputs de cuenta -->
+                        <div class="ui-grid-row">
+
+                            <div class="ui-grid-col-1">
+
+                                <p:selectOneMenu tabindex="18" id="newImpuesto" required="true" style="width: 100%" value="#{purchaseBean.newImpuesto}" disabled="#{purchaseBean.disabledComun}" label="Impuesto">
+                                    <f:selectItem itemLabel="Impuesto" itemValue="-1"/>
+                                    <f:selectItems value="#{purchaseBean.lstImpuestos}" var="imp" itemLabel="#{imp.catcode}" itemValue="#{imp.catcode}"/>
+                                </p:selectOneMenu>
+
+                            </div>
+                        </div>
+
+
+
+                        <p:spacer height="20" width="0"/>
+
+                        <!-- Data Table Detalles -->
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12">
+                                <p:contextMenu for="tableDetailBill" rendered="#{purchaseBean.rendered}">
+                                    <p:menuitem value="Eliminar"  icon="ui-icon-close" actionListener="#{purchaseBean.deleteDetalle}" process="@this tableDetailBill"
+                                                update="@this tableDetailBill inGravadas inExcentas inIVA inRetencion inFovial inCotrans inTotal" >
+
+                                    </p:menuitem>
+                                </p:contextMenu> 
+
+                                <p:dataTable id="tableDetailBill" var="Art" value="#{purchaseBean.listaDetalles}" rowKey="#{Art.linenum}" rendered="true"
+                                             selection="#{purchaseBean.selectDetail}" rowIndexVar="rowIndex" selectionMode="single" scrollable="true" scrollHeight="250"
+                                             emptyMessage="No hay registros" disabledSelection="#{purchaseBean.disabledComun}" disabledTextSelection="#{purchaseBean.disabledComun}"
+                                             >
+
+                                    <p:ajax event="rowSelect"  process="@this" update="tableDetailBill"/>
+
+                                    <p:column headerText="#" style="width: 3%; font-size: #{commonBean.sizeFont1}">
+                                        <h:outputText value="#{rowIndex+1}" />
+                                    </p:column>
+
+                                    <p:column headerText="Codigo" style="width: 16%; font-size: #{commonBean.sizeFont1}">
+                                        <h:outputText value="#{Art.itemcode}" />
+                                    </p:column>
+
+                                    <p:column headerText="Nombre Articulo" style="width: 25%; font-size: #{commonBean.sizeFont1}">
+                                        <h:outputText value="#{Art.dscription}" />
+                                    </p:column>
+
+                                    <p:column headerText="Cantidad" style="width: 8%; font-size:#{commonBean.sizeFont1}">
+                                        <h:outputText value="#{Art.quantity}" style="float:right">
+                                            <f:convertNumber minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}" />
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="Precio Unitario" style="width: 8%; font-size: #{commonBean.sizeFont1}">
+                                        <p:outputLabel value="#{Art.price}" style="float:right">
+                                            <f:convertNumber type="currency" currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}" />
+                                        </p:outputLabel>
+                                    </p:column>
+
+                                    <p:column headerText="Impuesto" style="width: 8%; font-size: #{commonBean.sizeFont1}">
+                                        <h:outputText value="#{Art.taxcode}" />
+                                    </p:column>
+
+                                    <p:column headerText="Total" style="width: 8%; font-size: #{commonBean.sizeFont1}">
+                                        <p:outputLabel  value="#{Art.linetotal}" style="float:right">
+                                            <f:convertNumber type="currency" currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                        </p:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="Unidad de medida" style="width: 10%; font-size: #{commonBean.sizeFont1}">
+                                        <h:outputText  value="#{Art.unitmsr}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Cuenta" style="width: 10%; font-size: #{commonBean.sizeFont1}}">
+                                        <h:outputText value="#{purchaseBean.ctlaccount}" />
+                                    </p:column>
+
+                                </p:dataTable>
+
+                            </div>
+                        </div>
+
+                        <p:spacer height="20" width="0"/>
+
+                        <div class="ui-grid ui-grid-responsive">
+                            <div class="ui-grid-col-8">
+                                <p:outputLabel value="Comprador: #{purchaseBean.nomVendedor}"/>
+                                <p:spacer width="100%" height="10"/>
+                                <p:outputLabel value="Comentarios" for="inComent" />
+                                <p:spacer width="100%" height="0"/>
+                                <p:inputTextarea tabindex="-1" id="inComent" rows="5" cols="70" value="#{purchaseBean.coment}" maxlength="254"/>
+                                <p:spacer width="100%" height="0"/>
+                                <p:spacer width="0" height="10%"/>
+
+                                <!-- BOTON PRINCIPAL -->
+                                <p:commandButton tabindex="-1" id="botonPrincipal" value="#{purchaseBean.botonEstado}" actionListener="#{purchaseBean.botonPrincipal}"
+                                                 process="@this inNo inEstado inSocio inCodSocio inEquipo inReferencia f1 f2 inTipoDoc inForPago inComent inAlm"
+                                                 update="frmPurchase">
+                                </p:commandButton>
+                                <p:defaultCommand target="botonPrincipal" />
+                            </div>
+
+                            <div class="ui-grid-col-4">
+                                <div class="ui-grid-col-3"><p:spacer/></div>
+                                <div class="ui-grid-col-3"><p:outputLabel value="Gravadas" for="inGravadas"/></div>
+                                <div class="ui-grid-col-1">
+                                    <p:inputText tabindex="-1" style="text-align: right" readonly="true" id="inGravadas" size="16" value="#{purchaseBean.gravadas}">
+                                        <f:convertNumber type="currency"  currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                    </p:inputText>
+                                </div>
+
+                                <p:spacer width="100%" height="0"/>
+
+                                <div class="ui-grid-col-3"><p:spacer/></div>
+                                <div class="ui-grid-col-3"><p:outputLabel value="Exentas" for="inExcentas"/></div>
+                                <div class="ui-grid-col-1">
+                                    <p:inputText tabindex="-1" style="text-align: right" readonly="true" id="inExcentas" size="16" value="#{purchaseBean.exentas}">
+                                        <f:convertNumber type="currency"  currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                    </p:inputText>
+                                </div>
+
+                                <p:spacer width="100%" height="0"/>
+
+                                <div class="ui-grid-col-3"><p:spacer/></div>
+                                <div class="ui-grid-col-3"><p:outputLabel value="IVA" for="inIVA"/></div>
+                                <div class="ui-grid-col-1">
+                                    <p:inputText tabindex="-1" style="text-align: right" readonly="true" id="inIVA" size="16" value="#{purchaseBean.IVA}">
+                                        <f:convertNumber type="currency"  currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                    </p:inputText>
+                                </div>
+
+                                <p:spacer width="100%" height="0"/>
+
+                                <div class="ui-grid-col-3"><p:spacer/></div>
+                                <div class="ui-grid-col-3"><p:outputLabel value="Retención" for="inRetencion"/></div>
+                                <div class="ui-grid-col-1">
+                                    <p:inputText tabindex="-1" style="text-align: right" readonly="true" id="inRetencion" size="16" value="#{purchaseBean.retencion}">
+                                        <f:convertNumber type="currency"  currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                    </p:inputText>
+                                </div>
+
+                                <p:spacer width="100%" height="0"/>
+
+                                <div class="ui-grid-col-3"><p:spacer/></div>
+                                <div class="ui-grid-col-3"><p:outputLabel value="Fovial" for="inFovial"/></div>
+                                <div class="ui-grid-col-1">
+                                    <p:inputText tabindex="-1" style="text-align: right" readonly="true" id="inFovial" size="16" value="#{purchaseBean.fovial}">
+                                        <f:convertNumber type="currency"  currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                    </p:inputText>
+                                </div>
+
+                                <p:spacer width="100%" height="0"/>
+
+                                <div class="ui-grid-col-3"><p:spacer/></div>
+                                <div class="ui-grid-col-3"><p:outputLabel value="COTRANS" for="inCotrans"/></div>
+                                <div class="ui-grid-col-1">
+                                    <p:inputText tabindex="-1" style="text-align: right" readonly="true" id="inCotrans" size="16" value="#{purchaseBean.cotrans}">
+                                        <f:convertNumber type="currency"  currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                    </p:inputText>
+                                </div>
+
+                                <p:spacer width="100%" height="0"/>
+
+                                <div class="ui-grid-col-3"><p:spacer/></div>
+                                <div class="ui-grid-col-3"><p:outputLabel value="Total" for="inTotal"/></div>
+                                <div class="ui-grid-col-1">
+                                    <p:inputText tabindex="-1" style="text-align: right" readonly="true" id="inTotal" size="16" value="#{purchaseBean.total}">
+                                        <f:convertNumber type="currency"  currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                    </p:inputText>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Dialogo lista de compras --> 
+                        <p:dialog closeOnEscape="true" position="top" header="Datos encontrados" widgetVar="dlgListPurchase" modal="true"  width="1100" height="300" >
+                            <p:dataTable  id="tableDialog" var="Rec" value="#{purchaseBean.listaBusquedaTable}"  scrollable="true" scrollHeight="90%"
+                                          selection="#{purchaseBean.selectPurchase}" rowKey="#{Rec.docentry}" selectionMode="single" rowIndexVar="rowIndex" >
+
+                                <p:ajax event="rowDblselect"  process="@this" listener="#{purchaseBean.selectDialogBill}"/>
+
+                                <p:column headerText="#" style="width: 3%">
+                                    <h:outputText value="#{rowIndex + 1}" />
+                                </p:column>
+
+                                <p:column headerText="No" style="width: 4%" sortBy="#{Rec.docnum}">
+                                    <h:outputText value="#{Rec.docnum}" />
+                                </p:column>
+
+                                <p:column headerText="Socio de Negocio" sortBy="#{Rec.cardname}" style="width: 10%">
+                                    <h:outputText value="#{Rec.cardname}" />
+                                </p:column>
+
+                                <p:column headerText="Codigo de Socio" sortBy="#{Rec.cardcode}" style="width: 10%">
+                                    <h:outputText value="#{Rec.cardcode}" />
+                                </p:column>
+
+                                <p:column headerText="Almacen" sortBy="#{Rec.towhscode}" style="width: 10%">
+                                    <h:outputText value="#{Rec.towhscode}" />
+                                </p:column>
+
+                                <p:column headerText="Fecha Contabilizacion" sortBy="#{Rec.docdate}" style="width: 12%">
+                                    <h:outputText value="#{Rec.docdate}" >
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Fecha Documento" sortBy="#{Rec.docduedate}" style="width: 9%">
+                                    <h:outputText value="#{Rec.docduedate}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Equipo" sortBy="#{Rec.ref2}" style="width: 6%">
+                                    <h:outputText value="#{Rec.ref2}" />
+                                </p:column>
+
+                                <p:column headerText="Referencia" sortBy="#{Rec.ref1}" style="width: 8%">
+                                    <h:outputText value="#{Rec.ref1}" />
+                                </p:column>
+
+                                <p:column headerText="Comentario" sortBy="#{Rec.comments}" style="width: 10%">
+                                    <h:outputText value="#{Rec.comments}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:dialog> 
+
+                        <!-- Div Principal -->       
+                    </div>
+
+                </h:form>
+
+                <h:form>
+                    <p:dialog header="Confirmacion" widgetVar="dlgC1" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Se perderan los datos ingresados, Desea continuar?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{purchaseBean.confirmDialog2}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No" process="@this" styleClass="ui-confirmdialog-yes"  actionListener="#{purchaseBean.cancelDialog2}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+
+                <h:form>
+                    <p:dialog header="Confirmacion" widgetVar="dlgC2" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea guardar los cambios?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{purchaseBean.confirmDialog}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{purchaseBean.cancelDialog}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </body>
+
+</ui:composition>

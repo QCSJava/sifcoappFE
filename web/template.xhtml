@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+        <script name="jquery/jquery.js" library="primefaces"></script>
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <title>SIFCO@</title>
+
+
+
+    </h:head>
+
+    <h:body>
+
+        <div id="top">
+            <ui:insert name="top">
+                <!--<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <p:graphicImage url="http://een.ec.europa.eu/sites/default/files/multimedia/ajax-loader-2.gif"/>
+                    <p:graphicImage name="img.jpg"/>
+                    <img src="img.jpg" />
+                </p:dialog>-->
+                <h:form id="form1">
+                    <p:toolbar>
+                        <f:facet name="left">
+                            SIFCO
+
+                        </f:facet>
+
+                        <f:facet name="right">
+                            <h:outputText value="Usuario: #{loginBean2.userName}"></h:outputText>
+                            <p:menuButton value="Perfil">
+                                <p:menuitem value="Salir" update="form1" actionListener="#{loginBean2.logout}" icon="ui-icon-extlink" />
+                                <p:menuitem value="Cambiar Contraseña" onclick="PF('dlg').show();" icon="ui-icon-refresh" />
+                            </p:menuButton>
+                        </f:facet>
+                    </p:toolbar>
+                </h:form>
+
+            </ui:insert>
+
+        </div>
+
+
+
+        <div class="ui-grid-responsive" >
+            <p:growl autoUpdate="true"/>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-2" >
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+ 
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                        <p:graphicImage url="./../../resources/Images/imagen.gif" />
+                    </p:dialog>
+                    
+                    <h:form id="hbMenuForm">
+                        <p:panelMenu  model="#{MenuModel.simpleMenuModel}" widgetVar="hbPanelMenu" id="hbPanelMenu2"/>  
+
+                        <Script type="text/javascript">
+                            //<![CDATA[
+                            jQuery(document).ready(function ()
+                            {
+                                var remembered = getCookie("myPanelMenu_remembered");
+                                PF('hbPanelMenu').headers.each(function ()
+                                {
+                                    var header = jQuery(this);
+                                    if (header.text() === remembered)
+                                    {
+                                        PF('hbPanelMenu').expandRootSubmenu(header, false);
+                                    }
+                                    else
+                                    {
+                                        PF('hbPanelMenu').collapseRootSubmenu(header);
+                                        header.removeClass('ui-state-hover');
+                                    }
+                                });
+                                PF('hbPanelMenu').menuitemLinks.click(function ()
+                                {
+                                    var expanded = getCookie("myPanelMenu_expanded");
+                                    setCookie("myPanelMenu_remembered", expanded);
+                                });
+                                PF('hbPanelMenu').headers.click(function ()
+                                {
+                                    var currHeader = jQuery(this);
+                                    PF('hbPanelMenu').headers.each(function ()
+                                    {
+                                        var header = jQuery(this);
+                                        if (header.text() !== currHeader.text())
+                                        {
+                                            PF('hbPanelMenu').collapseRootSubmenu(header);
+                                            header.removeClass('ui-state-hover');
+                                        }
+                                    });
+                                    setCookie("myPanelMenu_expanded", currHeader.text());
+                                });
+                            });
+
+                            function setCookie(cname, cvalue, exdays) {
+                                exdays = typeof exdays !== 'undefined' ? exdays : 1;
+                                var d = new Date();
+                                d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+                                var expires = "expires=" + d.toUTCString();
+                                document.cookie = cname + "=" + cvalue + "; " + expires + "; path=/";
+                            }
+                            ;
+
+                            function getCookie(cname) {
+                                var name = cname + "=";
+                                var ca = document.cookie.split(';');
+
+                                for (i = 0; i < ca.length; i++) {
+                                    var c = ca[i];
+                                    while (c.charAt(0) == ' ')
+                                        c = c.substring(1);
+                                    if (c.indexOf(name) == 0)
+                                        return c.substring(name.length, c.length);
+                                }
+                                return "";
+                            }
+                            ;
+                            //]]> 
+                        </Script> 
+                    </h:form>
+                </div>     
+
+                <div class="ui-grid-col-10" style="padding-left: 10px" >
+                    <p:panel>
+                        <ui:insert name="content">
+                        </ui:insert>
+                    </p:panel>
+
+                </div>
+            </div>
+        </div>
+        <h:form>
+
+            <p:dialog header="Cambiar Contraseña" id="change" widgetVar="dlg" modal="true" width="400">
+                <div class="ui-grid-row">
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" />
+                    <div class="ui-grid-col-6">
+                        <h:outputLabel value="Contraseña Actual:" />  
+                    </div>
+                    <div class="ui-grid-col-6">
+                        <p:password id="pwd0" value="#{loginBean2.password1}" label="Password 0" required="true" />  
+                    </div>
+                </div>
+                <br></br>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-6">
+                        <h:outputLabel  value="Contraseña Nueva:" /> 
+                    </div>
+                    <div class="ui-grid-col-6">
+                        <p:password id="pwd1" value="#{loginBean2.password2}"  label="Password 1" required="true" />
+                    </div>
+                </div>
+                <br></br>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-6">
+                        <h:outputLabel  value="Repetir Contraseña:" /> 
+                    </div>
+                    <div class="ui-grid-col-6">
+                        <p:password id="pwd2" value="#{loginBean2.password3}" label="Password 2" required="true" />  
+                    </div>
+                </div>
+                <br></br>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-6" style="padding-left: 80px;">
+                        <p:commandButton id="guarda" update="pwd0 pwd1 pwd2" actionListener="#{loginBean2.ValidarPass}" value="Actualizar"></p:commandButton>
+                    </div>
+                    <div class="ui-grid-col-6">
+                        <p:commandButton id="cancela" update="change" process="@this" actionListener="#{loginBean2.closeDialog}"   value="Cancelar"></p:commandButton>
+                    </div>
+                </div>
+            </p:dialog>
+
+        </h:form>
+
+    </h:body>
+
+</html>

@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./template.xhtml">
+
+            <ui:define name="content">
+                <p:accordionPanel>
+                    <p:tab title="Periodos Contable">
+                        <h:form id="form">
+                            <p:growl id="msgs" showDetail="true">
+                                <p:tabView dynamic="true" cache="true">
+                                    <p:tab title="Periodo Contable">
+                                            <h:dataTable value="#{periodo.periodoList}" var="pe">
+                                                <h:column>
+                                                    <f:facet name="header">Codigo Periodo</f:facet>
+                                                       #{periodo.codigoPeriodo}
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Nombre Periodo</f:facet>
+                                                       #{pe.nombrePeriodo}
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Status Periodo</f:facet>
+                                                       #{pe.statusPeriodo}
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Fecha de Contabilizacion</f:facet>
+                                                       #{pe.fechaConta}
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Fecha de Vencimiento</f:facet>
+                                                       #{pe.fechaVencimiento}
+                                                </h:column>
+                                                
+                                            </h:dataTable>
+                                        
+                                        <h:panelGrid columns="2" cellpadding="10">
+                                            <p:outputLabel for="codigoPeriodo" value="Codigo de Periodo: " />
+                                            <p:inputText id="codigoPeriodo" value="#{periodo.codigoPeriodo}"  />
+
+                                             <p:outputLabel  value="Nombre de Periodo: " />
+                                             <p:inputText id="nombrePeriodo" value="#{periodo.nombrePeriodo}"  />
+                                            
+                                            <p:outputLabel  value="SubPeriodos: " />
+                                            <p:selectOneMenu id="subperiodos"  style="width:150px" value="#{periodo.subPeriodo}">
+                                                        <f:selectItem itemLabel="Seleccionar Periodo" itemValue="" noSelectionOption="true" />
+                                                         <f:selectItem itemLabel="Option 1" itemValue="1" />
+                                                         <f:selectItem itemLabel="Option 2" itemValue="2" />
+                                                         <f:selectItem itemLabel="Option 3" itemValue="3" />
+                                            </p:selectOneMenu>
+                                            
+                                             <p:outputLabel  value="Cantidad de Periodos: " />
+                                             <p:inputText id="cantidadPeriodo" value="#{periodo.cantidadPeriodo}"  />
+                                             <h:commandButton value="Add" action="#{periodo.addAction()}" />
+                                            
+                                             <p:outputLabel for="statusPeriodo" value="Estado del Periodo: " />
+                                             <p:inputText id="statusPeriodo" value="#{periodo.statusPeriodo}"  />
+
+                                        </h:panelGrid>
+                                    </p:tab>
+                                </p:tabView>
+                            </p:growl>
+                        </h:form>
+                    </p:tab>
+                </p:accordionPanel>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

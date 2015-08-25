@@ -1,0 +1,207 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Busqueda</title>
+        <!--<style type="text/css">
+            .ui-panel .ui-panel-titlebar {
+                padding: 0;
+            }
+        </style>-->
+    </h:head>
+
+    <body>
+        <ui:composition template="./../../template.xhtml">
+
+            <ui:define name="content">
+                <h:form id="form2" >
+                    <p:toolbar>
+                        <f:facet name="left">
+                            Usuarios
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                            <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document" actionListener="#{user.doNew}"  process="@this" 
+                                             update="nickname username lastname profilecode password passwordConfirm locked botonPrincipal">
+
+                            </p:commandButton>
+
+                            <p:commandButton tabindex="-1" title="Buscar" icon="ui-icon-search" actionListener="#{user.botonBuscar}" process="@this" 
+                                             update="nickname username lastname profilecode password passwordConfirm locked botonPrincipal">
+
+                            </p:commandButton>
+                            <p:commandButton tabindex="-1" type="button" title="Print" icon="ui-icon-print" />
+                        </f:facet>
+                    </p:toolbar>
+
+                    <div class="ui-grid ui-grid-responsive">
+                        <br></br>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1"></div>
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel  value="Identificador: " for="nickname" />
+                            </div>
+                            <div class="ui-grid-col-3">
+                                <p:inputText id="nickname" value="#{user.nickname}"  required="#{user.reNick}" readonly="#{user.roNick}"/> 
+                            </div>
+                        </div>
+
+                        <br></br>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1"></div>
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel  value="Nombre: " for="username"/>
+                            </div>
+                            <div class="ui-grid-col-3">
+                                <p:inputText id="username" value="#{user.username}" disabled="#{user.disable}" />  
+                            </div>
+                        </div>
+
+                        <br></br>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1"></div>
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel  value="Apellido: " for="lastname"/>
+                            </div>
+                            <div class="ui-grid-col-3">
+                                <p:inputText id="lastname" value="#{user.lastname}"  disabled="#{user.disable}"/> 
+                            </div>
+                        </div>
+
+                        <br></br>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1"></div>
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel  value="Perfil: " for="profilecode"/>
+                            </div>
+                            <div class="ui-grid-col-3">
+                                <p:selectOneMenu id="profilecode"  style="width:178px" value="#{user.profilecode}" required="true" disabled="#{user.disable}">
+                                    <f:selectItem itemLabel="Seleccione Perfil" itemValue="0" noSelectionOption="true"/>
+                                    <f:selectItems value="#{user.profilesLst}" var="model" itemLabel="#{model.profilename}" itemValue="#{model.profilecode}"/>
+                                </p:selectOneMenu>  
+                            </div>
+                        </div>
+
+                        <br></br>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1"></div>
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel  value="Clave Acceso: " for="password" />
+                            </div>
+                            <div class="ui-grid-col-3">
+                                <p:password id="password" value="#{user.password}"  feedback="false" match="passwordConfirm" label="Clave Acceso" required="#{user.reNick}" disabled="#{user.disable}">
+
+                                </p:password> 
+                            </div>
+                        </div>
+
+                        <br></br>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1"></div>
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel  value="Confirmar Clave: " for="password" />
+                            </div>
+                            <div class="ui-grid-col-3">
+                                <p:password id="passwordConfirm" value="#{user.password}"   feedback="false" label="Confirmar Clave" required="#{user.reNick}" disabled="#{user.disable}"/>    
+                            </div>
+                        </div>
+
+                        <br></br>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1"></div>
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel  value="Bloqueado: " for="locked"/>
+                            </div>
+                            <div class="ui-grid-col-3">
+                                <p:selectBooleanCheckbox value="#{user.locked}" id="locked" disabled="#{user.disable}"/> 
+                            </div>
+                        </div>
+
+                        <br></br>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1"></div>
+                            <div class="ui-grid-col-2">
+                                <p:commandButton id="botonPrincipal" value="#{user.botonEstado}" process="@this nickname username lastname profilecode password passwordConfirm locked"
+                                                 actionListener="#{user.botonPrincipal}" update="botonPrincipal">
+                                </p:commandButton>
+                                <p:defaultCommand target="botonPrincipal" />
+                            </div> 
+                            <div class="ui-grid-col-2">
+                            </div> 
+                        </div>
+                    </div>
+                </h:form>
+                
+                <h:form id="dlgListUser"> 
+                    <p:dialog id="dlgUser" closeOnEscape="true" header="Usuarios encontrados" widgetVar="dlgU" modal="true"  width="1000">
+
+                        <p:dataTable resizableColumns="true" liveResize="true" id="tableU" var="usr" value="#{user.listaBusquedaTable}" scrollable="true" scrollHeight="250"
+                                     rowIndexVar="rowIndex" 
+                                     rowKey="#{usr.nickname}-#{usr.username}" 
+                                     selectionMode="single" selection="#{user.selectU}" 
+                                     emptyMessage="No se encontraron Usuarios"
+                                     >
+                            <!--selectionMode="single" selection="#/{user.selectU}"-->
+                            <p:ajax event="rowDblselect"  process="@this" listener="#{user.selectDialog}"/>
+
+                            <p:column headerText="#" style="width: 2%">
+                                <h:outputText value="#{rowIndex + 1}" />
+                            </p:column>
+
+                            <p:column filterBy="#{usr.nickname}" style="width: 5%" headerText="Id" filterMatchMode="contains">
+                                <h:outputText value="#{usr.nickname}" />
+                            </p:column>
+
+                            <p:column filterBy="#{usr.username}" style="width: 10%" headerText="Nombre" filterMatchMode="contains">
+                                <h:outputText value="#{usr.username}" />
+                            </p:column>
+
+                            <p:column filterBy="#{usr.lastname}" style="width: 10%" headerText="Apellido" filterMatchMode="contains">
+                                <h:outputText value="#{usr.lastname}" />
+                            </p:column>
+
+                        </p:dataTable>
+
+                    </p:dialog>
+                </h:form> 
+                <h:form id="dlgConfirm">
+                    <p:dialog header="Confirmacion" widgetVar="dlgC" width="230" modal="true" resizable="false" >
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea guardar los cambios?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{user.confirmDialog}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{user.cancelDialog}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>   
+            </ui:define>
+
+        </ui:composition>
+    </body>
+</html>

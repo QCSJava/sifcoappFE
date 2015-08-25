@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="template.xhtml">
+
+            <ui:define name="content">
+
+                <h:form id="principal" target="_blank">
+                    <br></br>
+                    <p:toolbar id="toolbarBill">
+                        <f:facet name="left">
+                            <p:focus context="toolbarBill"/>
+                            Imprimir factura
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+
+                        </f:facet>
+                    </p:toolbar>
+
+                    <div class="ui-grid ui-grid-responsive">
+                        
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                                             
+                                <h:commandButton value="Generate report" action="#{tprint.printInvoice()}" />
+
+                            </div>
+                            
+                        </div>
+                    </div>
+                </h:form>
+                <br></br>
+                <br></br>
+            </ui:define>
+            <br></br>
+        </ui:composition>
+    </h:body>
+</html>
+

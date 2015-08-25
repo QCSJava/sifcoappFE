@@ -1,0 +1,339 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Cheques para el pago</title>
+        <!--<style type="text/css">
+            .ui-panel .ui-panel-titlebar {
+                padding: 0;
+            }
+        </style>-->
+
+    </h:head>
+    
+    <body>
+        <ui:composition template="./../../template.xhtml">
+            <ui:define name="content">
+                
+                <h:form id="frmCheck">
+                    
+                    <p:toolbar id="toolbarBill">
+                        <f:facet name="left">
+                            <p:focus context="toolbarBill"/>
+                            Cheques para el pago
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                            <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document" actionListener="#{checkForPaymentBean.botonNuevo}" 
+                                             update="frmCheck"
+                                             >
+
+                            </p:commandButton>
+
+                            <p:commandButton tabindex="-1" title="Buscar" icon="ui-icon-search"  process="@this" actionListener="#{checkForPaymentBean.botonBuscar}"
+                                             update="frmCheck">
+
+
+                            </p:commandButton>
+                               
+                                <p:commandButton  tabindex="-1"  ajax="false"  icon="ui-icon-print" disabled="#{salesBean.btnPrint}"/>
+                            
+                        </f:facet>
+                    </p:toolbar>
+
+                    <p:spacer height="20" width="0"></p:spacer>
+                    
+                    <!-- Div Principal -->
+                    <div  class="ui-grid ui-grid-responsive" id="divPrincipal">
+                        
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1"><p:outputLabel value="En favor de"/> </div>
+                            <div class="ui-grid-col-5">
+                                <p:autoComplete id="codSocio" forceSelection="true" minQueryLength="2" value="#{checkForPaymentBean.codSocio}"
+                                                completeMethod="#{checkForPaymentBean.compSocioCode}" effect="fade" size="15" label="Codigo de Socio" 
+                                                disabled="#{checkForPaymentBean.common}">
+                                    <p:ajax event="itemSelect" listener="#{checkForPaymentBean.selectSocioCod}" update="nameSocio codSocio favorDe"/>
+                                </p:autoComplete>
+                                <p:spacer width="10" height="0" />
+                                <p:autoComplete id="nameSocio" forceSelection="true" minQueryLength="2" value="#{checkForPaymentBean.nameSocio}"
+                                                completeMethod="#{checkForPaymentBean.compSocioName}" effect="fade" size="37" label="Socio de Negocio" 
+                                                disabled="#{checkForPaymentBean.common}">
+                                    <p:ajax event="itemSelect" listener="#{checkForPaymentBean.selectSocioName}" update="nameSocio codSocio favorDe"/>
+                                </p:autoComplete>
+                            </div>
+                            <div class="ui-grid-col-2"></div>
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="ID interno"/>
+                            </div>
+                            <div class="ui-grid-col-2"> 
+                                <p:inputText value="#{checkForPaymentBean.idInterno}" disabled="#{checkForPaymentBean.idCheck}"/>
+                            </div>
+                        </div>
+                        <p:spacer height="3" width="0"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-8"></div>
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Referencia"/>
+                            </div>
+                            <div class="ui-grid-col-2"> 
+                                <p:inputText value="#{checkForPaymentBean.referencia}"/>
+                            </div>
+                        </div>
+                  
+                        <p:spacer height="3" width="0"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-8"></div>
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Fecha Contabilizacion"/>
+                            </div>
+                            <div class="ui-grid-col-2"> 
+                                <p:calendar id="f1" showOn="button" size="15"  pattern="dd/MM/yyyy" value="#{checkForPaymentBean.fechaConta}" disabled="#{checkForPaymentBean.common}"/>
+                            </div>
+                        </div>
+                        <p:spacer height="3" width="0"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1"><p:outputLabel value="Cuenta de mayor abona"/> </div>
+                            <div class="ui-grid-col-5">
+                                <p:autoComplete scrollHeight="250" id="codCuenta" forceSelection="true" minQueryLength="3" value="#{checkForPaymentBean.codCuenta}"
+                                                completeMethod="#{purchaseQuotationBean.completeCode}" effect="fade" size="15" label="Codigo Cuenta"
+                                                disabled="#{checkForPaymentBean.common}">
+                                    <p:ajax event="itemSelect" listener="#{checkForPaymentBean.findAccount}" update="codCuenta nameCuenta" />
+                                </p:autoComplete>
+                            
+                            <p:spacer width="10" height="0" />
+                            
+                                <p:autoComplete scrollHeight="250" id="nameCuenta" forceSelection="true" minQueryLength="3" value="#{checkForPaymentBean.nameCuenta}"
+                                                completeMethod="#{purchaseQuotationBean.completeName}" effect="fade" size="37" label="Nombre Cuenta"
+                                                disabled="#{checkForPaymentBean.common}">
+                                    <p:ajax event="itemSelect" listener="#{checkForPaymentBean.findAccount}" update="codCuenta nameCuenta" />
+                                </p:autoComplete>
+                            </div>
+                        </div>
+                        
+                        <p:spacer width="0" height="20" />
+                        
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-8">
+                                <p:outputLabel value="Comentarios" for="inComent" />
+                                <p:spacer width="100%" height="0"/>
+                                <p:inputTextarea id="inComent" rows="5" cols="70" value="#{checkForPaymentBean.comentario}" maxlength="250"/>
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-8"></div>
+                            <div class="ui-grid-col-4">
+                                <p:outputLabel value="Importe vencido $:"/>
+                                <p:spacer width="10" height="0" />
+                                <p:inputText size="28" value="#{checkForPaymentBean.impVencido}" disabled="#{checkForPaymentBean.common}">
+                                    <p:ajax event="blur" update="impLetras total" listener="#{checkForPaymentBean.numToLetras}"/>
+                                </p:inputText>
+                            </div>
+                        </div>
+                        <p:spacer height="3" width="0" />
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Firma" />
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="firma" value="#{checkForPaymentBean.firma}"/>
+                            </div>
+                            <div class="ui-grid-col-3"></div>
+                            <div class="ui-grid-col-2"><p:outputLabel value="En favor de" /></div>
+                            <div class="ui-grid-col-4">
+                                <p:inputText id="favorDe" size="50" value="#{checkForPaymentBean.favorDe}"/>
+                            </div>
+                        </div>
+                        <p:spacer width="0" height="3" />
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Total $:" />
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="total" value="#{checkForPaymentBean.total}" readonly="true" disabled="#{checkForPaymentBean.common}"/>
+                            </div>
+                            <div class="ui-grid-col-3"></div>
+                            <div class="ui-grid-col-2"><p:outputLabel value="Importe en letra" /></div>
+                            <div class="ui-grid-col-4">
+                                <p:inputText id="impLetras" size="50" value="#{checkForPaymentBean.impLetra}" readonly="true" disabled="#{checkForPaymentBean.common}"/>
+                            </div>
+                        </div>
+                        
+                        <p:spacer width="0" height="10" />
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Fe. venc." />
+                            </div>
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Banco" />
+                            </div>
+                            <p:spacer width="10" height="0"/>
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Cuenta" />
+                            </div>
+                            <p:spacer width="10" height="0"/>
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="No Cheque" />
+                            </div>
+                        </div>
+                        
+                        <p:spacer width="0" height="3" />
+                        
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:calendar id="f2" showOn="button" size="15"  pattern="dd/MM/yyyy" value="#{checkForPaymentBean.fechaVen}" disabled="#{checkForPaymentBean.common}"/>
+                            </div>
+                            <div class="ui-grid-col-1">
+                                <p:selectOneMenu style="width: 100%" value="#{checkForPaymentBean.banco}" valueChangeListener="#{checkForPaymentBean.bankChange}"
+                                                 disabled="#{checkForPaymentBean.common}">
+                                    <f:selectItem itemLabel="Banco" itemValue="-1"/>
+                                    <f:selectItems value="#{checkForPaymentBean.lstBanks}" var="bk" itemLabel="#{bk.catvalue}" itemValue="#{bk.catcode}"/>
+                                     <p:ajax event="change" update="cuenta" />
+                                </p:selectOneMenu>
+                            </div>
+                            <p:spacer width="10" height="0"/>
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel id="cuenta" value="#{checkForPaymentBean.cuenta}"/>
+                            </div>
+                            <p:spacer width="10" height="0"/>
+                            <div class="ui-grid-col-1">
+                                <p:inputText size="10" value="#{checkForPaymentBean.noCheque}" disabled="#{checkForPaymentBean.common}"/>
+                            </div>
+                        </div>
+                        
+                        <p:spacer width="0" height="10" />
+                        
+                         <!-- BOTON PRINCIPAL -->
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1">
+                                <p:commandButton id="botonPrincipal" value="#{checkForPaymentBean.botonEstado}" actionListener="#{checkForPaymentBean.botonPrincipal}" process="@all"/>
+                                <p:defaultCommand target="botonPrincipal" />
+                            </div>
+                        </div>
+                         
+                         
+                        
+                    <!-- cierre div -->    
+                    </div>
+                    
+                </h:form>
+                
+                <h:form id="checkdlg">
+                    <!-- Dialogo lista de cheques --> 
+                    <p:dialog closeOnEscape="true" id="check" position="top" header="Datos encontrados" widgetVar="dlgListCheck" modal="true"  width="1000" height="300" >
+                            <p:dataTable  id="tableDialog" var="Rec" value="#{checkForPaymentBean.listaBusquedaTable}"  scrollable="true" scrollHeight="90%"
+                                          selection="#{checkForPaymentBean.selectCheck}" rowKey="#{Rec.checkkey}" selectionMode="single" rowIndexVar="rowIndex" >
+
+                                <p:ajax event="rowDblselect"  process="@this" listener="#{checkForPaymentBean.selectDialogBill}"/>
+
+                                <p:column headerText="#" style="width: 3%">
+                                    <h:outputText value="#{rowIndex + 1}" />
+                                </p:column>
+
+                                <p:column headerText="Id" style="width: 4%" sortBy="#{Rec.checkkey}">
+                                    <h:outputText value="#{Rec.checkkey}" />
+                                </p:column>
+                                
+                                <p:column headerText="No Cheque" style="width: 5%" sortBy="#{Rec.checknum}">
+                                    <h:outputText value="#{Rec.checknum}" />
+                                </p:column>
+
+                                <p:column headerText="Socio de Negocio" sortBy="#{Rec.vendorname}" style="width: 10%">
+                                    <h:outputText value="#{Rec.vendorname}" />
+                                </p:column>
+
+                                <p:column headerText="Codigo de Socio" sortBy="#{Rec.vendorcode}" style="width: 8%">
+                                    <h:outputText value="#{Rec.vendorcode}" />
+                                </p:column>
+
+                                <p:column headerText="Banco" sortBy="#{Rec.bankname}" style="width: 6%">
+                                    <h:outputText value="#{Rec.bankname}" />
+                                </p:column>
+                                
+                                <p:column headerText="Cuenta" sortBy="#{Rec.acctnum}" style="width: 8%">
+                                    <h:outputText value="#{Rec.acctnum}" />
+                                </p:column>
+                                
+                                <p:column headerText="Firma" sortBy="#{Rec.signature}" style="width: 8%">
+                                    <h:outputText value="#{Rec.signature}" />
+                                </p:column>
+
+                                <p:column headerText="Fecha Contabilizacion" sortBy="#{Rec.pmntdate}" style="width: 12%">
+                                    <h:outputText value="#{Rec.pmntdate}" >
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Importe" sortBy="#{Rec.checksum}" style="width: 9%">
+                                    <h:outputText value="#{Rec.checksum}">
+                                    </h:outputText>
+                                </p:column>
+
+                                
+                            </p:dataTable>
+                        </p:dialog>
+                </h:form>
+                
+                <h:form>
+                    <p:dialog closeOnEscape="true" header="Confirmacion" widgetVar="dlgC1" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Se perderan los datos ingresados, Desea continuar?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{checkForPaymentBean.confirmDialog2}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No" process="@this" styleClass="ui-confirmdialog-yes"  actionListener="#{checkForPaymentBean.cancelDialog2}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+
+                <h:form>
+                    <p:dialog closeOnEscape="true" header="Confirmacion" widgetVar="dlgC2" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea guardar los cambios?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{checkForPaymentBean.confirmDialog}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{checkForPaymentBean.cancelDialog}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+                
+            </ui:define>
+        </ui:composition>
+    </body>
+    
+</ui:composition>

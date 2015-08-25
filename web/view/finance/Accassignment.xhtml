@@ -1,0 +1,710 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <body>
+
+        <ui:composition template="./../../template.xhtml">
+
+            <ui:define name="content">
+                <f:loadBundle basename="com.sifcoapp.assignment.view.message_assignment" var="msg_assigment"/>
+
+                <h:form id="frmAcca">
+
+                    <p:toolbar>
+                        <f:facet name="left">
+                            Determinacion Cuentas Mayor
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                            <p:growl id="growl" showDetail="true" />
+                        </f:facet>
+                    </p:toolbar>
+
+                    <div class="ui-grid ui-grid-responsive">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12">
+                                <p:tabView dynamic="true" cache="true">
+
+                                    <p:tab title="#{msg_assigment['message_assignment.Sales']}" >
+
+                                        <p:tabView dynamic="true"  cache="true">
+
+                                            <p:tab title="#{msg_assigment['message_assignment.General']}">
+                                                <p:panel  style="overflow-y: auto;height: 400px;">
+                                                    <p:panelGrid style="margin-top:20px">
+                                                        <f:facet name="header">
+                                                            <p:row>
+                                                                <p:column colspan="5"><h:outputText value="#{msg_assigment['message_assignment.Title']}"/></p:column>
+                                                            </p:row>
+                                                            <p:row>
+                                                                <p:column colspan="1"><h:outputText value="#{msg_assigment['message_assignment.ClaseCuenta']}"/></p:column>
+                                                                <p:column colspan="1"><h:outputText value="#{msg_assigment['message_assignment.CodCuenta']}"/></p:column>
+                                                            </p:row>
+
+                                                        </f:facet>
+                                                        
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.ClientLoc']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete id="adv1" forceSelection="true" minQueryLength="2" value="#{Accassignment.linkact_1}"
+                                                                                completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="ClienteLoc">
+
+                                                                </p:autoComplete>
+                                                            </p:column>                                                  
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.ClientExt']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete id="adv2" forceSelection="true" minQueryLength="2" value="#{Accassignment.linkact_9}"
+                                                                                completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.CheqRecib']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete id="adv3" forceSelection="true" minQueryLength="2" value="#{Accassignment.linkact_2}"
+                                                                                completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.LinkAct_3']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete id="adv4" forceSelection="true" minQueryLength="2" value="#{Accassignment.linkact_3}"
+                                                                                completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.OverpayAR']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete id="adv5" forceSelection="true" minQueryLength="2" value="#{Accassignment.overpayar}"
+                                                                                completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.UndrpayAR']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv6" forceSelection="true" minQueryLength="2" value="#{Accassignment.undrpayar}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                      
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.BenefitDif']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete id="adv8" forceSelection="true" minQueryLength="2" value="#{Accassignment.glgainxdif}"
+                                                                                completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.LostDif']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete id="adv9" forceSelection="true" minQueryLength="2" value="#{Accassignment.gllossxdif}"
+                                                                                completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.DisscountPay']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete id="adv10" forceSelection="true" minQueryLength="2" value="#{Accassignment.linkact_22}"
+                                                                                completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.AccountIng']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv11" forceSelection="true" minQueryLength="2" value="#{Accassignment.dfltincom}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                       
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.IncomeSale']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv13" forceSelection="true" minQueryLength="2" value="#{Accassignment.ecincome}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.CtaSale']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv14" forceSelection="true" minQueryLength="2" value="#{Accassignment.arcmact}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.CtaCreditE']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete id="adv15" forceSelection="true" minQueryLength="2" value="#{Accassignment.arcmfrnact}"
+                                                                                completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.CtaCreditUE']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete id="adv16" forceSelection="true" minQueryLength="2" value="#{Accassignment.arcmeuact}"
+                                                                                completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                       
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.IntRecl']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv18" forceSelection="true" minQueryLength="2" value="#{Accassignment.dunintrst}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.TasaRecl']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv19" forceSelection="true" minQueryLength="2" value="#{Accassignment.dunfee}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        
+                                                    </p:panelGrid>
+                                                </p:panel>
+                                            </p:tab>
+
+                                            <p:tab title="#{msg_assigment['message_assignment.Taxes']}">
+                                                
+                                                <p:panelGrid style="margin-top:20px">
+                                                    <f:facet name="header">
+                                                        <p:row>
+                                                            <p:column colspan="4"><h:outputText value="#{msg_assigment['message_assignment.Title']}"/></p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column colspan="1"><h:outputText value="#{msg_assigment['message_assignment.ClaseCuenta']}"/></p:column>
+                                                            <p:column colspan="1"><h:outputText value="#{msg_assigment['message_assignment.CodCuenta']}"/></p:column>
+
+                                                        </p:row>
+
+                                                    </f:facet>
+                                                    
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.SaleVatOff']}"/></p:column>
+                                                        <p:column style="font-weight: bold;">
+                                                            <p:autoComplete  id="adv22" forceSelection="true" minQueryLength="2" value="#{Accassignment.salevatoff}"
+                                                                             completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                            </p:autoComplete>
+                                                        </p:column>
+                                                    </p:row>
+                                                </p:panelGrid>
+                                            </p:tab>
+
+                                        </p:tabView>
+
+                                    </p:tab>
+
+                                    <p:tab title="Compras" >
+                                        <p:tabView dynamic="true"  cache="true">
+
+                                            <p:tab title="General">
+                                                <p:panel  style="overflow-y: auto;height: 400px;">
+                                                    <p:panelGrid style="margin-top:20px">
+                                                        <f:facet name="header">
+                                                            <p:row>
+                                                                <p:column colspan="4"><h:outputText value="#{msg_assigment['message_assignment.Title']}"/></p:column>
+                                                            </p:row>
+                                                            <p:row>
+                                                                <p:column colspan="1"><h:outputText value="#{msg_assigment['message_assignment.ClaseCuenta']}"/></p:column>
+                                                                <p:column colspan="1"><h:outputText value="#{msg_assigment['message_assignment.CodCuenta']}"/></p:column>
+
+                                                            </p:row>
+                                                        </f:facet>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.LinkAct_10']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv23" forceSelection="true" minQueryLength="2" value="#{Accassignment.linkact_10}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.LinkAct_11']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv24" forceSelection="true" minQueryLength="2" value="#{Accassignment.linkact_11}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.LinkAct_25']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv25" forceSelection="true" minQueryLength="2" value="#{Accassignment.linkact_25}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.LinkAct_21']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv26" forceSelection="true" minQueryLength="2" value="#{Accassignment.linkact_21}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.LinkAct_12']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv27" forceSelection="true" minQueryLength="2" value="#{Accassignment.linkact_12}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.LinkAct_19']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv28" forceSelection="true" minQueryLength="2" value="#{Accassignment.linkact_19}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.LinkAct_20']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv29" forceSelection="true" minQueryLength="2" value="#{Accassignment.linkact_20}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.DfltExpn']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete id="adv30" forceSelection="true" minQueryLength="2" value="#{Accassignment.dfltexpn}"
+                                                                                completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.ForgnExpn']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv31" forceSelection="true" minQueryLength="2" value="#{Accassignment.forgnexpn}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.ECExepnses']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv32" forceSelection="true" minQueryLength="2" value="#{Accassignment.ecexepnses}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.APCMAct']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv33" forceSelection="true" minQueryLength="2" value="#{Accassignment.apcmact}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.APCMFrnAct']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv34" forceSelection="true" minQueryLength="2" value="#{Accassignment.apcmfrnact}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.APCMEUAct']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv35" forceSelection="true" minQueryLength="2" value="#{Accassignment.apcmeuact}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.OverpayAP']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv36" forceSelection="true" minQueryLength="2" value="#{Accassignment.overpayap}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.UndrpayAP']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv37" forceSelection="true" minQueryLength="2" value="#{Accassignment.undrpayap}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        
+                                                        <p:row>
+                                                            <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.ExpVarAct']}"/></p:column>
+                                                            <p:column style="font-weight: bold;">
+                                                                <p:autoComplete  id="adv39" forceSelection="true" minQueryLength="2" value="#{Accassignment.expvaract}"
+                                                                                 completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                                </p:autoComplete>
+                                                            </p:column>
+                                                        </p:row>
+                                                        
+                                                    </p:panelGrid>
+                                                </p:panel>
+                                            </p:tab>
+
+                                            <p:tab title="#{msg_assigment['message_assignment.Taxes']}">
+                                                
+                                                <p:panelGrid style="margin-top:20px">
+                                                    <f:facet name="header">
+                                                        <p:row>
+                                                            <p:column colspan="4"><h:outputText value="#{msg_assigment['message_assignment.Title']}"/></p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column colspan="1"><h:outputText value="#{msg_assigment['message_assignment.ClaseCuenta']}"/></p:column>
+                                                            <p:column colspan="1"><h:outputText value="#{msg_assigment['message_assignment.CodCuenta']}"/></p:column>
+
+                                                        </p:row>
+
+                                                    </f:facet>
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.PurcVatOff']}"/></p:column>
+                                                        <p:column style="font-weight: bold;">
+                                                            <p:autoComplete  id="adv41" forceSelection="true" minQueryLength="2" value="#{Accassignment.purcvatoff}"
+                                                                             completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                            </p:autoComplete>
+                                                        </p:column>
+                                                    </p:row>
+                                                </p:panelGrid>
+                                            </p:tab> 
+
+                                        </p:tabView>
+                                    </p:tab>
+
+                                    <p:tab title="#{msg_assigment['message_assignment.General']}">
+                                        <p:panelGrid style="margin-top:20px">
+                                            <f:facet name="header">
+                                                <p:row>
+                                                    <p:column colspan="4"><h:outputText value="#{msg_assigment['message_assignment.Title']}"/></p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column colspan="1"><h:outputText value="#{msg_assigment['message_assignment.ClaseCuenta']}"/></p:column>
+                                                    <p:column colspan="1"><h:outputText value="#{msg_assigment['message_assignment.CodCuenta']}"/></p:column>
+
+                                                </p:row>
+                                            </f:facet>
+
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.LinkAct_24']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv43" forceSelection="true" minQueryLength="2" value="#{Accassignment.linkact_24}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.LinkAct_27']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv44" forceSelection="true" minQueryLength="2" value="#{Accassignment.linkact_27}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.LinkAct_28']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv45" forceSelection="true" minQueryLength="2" value="#{Accassignment.linkact_28}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.LinkAct_26']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv46" forceSelection="true" minQueryLength="2" value="#{Accassignment.glgainxdif}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.LinkAct_23']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv47" forceSelection="true" minQueryLength="2" value="#{Accassignment.linkact_23}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.LinkAct_18']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv48" forceSelection="true" minQueryLength="2" value="#{Accassignment.linkact_18}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.BnkChgAct']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv49" forceSelection="true" minQueryLength="2" value="#{Accassignment.bnkchgact}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.ExrateOnDt']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv50" forceSelection="true" minQueryLength="2" value="#{Accassignment.exrateondt}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+
+                                        </p:panelGrid>
+
+                                    </p:tab>
+
+                                    <p:tab title="Inventario" >
+                                        <p:panel  style="overflow-y: auto;height: 400px;">
+                                            <p:panelGrid style="margin-top:20px">
+                                            <f:facet name="header">
+                                                <p:row>
+                                                    <p:column colspan="4"><h:outputText value="#{msg_assigment['message_assignment.Title']}"/></p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column colspan="1"><h:outputText value="#{msg_assigment['message_assignment.ClaseCuenta']}"/></p:column>
+                                                    <p:column colspan="1"><h:outputText value="#{msg_assigment['message_assignment.CodCuenta']}"/></p:column>
+
+                                                </p:row>
+                                            </f:facet>
+
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.StockAct']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv51" forceSelection="true" minQueryLength="2" value="#{Accassignment.stockact}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.COGM_Act']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv52" forceSelection="true" minQueryLength="2" value="#{Accassignment.cogm_act}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.AlocCstAct']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv53" forceSelection="true" minQueryLength="2" value="#{Accassignment.aloccstact}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.VariancAct']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv54" forceSelection="true" minQueryLength="2" value="#{Accassignment.variancact}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.PricDifAct']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv55" forceSelection="true" minQueryLength="2" value="#{Accassignment.pricdifact}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.NegStckAct']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv56" forceSelection="true" minQueryLength="2" value="#{Accassignment.negstckact}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.DfltLoss']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv57" forceSelection="true" minQueryLength="2" value="#{Accassignment.dfltloss}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.DfltProfit']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv58" forceSelection="true" minQueryLength="2" value="#{Accassignment.dfltprofit}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.RturnngAct']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv59" forceSelection="true" minQueryLength="2" value="#{Accassignment.rturnngact}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.PurchseAct']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv60" forceSelection="true" minQueryLength="2" value="#{Accassignment.purchseact}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.PaReturnAc']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv61" forceSelection="true" minQueryLength="2" value="#{Accassignment.pareturnac}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.ExDiffAct']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv63" forceSelection="true" minQueryLength="2" value="#{Accassignment.exdiffact}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.BalanceAct']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv64" forceSelection="true" minQueryLength="2" value="#{Accassignment.balanceact}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.DecresGlAc']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv65" forceSelection="true" minQueryLength="2" value="#{Accassignment.decresglac}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.IncresGlAc']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv66" forceSelection="true" minQueryLength="2" value="#{Accassignment.incresglac}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.WipAcct']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv67" forceSelection="true" minQueryLength="2" value="#{Accassignment.wipacct}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.WipVarAcct']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv68" forceSelection="true" minQueryLength="2" value="#{Accassignment.wipvaracct}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.WipOffset']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv69" forceSelection="true" minQueryLength="2" value="#{Accassignment.wipoffset}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.StockOffst']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv70" forceSelection="true" minQueryLength="2" value="#{Accassignment.stockoffst}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.ExpClrAct']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv71" forceSelection="true" minQueryLength="2" value="#{Accassignment.expclract}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="font-weight: bold;"><h:outputText value="#{msg_assigment['message_assignment.StkInTnAct']}"/></p:column>
+                                                <p:column style="font-weight: bold;">
+                                                    <p:autoComplete  id="adv72" forceSelection="true" minQueryLength="2" value="#{Accassignment.stkintnact}"
+                                                                     completeMethod="#{Accassignment.completeText}" effect="fade" size="50" label="Codigo">
+                                                    </p:autoComplete>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                        </p:panel>
+                                    </p:tab>
+
+                                </p:tabView>
+                            </div>
+                        </div>
+                        <p:spacer height="20" width="0"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12">
+                                <p:commandButton value="Guardar" actionListener="#{Accassignment.btnPrincipal}" process="@all"/>
+                            </div>
+                        </div>
+                    </div>
+
+                </h:form>
+                
+                <h:form>
+                    <p:dialog header="Confirmacion" widgetVar="dlgC2" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea guardar los cambios?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{Accassignment.confirmDialog}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{Accassignment.cancelDialog}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

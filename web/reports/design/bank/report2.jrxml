@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f1e8b259-eebb-4e51-bb63-3e66d35fcc9c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="IN_CAT_NAME" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString language="plsql">
+		<![CDATA[select * from sp_get_catalog($P{IN_CAT_NAME});]]>
+	</queryString>
+	<field name="catcode" class="java.lang.String"/>
+	<field name="tablecode" class="java.lang.Integer"/>
+	<field name="catvalue" class="java.lang.String"/>
+	<field name="catvalue2" class="java.lang.String"/>
+	<field name="catvalue3" class="java.lang.String"/>
+	<field name="catstatus" class="java.lang.String"/>
+	<field name="usersign" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Firma de usuario]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="29" y="2" width="100" height="20" uuid="9c5de9cf-96d8-4642-9125-a2e57f630ee5"/>
+				<text><![CDATA[catcode]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="156" y="2" width="100" height="20" uuid="b25e581c-9a65-464b-bac6-fe4ee5faf9a7"/>
+				<text><![CDATA[tablecode]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="275" y="2" width="100" height="20" uuid="0fca5e32-4d76-4860-a92f-41194e20291d"/>
+				<text><![CDATA[catvalue]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="408" y="2" width="100" height="20" uuid="0bb58168-444a-4ef8-8c26-5f7e5058c7bd"/>
+				<text><![CDATA[catvalue2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="89" y="2" width="100" height="20" uuid="ff508787-99a4-4e29-ab32-ca46763933b8"/>
+				<text><![CDATA[sp_get_prueba]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="47" y="2" width="100" height="20" uuid="14d66b7d-1a60-4ca5-9cc6-d77d485cb2fb"/>
+				<text><![CDATA[catcode]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="166" y="2" width="100" height="20" uuid="c06a845f-c5cb-41a9-aecf-eac13b267ad2"/>
+				<text><![CDATA[tablecode]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="301" y="2" width="100" height="20" uuid="fcd8c207-3c9d-4a3b-ac55-34b177c21edf"/>
+				<text><![CDATA[catvalue]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="442" y="2" width="100" height="20" uuid="ce6512f4-623d-46ad-b67b-95b045473651"/>
+				<text><![CDATA[catvalue3]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="60" splitType="Stretch">
+			<textField>
+				<reportElement x="47" y="21" width="100" height="20" uuid="1f7b6a68-3ff3-40aa-9ef1-c9855527a8cf"/>
+				<textFieldExpression><![CDATA[$F{catcode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="166" y="19" width="100" height="20" uuid="0fa0ee5b-3f13-4b1d-a554-d904a59ab28d"/>
+				<textFieldExpression><![CDATA[$F{tablecode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="301" y="32" width="100" height="20" uuid="74cdeb74-485e-42a8-9ee5-b80dc91b0d36"/>
+				<textFieldExpression><![CDATA[$F{catvalue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="442" y="33" width="100" height="20" uuid="eed0d641-a199-4ce1-9d8c-118f3c99a1bc"/>
+				<textFieldExpression><![CDATA[$F{catvalue3}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

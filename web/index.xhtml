@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">                        
+
+            <h:form id="nuevo">
+                <p:poll interval="1" listener="#{indexBean.dlg()}" stop="#{indexBean.stop}"/>
+                
+                <p:dialog id="dlgT" header="Confirmación de Contabilizaciones periódicas" widgetVar="dlg001" modal="true"  width="1000" height="300"
+                          closeOnEscape="true" dynamic="true" >
+                    <div class="ui-grid ui-grid-responsive">
+                        <h:outputText value="Las contabilizaciones mencionadas a continuación deben ejecutarse hoy" /><br></br>
+                        <h:outputText value="Marque las filas que desea ejecutar o eliminar" />
+                        <br></br>
+                        <br></br>
+                        <h:outputText value="La fecha de la transacción de contabilizaciones periódicas será:" style="font-weight: bold" />
+                        <p:selectOneRadio id="isActive" value="#{RecurringPosting.fecha}" >
+                            <f:selectItem itemLabel="Fecha de sistema actual" itemValue="true" />
+                            <f:selectItem itemLabel="Fecha de contabilizaciones periódicas" itemValue="false" />
+                        </p:selectOneRadio>
+                        <p:dataTable id="tableDialog2" var="Rec" value="#{RecurringPosting.lstExecute}"  scrollable="true" style="height: 200px"
+                                     rowKey="#{Rec.entrycount}"  rowIndexVar="rowIndex" selection="#{RecurringPosting.recurringSelected}"
+                                     emptyMessage="No hay Contabilizaciones pendientes" scrollHeight="50%">
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column headerText="" style="text-align:center;width: 2%"/>
+                                    <p:column headerText="#" style="width: 2%"/>
+                                    <p:column headerText="Código" style="width:5%" />
+                                    <p:column headerText="Descripción"  style="width:15%"/>
+                                    <p:column headerText="Fecha" style="width:7%"/>
+                                    <p:column headerText="Valor" style="width:7%"/>
+                                    <p:column headerText="Instancia" style="width:7%"/>
+                                </p:row>
+                            </p:columnGroup>
+                            <p:ajax  event="rowSelect"  listener="#{RecurringPosting.Add}" update="totloc2"  />
+                            <p:ajax  event="rowSelectCheckbox"  listener="#{RecurringPosting.Add}" update="totloc2"  />
+                            <p:ajax  event="toggleSelect"  listener="#{RecurringPosting.Add}" update="totloc2"  />
+
+                            <p:column selectionMode="multiple" style="text-align:center" >
+                            </p:column>
+
+                            <p:column>
+                                <h:outputText value="#{rowIndex + 1}" />
+
+                            </p:column>
+                            <p:column sortBy="#{Rec.rcurcode}">
+                                <h:outputText value="#{Rec.rcurcode}" />
+                            </p:column>
+
+                            <p:column sortBy="#{Rec.rcurdesc}">
+                                <h:outputText value="#{Rec.rcurdesc}" />
+                            </p:column>
+
+                            <p:column sortBy="#{Rec.nextdeu}" >
+                                <h:outputText value="#{Rec.nextdeu}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column sortBy="#{Rec.volume}" >
+                                <h:outputText value="#{Rec.volume}" >
+                                    <f:convertNumber type="currency" currencySymbol="$" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column sortBy="#{Rec.instance}" >
+                                <h:outputText value="#{Rec.instance}" >
+                                </h:outputText>
+                            </p:column>
+                            <p:columnGroup type="footer">
+                                <p:row>
+                                    <p:column></p:column>
+                                    <p:column></p:column>
+                                    <p:column></p:column>
+                                    <p:column></p:column>
+                                    <p:column style="text-align: right" footerText="Total:" />
+                                    <p:column id="totloc2" footerText="$#{RecurringPosting.totalVolumen > 0? RecurringPosting.totalVolumen:RecurringPosting.totalVolumen}" />
+                                    <p:column></p:column>
+                                </p:row>
+                            </p:columnGroup>
+                        </p:dataTable>
+
+                        <f:facet name="footer">
+
+                            <p:commandButton  value="Ejecutar" actionListener="#{RecurringPosting.Execute}"
+                                              process="@this tableDialog2 isActive"> 
+                            </p:commandButton>
+                            <p:spacer width="20" height="0"></p:spacer>
+                            <p:commandButton id="Cancel" value="Cancelar" type="button" onclick="PF('dlg001').hide();"> 
+                            </p:commandButton>
+                            <p:spacer width="670" height="0"></p:spacer>
+                            <p:commandButton value="Eliminar" actionListener="#{RecurringPosting.Delete}" style="left: initial"
+                                             process="@this tableDialog2"/>
+                        </f:facet>
+                    </div>
+                </p:dialog> 
+
+            </h:form>
+            
+            <h:form>
+                    <p:dialog header="Confirmacion" widgetVar="dlg11" width="230" modal="false" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea ejecutar las transacciones?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{RecurringPosting.confirmDialog3}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{RecurringPosting.cancelDialog3}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+
+        </ui:define>
+    </ui:composition>        
+
+</html>  

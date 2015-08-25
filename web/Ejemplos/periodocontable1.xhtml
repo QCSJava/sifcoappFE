@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./template.xhtml">
+
+            <ui:define name="content">
+                <h2>DataTable Example</h2>
+                <p:accordionPanel>
+                    <p:tab title="Periodos Contable">
+                        <h:form id="form">
+                            <p:growl id="msgs" showDetail="true" />
+                            <p:tabView dynamic="true" cache="true">
+                                <p:tab title="Periodo Contable">
+                                    <p:panelGrid columns="2" >
+                                        <p:outputLabel for="codigoPeriodo" value="Codigo de Periodo: " />
+                                        <p:inputMask id="codigoPeriodo" value="#{userDataPeriodo.codigoPeriodo}" mask="9999" required="true"/>
+
+                                        <p:outputLabel  value="Nombre de Periodo: " />
+                                        <p:inputText id="nombrePeriodo" value="#{userDataPeriodo.codigoPeriodo}" required="true" />
+
+                                        <p:outputLabel for="country" value="SubPeriodos: " />
+                                        <p:selectOneMenu id="country" value="#{dropdownView.country}" style="width:150px">
+                                            <p:ajax listener="#{dropdownView.onCountryChange}" update="city" />
+                                            <f:selectItem itemLabel="Seleccionar Periodo" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems value="#{dropdownView.countries}" />
+                                        </p:selectOneMenu>
+
+                                        <p:outputLabel  value="Cantidad de Periodos: " />
+                                        <p:inputText id="cantidadPeriodo" value="#{userDataPeriodo.cantidadPeriodo}" disabled="true" />
+
+                                        <p:outputLabel for="city" value="Indicador Periodos: " />
+                                        <p:selectOneMenu id="city" value="#{dropdownView.city}" style="width:150px">
+                                            <f:selectItem itemLabel="Valor de Periodo" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems value="#{dropdownView.cities}" />
+                                        </p:selectOneMenu>
+
+                                        <p:separator/>
+                                        <p:separator/>
+                                        <p:outputLabel for="date" value="Date: " />
+                                        <p:inputMask id="date" value="#{maskView.date}" mask="99/99/9999"/>
+
+                                        <p:outputLabel for="phone" value="Phone:" />
+                                        <p:inputMask id="phone" value="#{maskView.phone}" mask="(999) 999-9999"/>
+
+                                        <p:outputLabel for="phoneWithExt" value="Phone with Ext:" />
+                                        <p:inputMask id="phoneWithExt" value="#{maskView.phoneExt}" mask="(999) 999-9999? x99999"/>
+
+                                        <p:outputLabel for="taxId" value="Tax Id:" />
+                                        <p:inputMask id="taxId" value="#{maskView.taxId}" mask="99-9999999"/>
+
+                                        <p:outputLabel for="ssn" value="SSN:" />
+                                        <p:inputMask id="ssn" value="#{maskView.ssn}" mask="999-99-9999"/>
+
+                                        <p:outputLabel for="key"  value="Product Key: " />
+                                        <p:inputMask id="key" value="#{maskView.productKey}" mask="a*-999-a999"/>
+
+                                        <p:commandButton value="Reset" type="reset" />
+                                        <p:commandButton value="Guardar" action="#{userDataPeriodo.addPeriodo()}" />
+                                        <!--<p:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()"/>-->
+                                        <p:dialog widgetVar="dlg" modal="true" resizable="false" header="Values" showEffect="fade">
+                                            <p:panelGrid id="display" columns="2" columnClasses="label,value">
+
+                                                <h:outputText value="codigo Periodo: " />
+                                                <h:outputText id="codigoValue" value="#{userDataPeriodo.codigoPeriodo}" />
+
+                                                <h:outputText value="Nombre Periodo: " />
+                                                <h:outputText id="nombreValue" value="#{userDataPeriodo.nombrePeriodo}" />
+
+                                                <h:outputText value="Date: " />
+                                                <h:outputText id="dateValue" value="#{maskView.date}" />
+
+                                                <h:outputText value="Phone: " />
+                                                <h:outputText id="phoneValue" value="#{maskView.phone}" />
+
+                                                <h:outputText value="Phone with Ext: " />
+                                                <h:outputText id="phoneWithExtValue" value="#{maskView.phoneExt}"/>
+
+                                                <h:outputText value="taxId: " />
+                                                <h:outputText id="taxValue" value="#{maskView.taxId}" />
+
+                                                <h:outputText value="SSN: " />
+                                                <h:outputText id="ssnValue" value="#{maskView.ssn}" />
+
+                                                <h:outputText value="Product Key: " />
+                                                <h:outputText id="keyValue" value="#{maskView.productKey}" />
+                                            </p:panelGrid>
+                                        </p:dialog>
+                                    </p:panelGrid>
+                                </p:tab>
+                                <p:tab title="Tabla de Periodos">
+                                    <h:panelGrid columns="2" cellpadding="10">
+                                        <h:dataTable value="#{userDataPeriodo.periodos}" var="periodo">
+                                            <h:column>    				
+                                                <f:facet name="header">Name</f:facet>    				
+                                                    #{periodo.fechaVencimiento}
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">Department</f:facet>
+                                                    #{periodo.codigoPeriodo}
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">Age</f:facet>
+                                                    #{periodo.cantidadPeriodo}
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">Salary</f:facet>
+                                                    #{periodo.fechaConta}
+                                            </h:column>
+                                        </h:dataTable>
+                                    </h:panelGrid>
+                                </p:tab>
+                                <p:tab title="Modificaciones">
+                                    <h:panelGrid columns="2" cellpadding="10">
+                                        <p:dataTable var="periodos" value="#{userDataPeriodo.periodos}" id="periodoList" editable="true">
+                                            <!--<p:dataTable var="car" value="#{tableBean.carsSmall}" id="carList" editable="true">  -->
+                                            <f:facet name="header">  
+                                                In-Cell Editing  
+                                            </f:facet>  
+                                            <p:column headerText="Model" style="width:150px">  
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{car.model}" />  
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
+                                                        <p:inputText value="#{car.model}" style="width:100%"/>  
+                                                    </f:facet>  
+                                                </p:cellEditor>  
+                                            </p:column>  
+
+                                            <p:column headerText="Year" style="width:150px">  
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{car.year}" />  
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
+                                                        <p:inputText value="#{car.year}" style="width:100%"/>  
+                                                    </f:facet>  
+                                                </p:cellEditor>  
+                                            </p:column>  
+
+                                            <p:column headerText="Manufacturer" style="width:150px">  
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{car.manufacturer}" />  
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
+                                                        <h:selectOneMenu value="#{car.manufacturer}" >  
+                                                            <f:selectItems value="#{tableBean.manufacturers}"  
+                                                                           var="man"   
+                                                                           itemLabel="#{man}"  
+                                                                           itemValue="#{man}" />  
+                                                        </h:selectOneMenu>  
+                                                    </f:facet>  
+                                                </p:cellEditor>  
+                                            </p:column>  
+
+                                            <p:column headerText="Color" style="width:150px">  
+                                                <p:cellEditor>  
+                                                    <f:facet name="output">  
+                                                        <h:outputText value="#{car.color}" />  
+                                                    </f:facet>  
+                                                    <f:facet name="input">  
+                                                        <h:selectOneMenu value="#{car.color}" >  
+                                                            <f:selectItems value="#{tableBean.colors}"  
+                                                                           var="color"   
+                                                                           itemLabel="#{color}"  
+                                                                           itemValue="#{color}" />  
+                                                        </h:selectOneMenu>  
+                                                    </f:facet>  
+                                                </p:cellEditor>  
+                                            </p:column>  
+
+                                            <p:column headerText="Options">  
+                                                <p:rowEditor />  
+                                            </p:column>  
+
+                                        </p:dataTable>  
+                                        <p:commandButton value="Save Employees"
+                                                         action="#{userData.saveEmployees}" />	
+                                    </h:panelGrid>
+                                </p:tab>
+                            </p:tabView>  
+                        </h:form>
+                    </p:tab>
+                </p:accordionPanel>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

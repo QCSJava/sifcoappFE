@@ -1,0 +1,243 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+        <ui:composition template="./../../template.xhtml">
+            <ui:define name="content">
+                <h:form id="principal">
+                    <p:toolbar id="toolbarBill">
+                        <f:facet name="left">
+                            <p:focus context="toolbarBill"/>
+                            Plan Contable
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                            <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-refresh" actionListener="#{chartAccounts.updTreeAcc()}" 
+                                             update="principal"         
+                                             >
+
+                            </p:commandButton>
+                        </f:facet>
+                    </p:toolbar>
+
+                    <p:spacer height="10" width="0"></p:spacer>
+                    <div class="ui-grid ui-grid-responsive" style="margin-left: 20px">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-4"><p:outputLabel value="Cuenta de Mayor"></p:outputLabel></div>
+                                    <div class="ui-grid-col-8">
+                                        <p:inputText id="cuentamayor" value="#{chartAccounts.acctcode}" readonly="true" size="26">
+                                        </p:inputText>
+                                        <p:outputLabel value="#{chartAccounts.pk}" id="pk" />
+                                    </div>
+
+                                </div>
+                                <br></br>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-4"><p:outputLabel value="Nombre de cuenta"></p:outputLabel></div>
+                                    <div class="ui-grid-col-1"><p:inputTextarea id="nombreacc" value="#{chartAccounts.acctname}"  readonly="false"></p:inputTextarea></div>
+                                </div>
+                                <br></br>
+                                <div class="ui-grid-row"  style="margin-top: 50px;">
+                                    <p:outputLabel value="Info detallada de cuenta de mayor" style="font-style:inherit;font-weight: bold"></p:outputLabel>
+                                </div>
+                                <br></br>
+                                <div class="ui-grid-row">
+                                    <p:selectOneRadio id="isActive" value="#{chartAccounts.postable}">
+                                        <div class="ui-grid-col-1"><f:selectItem itemLabel="Titulo" itemValue="true" /></div>
+                                        <div class="ui-grid-col-1"><f:selectItem itemLabel="Cuenta Activa" itemValue="false" /></div>
+                                    </p:selectOneRadio>
+                                </div>
+                                <br></br>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-4"><p:outputLabel value="Nivel"></p:outputLabel></div>
+                                    <div class="ui-grid-col-8"><p:inputText id="nivel" value="#{chartAccounts.levels}" readonly="true"></p:inputText></div>
+                                </div>
+                                <br></br>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-4"><p:outputLabel value="Saldo"></p:outputLabel></div>
+                                    <div class="ui-grid-col-8">
+                                        <p:inputText id="saldo" value="$#{chartAccounts.currtotal}" readonly="true">
+
+                                        </p:inputText>
+                                        <!-- onclick="PF('dlgC3').show();"-->
+                                        <p:commandButton id="btnLines" action="#{chartAccounts.btnSaldo()}" icon="fa fa-bars" disabled="#{chartAccounts.btnEnable}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-grid-col-8">
+                                <p:treeTable id="treeAcc" value="#{chartAccounts.root}" var="doc" style="margin-top:0; height: 500px"  selectionMode="single"
+                                             selection="#{chartAccounts.selectedNode}" scrollable="true" scrollHeight="100%">
+                                    <p:ajax event="select" listener="#{chartAccounts.onNodeSelect}" update=":principal:cuentamayor :principal:nombreacc :principal:isActive 
+                                            :principal:nivel :principal:saldo :principal:pk :principal:btnLines" />
+                                    <f:facet name="header">
+                                        Plan de cuentas
+                                    </f:facet>
+                                    <p:column headerText="Cuenta" >
+                                        <h:outputText value="#{doc.acctcode} - #{doc.acctname}" style="width: 50%"/>
+                                    </p:column>
+                                    <p:column headerText="Saldo" style="width: 18%">
+                                        <p:outputLabel value="$"/>
+                                        <p:outputLabel value="#{doc.currtotal}" >
+                                            <f:convertNumber minFractionDigits="#{commonBean.minFractionDigits2}" maxFractionDigits="#{commonBean.minFractionDigits2}"/>
+                                        </p:outputLabel>
+                                    </p:column>
+                                </p:treeTable> 
+                            </div>
+                        </div>
+                        <br></br>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:commandButton value="Guardar" actionListener="#{chartAccounts.btnPrincipal}" process="@this, nombreacc cuentamayor :principal:pk"/>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+
+                <h:form>
+                    <p:dialog header="Confirmacion" widgetVar="dlgC2" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea guardar los cambios?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{chartAccounts.confirmDialog}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{chartAccounts.cancelDialog}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+
+                <h:form id="detList">
+                    <p:dialog id="dlgupd" header="#{chartAccounts.acctcode} - #{chartAccounts.acctname}" widgetVar="dlgC3" width="1200" modal="true" resizable="false"
+                              closeOnEscape="true">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-9">
+                                <p:spacer/>
+                            </div>
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Desde"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:calendar id="f1" showOn="button" size="16"  pattern="dd/MM/yyyy" value="#{chartAccounts.firstDate}"/>
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-9">
+                                <p:spacer/>
+                            </div>
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Hasta"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:calendar id="f2" showOn="button" size="16"  pattern="dd/MM/yyyy" value="#{chartAccounts.lastDate}"/>
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-8">
+                                <p:spacer/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Numero de visualizaciones"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText size="16" value="#{chartAccounts.numDet}"/>
+                                <p:commandButton id="btnUpdate" icon="ui-icon-refresh" action="#{chartAccounts.updDialog}" update="dlgSaldo"/>
+                            </div>
+                        </div>
+                        <p:spacer width="0" height="5"/>
+                        <p:dataTable resizableColumns="true" liveResize="true" id="dlgSaldo" rowIndexVar="rowIndex" value="#{chartAccounts.lstAccTable}" var="line"
+                                     scrollable="true" scrollHeight="325"
+                                     selectionMode="single" selection="#{chartAccounts.select}" rowKey="#{line.line_id}"
+                                     paginator="true"
+                                     paginatorTemplate="{Exporters}">
+
+                            <f:facet name="{Exporters}" >
+                                <p:spacer height="0" width="95%"/>
+                                <h:commandLink >
+                                    <p:graphicImage name="../../resources/Images/img.jpg" width="24"/>
+                                    <p:dataExporter type="xls" target="dlgSaldo" fileName="Acc" />
+                                </h:commandLink>
+                            </f:facet>
+
+                            <p:column headerText="#" style="width: 2%" >
+                                <h:outputText value="#{rowIndex + 1}" />
+                            </p:column>
+                            <p:column headerText="Fecha" style="width: 14px">
+                                <h:outputText value="#{line.refdate}">
+                                    <f:convertDateTime pattern='dd/MM/yyyy' />
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Origen" style="width: 6px">
+                                <h:outputText value="#{line.objtype}" />
+                            </p:column>
+                            <p:column headerText="Transacción" style="width: 3.6%">
+                                <h:outputText value="#{line.transid}" />
+                            </p:column>
+                            <p:column headerText="Numero" style="width: 3%">
+                                <h:outputText value="#{line.ref1}" />
+                            </p:column>  
+                            <p:column headerText="Contra Cuenta" style="width: 5%">
+                                <h:outputText value="#{line.contraact}" />
+                            </p:column> 
+                            <p:column headerText="Información" style="width: 15%">
+                                <h:outputText value="#{line.linememo}" />
+                            </p:column> 
+                            <p:column headerText="Saldo" style="width: 5%">
+                                <h:outputText value="#{line.totalvat}" style="float:right">
+                                    <f:convertNumber type="currency"  currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}" />
+                                </h:outputText>
+                            </p:column> 
+                            <p:column headerText="Cargo" style="width: 5%">
+                                <h:outputText value="#{line.debit}" style="float:right">
+                                    <f:convertNumber type="currency"  currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}" />
+                                </h:outputText>
+                            </p:column> 
+                            <p:column headerText="Abono" style="width: 5%">
+                                <h:outputText value="#{line.credit}" style="float:right">
+                                    <f:convertNumber type="currency"  currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}" />
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:columnGroup type="footer" id="foot">
+                                <p:row>
+                                    <p:column footerText=""/>
+                                    <p:column footerText=""/>
+                                    <p:column footerText=""/>
+                                    <p:column footerText=""/>
+                                    <p:column footerText=""/>
+                                    <p:column footerText=""/>
+                                    <p:column colspan="6" footerText="Totales:" />
+                                    <p:column footerText="$ #{chartAccounts.t1}"/>
+                                    <p:column footerText="$ #{chartAccounts.t2}"/>
+                                    <p:column footerText="$ #{chartAccounts.t3}"/>
+                                </p:row>
+                            </p:columnGroup>
+
+                        </p:dataTable>
+
+                    </p:dialog>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

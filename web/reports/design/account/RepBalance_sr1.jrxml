@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RepBalance_sr1" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9feb4b49-fb16-4a2c-8af6-491e2ce9865d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="pfathernum" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PWHERECUENTAS" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\workspace\\NBProjects\\sifcoappFE\\web\\reports\\design\\account\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PLEVELS" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PCUENTASCOSTOS" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select acctcode,repeat(' ',levels*2)||acctname acctname,currtotal,fathernum,endtotal,repeat(' ',15-levels*2)||endtotal endtotals,levels,grpline,groupmask
+ from cat_acc0_account
+where $P!{PWHERECUENTAS} and levels<=$P{PLEVELS}]]>
+	</queryString>
+	<field name="acctcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Código de cuenta]]></fieldDescription>
+	</field>
+	<field name="acctname" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre de cuenta]]></fieldDescription>
+	</field>
+	<field name="currtotal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Saldo actual]]></fieldDescription>
+	</field>
+	<field name="fathernum" class="java.lang.String">
+		<fieldDescription><![CDATA[Clave de cuenta superior]]></fieldDescription>
+	</field>
+	<field name="endtotal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Saldo inicial]]></fieldDescription>
+	</field>
+	<field name="endtotals" class="java.lang.String"/>
+	<field name="levels" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Nivel de cuenta]]></fieldDescription>
+	</field>
+	<field name="grpline" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número de serie en grupo]]></fieldDescription>
+	</field>
+	<field name="groupmask" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Máscara de grupo]]></fieldDescription>
+	</field>
+	<variable name="sumendtotal" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{endtotal}]]></variableExpression>
+	</variable>
+	<variable name="vendtotals" class="java.lang.String">
+		<variableExpression><![CDATA[new String(new char[15]).replace("\0", "\t")]]></variableExpression>
+	</variable>
+	<variable name="vendtotals2" class="java.lang.String">
+		<variableExpression><![CDATA[$F{endtotal}+$V{vendtotals}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField pattern="">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="180" height="15" uuid="fbc9988c-ab00-4d56-80d5-5d9097c143fe">
+					<printWhenExpression><![CDATA[$F{endtotal}!=null && $F{levels}>1]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acctname}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="180" y="0" width="60" height="15" uuid="4d028a6d-db8b-4784-ba62-42c5462dbd32">
+					<printWhenExpression><![CDATA[$F{levels}==7 && $F{endtotal}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{endtotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="190" y="0" width="60" height="15" uuid="123f03d3-183a-4e69-8d36-0c03b1b0db31">
+					<printWhenExpression><![CDATA[$F{levels}==6 && $F{endtotal}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{endtotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="200" y="0" width="60" height="15" uuid="ef78fa66-33e2-4b98-9d8c-e146a93cc861">
+					<printWhenExpression><![CDATA[$F{levels}==5 && $F{endtotal}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{endtotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="240" y="0" width="60" height="15" uuid="942d6720-1bfc-491c-bd14-ba9a47c19af7">
+					<printWhenExpression><![CDATA[$F{levels}==4 && $F{endtotal}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{endtotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="270" y="0" width="60" height="15" uuid="65435ef4-188e-40d0-ae6c-23a40e65fab1">
+					<printWhenExpression><![CDATA[$F{levels}==3  && $F{endtotal}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{endtotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="300" y="0" width="60" height="15" isRemoveLineWhenBlank="true" uuid="7c28273e-e264-48b7-a039-2df23bbba691">
+					<printWhenExpression><![CDATA[$F{levels}==2 && $F{endtotal}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{endtotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="180" height="15" uuid="62b995bd-55a1-4b76-8bc2-892aba2c95df">
+					<printWhenExpression><![CDATA[$F{endtotal}!=null && $F{levels}==1]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acctname}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

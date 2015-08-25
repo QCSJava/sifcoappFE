@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../template.xhtml">
+
+            <ui:define name="content">
+
+                <p:tab title="Periodos Contables">
+                    <h:form id="form" >
+                        <p:tabView dynamic="true" cache="true">
+                            <p:tab title="Periodos Contables" >
+                                <p:growl id="msgs" showDetail="true" />
+                                <p:panelGrid columns="5" >
+
+                                    <p:outputLabel  value="Nombre : " />
+                                    <p:inputText id="accname" value="#{periodBean.accname}" />
+
+                                    <p:outputLabel  value="Año: " />
+                                    <p:selectOneMenu id="catalogClassLst"  style="width:150px" value="#{periodBean.anio}">
+                                        <f:selectItem itemLabel="Seleccionar Año" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems value="#{periodBean.catalogyear}" var="model" itemLabel="#{model.catvalue}" itemValue="#{model.catcode}"/>
+                                    </p:selectOneMenu>     
+                                    <p:commandButton value="Agregar" update="period" actionListener="#{periodBean.doSavePeriod()}" styleClass="ui-priority-primary"/>
+
+                                </p:panelGrid>
+                                <p:spacer height="30px;"/>
+                                <p:panel  style="overflow-y: auto;height: 400px;">  
+                                    <p:dataTable  id="period" var="period" value="#{periodBean.periodLst}"  widgetVar="50" style="width: 700px;" editable="true">
+                                        <f:facet name="header"> 
+                                            Periodos Contables
+                                        </f:facet>
+                                        <p:ajax event="rowEdit" listener="#{periodBean.onRowEdit}"  /> 
+                                        <p:ajax event="rowEditCancel" listener="#{periodBean.onRowCancel}"  />
+                                        <p:column>
+                                            <f:facet name="header"> 
+                                                <h:outputText value="Codigo" /> 
+                                            </f:facet>
+                                            <p:cellEditor> 
+                                                <f:facet name="output"> 
+                                                    <h:outputText value="#{period.acccode}" /> 
+                                                </f:facet> 
+                                                <f:facet name="input"> 
+                                                    <p:inputText id="acccode" value="#{period.acccode}" style="width:100%" disabled="true"/> 
+                                                </f:facet> 
+                                            </p:cellEditor> 
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header"> 
+                                                <h:outputText value="Nombre" /> 
+                                            </f:facet>
+                                            <p:cellEditor> 
+                                                <f:facet name="output"> 
+                                                    <h:outputText value="#{period.accname}" /> 
+                                                </f:facet> 
+                                                <f:facet name="input"> 
+                                                    <p:inputText id="accname" value="#{period.accname}" style="width:100%" disabled="true"/> 
+                                                </f:facet> 
+                                            </p:cellEditor> 
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header"> 
+                                                <h:outputText value="Estado" /> 
+                                            </f:facet>
+                                            <p:cellEditor> 
+                                                <f:facet name="output"> 
+                                                    <h:outputText value="#{period.periodstat == 1? 'Activo' : 'Inactivo'}" >
+                                                    
+                                                    </h:outputText> 
+                                                </f:facet> 
+                                                <f:facet name="input">
+                                                    <p:selectOneMenu id="catalogClassLst3"  style="width:150px" value="#{period.periodstat}">
+                                                        <f:selectItem itemLabel="Activo" itemValue="#{1}" />
+                                                        <f:selectItem itemLabel="Inactivo" itemValue="#{0}" />
+                                                    </p:selectOneMenu>
+                                                </f:facet> 
+                                            </p:cellEditor> 
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header"> 
+                                                <h:outputText value="Desde" /> 
+                                            </f:facet>
+                                            <p:cellEditor> 
+                                                <f:facet name="output"> 
+                                                    <h:outputText value="#{period.f_refdate}" /> 
+                                                </f:facet> 
+                                                <f:facet name="input"> 
+                                                     <!--p:calendar id="popup" value="#{period.f_refdate}" /-->
+                                                    <p:inputText value="#{period.f_refdate}" style="width:100%" disabled="true"/> 
+                                                </f:facet> 
+                                            </p:cellEditor> 
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header"> 
+                                                <h:outputText value="Hasta" /> 
+                                            </f:facet>
+                                            <p:cellEditor> 
+                                                <f:facet name="output"> 
+                                                    <h:outputText value="#{period.f_duedate}" /> 
+                                                </f:facet> 
+                                                <f:facet name="input">
+                                                    <!--p:calendar id="popup1" value="#{period.f_duedate}" /-->
+                                                    <p:inputText value="#{period.f_duedate}" style="width:100%" disabled="true"/>
+                                                </f:facet> 
+                                            </p:cellEditor> 
+                                        </p:column>
+                                        <p:column headerText="Options" style="width:50px"> 
+                                            <p:rowEditor /> 
+                                        </p:column> 
+                                    </p:dataTable>
+                                </p:panel>
+                            </p:tab>
+                        </p:tabView>  
+                    </h:form>
+                </p:tab>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

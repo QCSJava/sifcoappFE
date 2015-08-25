@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Tratar plan de cuentas</title>
+        <!--<style type="text/css">
+            .ui-panel .ui-panel-titlebar {
+                padding: 0;
+            }
+        </style>-->
+
+    </h:head>
+
+    <body>
+        <ui:composition template="./../../template.xhtml">
+            <ui:define name="content">
+                <h:form id="frmAccounts">
+
+                    <p:toolbar id="toolbarBill">
+                        <f:facet name="left">
+                            <p:focus context="toolbarBill"/>
+                            Tratar plan de cuentas
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                            
+                        </f:facet>
+                        
+                    </p:toolbar>
+
+                    <p:spacer height="20" width="0"></p:spacer>
+
+                    <!-- Div Principal -->
+                    <div  class="ui-grid ui-grid-responsive" id="divPrincipal">
+
+                        <div class="ui-grid-row">
+
+                            <div class="ui-grid-col-4">
+                                <p:outputLabel value="Agregar Cuenta" />
+                                <p:spacer width="100%" height="10"/>
+
+                                <p:outputLabel value="Codigo" for="inCod"/>
+                                <p:spacer width="55" height="0" />
+                                <p:outputLabel value="Nombre" for="inName"/>
+                                <p:spacer width="100%" height="10"/>
+
+                                <p:inputText id="inCod" size="10"  value="#{chartAccountsBean.accCode}"/>
+                                <p:spacer width="10" height="0" />
+                                <p:inputText id="inName" size="35" value="#{chartAccountsBean.accName}"/> 
+                                <p:spacer width="100%" height="10"/>
+                                
+                                <p:selectOneRadio id="Tipo" value="#{chartAccountsBean.opcion}">
+                                    <f:selectItem itemLabel="Titulo" itemValue="N" />
+                                    <f:selectItem itemLabel="Activa" itemValue="Y" />
+                                </p:selectOneRadio>
+                                <p:spacer width="100%" height="10"/>
+                                <p:commandButton value="Agregar" style="width: 90px" process="@this, inCod inName Tipo" action="#{chartAccountsBean.addAcc}"
+                                                 update="tree1"/>
+                                
+                                <p:spacer width="100%" height="10"/>
+
+                                <p:tree id="tree1" value="#{chartAccountsBean.root1}" var="node" selectionMode="single" selection="#{chartAccountsBean.selectedNode1}"
+                                        draggable="true" droppable="true" dragdropScope="demo" style="width: 95%">
+                                    <p:ajax event="dragdrop" listener="#{chartAccountsBean.onDragDrop}"  />
+                                    <p:treeNode>
+                                        <h:outputText value="#{node.acctcode} - #{node.acctname}"  style="background-color: skyblue"/>
+                                    </p:treeNode>
+                                </p:tree>
+                                <p:tooltip  id="toolTipFade" for="tree1" value="Arrastre hacia la derecha" />
+                                <p:spacer width="100%" height="302"/>
+                                
+                                <p:commandButton id="botonPrincipal" value="Guardar " process="@this, tree2" update="tree2" action="#{chartAccountsBean.btnPrincipal}"/>
+                                <p:defaultCommand target="botonPrincipal" />
+                            </div>
+
+                            <p:contextMenu for="tree2">
+                                <p:menuitem value="Eliminar" update="tree2" actionListener="#{chartAccountsBean.deleteNode}" icon="ui-icon-close"/>
+                            </p:contextMenu>
+
+                            <div class="ui-grid-col-8">
+                                <p:scrollPanel mode="native" style="width:700px;height:500px">
+                                    <p:tree id="tree2" value="#{chartAccountsBean.root2}" var="node" selectionMode="single" selection="#{chartAccountsBean.selectedNode2}"
+                                            draggable="true" droppable="true" dragdropScope="demo" style="width: 99.6%"
+                                            >
+                                        <p:ajax event="dragdrop" listener="#{chartAccountsBean.onDragDrop}"  />
+                                        <p:treeNode>
+                                            <h:outputText value="#{node.acctcode} - #{node.acctname}" style="#{node.finanse == 'Y' ? 'background-color: skyblue;' : 'background-color: none;'}"/>
+                                        </p:treeNode>
+                                    </p:tree>
+                                </p:scrollPanel>
+                            </div>
+
+                        </div>
+
+                        <!--Cierre Div Principal -->    
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+
+</ui:composition>

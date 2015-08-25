@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" language="groovy" pageWidth="612" pageHeight="792" columnWidth="442" leftMargin="85" rightMargin="85" topMargin="35" bottomMargin="35" uuid="707d1793-2a3b-4cd8-8300-b30249552bc1">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="212"/>
+	<parameter name="reportName" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="docentry" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Entrada doc.emis.]]></fieldDescription>
+	</field>
+	<field name="docnum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número de documento]]></fieldDescription>
+	</field>
+	<field name="doctype" class="java.lang.String"/>
+	<field name="canceled" class="java.lang.String">
+		<fieldDescription><![CDATA[Cancelado]]></fieldDescription>
+	</field>
+	<field name="docstatus" class="java.lang.String">
+		<fieldDescription><![CDATA[Status de documento]]></fieldDescription>
+	</field>
+	<field name="objtype" class="java.lang.String"/>
+	<field name="docdate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha doc.]]></fieldDescription>
+	</field>
+	<field name="docduedate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fe.vencimiento doc.]]></fieldDescription>
+	</field>
+	<field name="cardcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Proveedor por defecto]]></fieldDescription>
+	</field>
+	<field name="numatcard" class="java.lang.String">
+		<fieldDescription><![CDATA[Número de referencia del SN]]></fieldDescription>
+	</field>
+	<field name="cardname" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre SN]]></fieldDescription>
+	</field>
+	<field name="vatsum" class="java.lang.String">
+		<fieldDescription><![CDATA[Impuesto total]]></fieldDescription>
+	</field>
+	<field name="discsum" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Descuento total]]></fieldDescription>
+	</field>
+	<field name="doctotal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Total del documento]]></fieldDescription>
+	</field>
+	<field name="ref1" class="java.lang.String">
+		<fieldDescription><![CDATA[Referencia 1]]></fieldDescription>
+	</field>
+	<field name="ref2" class="java.lang.String">
+		<fieldDescription><![CDATA[Referencia 2]]></fieldDescription>
+	</field>
+	<field name="comments" class="java.lang.String"/>
+	<field name="jrnlmemo" class="java.lang.String">
+		<fieldDescription><![CDATA[Comentarios]]></fieldDescription>
+	</field>
+	<field name="paidtodate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Pagado hasta la fecha]]></fieldDescription>
+	</field>
+	<field name="transid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número de operación]]></fieldDescription>
+	</field>
+	<field name="receiptnum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número de recibo]]></fieldDescription>
+	</field>
+	<field name="groupnum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Código de condiciones de pago]]></fieldDescription>
+	</field>
+	<field name="confirmed" class="java.lang.String">
+		<fieldDescription><![CDATA[Confirmado]]></fieldDescription>
+	</field>
+	<field name="createtran" class="java.lang.String">
+		<fieldDescription><![CDATA[Crear registro en el diario]]></fieldDescription>
+	</field>
+	<field name="series" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Serie]]></fieldDescription>
+	</field>
+	<field name="taxdate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de documento]]></fieldDescription>
+	</field>
+	<field name="filler" class="java.lang.String"/>
+	<field name="rounddif" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Importe de diferencias de redondeo]]></fieldDescription>
+	</field>
+	<field name="rounding" class="java.lang.String">
+		<fieldDescription><![CDATA[Redondeo]]></fieldDescription>
+	</field>
+	<field name="canceldate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de cancelación]]></fieldDescription>
+	</field>
+	<field name="peymethod" class="java.lang.String">
+		<fieldDescription><![CDATA[Forma de pago]]></fieldDescription>
+	</field>
+	<field name="ctlaccount" class="java.lang.String">
+		<fieldDescription><![CDATA[Cuenta asociada]]></fieldDescription>
+	</field>
+	<field name="bplname" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre de sucursal]]></fieldDescription>
+	</field>
+	<field name="vatregnum" class="java.lang.String">
+		<fieldDescription><![CDATA[Número de registro de IVA]]></fieldDescription>
+	</field>
+	<field name="paidsum" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Total pagado]]></fieldDescription>
+	</field>
+	<field name="towhscode" class="java.lang.String">
+		<fieldDescription><![CDATA[Para almacen]]></fieldDescription>
+	</field>
+	<field name="nret" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[No. Retencion]]></fieldDescription>
+	</field>
+	<field name="namenp" class="java.lang.String">
+		<fieldDescription><![CDATA[Razón Social Cliente/Proveedor]]></fieldDescription>
+	</field>
+	<field name="quedan" class="java.lang.Integer">
+		<fieldDescription><![CDATA[No Quedan]]></fieldDescription>
+	</field>
+	<field name="fechreciva" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de Reclamo de IVA]]></fieldDescription>
+	</field>
+	<field name="fquedan" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de Emisión de Quedan]]></fieldDescription>
+	</field>
+	<field name="usersign" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Firma de usuario]]></fieldDescription>
+	</field>
+	<field name="createdate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de creación]]></fieldDescription>
+	</field>
+	<field name="createtime" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Hora de creación]]></fieldDescription>
+	</field>
+	<field name="docsubtype" class="java.lang.String">
+		<fieldDescription><![CDATA[Subtipo de documento]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<textField>
+				<reportElement x="171" y="29" width="100" height="20" uuid="2483f6c6-eed1-4b14-a75b-c8aa286d4f3a"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="157" y="0" width="129" height="20" uuid="fffdb8a3-cf6c-4974-a30c-c49ea8e0848a"/>
+				<textElement>
+					<font size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[ACOETMISAB DE R.L.]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField evaluationTime="Report" isBlankWhenNull="true">
+				<reportElement x="337" y="34" width="105" height="20" uuid="8fada02a-2fd4-45ab-b86c-2b1f14ddd62e"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="0" y="34" width="100" height="20" uuid="be1fe514-7e47-4c67-ab83-23c6e3b143a6"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

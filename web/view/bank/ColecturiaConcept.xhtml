@@ -1,0 +1,358 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Colecturia Concept</title>
+        <!--<style type="text/css">
+            .ui-panel .ui-panel-titlebar {
+                padding: 0;
+            }
+        </style>-->
+
+    </h:head>
+
+    <body>
+        <ui:composition template="./../../template.xhtml">
+            <ui:define name="content">
+                <h:form id="frmConcept">
+
+                    <p:toolbar id="toolbarBill">
+                        <f:facet name="left">
+                            <p:focus context="toolbarBill"/>
+                            Conceptos de Colecturia
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                            <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document" actionListener="#{colecturiaBean.botonNuevo}" 
+                                             update="frmConcept"
+                                             >
+
+                            </p:commandButton>
+
+                            <p:commandButton  tabindex="-1"  ajax="false"  icon="ui-icon-print" disabled="#{salesBean.btnPrint}"/>
+
+                        </f:facet>
+                    </p:toolbar>
+
+                    <p:spacer height="10" width="0"></p:spacer>
+
+                    <!-- Div Principal -->
+                    <div  class="ui-grid ui-grid-responsive" id="divPrincipal">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Numero de linea"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="No" size="15" value="#{conceptBean.lineNum}" disabled="#{conceptBean.lineNumState}"/>
+                            </div>
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Descripcion" />
+                            </div>
+                            <div class="ui-grid-col-4">
+                                <p:inputText id="descripcion" size="40" value="#{conceptBean.description}" maxlength="100"/>
+                            </div>
+                        </div>
+
+                        <p:spacer height="#{conceptBean.spacer1_h}" width="0"/>
+
+                        <div class="ui-grid-row">
+
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Estado de linea"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:selectOneRadio id="linea" value="#{conceptBean.lineStatus}">
+                                    <f:selectItem itemLabel="Activa" itemValue="Y" />
+                                    <f:selectItem itemLabel="Inactiva" itemValue="N" />
+                                </p:selectOneRadio>
+                            </div>
+
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Tipo de objeto"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="objeto" size="15" value="#{conceptBean.objType}"/>
+                            </div>
+
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Codigo de cuenta 1"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:autoComplete scrollHeight="250" id="cuenta1" forceSelection="true" minQueryLength="2" value="#{conceptBean.acctCode1}" 
+                                                completeMethod="#{purchaseQuotationBean.completeCode}" effect="fade" size="15" label="Codigo Cuenta">
+                                </p:autoComplete>
+                            </div>
+
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Valor 1"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="valor1" size="15" value="#{conceptBean.valor1}"/>
+                            </div>
+
+                        </div>
+                        <p:spacer height="#{conceptBean.spacer1_h}" width="0"/>
+                        <div class="ui-grid-row">
+
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Norma de reparto"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="reparto" size="15" value="#{conceptBean.ocrCode}" maxlength="8"/>
+                            </div>
+
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Numero de operacion"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="operacion" size="15" value="#{conceptBean.transId}"/>
+                            </div>
+
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Codigo de cuenta 2"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:autoComplete scrollHeight="250" id="cuenta2" forceSelection="true" minQueryLength="2" value="#{conceptBean.acctCode2}" 
+                                                completeMethod="#{purchaseQuotationBean.completeCode}" effect="fade" size="15" label="Codigo Cuenta">
+                                </p:autoComplete>
+                            </div>
+
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Valor 2"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="valor2" size="15" value="#{conceptBean.valor2}" maxlength="15"/>
+                            </div>
+
+                        </div>
+                        <p:spacer height="#{conceptBean.spacer1_h}" width="0"/>
+                        <div class="ui-grid-row">
+
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Total pagado"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="totalPago" size="15" value="#{conceptBean.paidSum}"/>
+                            </div>
+
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Impuesto total"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="impuesto" size="15" value="#{conceptBean.vatSum}"/>
+                            </div>
+
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Codigo de cuenta 3"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:autoComplete scrollHeight="250" id="cuenta3" forceSelection="true" minQueryLength="2" value="#{conceptBean.acctCode3}" 
+                                                completeMethod="#{purchaseQuotationBean.completeCode}" effect="fade" size="15" label="Codigo Cuenta">
+                                </p:autoComplete>
+                            </div>
+
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Valor 3"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="valor3" size="15" value="#{conceptBean.valor3}" maxlength="15"/>
+                            </div>
+
+                        </div>
+                        <p:spacer height="#{conceptBean.spacer1_h}" width="0"/>
+
+                        <div class="ui-grid-row">
+
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Cuenta Asociada"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:autoComplete scrollHeight="250" id="asociada" forceSelection="true" minQueryLength="2" value="#{conceptBean.ctlAccount}"
+                                                completeMethod="#{purchaseQuotationBean.completeCode}" effect="fade" size="15" label="Codigo Cuenta Asociada">
+                                </p:autoComplete>
+                            </div>
+
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Suma o Resta" />
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:selectOneRadio id="confirmado" value="#{conceptBean.sumRes}">
+                                    <f:selectItem itemLabel="SI" itemValue="Y" />
+                                    <f:selectItem itemLabel="NO" itemValue="N" />
+                                </p:selectOneRadio>
+                            </div>
+
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Forma de pago"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:selectOneMenu id="formaPago" style="width:80%" value="#{conceptBean.peyMethod}">
+                                    <f:selectItem itemLabel="Forma de pago" itemValue="#{0}" />
+                                    <f:selectItems value="#{salesBean.lstTipoPago}" var="typePay" itemLabel="#{typePay.catvalue}" itemValue="#{typePay.catcode}"/>
+                                </p:selectOneMenu>
+                            </div>
+
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Subtipo de Documento"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="subtipo" size="15" value="#{conceptBean.docSubType}" maxlength="2"/>
+                            </div>
+
+                        </div>
+                        <p:spacer height="#{conceptBean.spacer1_h}" width="0"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Aplica IVA"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:selectOneRadio id="IVA" value="#{conceptBean.IVA}">
+                                    <f:selectItem itemLabel="SI" itemValue="Y" />
+                                    <f:selectItem itemLabel="NO" itemValue="N" />
+                                </p:selectOneRadio>
+                            </div>
+                            
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Asiento Adicional"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:selectOneRadio id="adicional" value="#{conceptBean.adicional}">
+                                    <f:selectItem itemLabel="SI" itemValue="Y" />
+                                    <f:selectItem itemLabel="NO" itemValue="N" />
+                                </p:selectOneRadio>
+                            </div>
+                            
+                        </div>
+                        <p:spacer height="20" width="0"/>
+                        
+                        <!-- Boton AGREGAR -->
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1">
+                                <p:commandButton id="botonPrincipal" value="#{conceptBean.valueBoton}" action="#{conceptBean.btnAgregar}" 
+                                                 process="@this,IVA adicional No descripcion linea objeto cuenta1 valor1 reparto operacion cuenta2 valor2 totalPago impuesto cuenta3 valor3 asociada confirmado formaPago subtipo"/>
+                                <p:defaultCommand target="botonPrincipal" />
+                            </div>
+                        </div>
+                        <p:spacer height="20" width="0"/>
+                        <!-- Data table -->
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12">
+                                <p:contextMenu for="tableConcept">
+                                    <p:menuitem value="Actualizar"  action="#{conceptBean.contexUpdate()}"   icon="ui-icon-arrowrefresh-1-w"/>
+                                    <p:menuitem value="Eliminar"    action="#{conceptBean.contexDelete()}"   icon="ui-icon-close"/>
+                                </p:contextMenu>
+
+                                <p:dataTable  id="tableConcept" value="#{conceptBean.lstTable}" var="concept" rowIndexVar="rowIndex" scrollHeight="100%" scrollable="true"
+                                             style="height: 220px" selection="#{conceptBean.selectConcept}" selectionMode="single" rowKey="#{concept.linenum}"
+                                             sortBy="#{concept.linenum}">
+
+                                    <p:column headerText="#" style="width: 10px">
+                                        <h:outputText value="#{rowIndex+1}" />
+                                    </p:column>
+
+                                    <p:column headerText="No. Linea" style="width: 10%">
+                                        <h:outputText value="#{concept.linenum}" />
+                                    </p:column>
+
+                                    <p:column headerText="Estado de linea" style="width: 15%">
+                                        <h:outputText value="#{concept.linestatus}" />
+                                    </p:column>
+
+                                    <p:column headerText="Descripcion" style="width: 40%">
+                                        <h:outputText value="#{concept.dscription}" />
+                                    </p:column>
+
+                                    <p:column headerText="Tipo objeto" style="width: 15%">
+                                        <h:outputText value="#{concept.objtype}" />
+                                    </p:column>
+
+                                    <p:column headerText="Reparto" style="width: 15%">
+                                        <h:outputText value="#{concept.ocrcode}" />
+                                    </p:column>
+
+                                    <p:column headerText="Núm. operacion" style="width: 15%">
+                                        <h:outputText value="#{concept.transid}" />
+                                    </p:column>
+
+                                    <p:column headerText="Total pagado" style="width: 15%">
+                                        <h:outputText value="#{concept.paidsum}" />
+                                    </p:column>
+
+                                    <p:column headerText="Impuesto total" style="width: 15%">
+                                        <h:outputText value="#{concept.vatsum}" />
+                                    </p:column>
+
+                                    <p:column headerText="Cuenta Asociada" style="width: 15%">
+                                        <h:outputText value="#{concept.ctlaccount}" />
+                                    </p:column>
+
+                                </p:dataTable>
+                            </div>
+                        </div>
+ 
+                    <!-- Cierre Div Principal -->  
+                    </div>
+                </h:form>
+                
+                <h:form>
+                    <p:dialog header="Confirmacion" widgetVar="dlgC2" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea guardar los cambios?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{conceptBean.confirmDialog}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{conceptBean.cancelDialog}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+                
+                <h:form>
+                    <p:dialog header="Confirmacion" widgetVar="dlgC1" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Confirma que desea eliminar el concepto?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{conceptBean.confirmDialog2}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No" process="@this" styleClass="ui-confirmdialog-yes"  actionListener="#{conceptBean.cancelDialog2}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+                
+            </ui:define>
+        </ui:composition>
+    </body>
+
+</ui:composition>

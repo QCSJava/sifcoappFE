@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dailySalesControl.jrxml" pageWidth="595" pageHeight="842" columnWidth="455" leftMargin="85" rightMargin="55" topMargin="35" bottomMargin="35" uuid="d665bf20-2d51-4d8b-aae5-566096205736">
+	<property name="ireport.zoom" value="1.2100000000000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="8"/>
+	<parameter name="pdocnum" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pdocdate" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PWHERE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[" docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PDOCDATE2" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\workspace\\NBProjects\\sifcoappFE\\web\\reports\\design\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="corpName" class="java.lang.String">
+		<defaultValueExpression><![CDATA["ACOETMISAB DE R.L."]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportName" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Control Diario de Ventas"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT h.*, (select catvalue from cat_tab1_catalogos where to_number(catcode,'99')=h.series
+and tablecode=9) doctypename
+  FROM sal_sal0_sales h
+where $P!{PWHERE}
+order by doctype,docdate,docnum]]>
+	</queryString>
+	<field name="docentry" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Entrada doc.emis.
+]]></fieldDescription>
+	</field>
+	<field name="docnum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número de documento]]></fieldDescription>
+	</field>
+	<field name="doctype" class="java.lang.String"/>
+	<field name="canceled" class="java.lang.String">
+		<fieldDescription><![CDATA[Cancelado
+]]></fieldDescription>
+	</field>
+	<field name="docstatus" class="java.lang.String">
+		<fieldDescription><![CDATA[Status de documento
+]]></fieldDescription>
+	</field>
+	<field name="objtype" class="java.lang.String"/>
+	<field name="docdate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha doc.
+]]></fieldDescription>
+	</field>
+	<field name="docduedate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fe.vencimiento doc.
+]]></fieldDescription>
+	</field>
+	<field name="cardcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Proveedor por defecto
+]]></fieldDescription>
+	</field>
+	<field name="numatcard" class="java.lang.String">
+		<fieldDescription><![CDATA[Número de referencia del SN
+]]></fieldDescription>
+	</field>
+	<field name="cardname" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre SN
+]]></fieldDescription>
+	</field>
+	<field name="vatsum1" class="java.lang.String">
+		<fieldDescription><![CDATA[Impuesto total
+]]></fieldDescription>
+	</field>
+	<field name="discsum" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Descuento total
+]]></fieldDescription>
+	</field>
+	<field name="doctotal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Total del documento
+]]></fieldDescription>
+	</field>
+	<field name="ref1" class="java.lang.String">
+		<fieldDescription><![CDATA[Referencia 1
+]]></fieldDescription>
+	</field>
+	<field name="ref2" class="java.lang.String">
+		<fieldDescription><![CDATA[Referencia 2
+]]></fieldDescription>
+	</field>
+	<field name="comments" class="java.lang.String"/>
+	<field name="jrnlmemo" class="java.lang.String">
+		<fieldDescription><![CDATA[Comentarios
+]]></fieldDescription>
+	</field>
+	<field name="paidtodate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Pagado hasta la fecha
+]]></fieldDescription>
+	</field>
+	<field name="transid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número de operación
+]]></fieldDescription>
+	</field>
+	<field name="receiptnum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número de recibo
+]]></fieldDescription>
+	</field>
+	<field name="groupnum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Código de condiciones de pago
+]]></fieldDescription>
+	</field>
+	<field name="confirmed" class="java.lang.String">
+		<fieldDescription><![CDATA[Confirmado
+]]></fieldDescription>
+	</field>
+	<field name="createtran" class="java.lang.String">
+		<fieldDescription><![CDATA[Crear registro en el diario
+]]></fieldDescription>
+	</field>
+	<field name="series" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Serie
+]]></fieldDescription>
+	</field>
+	<field name="taxdate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de documento
+]]></fieldDescription>
+	</field>
+	<field name="filler" class="java.lang.String"/>
+	<field name="rounddif" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Importe de diferencias de redondeo
+]]></fieldDescription>
+	</field>
+	<field name="rounding" class="java.lang.String">
+		<fieldDescription><![CDATA[Redondeo
+]]></fieldDescription>
+	</field>
+	<field name="canceldate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de cancelación]]></fieldDescription>
+	</field>
+	<field name="peymethod" class="java.lang.String">
+		<fieldDescription><![CDATA[Forma de pago
+]]></fieldDescription>
+	</field>
+	<field name="ctlaccount" class="java.lang.String">
+		<fieldDescription><![CDATA[Cuenta asociada
+]]></fieldDescription>
+	</field>
+	<field name="bplname" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre de sucursal
+]]></fieldDescription>
+	</field>
+	<field name="vatregnum" class="java.lang.String">
+		<fieldDescription><![CDATA[Número de registro de IVA
+]]></fieldDescription>
+	</field>
+	<field name="paidsum" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Total pagado
+]]></fieldDescription>
+	</field>
+	<field name="towhscode" class="java.lang.String">
+		<fieldDescription><![CDATA[Para almacen]]></fieldDescription>
+	</field>
+	<field name="nret" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[No. Retencion
+]]></fieldDescription>
+	</field>
+	<field name="namenp" class="java.lang.String">
+		<fieldDescription><![CDATA[Razón Social Cliente/Proveedor
+]]></fieldDescription>
+	</field>
+	<field name="quedan" class="java.lang.Integer">
+		<fieldDescription><![CDATA[No Quedan
+]]></fieldDescription>
+	</field>
+	<field name="fechreciva" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de Reclamo de IVA
+]]></fieldDescription>
+	</field>
+	<field name="fquedan" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de Emisión de Quedan
+]]></fieldDescription>
+	</field>
+	<field name="usersign" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Firma de usuario]]></fieldDescription>
+	</field>
+	<field name="createdate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de creación
+]]></fieldDescription>
+	</field>
+	<field name="createtime" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Hora de creación]]></fieldDescription>
+	</field>
+	<field name="docsubtype" class="java.lang.String">
+		<fieldDescription><![CDATA[Subtipo de documento]]></fieldDescription>
+	</field>
+	<field name="vatsum" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Impuesto total
+]]></fieldDescription>
+	</field>
+	<field name="doctypename" class="java.lang.String"/>
+	<variable name="variable1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{vatsum}]]></variableExpression>
+	</variable>
+	<variable name="vatsum_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{vatsum}]]></variableExpression>
+	</variable>
+	<variable name="doctotal_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{doctotal}]]></variableExpression>
+	</variable>
+	<variable name="vatsum_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{vatsum}]]></variableExpression>
+	</variable>
+	<variable name="doctotal_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{doctotal}]]></variableExpression>
+	</variable>
+	<variable name="PAGE_TOTAL" class="java.lang.Integer" resetType="Page" calculation="DistinctCount">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<variable name="CURRENT_DATE" class="java.util.Date">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[new Date();]]></initialValueExpression>
+	</variable>
+	<group name="doctypes">
+		<groupExpression><![CDATA[$F{doctype}]]></groupExpression>
+		<groupHeader>
+			<band height="25">
+				<textField isBlankWhenNull="true">
+					<reportElement x="5" y="4" width="286" height="20" uuid="603b7482-799c-4eec-a844-f5b467ff266a"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{doctypename}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<subreport>
+					<reportElement x="195" y="5" width="50" height="15" uuid="a3875710-483e-4d71-b635-6d2817959bdf"/>
+					<subreportParameter name="PDOCDATE2">
+						<subreportParameterExpression><![CDATA[$P{PDOCDATE2}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="PWHERE">
+						<subreportParameterExpression><![CDATA[$P{PWHERE}+ " and doctype='" + $F{doctype}+"'" + " and peymethod='1'"]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pdocdate">
+						<subreportParameterExpression><![CDATA[$P{pdocdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["dailySalesControl_sr1.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement x="247" y="5" width="50" height="15" uuid="d820e056-99b7-4250-9d1e-a25efec6ea5b"/>
+					<subreportParameter name="PDOCDATE2">
+						<subreportParameterExpression><![CDATA[$P{PDOCDATE2}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="SUBREPORT_DIR">
+						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="PWHERE">
+						<subreportParameterExpression><![CDATA[$P{PWHERE}+ " and doctype='" + $F{doctype}+"'" + " and peymethod='3'"]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pdocdate">
+						<subreportParameterExpression><![CDATA[$P{pdocdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["dailySalesControl_sr1.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement x="299" y="5" width="50" height="15" uuid="daaa2faa-0b0a-4f99-b607-52c48e67a7e5"/>
+					<subreportParameter name="PDOCDATE2">
+						<subreportParameterExpression><![CDATA[$P{PDOCDATE2}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="SUBREPORT_DIR">
+						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="PWHERE">
+						<subreportParameterExpression><![CDATA[$P{PWHERE}+ " and doctype='" + $F{doctype}+"'" + " and peymethod='4'"]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pdocdate">
+						<subreportParameterExpression><![CDATA[$P{pdocdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["dailySalesControl_sr1.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement x="354" y="5" width="50" height="15" uuid="94eff193-3c4f-43bf-86c9-24f29d8783fd"/>
+					<subreportParameter name="PDOCDATE2">
+						<subreportParameterExpression><![CDATA[$P{PDOCDATE2}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="SUBREPORT_DIR">
+						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="PWHERE">
+						<subreportParameterExpression><![CDATA[$P{PWHERE}+ " and doctype='" + $F{doctype}+"'" + " and peymethod='2'"]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pdocdate">
+						<subreportParameterExpression><![CDATA[$P{pdocdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["dailySalesControl_sr1.jasper"]]></subreportExpression>
+				</subreport>
+				<line>
+					<reportElement x="0" y="2" width="455" height="1" uuid="481e0ffd-edb0-4aa4-920b-c04ebd1cd96a"/>
+				</line>
+				<subreport>
+					<reportElement x="404" y="5" width="50" height="15" uuid="a4309a6e-66ed-4c09-be52-aca3ba6b631d"/>
+					<subreportParameter name="SUBREPORT_DIR">
+						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="PDOCDATE2">
+						<subreportParameterExpression><![CDATA[$P{PDOCDATE2}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="corpName">
+						<subreportParameterExpression><![CDATA[$P{corpName}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="PWHERE">
+						<subreportParameterExpression><![CDATA[$P{PWHERE}+ " and doctype='" + $F{doctype}+"'" + " and peymethod='5'"]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pdocnum">
+						<subreportParameterExpression><![CDATA[$P{pdocnum}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pdocdate">
+						<subreportParameterExpression><![CDATA[$P{pdocdate}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["dailySalesControl_sr1.jasper"]]></subreportExpression>
+				</subreport>
+				<staticText>
+					<reportElement x="4" y="2" width="100" height="18" uuid="dba765f1-4db9-4596-a5b5-10781dbd4626"/>
+					<text><![CDATA[Totales:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="104" splitType="Stretch">
+			<staticText>
+				<reportElement x="131" y="56" width="35" height="21" isRemoveLineWhenBlank="true" uuid="87401f35-e56e-4028-b35f-064d1cbc9fbf">
+					<printWhenExpression><![CDATA[!$P{pdocdate}.equals($P{PDOCDATE2})]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Desde:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="166" y="56" width="68" height="20" isRemoveLineWhenBlank="true" uuid="5390916d-8040-4ade-86aa-303dddc58774">
+					<printWhenExpression><![CDATA[!$P{pdocdate}.equals($P{PDOCDATE2})]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pdocdate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="234" y="55" width="35" height="21" isRemoveLineWhenBlank="true" uuid="43cec361-2e56-4721-8f61-748bc196c270">
+					<printWhenExpression><![CDATA[!$P{pdocdate}.equals($P{PDOCDATE2})]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="269" y="56" width="68" height="20" isRemoveLineWhenBlank="true" uuid="8126564f-2b88-4568-afc5-f68b703c138e">
+					<printWhenExpression><![CDATA[!$P{pdocdate}.equals($P{PDOCDATE2})]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PDOCDATE2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="181" y="56" width="35" height="21" uuid="1e3c11be-205a-4d33-8828-158ac49d48d9">
+					<printWhenExpression><![CDATA[$P{pdocdate}.equals($P{PDOCDATE2})]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="219" y="56" width="68" height="20" uuid="b0c88c51-2beb-40df-a362-6bba098e2557">
+					<printWhenExpression><![CDATA[$P{pdocdate}.equals($P{PDOCDATE2})]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pdocdate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="6" width="434" height="20" uuid="e3385dad-382f-4f75-ae12-a08dcc9891fb"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{corpName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="31" width="434" height="20" uuid="58246384-0bab-423c-b656-8bbeb5646f36"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="5" width="44" height="17" uuid="3fcb8c21-da00-4d9f-bfbc-fa51eeb5fd91"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha
+Doc.
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="46" y="5" width="55" height="21" uuid="114fb874-3146-4547-8e1f-50cc49312dc5"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Num. Comprobante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="5" width="56" height="17" uuid="172f59a1-30e6-4133-aa84-17881ba952fa"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="193" y="5" width="45" height="17" uuid="ec75697a-e26c-4e22-9df8-cf2d74fd3b72"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Contado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="245" y="5" width="45" height="17" uuid="802abb5f-2b71-48b9-ab21-83d6a9946a70"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Credito]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="297" y="5" width="45" height="17" uuid="912dbc96-9767-4b20-9b68-5215563b7b3d"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cheque]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="349" y="5" width="45" height="17" uuid="b585209c-a54c-4dd7-84eb-a680566e9f04"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tarjeta]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="3" width="455" height="1" uuid="745c6573-5fee-44d3-a9d7-9e65087779f4"/>
+			</line>
+			<line>
+				<reportElement x="0" y="29" width="455" height="1" uuid="932bc34a-c9a2-41a5-8a4a-d47bbaa75dc4"/>
+			</line>
+			<line>
+				<reportElement x="0" y="1" width="455" height="1" uuid="a003e7dd-ff10-435f-968d-1e745e2cbac4"/>
+			</line>
+			<line>
+				<reportElement x="0" y="27" width="455" height="1" uuid="7df947b6-518e-4988-9b55-32532ff911d3"/>
+			</line>
+			<staticText>
+				<reportElement x="404" y="5" width="45" height="17" uuid="94919ecd-cc4c-4381-9806-ce7c0be0c35b"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Colecturía]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="2" y="2" width="45" height="15" uuid="c0ebb738-8b2a-476d-9645-91c0e6243edf"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="48" y="2" width="55" height="15" uuid="37106f6d-b2b3-4b9f-a6c3-4fd57b5ff395"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{docnum}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="103" y="2" width="90" height="15" uuid="3bba158b-00ea-458d-b166-dcefbf745324"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cardname}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.0000">
+				<reportElement x="195" y="2" width="50" height="15" uuid="92405a0c-228e-41e1-9758-686757b83593">
+					<printWhenExpression><![CDATA[$F{peymethod}.equals("1")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.0000">
+				<reportElement x="247" y="2" width="50" height="15" uuid="ea3ac897-ef4f-4a43-b3c3-4e1b57277731">
+					<printWhenExpression><![CDATA[$F{peymethod}.equals("3")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.0000">
+				<reportElement x="299" y="2" width="50" height="15" uuid="1c6541c6-1430-4cad-bdbf-70f78d8e9981">
+					<printWhenExpression><![CDATA[$F{peymethod}.equals("4")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.0000">
+				<reportElement x="351" y="2" width="50" height="15" uuid="770f2df9-9ca6-410e-b4fb-5a4d45587829">
+					<printWhenExpression><![CDATA[$F{peymethod}.equals("2")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.0000">
+				<reportElement x="404" y="2" width="50" height="15" uuid="29de092c-8918-4159-bd9d-e20adb1da4b1">
+					<printWhenExpression><![CDATA[$F{peymethod}.equals("5")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="33" splitType="Stretch">
+			<textField>
+				<reportElement x="429" y="17" width="26" height="15" uuid="ddcddabf-65b5-420d-8bfb-7385a294694d"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="375" y="17" width="26" height="15" uuid="b85076ce-7131-45eb-8eb1-4a03a754be0d"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="348" y="17" width="27" height="15" uuid="c4be3222-01ce-4fd3-ad15-da302a144ab2"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pag.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="401" y="17" width="27" height="15" uuid="16309d0b-07fd-4a3f-a220-f4ffaee3cb1d"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[de]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="4" y="17" width="100" height="15" uuid="40f5b112-b6df-411e-9aaf-46e2c41fc2df"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="0" width="189" height="15" uuid="c6718780-024a-4580-a0d6-4750363a40ef"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{JASPER_REPORT}.getName()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

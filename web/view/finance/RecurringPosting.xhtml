@@ -1,0 +1,482 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <body>
+        <ui:composition template="./../../template.xhtml">
+            <ui:define name="content"> 
+                <h:form id="formRecurring">
+                    <!--  -->
+                    <p:toolbar id="toolbar1">
+
+                        <f:facet name="left">
+                            <p:focus context="toolbar1"/>
+                            Contabilizacones Périodicas 
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                            <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document" actionListener="#{RecurringPosting.botonNuevo}" process="@this" 
+                                             update="formRecurring">
+
+                            </p:commandButton>
+
+                            <p:commandButton tabindex="-1" title="Buscar" icon="ui-icon-search" actionListener="#{RecurringPosting.botonBuscar}" process="@this" 
+                                             update="formRecurring">
+
+                            </p:commandButton>
+                            <p:commandButton tabindex="-1" type="button" title="Print" icon="ui-icon-print" />
+                        </f:facet>
+                    </p:toolbar>
+
+                    <p:spacer height="20" width="0"></p:spacer>
+
+                    <!-- readonly="#'{RecurringPosting.disable}" -->
+                    <div class="ui-grid ui-grid-responsive">
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2"><h:outputText  value="Código"></h:outputText></div>
+                            <div class="ui-grid-col-2"><h:outputText value="Instancia" ></h:outputText></div>
+                            <div class="ui-grid-col-2"><h:outputText value="Descripción"/></div>
+
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="rcurcode" value="#{RecurringPosting.rcurcode}" maxlength="8" readonly="#{RecurringPosting.disableX}"></p:inputText>
+                            </div>
+                            <div class="ui-grid-col-2"><p:inputText id="instance" value="#{RecurringPosting.instance}" readonly="true"></p:inputText></div>
+                            <div class="ui-grid-col-5"><p:inputText  style="width: 105%" id="rcurdesc" value="#{RecurringPosting.rcurdesc}"></p:inputText></div>
+
+                        </div>
+                        <p:spacer height="7" width="0"></p:spacer>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2"> <h:outputText value="Referencia 1" ></h:outputText></div>
+                            <div class="ui-grid-col-2"> <h:outputText value="Referencia 2" ></h:outputText></div>
+                            <div class="ui-grid-col-2"> <h:outputText value="Referencia 3" ></h:outputText></div>
+                            <div class="ui-grid-col-2"> <h:outputText value="Comentarios" ></h:outputText></div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:inputText value="#{RecurringPosting.ref1}" id="ref1" ></p:inputText>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText value="#{RecurringPosting.ref2}" id="ref2" ></p:inputText>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText value="#{RecurringPosting.ref3}" id="ref3" ></p:inputText>
+                            </div>
+                            <div class="ui-grid-col-3">
+                                <p:inputTextarea id="coment" rows="3" cols="40" value="#{RecurringPosting.memo}" />
+                            </div>
+                            <div class="ui-grid-col-2">
+
+                            </div>
+
+                        </div>
+
+                        <!-- FOCUS -->
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-11">
+
+                            </div>
+                            <div class="ui-grid-col-1">
+                                <p:commandButton tabindex="10" id="botonAgregar" actionListener="#{RecurringPosting.accionAgregar}" value="Agregar"   icon="ui-icon-check" validateClient="true"
+                                                 update="table Codigocuenta nombrecuenta debe haber"
+                                                 process="@this,Codigocuenta nombrecuenta debe haber " disabled="#{RecurringPosting.disableComun}"/>
+
+                            </div>
+                        </div>
+                        <!-- Boton agregar al data table -->
+
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12"><p:spacer height="20"/></div>
+                        </div>
+
+                        <div class="ui-grid-row" >  
+                            <div class="ui-grid-col-1"></div>
+                            <div class="ui-grid-col-3"><h:outputText value="Cuenta de mayor/Código SN"/></div>
+                            <div class="ui-grid-col-4"><h:outputText value="Cuenta de mayor/Nombre SN" /></div>
+                            <div class="ui-grid-col-2"><h:outputText value="Debe" /></div>
+                            <div class="ui-grid-col-2"><h:outputText value="Haber" /> </div>
+                        </div>
+
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1"></div>
+                            <div class="ui-grid-col-3">
+                                <p:autoComplete tabindex="6"  id="Codigocuenta" size="35" forceSelection="true" minQueryLength="3" value="#{RecurringPosting.account}"
+                                                completeMethod="#{RecurringPosting.completeCode}" effect="fade" label="Codigo" >
+                                    <p:ajax event="itemSelect" listener="#{RecurringPosting.findAccount}" update="Codigocuenta nombrecuenta"/>
+                                </p:autoComplete>
+                            </div>
+                            <div class="ui-grid-col-4">
+                                <p:autoComplete tabindex="7"  id="nombrecuenta"  size="50" forceSelection="true" minQueryLength="3" value="#{RecurringPosting.shortname}"
+                                                completeMethod="#{RecurringPosting.completeText}" effect="fade" label="Cuenta" >
+                                    <p:ajax event="itemSelect" listener="#{RecurringPosting.findAccount}" update="Codigocuenta nombrecuenta" />
+                                </p:autoComplete>
+                            </div>
+                            <div class="ui-grid-col-2"><p:inputText id="debe" tabindex="8" style="width: 70%" disabled="#{RecurringPosting.disable2}" value="#{RecurringPosting.debit}" >
+                                    <p:ajax event="keyup" update="haber" listener="#{RecurringPosting.DisableInput}" process="@this debe haber"/> 
+                                </p:inputText></div>
+
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="haber" tabindex="9" style="width: 70%" value="#{RecurringPosting.credit}" disabled="#{RecurringPosting.disable}">
+                                    <p:ajax event="keyup" update="debe" listener="#{RecurringPosting.DisableInput}" process="@this debe haber"/>
+                                </p:inputText>
+                            </div>
+
+                        </div>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12"><p:spacer height="20"></p:spacer></div>
+                        </div>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12">
+                                <p:contextMenu for="table">
+                                    <p:menuitem value="Eliminar"  icon="ui-icon-close" actionListener="#{RecurringPosting.deleteDetalle}" update="@this table :formRecurring:table:totloc :formRecurring:table:totsys" process="@this">
+
+                                    </p:menuitem>
+                                </p:contextMenu>    
+
+                                <p:dataTable id="table" var="Art" value="#{RecurringPosting.listaDetalles}" rowKey="#{Art.lineid}" rendered="true"
+                                             rowIndexVar="rowIndex" selectionMode="single" scrollable="true" scrollHeight="250" selection="#{RecurringPosting.selectDetail}"
+                                             disabledSelection="#{RecurringPosting.disableComun}" emptyMessage="No hay registros">
+                                    <p:ajax event="rowSelect"  process="@this" update="table"/>
+                                    <p:columnGroup type="header">
+                                        <p:row>
+                                            <p:column headerText="#" style="width: 5%" />
+                                            <p:column headerText="Cuenta de mayor/Código SN" style="width: 20%" />
+                                            <p:column headerText="Cuenta de mayor/Nombre SN" style="width: 35%" />
+                                            <p:column headerText="Debe" style="width: 10%" />
+                                            <p:column headerText="Haber" style="width: 10%"/>
+                                        </p:row>
+                                    </p:columnGroup>
+                                    <p:column>
+                                        <h:outputText value="#{rowIndex+1}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{Art.acctcode}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{Art.acctdesc}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{Art.debit}" >
+                                            <f:convertNumber type="currency" currencySymbol="$" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{Art.credit}" >
+                                            <f:convertNumber type="currency" currencySymbol="$" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:columnGroup type="footer">
+                                        <p:row>
+                                            <p:column></p:column>
+                                            <p:column></p:column>
+                                            <p:column style="text-align: right" footerText="Totales:" />
+                                            <p:column id="totloc" footerText="$#{RecurringPosting.loctotal}" />
+                                            <p:column id="totsys" footerText="$#{RecurringPosting.systotal}" />                                                        
+                                        </p:row>
+                                    </p:columnGroup>
+                                </p:dataTable>
+
+                            </div>
+                        </div>
+                        <br></br>
+                    </div>
+                    <div class="ui-grid ui-grid-responsive">
+
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2"> <h:outputText  value="Frecuencia"></h:outputText></div>
+                            <div class="ui-grid-col-2">
+                                <p:selectOneMenu  id="almDest" value="#{RecurringPosting.frequency}" style="width: 100%"  valueChangeListener="#{RecurringPosting.stateChangeListener}" disabled="#{goodsIssuesBean.disable}">
+                                    <f:selectItems value="#{RecurringPosting.classLst}" var="model" itemLabel="#{model.catvalue}" itemValue="#{model.catcode}"/>
+                                    <p:ajax event="change" update="almDest2"/>
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:selectOneMenu id="almDest2" value="#{RecurringPosting.remind}" style="width: 100%"   disabled="#{RecurringPosting.disable3}">
+                                    <f:selectItems value="#{RecurringPosting.generalLst}" var="model2" itemLabel="#{model2.catvalue}" itemValue="#{model2.catcode}"/>
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="ui-grid-col-1"></div>
+                            <div class="ui-grid-col-1">
+                                <p:selectBooleanCheckbox id="dis" itemLabel="Válido hasta" value="#{RecurringPosting.disableY}"> 
+                                    <p:ajax update="FechaDo" listener="#{RecurringPosting.selectBooleanView}" />
+                                </p:selectBooleanCheckbox>
+                            </div>
+                        </div>
+                        <br></br>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <h:outputText  id="nameAlm" value="Próxima Ejecución"></h:outputText>
+                            </div>
+                            <div class="ui-grid-col-2"><p:calendar id="FechaDoc" showOn="button" size="10" value="#{RecurringPosting.nextdeu}"  pattern="dd/MM/yyyy" locale="es"/></div>
+                            <div class="ui-grid-col-3"></div>
+
+                            <div class="ui-grid-col-2"><p:calendar id="FechaDo" showOn="button" size="10" value="#{RecurringPosting.limitdate}"  pattern="dd/MM/yyyy" locale="es" disabled="#{RecurringPosting.limitrtrns}"/></div>
+
+                        </div>
+                        <br></br>
+                        <!-- BOTON PRINCIPAL -->
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1">
+                                <p:commandButton tabindex="0" id="botonPrincipal" value="#{RecurringPosting.botonEstado}" actionListener="#{RecurringPosting.botonPrincipal}" update="tableDialog botonPrincipal table botonAgregar "
+                                                 process="@this, rcurcode instance rcurdesc ref1 ref2 ref3  coment FechaDoc FechaDo dis almDest2"  >
+                                </p:commandButton>
+
+                            </div>
+                            <div class="ui-grid-col-9">
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:commandButton  id="botonPrincipal2" value="Lista de confirmaciones" actionListener="#{RecurringPosting.ShowRecurring}" update=":nuevo:tableDialog2"
+                                                  process="@this"  >
+                                </p:commandButton>
+                                <p:defaultCommand target="botonPrincipal2" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <p:dialog closeOnEscape="true" header="Datos encontrados" widgetVar="dlg2" modal="true"  width="1000" height="250" >
+                        <p:dataTable id="tableDialog" var="Rec" value="#{RecurringPosting.listaBusquedaTable}"  scrollable="true" scrollHeight="90%"
+                                     selection="#{RecurringPosting.selectJournal}" rowKey="#{Rec.entrycount}" selectionMode="single" rowIndexVar="rowIndex" >
+
+                            <p:ajax event="rowDblselect"  process="@this" listener="#{RecurringPosting.selectDialog}"/>
+
+                            <p:column headerText="#" style="width: 10px">
+                                <h:outputText value="#{rowIndex + 1}" />
+                            </p:column>
+                            <p:column headerText="Instancia" sortBy="#{Rec.instance}" >
+                                <h:outputText value="#{Rec.instance}" />
+                            </p:column>
+                            <p:column headerText="Còdigo" sortBy="#{Rec.rcurcode}">
+                                <h:outputText value="#{Rec.rcurcode}" />
+                            </p:column>
+
+                            <p:column headerText="Descripción" sortBy="#{Rec.rcurdesc}">
+                                <h:outputText value="#{Rec.rcurdesc}" />
+                            </p:column>
+
+                            <p:column headerText="Total Operación" sortBy="#{Rec.volume}" >
+                                <h:outputText value="#{Rec.volume}" />
+                            </p:column>
+
+                            <p:column headerText="Próxima ejecución" sortBy="#{Rec.nextdeu}" >
+                                <h:outputText value="#{Rec.nextdeu}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:dialog> 
+                </h:form>
+                
+                <h:form id="nuevo">
+
+                    <p:dialog id="dlgT" header="Confirmación de Contabilizaciones periódicas" widgetVar="dlg001" modal="true"  width="1000" height="300"
+                              closeOnEscape="true" dynamic="true" >
+                        <div class="ui-grid ui-grid-responsive">
+                            <h:outputText value="Las contabilizaciones mencionadas a continuación deben ejecutarse hoy" /><br></br>
+                            <h:outputText value="Marque las filas que desea ejecutar o eliminar" />
+                            <br></br>
+                            <br></br>
+                            <h:outputText value="La fecha de la transacción de contabilizaciones periódicas será:" style="font-weight: bold" />
+                            <p:selectOneRadio id="isActive" value="#{RecurringPosting.fecha}">
+                                <f:selectItem itemLabel="Fecha de sistema actual" itemValue="true" />
+                                <f:selectItem itemLabel="Fecha de contabilizaciones periódicas" itemValue="false" />
+                            </p:selectOneRadio>
+                            <p:dataTable id="tableDialog2" var="Rec" value="#{RecurringPosting.lstExecute}"  scrollable="true" style="height: 200px"
+                                         rowKey="#{Rec.entrycount}"  rowIndexVar="rowIndex" selection="#{RecurringPosting.recurringSelected}"
+                                         emptyMessage="No hay Contabilizaciones pendientes" scrollHeight="50%">
+                                <p:columnGroup type="header">
+                                    <p:row>
+                                        <p:column headerText="" style="text-align:center;width: 2%"/>
+                                        <p:column headerText="#" style="width: 2%"/>
+                                        <p:column headerText="Código" style="width:5%" />
+                                        <p:column headerText="Descripción"  style="width:15%"/>
+                                        <p:column headerText="Fecha" style="width:7%"/>
+                                        <p:column headerText="Valor" style="width:7%"/>
+                                        <p:column headerText="Instancia" style="width:7%"/>
+                                    </p:row>
+                                </p:columnGroup>
+                                <p:ajax  event="rowSelect"  listener="#{RecurringPosting.Add}" update="totloc2"  />
+                                <p:ajax  event="rowSelectCheckbox"  listener="#{RecurringPosting.Add}" update="totloc2"  />
+                                <p:ajax  event="toggleSelect"  listener="#{RecurringPosting.Add}" update="totloc2"  />
+
+                                <p:column selectionMode="multiple" style="text-align:center" >
+                                </p:column>
+
+                                <p:column>
+                                    <h:outputText value="#{rowIndex + 1}" />
+
+                                </p:column>
+                                <p:column sortBy="#{Rec.rcurcode}">
+                                    <h:outputText value="#{Rec.rcurcode}" />
+                                </p:column>
+
+                                <p:column sortBy="#{Rec.rcurdesc}">
+                                    <h:outputText value="#{Rec.rcurdesc}" />
+                                </p:column>
+
+                                <p:column sortBy="#{Rec.nextdeu}" >
+                                    <h:outputText value="#{Rec.nextdeu}" >
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column sortBy="#{Rec.volume}" >
+                                    <h:outputText value="#{Rec.volume}" >
+                                        <f:convertNumber type="currency" currencySymbol="$" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column sortBy="#{Rec.instance}" >
+                                    <h:outputText value="#{Rec.instance}" >
+                                    </h:outputText>
+                                </p:column>
+                                <p:columnGroup type="footer">
+                                    <p:row>
+                                        <p:column></p:column>
+                                        <p:column></p:column>
+                                        <p:column></p:column>
+                                        <p:column></p:column>
+                                        <p:column style="text-align: right" footerText="Total:" />
+                                        <p:column id="totloc2" footerText="$#{RecurringPosting.totalVolumen > 0? RecurringPosting.totalVolumen:RecurringPosting.totalVolumen}" />
+                                        <p:column></p:column>
+                                    </p:row>
+                                </p:columnGroup>
+                            </p:dataTable>
+
+                            <f:facet name="footer">
+
+                                <p:commandButton  value="Ejecutar" actionListener="#{RecurringPosting.Execute}"
+                                                  process="@this tableDialog2 isActive"> 
+                                </p:commandButton>
+                                <p:spacer width="20" height="0"></p:spacer>
+                                <p:commandButton id="Cancel" value="Cancelar" type="button" onclick="PF('dlg001').hide();"> 
+                                </p:commandButton>
+                                <p:spacer width="670" height="0"></p:spacer>
+                                <p:commandButton value="Eliminar" actionListener="#{RecurringPosting.Delete}" style="left: initial"
+                                                 process="@this tableDialog2"/>
+                            </f:facet>
+                        </div>
+                    </p:dialog> 
+
+                </h:form>
+
+                <h:form>
+                    <p:dialog header="Confirmacion" widgetVar="dlg9" width="230" modal="false" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea guardar los cambios?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{RecurringPosting.confirmDialog}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{RecurringPosting.cancelDialog}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+
+                <h:form>
+                    <p:dialog header="Confirmacion" widgetVar="dlg10" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Se perderan los datos ingresados, Desea continuar?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{RecurringPosting.confirmDialog2}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{RecurringPosting.cancelDialog2}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+
+                <h:form>
+                    <p:dialog header="Confirmacion" widgetVar="dlg11" width="230" modal="false" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea ejecutar las transacciones?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{RecurringPosting.confirmDialog3}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{RecurringPosting.cancelDialog3}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+
+                <h:form>
+                    <p:dialog header="Confirmacion" widgetVar="dlg12" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea eliminar las transacciones?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{RecurringPosting.confirmDialog4}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{RecurringPosting.cancelDialog4}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>   
+
+            </ui:define>
+        </ui:composition>   
+    </body>
+
+</ui:composition>

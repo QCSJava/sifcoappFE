@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../template.xhtml">
+
+            <ui:define name="content">
+
+                <h:form id="principal">
+                    <br></br>
+                                        <p:toolbar id="toolbarBill">
+                        <f:facet name="left">
+                            <p:focus context="toolbarBill"/>
+                               Reportes Facuraci&oacute;n
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                            
+                        </f:facet>
+                    </p:toolbar>
+
+                    <div class="ui-grid ui-grid-responsive">
+                        
+                        <div class="ui-grid-row">
+                            
+
+                            <div class="ui-grid-col-2"><p:outputLabel value="Por Numero Comprobante:"></p:outputLabel></div>
+                            <div class="ui-grid-col-2"><p:inputText id="fcode" value="#{rsales.fcode}" size="50"></p:inputText></div>
+                        </div>
+                        <div class="ui-grid-row">
+
+                            
+                            <div class="ui-grid-col-2"><p:outputLabel value="Por Codigo Cliente"></p:outputLabel></div>
+                            <div class="ui-grid-col-2"><p:inputText id="fname" value="#{rsales.fname}"  size="50"></p:inputText></div>
+                        </div>
+                        <div class="ui-grid-row">
+                            
+                            <div class="ui-grid-col-2"><p:outputLabel  value="Fecha Inicio:" for="FechaInicio" ></p:outputLabel></div>
+                            <div class="ui-grid-col-2">
+                                <p:calendar required="true" id="FechaInicio" value="#{rsales.fdatefrom}" showOn="button" size="10"  pattern="dd/MM/yyyy" />
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+                            
+                            <div class="ui-grid-col-2"><p:outputLabel  value="Fecha Fin:" for="FechaFin" ></p:outputLabel></div>
+                            <div class="ui-grid-col-2">
+                                <p:calendar required="true" id="FechaFin" value="#{rsales.fdateto}" showOn="button" size="10"  pattern="dd/MM/yyyy" />
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+                            
+
+                                <div class="ui-grid-col-2"><p:outputLabel  value="Tipo de Reporte:" for="isActive" ></p:outputLabel></div>
+                                <div class="ui-grid-col-2">
+                                <p:selectOneRadio layout="pageDirection" required="true" id="isActive" value="#{rsales.ftype}">
+                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Control Diario de Ventas" itemValue="1" /></div>
+                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Detalle de Ventas Diarias" itemValue="2" /></div>
+                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Ventas por Cliente - Resumido" itemValue="3" /></div>
+                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Ventas por Vendedor - Detallado" itemValue="5" /></div>
+                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Ventas por Vendedor - Resumido" itemValue="6" /></div>
+                                </p:selectOneRadio></div>
+  
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                            <p:commandButton  id="btnPrint" action="#{rsales.doPrint()}" value="Imprimir" ajax="false"  />
+                            </div>
+                            <div class="ui-grid-col-2">
+                            <p:commandButton  id="btnPrint2" action="#{rsales.printFormat()}" value="Descargar" ajax="false"  />
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+                <br></br>
+                <br></br>
+            </ui:define>
+            <br></br>
+        </ui:composition>
+
+    </body>
+</html>

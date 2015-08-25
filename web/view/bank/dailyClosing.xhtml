@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Cierre Diario</title>
+        <!--<style type="text/css">
+            .ui-panel .ui-panel-titlebar {
+                padding: 0;
+            }
+        </style>-->
+
+    </h:head>
+
+    <body>
+        <ui:composition template="./../../template.xhtml">
+            <ui:define name="content">
+
+                <h:form id="frmDaily">
+
+                    <p:toolbar id="toolbarBill">
+                        <f:facet name="left">
+                            <p:focus context="toolbarBill"/>
+                            Cierre Diario
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                            <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document" actionListener="#{dailyClosingBean.botonNuevo}" 
+                                             update="frmDaily" process="@this"
+                                             />
+                        </f:facet>
+                    </p:toolbar>
+
+                    <p:spacer height="20" width="0"></p:spacer>
+
+                    <div  class="ui-grid ui-grid-responsive" id="divPrincipal">
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Tipo de Cierre"/>
+                            </div>
+                            <div class="ui-grid-col-1">
+                                <p:selectOneMenu value="#{dailyClosingBean.tipoCierre}" style="width:125px" >
+                                    <f:selectItem itemLabel="Tipo" itemValue="#{0}" noSelectionOption="true" itemDescription="Seleccione el tipo de cierre"/>
+                                    <f:selectItem itemLabel="Colecturia" itemValue="#{33}" />
+                                    <f:selectItem itemLabel="Venta" itemValue="#{10}" />
+                                    <p:ajax event="valueChange" listener="#{dailyClosingBean.tipeChange}" update="btnPrincipal, saldo"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <p:spacer width="0" height="10px"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Saldo a Transferir">
+
+                                </p:outputLabel>
+                            </div>
+                            <div class="ui-grid-col-1">
+                                <p:inputText id="saldo" value="#{dailyClosingBean.saldoTrans}" style="width:125px" readonly="true">
+                                    <f:convertNumber type="currency"  currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                </p:inputText>
+                            </div>
+                        </div>
+                        <p:spacer width="0" height="10"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Cuenta de Banco"/>
+                            </div>
+
+                            <div class="ui-grid-col-1">
+                                <p:selectOneMenu value="#{dailyClosingBean.accBank}" style="width:125px">
+                                    <f:selectItem itemLabel="Banco" itemValue="-1" />
+                                    <f:selectItems value="#{dailyClosingBean.lstBanks}" var="bank" itemLabel="#{bank.catvalue}" itemValue="#{bank.catvalue2}"/>
+                                    <p:ajax event="valueChange" listener="#{dailyClosingBean.tipeChange}" update="btnPrincipal, saldo"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <p:spacer width="0" height="10"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Comentarios"/>
+                            </div>
+                            <div class="ui-grid-col-1">
+                                <p:inputTextarea value="#{dailyClosingBean.comment}" cols="25"/>
+                            </div>
+                        </div>
+                        <p:spacer width="0" height="10"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1">
+                                <p:commandButton action="#{dailyClosingBean.btnPrincipal()}" id="btnPrincipal" value="Guardar" disabled="#{dailyClosingBean.enableBtn}"/>
+                                <p:defaultCommand target="btnPrincipal" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                </h:form>
+
+                <h:form>
+                    <p:dialog header="Confirmacion" widgetVar="dlgC2" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea guardar los cambios?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="#{dailyClosingBean.confirmDialog}" ajax="false" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  onclick="PF('dlgC2').hide();" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </body>
+
+</ui:composition>

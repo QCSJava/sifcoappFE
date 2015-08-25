@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+       xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Busqueda</title>
+          <style type="text/css">
+            .ui-widget {
+                font-size: 90%;
+            }
+          </style>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:dataTable var="usr" value="#{usersView.usersLst}">
+                 <p:column filterBy="#{usr.nickname}" headerText="Id" filterMatchMode="contains">
+                     <h:outputText value="#{usr.nickname}" />
+                </p:column>
+ 
+                <p:column filterBy="#{usr.username}" headerText="Nombre" filterMatchMode="contains">
+                    <h:outputText value="#{usr.username}" />
+                </p:column>
+                
+                <p:column filterBy="#{usr.lastname}" headerText="Apellido" filterMatchMode="contains">
+                    <h:outputText value="#{usr.lastname}" />
+                </p:column>
+                  
+                <p:column headerText="Seleccionar">
+                    <p:commandButton icon="ui-icon-search" actionListener="#{usersView.selectCarFromDialog(usr)}" />
+                </p:column>
+            </p:dataTable>                       
+        </h:form>
+    </h:body>
+</html>
+

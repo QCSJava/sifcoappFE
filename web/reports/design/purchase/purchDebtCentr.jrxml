@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="purchDebtCentr.jrxml" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="502" leftMargin="85" rightMargin="25" topMargin="35" bottomMargin="35" uuid="707d1793-2a3b-4cd8-8300-b30249552bc1">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="reportName" class="java.lang.String"/>
+	<parameter name="corpName" class="java.lang.String">
+		<defaultValueExpression><![CDATA["ACOETMISAB DE R.L."]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PWHERE" class="java.lang.String"/>
+	<parameter name="pdocdate" class="java.util.Date"/>
+	<parameter name="PDOCDATE2" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select cardtype,cardcode,cardname,balance,
+(balance/(select sum(balance) from cat_bpa0_businesspartner bp where cardtype='C'))*100 perc
+from cat_bpa0_businesspartner bp
+where cardtype='C']]>
+	</queryString>
+	<field name="cardtype" class="java.lang.String">
+		<fieldDescription><![CDATA[Clase de socio de negocios]]></fieldDescription>
+	</field>
+	<field name="cardcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Código de deudor/acreedor]]></fieldDescription>
+	</field>
+	<field name="cardname" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre de deudor/acreedor]]></fieldDescription>
+	</field>
+	<field name="balance" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Saldo stock]]></fieldDescription>
+	</field>
+	<field name="perc" class="java.math.BigDecimal"/>
+	<variable name="PAGE_TOTAL" class="java.lang.Integer" resetType="Page" calculation="DistinctCount">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<variable name="grpBalance" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{balance}]]></variableExpression>
+	</variable>
+	<variable name="grpPerc" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{perc}]]></variableExpression>
+	</variable>
+	<group name="cardtype">
+		<groupExpression><![CDATA[$F{cardtype}]]></groupExpression>
+		<groupFooter>
+			<band height="27">
+				<textField pattern="¤ #,##0.0000" isBlankWhenNull="true">
+					<reportElement x="278" y="3" width="70" height="20" uuid="4cb02197-cff6-46ba-a168-928d79e6d53d"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{grpBalance}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="3" width="100" height="20" uuid="6494806b-23fd-4a23-ac43-9db5456d6ca5"/>
+					<text><![CDATA[Totales:]]></text>
+				</staticText>
+				<line>
+					<reportElement x="0" y="3" width="502" height="1" uuid="889298d2-f0e1-4942-a76f-c34b66886227"/>
+				</line>
+				<textField pattern="###0.0000" isBlankWhenNull="true">
+					<reportElement x="373" y="3" width="39" height="20" uuid="1fe4cdce-5fec-4044-8aef-1710ad5810f6"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{grpPerc}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<textField>
+				<reportElement x="35" y="29" width="403" height="20" uuid="2483f6c6-eed1-4b14-a75b-c8aa286d4f3a"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="35" y="0" width="403" height="20" uuid="109ddf9f-67b8-4626-9d0b-ade37e1c30a9"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{corpName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="28" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="4" width="502" height="1" uuid="1c7af57e-605d-4fa2-b3a8-45fcfb7ca8d8"/>
+			</line>
+			<line>
+				<reportElement x="0" y="26" width="502" height="1" uuid="d478702c-11aa-40bc-8a55-7ded1c34c0e3"/>
+			</line>
+			<line>
+				<reportElement x="0" y="2" width="502" height="1" uuid="e37a9bfb-77f0-45f7-95d3-44a222c2fc68"/>
+			</line>
+			<line>
+				<reportElement x="0" y="24" width="502" height="1" uuid="7b81c6dd-2c3d-4769-8cca-af681afaa32d"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="4" width="79" height="20" uuid="4583b521-233d-4c5d-aebd-33b45e6681e4"/>
+				<text><![CDATA[Cuenta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="79" y="5" width="199" height="20" uuid="eb73b88b-e78f-4660-afe3-9c5d27bf5ca3"/>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="278" y="4" width="70" height="20" uuid="cd4157bb-c4fe-410d-9f83-1c77f61ce2b6"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="373" y="4" width="39" height="20" uuid="a574a2a2-b422-442c-b835-7b11ce54865f"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[%]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="3" width="79" height="15" uuid="e73314d3-ccba-4fb7-8644-ee51b6e8e4b6"/>
+				<textFieldExpression><![CDATA[$F{cardcode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="79" y="3" width="199" height="15" uuid="f7eca432-ddf4-47b7-8767-59165b333536"/>
+				<textFieldExpression><![CDATA[$F{cardname}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.0000">
+				<reportElement x="278" y="3" width="70" height="15" uuid="0debfc99-e00a-4eec-b2db-877983f1efc2"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{balance}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0000">
+				<reportElement x="373" y="3" width="39" height="15" uuid="bdbdf907-f15d-46cc-ac78-d5a914a1585f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{perc}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="39" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="0" y="17" width="100" height="20" uuid="be1fe514-7e47-4c67-ab83-23c6e3b143a6"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="373" y="17" width="27" height="20" uuid="8c52db20-8cb2-49d4-9007-9643a4f414c0"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pag.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="397" y="17" width="26" height="20" uuid="d88809ef-7855-469f-91fb-f9b3f9695427"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="446" y="17" width="26" height="20" uuid="bb1de722-ddf9-41eb-87bf-23305009932b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_TOTAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="420" y="17" width="27" height="20" uuid="24d7425e-52f3-49e4-b819-61d991c86134"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[de]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="79" height="15" uuid="cd9695f6-7a9e-4020-a735-e2a3d644b856"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{JASPER_REPORT}.getName()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

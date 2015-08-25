@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./template.xhtml">
+
+            <ui:define name="content">
+                <h:form id="jsfexample">
+                    <p:panelGrid columns="2">
+                        <f:facet name="header">  
+                            Basic PanelGrid  
+                        </f:facet>
+                        <h:outputLabel for="key" value="Enter key" />
+                        <p:inputText id="key" value="#{manager.key}" />
+
+                        <h:outputLabel for="value" value="Enter value" />
+                        <p:inputText id="value" value="#{manager.value}" />
+
+                        <p:commandButton action="#{manager.save}" update="mydata"
+                                         value="Save" icon="ui-icon-check" style="margin:0" />
+
+                    </p:panelGrid>
+
+                    <p:dataTable value="#{manager.cacheList}" var="item" id="mydata">
+
+                        <p:column headerText="Key">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{item.key}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:inputText value="#{item.key}" />
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+
+
+                        <p:column headerText="Value">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{item.value}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:inputText value="#{item.value}" />
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+
+                        <p:column headerText="Options" style="width:50px">
+                            <p:rowEditor />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Cierre de Periodo</title>
+        <!--<style type="text/css">
+            .ui-panel .ui-panel-titlebar {
+                padding: 0;
+            }
+        </style>-->
+
+    </h:head>
+
+    <body>
+        <ui:composition template="./../../template.xhtml">
+            <ui:define name="content">
+                <h:form id="frmPeriod">
+
+                    <p:toolbar id="toolbarBill">
+                        <f:facet name="left">
+                            <p:focus context="toolbarBill"/>
+                            Cierre de Periodo
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                        </f:facet>
+                    </p:toolbar>
+
+                    <p:spacer height="20" width="0"></p:spacer>
+
+                    <div  class="ui-grid ui-grid-responsive" id="divPrincipal">
+                        <p:fieldset legend="Recomendaciones" style="margin-bottom:20px">
+                            <h:panelGrid columns="1" cellpadding="5">
+                                <h:outputText  value="1. uquququququq uququququq quququququq" />
+                                <h:outputText  value="1. uquququququq uququququq quququququq" />
+                                <h:outputText  value="1. uquququququq uququququq quququququq" />
+                                <h:outputText  value="1. uquququququq uququququq quququququq" />
+                            </h:panelGrid>
+                        </p:fieldset>
+                        <p:spacer width="0" height="10"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1">
+                                <p:outputLabel value="Fecha de cierre" />
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:calendar id="f1" showOn="button" size="16"  pattern="dd/MM/yyyy" value="#{periodEndBean.fecha}"/>
+                            </div>
+                        </div>
+                        <p:spacer width="0" height="20"/>
+                        <div class="ui-grid-row">
+                            <p:commandButton id="btnPrincipal" ajax="false" value="Ejecutar" action="#{periodEndBean.btnPrincipal()}"/>
+                            <p:defaultCommand target="btnPrincipal"/>
+                        </div>
+
+                    </div>
+
+                </h:form>
+
+                <h:form>
+                    <p:dialog header="Confirmacion" widgetVar="dlgC2" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea guardar los cambios?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="#{periodEndBean.confirmDialog}" ajax="false" onclick="PF('dlgC2').hide();" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  onclick="PF('dlgC2').hide();" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </body>
+
+</ui:composition>

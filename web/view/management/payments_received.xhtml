@@ -1,0 +1,231 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../template.xhtml">
+
+            <ui:define name="content">
+                <f:loadBundle basename="com.sifcoapp.bankpayment.view.message_payment" var="msg_payment"/>
+                <h:form id="formpaybank">
+                    <p:growl id="msgs" showDetail="true" />
+                    <p:panelGrid columns="5"  >
+
+                        <p:outputLabel  value="#{msg_payment['message_payment.codname']} :"  />
+                        <p:inputText id="paycod" value="#{paymentBank.cod}"/>
+
+                        <p:selectOneRadio id="chekc" value="#{paymentBank.check}" layout="grid" columns="1">
+                            <f:selectItems value="#{paymentBank.ltsCatalogCl}" var="c" itemLabel="#{c.catvalue}" itemValue="#{c.catcode}"/>
+                        </p:selectOneRadio>
+                        
+                         <h:outputLabel value="#{msg_payment['message_payment.number']}"/>
+                        <p:inputText id="paynum" value="#{paymentBank.numer}"/>
+                        
+                        
+                        
+                        <p:outputLabel  value="#{msg_payment['message_payment.name']} :"  />
+                        <p:inputText id="payname" value="#{paymentBank.name}"/>
+                        
+                        <!-- Fecha y Saldo de columna -->
+                        <h:outputLabel value="#{msg_payment['message_payment.postdate']}"/>
+                        <p:calendar id="postdate" value="#{paymentBank.postdate}" showOn="button" />
+                        
+                        <p:outputLabel  value="#{msg_payment['message_payment.contact']} :"  />
+                        <p:inputText id="paycon" value="#{paymentBank.contact}"/>
+                        
+                        <!-- Saldo de Columna -->
+                        <h:outputLabel value="#{msg_payment['message_payment.postdoc']}"/>
+                        <p:calendar id="postdoc" value="#{paymentBank.postdoc}" showOn="button" />
+                        
+                       
+                        <h:outputLabel value="#{msg_payment['message_payment.postdocf']}"/>
+                        <p:calendar id="postdocf" value="#{paymentBank.postdocf}" showOn="button" />
+                        <!-- Salto de Columna -->
+                        <!-- Salto de Columna -->
+                        
+                        <!-- Salto de Columna -->
+                        <!-- Salto de Columna -->
+                        
+                        <!-- Salto de Columna -->
+                        <!-- Salto de Columna -->
+                        
+                        <!-- Salto de Columna -->
+                        <!-- Salto de Columna -->
+                        <h:outputLabel value="#{msg_payment['message_payment.referen']}"/>
+                        <p:calendar id="referen" value="#{paymentBank.reference}" showOn="referen" />
+                        
+
+
+                    </p:panelGrid>
+
+                    <br>
+
+                    </br>
+
+                    <p:dataTable  id="catalog" var="catalog" value="#{catalog.catalogoClassLst}"  widgetVar="50" style="width: 864px;" editable="true">
+                        <f:facet name="header"> 
+                            Detalle de Movimiento
+                        </f:facet>
+                        <p:ajax event="rowEdit" listener="#{catalogoBean.onRowEdit}"  /> 
+                        <p:ajax event="rowEditCancel" listener="#{catalogoBean.onRowCancel}"  /> -->
+                        <p:column>
+                            <f:facet name="header"> 
+                                <h:outputText value="#{msg_payment['message_payment.selection']}" /> 
+                            </f:facet>
+                            <p:cellEditor> 
+                                <f:facet name="output"> 
+                                    <h:outputText value="#{catalog.catcode}" /> 
+                                </f:facet> 
+                                <f:facet name="input"> 
+                                    <p:inputText id="catcode" value="#{catalog.catcode}" style="width:100%"/> 
+                                </f:facet> 
+                            </p:cellEditor> 
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"> 
+                                <h:outputText value="#{msg_payment['message_payment.noDocument']}" /> 
+                            </f:facet>
+                            <p:cellEditor> 
+                                <f:facet name="output"> 
+                                    <h:outputText value="#{catalog.tablecode}" /> 
+                                </f:facet> 
+                                <f:facet name="input"> 
+                                    <p:inputText id="tablecode" value="#{catalog.tablecode}" style="width:100%"/> 
+                                </f:facet> 
+                            </p:cellEditor> 
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"> 
+                                <h:outputText value="#{msg_payment['message_payment.plazo']}" /> 
+                            </f:facet>
+                            <p:cellEditor> 
+                                <f:facet name="output"> 
+                                    <h:outputText value="#{catalog.catvalue}" /> 
+                                </f:facet> 
+                                <f:facet name="input"> 
+                                    <p:inputText value="#{catalog.catvalue}" style="width:100%"/> 
+                                </f:facet> 
+                            </p:cellEditor> 
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"> 
+                                <h:outputText value="#{msg_payment['message_payment.docclass']}" /> 
+                            </f:facet>
+                            <p:cellEditor> 
+                                <f:facet name="output"> 
+                                    <h:outputText value="#{catalog.catvalue2}" /> 
+                                </f:facet> 
+                                <f:facet name="input"> 
+                                    <p:inputText value="#{catalog.catvalue3}" style="width:100%"/> 
+                                </f:facet> 
+                            </p:cellEditor> 
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"> 
+                                <h:outputText value="#{msg_payment['message_payment.date']}" /> 
+                            </f:facet>
+                            <p:cellEditor> 
+                                <f:facet name="output"> 
+                                    <h:outputText value="#{catalog.catvalue3}" /> 
+                                </f:facet> 
+                                <f:facet name="input"> 
+                                    <p:inputText value="#{catalog.catvalue3}" style="width:100%"/> 
+                                </f:facet> 
+                            </p:cellEditor> 
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"> 
+                                <h:outputText value="#{msg_payment['message_payment.daylate']}" /> 
+                            </f:facet>
+                            <p:cellEditor> 
+                                <f:facet name="output"> 
+                                    <h:outputText value="#{catalog.catstatus}" /> 
+                                </f:facet> 
+                                <f:facet name="input"> 
+                                    <p:inputText value="#{catalog.catstatus}" style="width:100%"/> 
+                                </f:facet> 
+                            </p:cellEditor> 
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"> 
+                                <h:outputText value="#{msg_payment['message_payment.total']}" /> 
+                            </f:facet>
+                            <p:cellEditor> 
+                                <f:facet name="output"> 
+                                    <h:outputText value="#{catalog.catstatus}" /> 
+                                </f:facet> 
+                                <f:facet name="input"> 
+                                    <p:inputText value="#{catalog.catstatus}" style="width:100%"/> 
+                                </f:facet> 
+                            </p:cellEditor> 
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"> 
+                                <h:outputText value="#{msg_payment['message_payment.overpayment']}" /> 
+                            </f:facet>
+                            <p:cellEditor> 
+                                <f:facet name="output"> 
+                                    <h:outputText value="#{catalog.catstatus}" /> 
+                                </f:facet> 
+                                <f:facet name="input"> 
+                                    <p:inputText value="#{catalog.catstatus}" style="width:100%"/> 
+                                </f:facet> 
+                            </p:cellEditor> 
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header"> 
+                                <h:outputText value="#{msg_payment['message_payment.totalpayment']}" /> 
+                            </f:facet>
+                            <p:cellEditor> 
+                                <f:facet name="output"> 
+                                    <h:outputText value="#{catalog.catstatus}" /> 
+                                </f:facet> 
+                                <f:facet name="input"> 
+                                    <p:inputText value="#{catalog.catstatus}" style="width:100%"/> 
+                                </f:facet> 
+                            </p:cellEditor> 
+                        </p:column>
+                        <p:column headerText="Options" style="width:50px"> 
+                            <p:rowEditor /> 
+                        </p:column> 
+                    </p:dataTable>
+                    
+                    <br>
+                        
+                    </br>
+                    <p:panelGrid columns="4" style="width: 83%">
+                        <p:outputLabel  value="#{msg_payment['message_payment.comment']} :"  />
+                        <p:inputText id="paycomment" value="#{paymentBank.comment}" style="width: 98%"/>
+                        
+                        <p:outputLabel  value="#{msg_payment['message_payment.import']} :"  />
+                        <p:inputText id="payimport" value="#{paymentBank.impotV}" style="width: 98%"/>
+                        
+                        <p:outputLabel  value="#{msg_payment['message_payment.comentA']} :"  />
+                        <p:inputText id="paycommentA" value="#{paymentBank.commentA}" style="width: 98%"/>
+                        
+                        <p:outputLabel  value="#{msg_payment['message_payment.saldopen']} :"  />
+                        <p:inputText id="paysaldo" value="#{paymentBank.saldoP}" style="width: 98%"/>
+                        
+                        
+                    </p:panelGrid>
+                    <br>
+                        
+                    </br>
+                    <p:panelGrid columns="3">
+                      
+                        <p:commandButton value="#{msg_payment['message_payment.btnaccept']}" update="msgs" actionListener="#{paymentBank.doSave()}" styleClass="ui-priority-primary"/>
+                        <p:commandButton value="#{msg_payment['message_payment.btnsearch']}" update="msgs" actionListener="#{paymentBank.doSearch}" styleClass="ui-priority-primary"/>
+                        <p:commandButton value="#{msg_payment['message_payment.btncancel']}" update="msgs" actionListener="#{paymentBank.doCancel()}" styleClass="ui-priority-primary"/>
+                    </p:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

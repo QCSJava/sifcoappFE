@@ -1,0 +1,308 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <body>
+        <ui:composition template="./../../template.xhtml">
+            <ui:define name="content"> 
+                <h:form id="formJournal">
+                    <!--  -->
+                    <p:toolbar id="toolbar1">
+
+                        <f:facet name="left">
+                            <p:focus context="toolbar1"/>
+                            Registro en el diario 
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                            <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document" actionListener="#{JournalEntry.botonNuevo}" process="@this" 
+                                             update="formJournal">
+
+                            </p:commandButton>
+
+                            <p:commandButton tabindex="-1" title="Buscar" icon="ui-icon-search" actionListener="#{JournalEntry.botonBuscar}" process="@this" 
+                                             update="formJournal">
+
+                            </p:commandButton>
+                            <p:commandButton tabindex="-1" type="button" title="Print" icon="ui-icon-print" />
+                        </f:facet>
+                    </p:toolbar>
+
+                    <p:spacer height="20" width="0"></p:spacer>
+
+                    <!-- readonly="#'{JournalEntry.disable}" -->
+                    <div class="ui-grid ui-grid-responsive">
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2"><h:outputText  value="Número"></h:outputText></div>
+                            <div class="ui-grid-col-2"><h:outputText value="Fecha Contabilizacion" ></h:outputText></div>
+                            <div class="ui-grid-col-2"><h:outputText value="Fecha Vencimiento"/></div>
+                            <div class="ui-grid-col-2"><h:outputText value="Fecha Documento"/></div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="number" value="#{JournalEntry.number}" readonly="#{JournalEntry.disableX}"></p:inputText>
+                            </div>
+                            <div class="ui-grid-col-2"><p:calendar id="FechaCont" value="#{JournalEntry.refdate}" showOn="button" size="15"  pattern="dd/MM/yyyy" locale="es"  disabled="#{JournalEntry.disableY}"/></div>
+                            <div class="ui-grid-col-2"><p:calendar id="FechaVenc" value="#{JournalEntry.duedate}" showOn="button" size="15" pattern="dd/MM/yyyy" locale="es" disabled="#{JournalEntry.disableY}"/></div>
+                            <div class="ui-grid-col-2"><p:calendar id="FechaDoc" value="#{JournalEntry.taxdate}" showOn="button" size="15" pattern="dd/MM/yyyy" locale="es" disabled="#{JournalEntry.disableY}"/></div>
+                        </div>
+                        <p:spacer height="7" width="0"></p:spacer>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2"> <h:outputText value="Origen" ></h:outputText></div>
+                            <div class="ui-grid-col-2"> <h:outputText value="Número Origen" ></h:outputText></div>
+                            <div class="ui-grid-col-2"> <h:outputText value="Nº Transaccion" ></h:outputText></div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:inputText value="#{JournalEntry.transtype}" id="origen" readonly="#{JournalEntry.disableX}"></p:inputText>
+                            </div>
+
+                            <div class="ui-grid-col-2">
+                                <p:inputText value="#{JournalEntry.baseref}" id="NumeroOrigen" readonly="#{JournalEntry.disableX}"></p:inputText>
+                            </div>
+
+                            <div class="ui-grid-col-2">
+                                <p:inputText value="#{JournalEntry.transid}" id="transaccion" readonly="#{JournalEntry.disableX}"></p:inputText>
+                            </div>
+
+                            <div class="ui-grid-col-4">
+                            </div>
+                            <div class="ui-grid-col-1">
+                                <p:commandButton tabindex="10" id="botonAgregar" actionListener="#{JournalEntry.accionAgregar}" value="Agregar"   icon="ui-icon-check" validateClient="true"
+                                                 update="@parent table,Codigocuenta,nombrecuenta,debe,haber"
+                                                 process="@this  Codigocuenta nombrecuenta debe haber" disabled="#{JournalEntry.disableComun}"/>
+                            </div>
+                        </div>
+
+                        <!-- FOCUS -->
+
+
+                        <!-- Boton agregar al data table -->
+                        <p:spacer height="10" width="0"></p:spacer>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12"><p:spacer height="20"/></div>
+                        </div>
+
+                        <div class="ui-grid-row" >  
+                            <div class="ui-grid-col-1"></div>
+                            <div class="ui-grid-col-3"><h:outputText value="Cuenta de mayor/Código SN"/></div>
+                            <div class="ui-grid-col-4"><h:outputText value="Cuenta de mayor/Nombre SN" /></div>
+                            <div class="ui-grid-col-2"><h:outputText value="Debe" /></div>
+                            <div class="ui-grid-col-2"><h:outputText value="Haber" /> </div>
+                        </div>
+
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1"></div>
+                            <div class="ui-grid-col-3">
+                                <p:autoComplete tabindex="6"  id="Codigocuenta" size="35" forceSelection="true" minQueryLength="3" value="#{JournalEntry.account}"
+                                                completeMethod="#{JournalEntry.completeCode}" effect="fade" label="Codigo" >
+                                    <p:ajax event="itemSelect" listener="#{JournalEntry.findAccount}" update="Codigocuenta nombrecuenta"/>
+                                </p:autoComplete>
+                            </div>
+                            <div class="ui-grid-col-4">
+                                <p:autoComplete tabindex="7"  id="nombrecuenta"  size="50" forceSelection="true" minQueryLength="3" value="#{JournalEntry.shortname}"
+                                                completeMethod="#{JournalEntry.completeText}" effect="fade" label="Cuenta" >
+                                    <p:ajax event="itemSelect" listener="#{JournalEntry.findAccount}" update="Codigocuenta nombrecuenta" />
+                                </p:autoComplete>
+                            </div>
+                            <div class="ui-grid-col-2"><p:inputText id="debe" tabindex="8" style="width: 70%" disabled="#{JournalEntry.disable2}" value="#{JournalEntry.debit}" >
+                                    <p:ajax event="keyup" update="haber" listener="#{JournalEntry.DisableInput}" process="@this debe haber"/> 
+                                </p:inputText></div>
+
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="haber" tabindex="9" style="width: 70%" value="#{JournalEntry.credit}" disabled="#{JournalEntry.disable}">
+                                    <p:ajax event="keyup" update="debe" listener="#{JournalEntry.DisableInput}" process="@this debe haber"/>
+                                </p:inputText>
+                            </div>
+
+                        </div>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12"><p:spacer height="20"></p:spacer></div>
+                        </div>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-12">
+                                <p:contextMenu for="table">
+                                    <p:menuitem value="Eliminar"  icon="ui-icon-close" actionListener="#{JournalEntry.deleteDetalle}" update="@this table :formJournal:table:totloc :formJournal:table:totsys" process="@this">
+
+                                    </p:menuitem>
+                                </p:contextMenu>    
+
+                                <p:dataTable  id="table" var="Art" value="#{JournalEntry.listaDetalles}" rowKey="#{Art.line_id}" rendered="true"
+                                             rowIndexVar="rowIndex" selectionMode="single" scrollable="true" scrollHeight="250" selection="#{JournalEntry.selectDetail}"
+                                             disabledSelection="#{JournalEntry.disableComun}" emptyMessage="No hay registros">
+                                    <p:ajax event="rowSelect"  process="@this" update="table"/>
+                                    <p:columnGroup type="header">
+                                        <p:row>
+                                            <p:column headerText="#" style="width: 5%" />
+                                            <p:column headerText="Cuenta de mayor/Código SN" style="width: 20%" />
+                                            <p:column headerText="Cuenta de mayor/Nombre SN" style="width: 35%" />
+                                            <p:column headerText="Debe" style="width: 10%" />
+                                            <p:column headerText="Haber" style="width: 10%"/>
+                                        </p:row>
+                                    </p:columnGroup>
+                                    <p:column>
+                                        <h:outputText value="#{rowIndex+1}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{Art.account}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{Art.acctname}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{Art.debit}" >
+                                            <f:convertNumber type="currency" currencySymbol="$" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{Art.credit}" >
+                                            <f:convertNumber type="currency" currencySymbol="$" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:columnGroup type="footer">
+                                        <p:row>
+                                            <p:column></p:column>
+                                            <p:column></p:column>
+                                            <p:column style="text-align: right" footerText="Totales:" />
+                                            <p:column id="totloc" footerText="$#{JournalEntry.loctotal}" />
+                                            <p:column id="totsys" footerText="$#{JournalEntry.systotal}" />                                                        
+                                        </p:row>
+                                    </p:columnGroup>
+                                </p:dataTable>
+
+                            </div>
+                        </div>
+
+                        <div class="ui-grid ui-grid-responsive">
+                            <div class="ui-grid-col-12"><h:outputText value="Comentarios"  /></div>
+                        </div>
+
+                        <div class="ui-grid ui-grid-responsive">
+                            <div class="ui-grid-col-12"><p:inputTextarea id="coment" rows="3" cols="80" value="#{JournalEntry.memo}" /></div>
+                        </div>
+
+                        <div class="ui-grid ui-grid-responsive">
+                            <div class="ui-grid-col-12"><p:spacer height="20"></p:spacer></div>
+                        </div>
+
+                        <!-- BOTON PRINCIPAL -->
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1">
+                                <p:commandButton tabindex="0" id="botonPrincipal" value="#{JournalEntry.botonEstado}" actionListener="#{JournalEntry.botonPrincipal}" update="tableDialog botonPrincipal table botonAgregar FechaCont FechaDoc FechaVenc coment "
+                                                 process="@this  coment  FechaCont FechaDoc FechaVenc origen NumeroOrigen transaccion"  >
+                                </p:commandButton>
+                                <p:defaultCommand target="botonPrincipal" />
+                            </div>
+                            <div class="ui-grid-col-5"></div>
+                        </div>
+
+                        <p:dialog closeOnEscape="true" header="Datos encontrados" widgetVar="dlg2" modal="true"  width="1000" height="250" >
+                            <p:dataTable resizableColumns="true" liveResize="true" id="tableDialog" var="Rec" value="#{JournalEntry.listaBusquedaTable}"  scrollable="true" scrollHeight="90%"
+                                         selection="#{JournalEntry.selectJournal}" rowKey="#{Rec.transid}" selectionMode="single" rowIndexVar="rowIndex" >
+
+                                <p:ajax event="rowDblselect"  process="@this" listener="#{JournalEntry.selectDialog}"/>
+
+                                <p:column headerText="#" style="width: 10px">
+                                    <h:outputText value="#{rowIndex + 1}" />
+                                </p:column>
+                                <p:column headerText="Número" style="width: 30px" sortBy="#{Rec.number}">
+                                    <h:outputText value="#{Rec.number}" />
+                                </p:column>
+
+                                <p:column headerText="Origen" sortBy="#{Rec.transtype}">
+                                    <h:outputText value="#{Rec.transtype}" />
+                                </p:column>
+
+                                <p:column headerText="Número Origen" sortBy="#{Rec.baseref}" >
+                                    <h:outputText value="#{Rec.baseref}" />
+                                </p:column>
+
+                                <p:column headerText="Número Transacción" sortBy="#{Rec.transid}" >
+                                    <h:outputText value="#{Rec.transid}" />
+                                </p:column>
+                                <p:column headerText="Fecha Contabilizacion" sortBy="#{Rec.refdate}" >
+                                    <h:outputText value="#{Rec.refdate}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Fecha Vencimiento" sortBy="#{Rec.duedate}" >
+                                    <h:outputText value="#{Rec.duedate}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Fecha Documento" sortBy="#{Rec.taxdate}" >
+                                    <h:outputText value="#{Rec.taxdate}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                        </p:dialog> 
+
+                    </div>
+                </h:form>
+
+                <h:form>
+                    <p:dialog header="Confirmacion" widgetVar="dlg9" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea guardar los cambios?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{JournalEntry.confirmDialog}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{JournalEntry.cancelDialog}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+                <h:form>
+                    <p:dialog header="Confirmacion" widgetVar="dlg10" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Se perderan los datos ingresados, Desea continuar?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{JournalEntry.confirmDialog2}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{JournalEntry.cancelDialog2}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>            
+            </ui:define>
+        </ui:composition>   
+    </body>
+
+</ui:composition>

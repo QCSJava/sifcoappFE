@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d665bf20-2d51-4d8b-aae5-566096205736">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="rtitle" class="java.lang.String"/>
+	<parameter name="pitemcode" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pwhere_clausule" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT itemcode, itemname, itemtype, itmsgrpcod, vatliable, codebars,
+       prchseitem, sellitem, invntitem, assetitem, cardcode, buyunitmsr,
+       numinbuy, salunitmsr, salpackun, suppcatnum, purpackun, avgprice,
+       onhand, validfor, validfrom, validto, invntryuom, numinsale,
+       dfltwh, wtliable, sww, validcomm, usersign, createdate, createtime
+  FROM public.cat_art0_articles
+where $P!{pwhere_clausule}]]>
+	</queryString>
+	<field name="itemcode" class="java.lang.String"/>
+	<field name="itemname" class="java.lang.String"/>
+	<field name="itemtype" class="java.lang.String"/>
+	<field name="itmsgrpcod" class="java.lang.String"/>
+	<field name="vatliable" class="java.lang.String"/>
+	<field name="codebars" class="java.lang.String"/>
+	<field name="prchseitem" class="java.lang.String"/>
+	<field name="sellitem" class="java.lang.String"/>
+	<field name="invntitem" class="java.lang.String"/>
+	<field name="assetitem" class="java.lang.String"/>
+	<field name="cardcode" class="java.lang.String"/>
+	<field name="buyunitmsr" class="java.lang.String"/>
+	<field name="numinbuy" class="java.math.BigDecimal"/>
+	<field name="salunitmsr" class="java.lang.String"/>
+	<field name="salpackun" class="java.math.BigDecimal"/>
+	<field name="suppcatnum" class="java.lang.String"/>
+	<field name="purpackun" class="java.math.BigDecimal"/>
+	<field name="avgprice" class="java.math.BigDecimal"/>
+	<field name="onhand" class="java.math.BigDecimal"/>
+	<field name="validfor" class="java.lang.String"/>
+	<field name="validfrom" class="java.sql.Date"/>
+	<field name="validto" class="java.sql.Date"/>
+	<field name="invntryuom" class="java.lang.String"/>
+	<field name="numinsale" class="java.math.BigDecimal"/>
+	<field name="dfltwh" class="java.lang.String"/>
+	<field name="wtliable" class="java.lang.String"/>
+	<field name="sww" class="java.lang.String"/>
+	<field name="validcomm" class="java.lang.String"/>
+	<field name="usersign" class="java.lang.Integer"/>
+	<field name="createdate" class="java.sql.Date"/>
+	<field name="createtime" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="178" y="22" width="202" height="29" uuid="d148070c-be85-4eca-8aac-1b0183ec0731"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Articulos]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="38" y="51" width="505" height="20" uuid="4eae0aff-8676-4a20-8da9-85f7125de4d8"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{rtitle}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="20" uuid="be3caabd-5406-4aaa-b5fc-3bfd6c4ce0b5"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="11" y="0" width="100" height="20" uuid="22e4def7-c95b-4008-bf01-da244654769b"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="128" y="0" width="100" height="20" uuid="8dbdaa32-ff04-4958-bd42-a3584c217814"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripcion]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="11" y="0" width="100" height="20" uuid="edaa6ed6-257b-4408-96be-5d2daa6e4742"/>
+				<textFieldExpression><![CDATA[$F{itemcode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="128" y="0" width="225" height="20" uuid="2c38795f-911e-4119-86e1-dfb2202a667e"/>
+				<textFieldExpression><![CDATA[$F{itemname}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="211" y="13" width="80" height="20" uuid="3f92bc59-b896-413c-a341-a77b8dca0d0f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="291" y="13" width="40" height="20" uuid="829f9bc5-df1b-4c33-bd20-78977616818a"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

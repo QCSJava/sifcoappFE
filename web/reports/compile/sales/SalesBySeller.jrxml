@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d665bf20-2d51-4d8b-aae5-566096205736">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="pdocnum" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pdocdate" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PNOMBRE_EMPRESA" class="java.lang.String"/>
+	<parameter name="PWHERE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PDOCDATE2" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT *,username || ' ' || lastname seller
+  FROM sal_sal0_sales h, sal_sal1_salesdetail d, adm_usr0_user u
+where $P!{PWHERE}
+order by h.usersign,d.itemcode,docnum]]>
+	</queryString>
+	<field name="docentry" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Entrada doc.emis.]]></fieldDescription>
+	</field>
+	<field name="docnum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número de documento]]></fieldDescription>
+	</field>
+	<field name="doctype" class="java.lang.String"/>
+	<field name="canceled" class="java.lang.String">
+		<fieldDescription><![CDATA[Cancelado]]></fieldDescription>
+	</field>
+	<field name="docstatus" class="java.lang.String">
+		<fieldDescription><![CDATA[Status de documento]]></fieldDescription>
+	</field>
+	<field name="objtype" class="java.lang.String"/>
+	<field name="docdate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de contabilización]]></fieldDescription>
+	</field>
+	<field name="docduedate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de vencimiento]]></fieldDescription>
+	</field>
+	<field name="cardcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Código de deudor/acreedor]]></fieldDescription>
+	</field>
+	<field name="numatcard" class="java.lang.String">
+		<fieldDescription><![CDATA[Número de referencia del SN]]></fieldDescription>
+	</field>
+	<field name="cardname" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre de deudor/acreedor]]></fieldDescription>
+	</field>
+	<field name="vatsum" class="java.lang.String">
+		<fieldDescription><![CDATA[Impuesto total]]></fieldDescription>
+	</field>
+	<field name="discsum" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Descuento total]]></fieldDescription>
+	</field>
+	<field name="doctotal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Total del documento]]></fieldDescription>
+	</field>
+	<field name="ref1" class="java.lang.String">
+		<fieldDescription><![CDATA[Referencia 1]]></fieldDescription>
+	</field>
+	<field name="ref2" class="java.lang.String">
+		<fieldDescription><![CDATA[Referencia 2]]></fieldDescription>
+	</field>
+	<field name="comments" class="java.lang.String"/>
+	<field name="jrnlmemo" class="java.lang.String">
+		<fieldDescription><![CDATA[Comentarios]]></fieldDescription>
+	</field>
+	<field name="paidtodate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Pagado hasta la fecha]]></fieldDescription>
+	</field>
+	<field name="transid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número de operación]]></fieldDescription>
+	</field>
+	<field name="receiptnum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número de recibo]]></fieldDescription>
+	</field>
+	<field name="groupnum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Código de condiciones de pago]]></fieldDescription>
+	</field>
+	<field name="confirmed" class="java.lang.String">
+		<fieldDescription><![CDATA[Confirmado]]></fieldDescription>
+	</field>
+	<field name="createtran" class="java.lang.String">
+		<fieldDescription><![CDATA[Crear registro en el diario]]></fieldDescription>
+	</field>
+	<field name="series" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Serie]]></fieldDescription>
+	</field>
+	<field name="taxdate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de documento]]></fieldDescription>
+	</field>
+	<field name="filler" class="java.lang.String"/>
+	<field name="rounddif" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Importe de diferencias de redondeo]]></fieldDescription>
+	</field>
+	<field name="rounding" class="java.lang.String">
+		<fieldDescription><![CDATA[Redondeo]]></fieldDescription>
+	</field>
+	<field name="canceldate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de cancelación]]></fieldDescription>
+	</field>
+	<field name="peymethod" class="java.lang.String">
+		<fieldDescription><![CDATA[Forma de pago]]></fieldDescription>
+	</field>
+	<field name="ctlaccount" class="java.lang.String">
+		<fieldDescription><![CDATA[Cuenta asociada]]></fieldDescription>
+	</field>
+	<field name="bplname" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre de sucursal]]></fieldDescription>
+	</field>
+	<field name="vatregnum" class="java.lang.String">
+		<fieldDescription><![CDATA[Número de registro de IVA]]></fieldDescription>
+	</field>
+	<field name="paidsum" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Total pagado]]></fieldDescription>
+	</field>
+	<field name="towhscode" class="java.lang.String">
+		<fieldDescription><![CDATA[Para almacen]]></fieldDescription>
+	</field>
+	<field name="nret" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[No. Retencion]]></fieldDescription>
+	</field>
+	<field name="namenp" class="java.lang.String">
+		<fieldDescription><![CDATA[Razón Social Cliente/Proveedor]]></fieldDescription>
+	</field>
+	<field name="quedan" class="java.lang.Integer">
+		<fieldDescription><![CDATA[No Quedan]]></fieldDescription>
+	</field>
+	<field name="fechreciva" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de Reclamo de IVA]]></fieldDescription>
+	</field>
+	<field name="fquedan" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de Emisión de Quedan]]></fieldDescription>
+	</field>
+	<field name="usersign" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Firma del usuario]]></fieldDescription>
+	</field>
+	<field name="createdate" class="java.sql.Date"/>
+	<field name="createtime" class="java.lang.Integer"/>
+	<field name="docsubtype" class="java.lang.String">
+		<fieldDescription><![CDATA[Subtipo de documento]]></fieldDescription>
+	</field>
+	<field name="linenum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número de línea]]></fieldDescription>
+	</field>
+	<field name="targettype" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Clase de documento de destino]]></fieldDescription>
+	</field>
+	<field name="baseref" class="java.lang.String">
+		<fieldDescription><![CDATA[Referencia base]]></fieldDescription>
+	</field>
+	<field name="basetype" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Tipo de transacción base]]></fieldDescription>
+	</field>
+	<field name="baseentry" class="java.lang.Integer">
+		<fieldDescription><![CDATA[ID interno de documento base]]></fieldDescription>
+	</field>
+	<field name="baseline" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número de línea base]]></fieldDescription>
+	</field>
+	<field name="linestatus" class="java.lang.String">
+		<fieldDescription><![CDATA[Status de la línea]]></fieldDescription>
+	</field>
+	<field name="itemcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Número de artículo]]></fieldDescription>
+	</field>
+	<field name="dscription" class="java.lang.String">
+		<fieldDescription><![CDATA[Descripción artículo/serv.]]></fieldDescription>
+	</field>
+	<field name="quantity" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Cantidad en doc.]]></fieldDescription>
+	</field>
+	<field name="openqty" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Open Quantity]]></fieldDescription>
+	</field>
+	<field name="price" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Precio]]></fieldDescription>
+	</field>
+	<field name="discprcnt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Descuento % por línea]]></fieldDescription>
+	</field>
+	<field name="linetotal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Total líneas]]></fieldDescription>
+	</field>
+	<field name="whscode" class="java.lang.String"/>
+	<field name="acctcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Código de cuenta]]></fieldDescription>
+	</field>
+	<field name="taxstatus" class="java.lang.String">
+		<fieldDescription><![CDATA[Definición del impuesto]]></fieldDescription>
+	</field>
+	<field name="pricebefdi" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Precio unitario]]></fieldDescription>
+	</field>
+	<field name="ocrcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Norma de reparto]]></fieldDescription>
+	</field>
+	<field name="vatgroup" class="java.lang.String">
+		<fieldDescription><![CDATA[Indicador de impuestos]]></fieldDescription>
+	</field>
+	<field name="priceafvat" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Precio bruto]]></fieldDescription>
+	</field>
+	<field name="factor1" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Factor 1]]></fieldDescription>
+	</field>
+	<field name="grssprofit" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Ingreso bruto línea]]></fieldDescription>
+	</field>
+	<field name="taxcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Indicador de impuestos]]></fieldDescription>
+	</field>
+	<field name="vatappld" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Impuesto aplicado]]></fieldDescription>
+	</field>
+	<field name="unitmsr" class="java.lang.String">
+		<fieldDescription><![CDATA[Unidad]]></fieldDescription>
+	</field>
+	<field name="stockpricestockprice" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Costo del artículo]]></fieldDescription>
+	</field>
+	<field name="gtotal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Total bruto]]></fieldDescription>
+	</field>
+	<field name="nickname" class="java.lang.String"/>
+	<field name="username" class="java.lang.String"/>
+	<field name="lastname" class="java.lang.String"/>
+	<field name="password" class="java.lang.String"/>
+	<field name="profilecode" class="java.lang.Integer"/>
+	<field name="locked" class="java.lang.String"/>
+	<field name="userdate" class="java.sql.Date"/>
+	<field name="cusersign" class="java.lang.Integer"/>
+	<field name="seller" class="java.lang.String"/>
+	<variable name="variable1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{vatsum}]]></variableExpression>
+	</variable>
+	<variable name="vatsum_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{vatsum}]]></variableExpression>
+	</variable>
+	<variable name="doctotal_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{doctotal}]]></variableExpression>
+	</variable>
+	<variable name="vatsum_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{vatsum}]]></variableExpression>
+	</variable>
+	<variable name="doctotal_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{doctotal}]]></variableExpression>
+	</variable>
+	<variable name="PAGE_TOTAL" class="java.lang.Integer" resetType="Page" calculation="DistinctCount">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<variable name="CURRENT_DATE" class="java.util.Date">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[new Date();]]></initialValueExpression>
+	</variable>
+	<variable name="sellerName" class="java.lang.String" resetType="Group" resetGroup="seller">
+		<variableExpression><![CDATA[$F{username}.trim() + " " + $F{lastname}.trim()]]></variableExpression>
+	</variable>
+	<variable name="quantityProduct" class="java.math.BigDecimal" resetType="Group" resetGroup="productGroup" calculation="Sum">
+		<variableExpression><![CDATA[$F{quantity}]]></variableExpression>
+	</variable>
+	<variable name="gtotalProduct" class="java.math.BigDecimal" resetType="Group" resetGroup="productGroup" calculation="Sum">
+		<variableExpression><![CDATA[$F{gtotal}]]></variableExpression>
+	</variable>
+	<variable name="quantitySeller" class="java.math.BigDecimal" resetType="Group" resetGroup="seller" calculation="Sum">
+		<variableExpression><![CDATA[$F{quantity}]]></variableExpression>
+	</variable>
+	<variable name="gtotalSeller" class="java.math.BigDecimal" resetType="Group" resetGroup="seller" calculation="Sum">
+		<variableExpression><![CDATA[$F{gtotal}]]></variableExpression>
+	</variable>
+	<group name="seller">
+		<groupExpression><![CDATA[$F{usersign}]]></groupExpression>
+		<groupHeader>
+			<band height="23">
+				<textField>
+					<reportElement x="55" y="0" width="302" height="20" uuid="9183df65-d306-43e0-825b-05662c16f589"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{seller}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="0" width="53" height="20" uuid="1b26a527-b851-4f1d-9f97-0dc4b7713b01"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Vendedor]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="22">
+				<staticText>
+					<reportElement x="0" y="0" width="40" height="20" uuid="ec2cdd04-b4a0-4162-bbc4-f92a7405626c"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Totales]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="55" y="0" width="262" height="20" uuid="58546a97-bfce-4f39-b2fe-3759758eb230"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sellerName}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.0000">
+					<reportElement x="331" y="2" width="70" height="20" uuid="97ac8ced-6065-4b9b-9c03-030de06550b7"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{quantitySeller}]]></textFieldExpression>
+				</textField>
+				<textField pattern="¤ #,##0.0000">
+					<reportElement x="473" y="2" width="70" height="20" uuid="c68e8158-ab59-4060-892b-b8c96b873f47"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{gtotalSeller}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="productGroup">
+		<groupExpression><![CDATA[$F{itemcode}]]></groupExpression>
+		<groupHeader>
+			<band height="21">
+				<textField>
+					<reportElement x="5" y="0" width="270" height="20" uuid="7ccbb81e-2708-4b73-834f-8bbbcc24da77"/>
+					<textFieldExpression><![CDATA[$F{dscription}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="22">
+				<textField>
+					<reportElement x="47" y="0" width="270" height="20" uuid="19e7ab95-f77e-4435-a7ad-eac104ca3d7f"/>
+					<textFieldExpression><![CDATA[$F{dscription}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="5" y="0" width="40" height="20" uuid="08f508cf-b675-4082-9c74-7fc6aedccd4a"/>
+					<text><![CDATA[Totales ]]></text>
+				</staticText>
+				<textField pattern="#,##0.0000">
+					<reportElement x="331" y="2" width="70" height="20" uuid="56abf198-9a4a-4f44-8cef-1a270d0a9af3"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{quantityProduct}]]></textFieldExpression>
+				</textField>
+				<textField pattern="¤ #,##0.0000">
+					<reportElement x="473" y="2" width="70" height="20" uuid="21b66da6-1ce9-4639-81b6-4b93baf636f2"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{gtotalProduct}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="86" splitType="Stretch">
+			<staticText>
+				<reportElement x="169" y="36" width="216" height="20" uuid="f9da7a4c-139f-400a-b45e-32671ccde082"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Productos facturados por Vendedor]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="16" width="334" height="20" uuid="49334bb7-4a39-44cc-a619-a62aa2755b4b"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PNOMBRE_EMPRESA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="310" y="56" width="68" height="20" isRemoveLineWhenBlank="true" uuid="032623da-a15a-4670-ae3e-4db8816bc2ac">
+					<printWhenExpression><![CDATA[!$P{pdocdate}.equals($P{PDOCDATE2})]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PDOCDATE2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="206" y="56" width="68" height="20" isRemoveLineWhenBlank="true" uuid="70580eb4-6ff6-4335-abbb-644defe49df6">
+					<printWhenExpression><![CDATA[!$P{pdocdate}.equals($P{PDOCDATE2})]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pdocdate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="171" y="56" width="35" height="21" isRemoveLineWhenBlank="true" uuid="83c3e3b6-9c7b-4693-8bd4-0ff0034e2d9b">
+					<printWhenExpression><![CDATA[!$P{pdocdate}.equals($P{PDOCDATE2})]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Desde:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="274" y="55" width="35" height="21" isRemoveLineWhenBlank="true" uuid="bae0b330-2e26-4b83-987f-be7e32a604af">
+					<printWhenExpression><![CDATA[!$P{pdocdate}.equals($P{PDOCDATE2})]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="223" y="56" width="35" height="21" uuid="e1e30278-c782-44a9-8a75-2694fa9f18ca">
+					<printWhenExpression><![CDATA[$P{pdocdate}.equals($P{PDOCDATE2})]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="261" y="56" width="68" height="20" uuid="9d38076e-aca6-4534-84b1-82feae8f8b7a">
+					<printWhenExpression><![CDATA[$P{pdocdate}.equals($P{PDOCDATE2})]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pdocdate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="10" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="38" splitType="Stretch">
+			<staticText>
+				<reportElement x="5" y="5" width="44" height="17" uuid="3fcb8c21-da00-4d9f-bfbc-fa51eeb5fd91"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="49" y="5" width="61" height="33" uuid="114fb874-3146-4547-8e1f-50cc49312dc5"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Num. Comprobante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="114" y="5" width="66" height="17" uuid="c7473875-02a5-4011-b959-add23962ebbf"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Item]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="183" y="5" width="78" height="17" uuid="aed8bc09-83e8-4e47-8d98-6dc51e53eb12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripcion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="343" y="5" width="58" height="17" uuid="82a662ef-afbf-4def-9935-20bea7fe526c"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="422" y="5" width="50" height="17" uuid="778ce74d-f3ab-416f-9d39-d255b6383c62"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[P. Unitario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="492" y="5" width="51" height="17" uuid="34044942-e207-4d68-8168-8bbcc8e9515a"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="1" width="555" height="1" uuid="9d0b6b2f-5b83-455d-9253-758556f45879"/>
+			</line>
+			<line>
+				<reportElement x="0" y="37" width="555" height="1" uuid="76dee2d7-131e-4f14-a70c-6827d23cd6ee"/>
+			</line>
+			<line>
+				<reportElement x="0" y="35" width="555" height="1" uuid="3b1f6b96-b779-46bf-80c7-a82769692c7a"/>
+			</line>
+			<line>
+				<reportElement x="0" y="3" width="555" height="1" uuid="f20079c4-1190-4579-881e-1119fe1d8143"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="114" y="4" width="66" height="20" uuid="5c25aaa7-0230-46fc-a157-c42cbfc08f2b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemcode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="182" y="4" width="147" height="20" uuid="82cb7c26-648f-4604-9578-4998b98a3c0f"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dscription}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0000;###0.0000-">
+				<reportElement x="331" y="4" width="70" height="20" uuid="f19d8a61-ebf8-42f3-97d5-4799b300f72d"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.0000">
+				<reportElement x="402" y="4" width="70" height="20" uuid="d27435da-24fb-4f1c-ad88-d88f1acfa149"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{priceafvat}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.0000">
+				<reportElement x="473" y="4" width="70" height="20" uuid="e00813ac-5a27-4061-855f-96413ec14185"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gtotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="5" y="4" width="44" height="20" uuid="c04c56c7-9750-487a-a89f-3462daacdba8"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="49" y="4" width="61" height="20" uuid="744e82c7-732c-40bf-a9b8-d66e1afe7c74"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{docnum}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="14" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="53" splitType="Stretch">
+			<textField>
+				<reportElement x="495" y="29" width="26" height="20" uuid="ddcddabf-65b5-420d-8bfb-7385a294694d"/>
+				<textFieldExpression><![CDATA[$V{PAGE_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="446" y="29" width="26" height="20" uuid="b85076ce-7131-45eb-8eb1-4a03a754be0d"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="422" y="29" width="27" height="20" uuid="c4be3222-01ce-4fd3-ad15-da302a144ab2"/>
+				<text><![CDATA[Pag.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="469" y="29" width="27" height="20" uuid="16309d0b-07fd-4a3f-a220-f4ffaee3cb1d"/>
+				<text><![CDATA[de]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="1" y="32" width="79" height="20" uuid="62c837e7-06a3-434f-900e-91e36927664b"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{CURRENT_DATE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="9" width="79" height="20" uuid="5b7c5831-f677-4df8-8b11-4ba4e8baf372"/>
+				<textElement>
+					<font size="5" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SalesBySeller.jrxml]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="70" splitType="Stretch"/>
+	</summary>
+</jasperReport>

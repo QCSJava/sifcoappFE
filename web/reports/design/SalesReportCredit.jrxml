@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SalesReportCredit" language="groovy" pageWidth="453" pageHeight="595" columnWidth="415" leftMargin="19" rightMargin="19" topMargin="104" bottomMargin="48" uuid="8cdacaa5-b03b-47fb-9623-61ecc0a779c7">
+	<property name="ireport.zoom" value="1.2100000000000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="docEntry" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  t0.*,
+  t1.*,
+  t2.*
+FROM
+  sal_sal0_sales t0
+  inner join sal_sal1_salesdetail t1 on t0.docentry = t1.docentry
+  inner join cat_bpa0_businesspartner t2 on t0.cardcode = t2.cardcode
+WHERE
+  t0.docentry = $P{docEntry};]]>
+	</queryString>
+	<field name="docentry" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Entrada doc.emis.]]></fieldDescription>
+	</field>
+	<field name="docnum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número de documento]]></fieldDescription>
+	</field>
+	<field name="doctype" class="java.lang.String"/>
+	<field name="canceled" class="java.lang.String">
+		<fieldDescription><![CDATA[Cancelado]]></fieldDescription>
+	</field>
+	<field name="docstatus" class="java.lang.String">
+		<fieldDescription><![CDATA[Status de documento]]></fieldDescription>
+	</field>
+	<field name="objtype" class="java.lang.String"/>
+	<field name="docdate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha doc.]]></fieldDescription>
+	</field>
+	<field name="docduedate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fe.vencimiento doc.]]></fieldDescription>
+	</field>
+	<field name="cardcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Proveedor por defecto]]></fieldDescription>
+	</field>
+	<field name="numatcard" class="java.lang.String">
+		<fieldDescription><![CDATA[Número de referencia del SN]]></fieldDescription>
+	</field>
+	<field name="cardname" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre SN]]></fieldDescription>
+	</field>
+	<field name="vatsum" class="java.lang.String">
+		<fieldDescription><![CDATA[Impuesto total]]></fieldDescription>
+	</field>
+	<field name="discsum" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Descuento total]]></fieldDescription>
+	</field>
+	<field name="doctotal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Total del documento]]></fieldDescription>
+	</field>
+	<field name="ref1" class="java.lang.String">
+		<fieldDescription><![CDATA[Referencia 1]]></fieldDescription>
+	</field>
+	<field name="ref2" class="java.lang.String">
+		<fieldDescription><![CDATA[Referencia 2]]></fieldDescription>
+	</field>
+	<field name="comments" class="java.lang.String"/>
+	<field name="jrnlmemo" class="java.lang.String">
+		<fieldDescription><![CDATA[Comentarios]]></fieldDescription>
+	</field>
+	<field name="paidtodate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Pagado hasta la fecha]]></fieldDescription>
+	</field>
+	<field name="transid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número de operación]]></fieldDescription>
+	</field>
+	<field name="receiptnum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número de recibo]]></fieldDescription>
+	</field>
+	<field name="groupnum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Código de condiciones de pago]]></fieldDescription>
+	</field>
+	<field name="confirmed" class="java.lang.String">
+		<fieldDescription><![CDATA[Confirmado]]></fieldDescription>
+	</field>
+	<field name="createtran" class="java.lang.String">
+		<fieldDescription><![CDATA[Crear registro en el diario]]></fieldDescription>
+	</field>
+	<field name="series" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Serie]]></fieldDescription>
+	</field>
+	<field name="taxdate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de documento]]></fieldDescription>
+	</field>
+	<field name="filler" class="java.lang.String"/>
+	<field name="rounddif" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Importe de diferencias de redondeo]]></fieldDescription>
+	</field>
+	<field name="rounding" class="java.lang.String">
+		<fieldDescription><![CDATA[Redondeo]]></fieldDescription>
+	</field>
+	<field name="canceldate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de cancelación]]></fieldDescription>
+	</field>
+	<field name="peymethod" class="java.lang.String">
+		<fieldDescription><![CDATA[Forma de pago]]></fieldDescription>
+	</field>
+	<field name="ctlaccount" class="java.lang.String">
+		<fieldDescription><![CDATA[Cuenta asociada]]></fieldDescription>
+	</field>
+	<field name="bplname" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre de sucursal]]></fieldDescription>
+	</field>
+	<field name="vatregnum" class="java.lang.String">
+		<fieldDescription><![CDATA[Número de registro de IVA]]></fieldDescription>
+	</field>
+	<field name="paidsum" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Total pagado]]></fieldDescription>
+	</field>
+	<field name="towhscode" class="java.lang.String">
+		<fieldDescription><![CDATA[Para almacen]]></fieldDescription>
+	</field>
+	<field name="nret" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[No. Retencion]]></fieldDescription>
+	</field>
+	<field name="namenp" class="java.lang.String">
+		<fieldDescription><![CDATA[Razón Social Cliente/Proveedor]]></fieldDescription>
+	</field>
+	<field name="quedan" class="java.lang.Integer">
+		<fieldDescription><![CDATA[No Quedan]]></fieldDescription>
+	</field>
+	<field name="fechreciva" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de Reclamo de IVA]]></fieldDescription>
+	</field>
+	<field name="fquedan" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de Emisión de Quedan]]></fieldDescription>
+	</field>
+	<field name="usersign" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Firma de usuario]]></fieldDescription>
+	</field>
+	<field name="createdate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de creación]]></fieldDescription>
+	</field>
+	<field name="createtime" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Hora de creación]]></fieldDescription>
+	</field>
+	<field name="docsubtype" class="java.lang.String">
+		<fieldDescription><![CDATA[Subtipo de documento]]></fieldDescription>
+	</field>
+	<field name="linenum" class="java.lang.Integer"/>
+	<field name="targettype" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Clase de documento de destino]]></fieldDescription>
+	</field>
+	<field name="baseref" class="java.lang.String">
+		<fieldDescription><![CDATA[Referencia base]]></fieldDescription>
+	</field>
+	<field name="basetype" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Tipo de transacción base]]></fieldDescription>
+	</field>
+	<field name="baseentry" class="java.lang.Integer">
+		<fieldDescription><![CDATA[ID interno de documento base]]></fieldDescription>
+	</field>
+	<field name="baseline" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número de línea base]]></fieldDescription>
+	</field>
+	<field name="linestatus" class="java.lang.String">
+		<fieldDescription><![CDATA[Status de la línea]]></fieldDescription>
+	</field>
+	<field name="itemcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Número de artículo]]></fieldDescription>
+	</field>
+	<field name="dscription" class="java.lang.String">
+		<fieldDescription><![CDATA[Descripción del artículo]]></fieldDescription>
+	</field>
+	<field name="quantity" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Cantidad en doc.]]></fieldDescription>
+	</field>
+	<field name="openqty" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Open Quantity]]></fieldDescription>
+	</field>
+	<field name="price" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Precio]]></fieldDescription>
+	</field>
+	<field name="discprcnt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Descuento % por línea]]></fieldDescription>
+	</field>
+	<field name="linetotal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Total líneas]]></fieldDescription>
+	</field>
+	<field name="whscode" class="java.lang.String"/>
+	<field name="acctcode" class="java.lang.String"/>
+	<field name="taxstatus" class="java.lang.String">
+		<fieldDescription><![CDATA[Definición del impuesto]]></fieldDescription>
+	</field>
+	<field name="pricebefdi" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Precio unitario]]></fieldDescription>
+	</field>
+	<field name="ocrcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Norma de reparto]]></fieldDescription>
+	</field>
+	<field name="vatgroup" class="java.lang.String">
+		<fieldDescription><![CDATA[Indicador de impuestos]]></fieldDescription>
+	</field>
+	<field name="priceafvat" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Precio bruto]]></fieldDescription>
+	</field>
+	<field name="factor1" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Factor 1]]></fieldDescription>
+	</field>
+	<field name="grssprofit" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Ingreso bruto línea]]></fieldDescription>
+	</field>
+	<field name="taxcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Indicador de impuestos]]></fieldDescription>
+	</field>
+	<field name="vatappld" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Impuesto aplicado]]></fieldDescription>
+	</field>
+	<field name="unitmsr" class="java.lang.String">
+		<fieldDescription><![CDATA[Unidad]]></fieldDescription>
+	</field>
+	<field name="stockpricestockprice" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Costo del artículo]]></fieldDescription>
+	</field>
+	<field name="gtotal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Total bruto]]></fieldDescription>
+	</field>
+	<field name="cardtype" class="java.lang.String">
+		<fieldDescription><![CDATA[Clase de socio de negocios]]></fieldDescription>
+	</field>
+	<field name="groupcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Código de grupo]]></fieldDescription>
+	</field>
+	<field name="cmpprivate" class="java.lang.String">
+		<fieldDescription><![CDATA[Empresa/Privado]]></fieldDescription>
+	</field>
+	<field name="address" class="java.lang.String">
+		<fieldDescription><![CDATA[Destinatario de factura: Calle]]></fieldDescription>
+	</field>
+	<field name="zipcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Destinatario de factura: Código postal]]></fieldDescription>
+	</field>
+	<field name="mailaddres" class="java.lang.String">
+		<fieldDescription><![CDATA[Destinatario de mercancías: Calle]]></fieldDescription>
+	</field>
+	<field name="mailzipcod" class="java.lang.String">
+		<fieldDescription><![CDATA[Destinatario de mercancías: Código postal]]></fieldDescription>
+	</field>
+	<field name="phone1" class="java.lang.String">
+		<fieldDescription><![CDATA[Teléfono 1]]></fieldDescription>
+	</field>
+	<field name="phone2" class="java.lang.String">
+		<fieldDescription><![CDATA[Teléfono 2]]></fieldDescription>
+	</field>
+	<field name="fax" class="java.lang.String"/>
+	<field name="cntctprsn" class="java.lang.String">
+		<fieldDescription><![CDATA[Persona de contacto]]></fieldDescription>
+	</field>
+	<field name="notes" class="java.lang.String">
+		<fieldDescription><![CDATA[Comentarios]]></fieldDescription>
+	</field>
+	<field name="balance" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Saldo stock]]></fieldDescription>
+	</field>
+	<field name="checksbal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Saldo de cheques pendientes]]></fieldDescription>
+	</field>
+	<field name="dnotesbal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Saldo de notas de entrega pendientes]]></fieldDescription>
+	</field>
+	<field name="ordersbal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Saldo de pedidos pendientes]]></fieldDescription>
+	</field>
+	<field name="creditline" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Límite de crédito]]></fieldDescription>
+	</field>
+	<field name="debtline" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Límite de deuda]]></fieldDescription>
+	</field>
+	<field name="discount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[% de descuento]]></fieldDescription>
+	</field>
+	<field name="vatstatus" class="java.lang.String">
+		<fieldDescription><![CDATA[Definición del impuesto]]></fieldDescription>
+	</field>
+	<field name="lictradnum" class="java.lang.String">
+		<fieldDescription><![CDATA[Número de identificación fiscal]]></fieldDescription>
+	</field>
+	<field name="exmatchnum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Último número de reconciliación externo]]></fieldDescription>
+	</field>
+	<field name="inmatchnum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Último número de reconciliación interno]]></fieldDescription>
+	</field>
+	<field name="listnum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número de lista de precios]]></fieldDescription>
+	</field>
+	<field name="orderbalsy" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Saldo de pedidos pendientes en moneda estadística]]></fieldDescription>
+	</field>
+	<field name="transfered" class="java.lang.String">
+		<fieldDescription><![CDATA[Traspaso de ejercicio]]></fieldDescription>
+	</field>
+	<field name="baltrnsfrd" class="java.lang.String">
+		<fieldDescription><![CDATA[Saldos transferidos]]></fieldDescription>
+	</field>
+	<field name="commgrcode" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Grupo de comisiones]]></fieldDescription>
+	</field>
+	<field name="prevyearac" class="java.lang.String">
+		<fieldDescription><![CDATA[Saldo de año anterior]]></fieldDescription>
+	</field>
+	<field name="balancesys" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Saldo en moneda de la cuenta]]></fieldDescription>
+	</field>
+	<field name="cellular" class="java.lang.String">
+		<fieldDescription><![CDATA[Teléfono móvil]]></fieldDescription>
+	</field>
+	<field name="e_mail" class="java.lang.String">
+		<fieldDescription><![CDATA[Correo electrónico]]></fieldDescription>
+	</field>
+	<field name="picture" class="java.lang.String">
+		<fieldDescription><![CDATA[Pantalla]]></fieldDescription>
+	</field>
+	<field name="dflaccount" class="java.lang.String">
+		<fieldDescription><![CDATA[Cuenta por defecto]]></fieldDescription>
+	</field>
+	<field name="dflbranch" class="java.lang.String">
+		<fieldDescription><![CDATA[Sucursal por defecto]]></fieldDescription>
+	</field>
+	<field name="bankcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Banco por defecto]]></fieldDescription>
+	</field>
+	<field name="addid" class="java.lang.String">
+		<fieldDescription><![CDATA[Número de ID adicional]]></fieldDescription>
+	</field>
+	<field name="fathercard" class="java.lang.String">
+		<fieldDescription><![CDATA[Agrupación SN]]></fieldDescription>
+	</field>
+	<field name="qrygroup1" class="java.lang.String">
+		<fieldDescription><![CDATA[Característica 1]]></fieldDescription>
+	</field>
+	<field name="qrygroup2" class="java.lang.String">
+		<fieldDescription><![CDATA[Característica 2]]></fieldDescription>
+	</field>
+	<field name="qrygroup3" class="java.lang.String">
+		<fieldDescription><![CDATA[Característica 3]]></fieldDescription>
+	</field>
+	<field name="qrygroup4" class="java.lang.String">
+		<fieldDescription><![CDATA[Característica 4]]></fieldDescription>
+	</field>
+	<field name="qrygroup5" class="java.lang.String">
+		<fieldDescription><![CDATA[Característica 5]]></fieldDescription>
+	</field>
+	<field name="qrygroup6" class="java.lang.String">
+		<fieldDescription><![CDATA[Característica 6]]></fieldDescription>
+	</field>
+	<field name="qrygroup7" class="java.lang.String">
+		<fieldDescription><![CDATA[Característica 7]]></fieldDescription>
+	</field>
+	<field name="qrygroup8" class="java.lang.String">
+		<fieldDescription><![CDATA[Característica 8]]></fieldDescription>
+	</field>
+	<field name="qrygroup9" class="java.lang.String">
+		<fieldDescription><![CDATA[Característica 9]]></fieldDescription>
+	</field>
+	<field name="qrygroup10" class="java.lang.String">
+		<fieldDescription><![CDATA[Característica 10]]></fieldDescription>
+	</field>
+	<field name="validfor" class="java.lang.String"/>
+	<field name="debpayacct" class="java.lang.String">
+		<fieldDescription><![CDATA[Cuentas de deudor/acreedor]]></fieldDescription>
+	</field>
+	<field name="pymcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Código de método de pago]]></fieldDescription>
+	</field>
+	<field name="partdelivr" class="java.lang.String">
+		<fieldDescription><![CDATA[Entrega parcial]]></fieldDescription>
+	</field>
+	<field name="paymblock" class="java.lang.String">
+		<fieldDescription><![CDATA[Bloqueo de pago]]></fieldDescription>
+	</field>
+	<field name="wtliable" class="java.lang.String">
+		<fieldDescription><![CDATA[Sujeto a retención impto.]]></fieldDescription>
+	</field>
+	<field name="ninum" class="java.lang.String">
+		<fieldDescription><![CDATA[Número de registro]]></fieldDescription>
+	</field>
+	<field name="wtcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Código de retención]]></fieldDescription>
+	</field>
+	<field name="industry" class="java.lang.String">
+		<fieldDescription><![CDATA[Ramo]]></fieldDescription>
+	</field>
+	<field name="business" class="java.lang.String">
+		<fieldDescription><![CDATA[Negocio]]></fieldDescription>
+	</field>
+	<field name="isdomestic" class="java.lang.String">
+		<fieldDescription><![CDATA[Es nacional]]></fieldDescription>
+	</field>
+	<field name="isresident" class="java.lang.String">
+		<fieldDescription><![CDATA[Es residente]]></fieldDescription>
+	</field>
+	<field name="dpmclear" class="java.lang.String">
+		<fieldDescription><![CDATA[Anticipos de pago]]></fieldDescription>
+	</field>
+	<field name="affiliate" class="java.lang.String">
+		<fieldDescription><![CDATA[Empresa asociada]]></fieldDescription>
+	</field>
+	<field name="profession" class="java.lang.String">
+		<fieldDescription><![CDATA[Profesión]]></fieldDescription>
+	</field>
+	<field name="dpmintact" class="java.lang.String">
+		<fieldDescription><![CDATA[Cuenta provisional de anticipos]]></fieldDescription>
+	</field>
+	<field name="industryc" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Ramo]]></fieldDescription>
+	</field>
+	<field name="intracc" class="java.lang.String">
+		<fieldDescription><![CDATA[Cuenta de intereses]]></fieldDescription>
+	</field>
+	<field name="feeacc" class="java.lang.String">
+		<fieldDescription><![CDATA[Cuenta de tasas]]></fieldDescription>
+	</field>
+	<field name="number" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Número]]></fieldDescription>
+	</field>
+	<field name="taxidident" class="java.lang.String">
+		<fieldDescription><![CDATA[Categoría de identificación fiscal]]></fieldDescription>
+	</field>
+	<field name="nodiscount" class="java.lang.String">
+		<fieldDescription><![CDATA[Sin descuentos]]></fieldDescription>
+	</field>
+	<field name="typecont" class="java.lang.String">
+		<fieldDescription><![CDATA[Tipo de Contribuyente]]></fieldDescription>
+	</field>
+	<field name="typesn" class="java.lang.String">
+		<fieldDescription><![CDATA[Tipo de SN]]></fieldDescription>
+	</field>
+	<field name="nit" class="java.lang.String">
+		<fieldDescription><![CDATA[NIT]]></fieldDescription>
+	</field>
+	<field name="tipocont" class="java.lang.String">
+		<fieldDescription><![CDATA[Tipo de Contribuyente]]></fieldDescription>
+	</field>
+	<field name="tiposn" class="java.lang.String">
+		<fieldDescription><![CDATA[Tipo de SN]]></fieldDescription>
+	</field>
+	<field name="relatedacc1" class="java.lang.String">
+		<fieldDescription><![CDATA[Cuenta de repuestos]]></fieldDescription>
+	</field>
+	<field name="relatedacc2" class="java.lang.String">
+		<fieldDescription><![CDATA[Cuenta asociada 1]]></fieldDescription>
+	</field>
+	<field name="relatedacc3" class="java.lang.String">
+		<fieldDescription><![CDATA[Cuenta Asociada 2]]></fieldDescription>
+	</field>
+	<field name="relatedacc4" class="java.lang.String">
+		<fieldDescription><![CDATA[Cuenta Asociada 3]]></fieldDescription>
+	</field>
+	<field name="updatedate" class="java.sql.Date"/>
+	<field name="updatetime" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="107" splitType="Stretch">
+			<textField>
+				<reportElement x="71" y="5" width="219" height="11" uuid="3269a75e-bbd4-4433-ac97-1c3380ebfd12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cardname}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="352" y="5" width="52" height="11" uuid="f368f816-2b66-4fbc-9929-31eee0dcc945"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="71" y="18" width="219" height="31" uuid="f931efbd-8235-4b8b-97e0-b905c2680ef6"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="341" y="36" width="74" height="13" uuid="96c52f49-a295-4183-94c3-7838a1002fd8"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="341" y="18" width="74" height="13" uuid="51f39c81-7a77-4511-9c07-efc0db46a20c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="147" y="49" width="143" height="11" uuid="62a58842-f74e-435e-8bcb-b53894701f39"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{e_mail}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="147" y="64" width="143" height="11" uuid="ea5900fe-4822-4e51-82b2-66d4fbfe1920"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{e_mail}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="78" width="172" height="11" uuid="7768199d-5ac8-4910-8678-c87ee46fa36b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{e_mail}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="94" width="172" height="11" uuid="056e9749-0031-4111-9753-b81defa18983"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{e_mail}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="341" y="49" width="74" height="11" uuid="e5e02419-e1a2-4b00-b89c-60696082e403"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{e_mail}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="341" y="64" width="74" height="11" uuid="9e49adc4-a84a-486d-a059-c7c7c17d7b56"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{e_mail}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="26" height="14" uuid="ebc473aa-38d7-409b-b026-fbadb98b12eb"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="0" width="185" height="14" uuid="20643295-6706-4c52-87f3-c6191fe9af65"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dscription}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="247" y="0" width="31" height="14" uuid="ae7ab91a-2b16-4cd6-bd3f-512a7434acd4"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[$0.00]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="0" width="31" height="14" uuid="d6651042-0dd4-4905-8080-f353dd8cf7eb"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[$0.00]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="321" y="0" width="31" height="14" uuid="11e1d337-40f1-4f6f-9703-d6379ec025b7"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[$0.00]]></text>
+			</staticText>
+			<textField pattern="$###0.00">
+				<reportElement x="363" y="0" width="41" height="14" uuid="c00382f7-2034-44a3-92bc-e3ed178c1f45"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Double(String.valueOf($F{linetotal}))]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="129" splitType="Stretch">
+			<staticText>
+				<reportElement x="352" y="88" width="52" height="14" uuid="5ec5c5db-e00d-4e24-bad0-cf20defbecfb"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[$0.00]]></text>
+			</staticText>
+			<textField pattern="$###0.00">
+				<reportElement x="352" y="115" width="52" height="13" uuid="948b901d-dcd1-4769-8db8-7e778ea854ba"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Double(String.valueOf($F{doctotal}))]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="352" y="102" width="52" height="14" uuid="4a0a7d04-721d-4c27-bf9b-305cf19cb8d7"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[$0.00]]></text>
+			</staticText>
+			<textField pattern="$###0.00">
+				<reportElement positionType="Float" x="352" y="10" width="52" height="13" uuid="057ee0a2-d631-472e-b577-4d59065e1fd1"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Double(String.valueOf($F{doctotal})) - new Double(String.valueOf($F{vatsum}))]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="352" y="72" width="52" height="14" uuid="98b13a51-c17c-44be-98cb-ecb8d8f7f680"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[$0.00]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="352" y="57" width="52" height="14" uuid="b0e45d04-ac1c-47db-9409-8391b2c2f42c"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[$0.00]]></text>
+			</staticText>
+			<textField pattern="$###0.00">
+				<reportElement positionType="Float" x="352" y="42" width="52" height="13" uuid="42dd5ad0-6c2e-4531-9d88-cb5a3c2f84e9"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Double(String.valueOf($F{doctotal}))]]></textFieldExpression>
+			</textField>
+			<textField pattern="$###0.00">
+				<reportElement x="352" y="26" width="52" height="14" uuid="fd3f6a84-a61f-4262-8513-5247b5ece40e"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Double(String.valueOf($F{vatsum}))]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

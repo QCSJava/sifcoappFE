@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <f:event listener="#{sociedad.isAdmin}" type="preRenderView" />
+    <body>
+
+          <ui:composition template="./../../template.xhtml">
+
+
+            <ui:define name="content">
+                    <p:tab title="Detalle Sociedad">
+                        <h:form id="form" >
+                            <p:tabView dynamic="true" cache="true">
+                                <p:tab title="Detalle Sociedad" >
+                                    <p:growl id="msgs" showDetail="true" />
+                                    <p:panelGrid columns="2" >
+
+                                        <p:outputLabel  value="Nombre : " />
+                                        <p:inputText id="compnyName" value="#{sociedad.compnyName}"  />
+
+                                        <p:outputLabel  value="Direccion : " />
+                                        <p:inputText id="compnyAddr" value="#{sociedad.compnyAddr}"  />
+
+                                        <p:outputLabel  value="Pais: " />
+                                        <p:selectOneMenu id="catalogClassLst"  style="width:150px" value="#{sociedad.country_catalog}">
+                                            <f:selectItem itemLabel="Seleccionar Pais" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems value="#{sociedad.catalogClassLst}" var="model" itemLabel="#{model.catvalue}" itemValue="#{model.catcode}"/>
+                                        </p:selectOneMenu>
+
+                                        <p:outputLabel value="Titulo Reportes :" />
+                                        <p:inputText id="crintHeadr" value="#{sociedad.crintHeadr}"/>
+
+                                        <p:outputLabel value="Telefono 1: " />
+                                        <p:inputMask id="telefono1" value="#{sociedad.phone1}" mask="(999)-9999-9999"/>
+
+                                        <p:outputLabel value="Telefono 2:" />
+                                        <p:inputMask id="telefono2" value="#{sociedad.phone2}" mask="(999)-9999-9999"/>
+
+                                        <p:outputLabel value="FAX:" />
+                                        <p:inputMask id="fax" value="#{sociedad.fax}" mask="(999)-9999-9999"/>
+
+                                        <p:outputLabel value="Email:" />
+                                        <p:inputText id="email" value="#{sociedad.e_Mail}" />
+
+                                        <p:outputLabel value="Administrador :" />
+                                        <p:inputText id="manager" value="#{sociedad.manager}" />
+
+                                        <p:outputLabel value="NRC :" />
+                                        <p:inputMask id="taxIdNum" value="#{sociedad.taxIdNum}" mask="999-99"/>
+
+                                        <!--p:commandButton value="Reset" type="reset" /-->
+                                        <p:commandButton value="Guardar" update="msgs" actionListener="#{sociedad.addAction()}" styleClass="ui-priority-primary"/>
+                                    </p:panelGrid>
+                                </p:tab>
+                            </p:tabView>  
+                        </h:form>
+                    </p:tab>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

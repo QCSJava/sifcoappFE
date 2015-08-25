@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+  <h:head>
+        <title>Busqueda</title>
+          <style type="text/css">
+            .ui-widget {
+                font-size: 80%;
+            }
+          </style>
+    </h:head>
+   <h:body>
+         <h:form>
+             <p:dataTable var="bra" value="#{wareHouseView.lstBranch}">
+                 <p:column filterBy="#{bra.whscode}" headerText="Id" filterMatchMode="contains">
+                     <h:outputText value="#{bra.whscode}" />
+                </p:column>
+ 
+                 <p:column filterBy="#{bra.whsname}" headerText="Nombre" filterMatchMode="contains">
+                     <h:outputText value="#{bra.whsname}" />
+                </p:column>
+                <p:column headerText="Seleccionar Almacen">
+                    <p:commandButton icon="ui-icon-search" actionListener="#{wareHouseView.selectFromDialog(bra)}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</html>

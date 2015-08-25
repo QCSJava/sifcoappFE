@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../template.xhtml">
+
+            <ui:define name="content">
+
+                <h:form id="principal">
+                    <br></br>
+                    <p:toolbar id="toolbarBill">
+                        <f:facet name="left">
+                            <p:focus context="toolbarBill"/>
+                            Reportes de Inventario
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+
+                        </f:facet>
+                    </p:toolbar>
+
+                    <div class="ui-grid ui-grid-responsive">
+                        <div class="ui-grid-row"> 
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel  value="Grupo: " for="articlesGroup"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:selectOneMenu id="articlesGroup"  style="width:150px" value="#{rinventory.itemgroup}">
+                                    <f:selectItem itemLabel="Seleccione el Grupo" itemValue="-1" />
+                                    <f:selectItems value="#{articles.articleGroupLst}" var="model" itemLabel="#{model.catvalue}" itemValue="#{model.catcode}"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="ui-grid-row"> 
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel  value="Clase: " for="articlesClass"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:selectOneMenu id="articlesClass"  style="width:150px" value="#{rinventory.itemtype}">
+                                    <f:selectItem itemLabel="Seleccione la clase" itemValue="-1" />
+                                    <f:selectItems value="#{articles.articleClassLst}" var="model" itemLabel="#{model.catvalue}" itemValue="#{model.catcode}"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2"><p:outputLabel value="Por Existencia"></p:outputLabel></div>
+                            <div class="ui-grid-col-2"><p:inputText id="fname" value="#{rinventory.stock}"  size="50"></p:inputText></div>
+                        </div>
+                        <div class="ui-grid-row">                            
+                            <div class="ui-grid-col-2"><p:outputLabel  value="Fecha Inicio:" for="FechaInicio" ></p:outputLabel></div>
+                            <div class="ui-grid-col-2">
+                                <p:calendar id="FechaInicio" value="#{rinventory.fdatefrom}" showOn="button" size="10"  pattern="dd/MM/yyyy" />
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+
+                            <div class="ui-grid-col-2"><p:outputLabel  value="Fecha Fin:" for="FechaFin" ></p:outputLabel></div>
+                            <div class="ui-grid-col-2">
+                                <p:calendar id="FechaFin" value="#{rinventory.fdateto}" showOn="button" size="10"  pattern="dd/MM/yyyy" />
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+
+
+                            <div class="ui-grid-col-2"><p:outputLabel  value="Tipo de Reporte:" for="isActive" ></p:outputLabel></div>
+                            <div class="ui-grid-col-2">
+                                <p:selectOneRadio layout="pageDirection" required="true" id="isActive" value="#{rinventory.ftype}">
+                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Existencias y Costos" itemValue="1" /></div>
+                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Kardex" itemValue="2" /></div>
+                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Inventario F&iacute;sico" itemValue="3" /></div>
+                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Impresion C&oacute;digo Barra" itemValue="4" /></div>
+                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Productos por Categor&iacute;a" itemValue="5" /></div>
+                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Productos por Categor&iacute;a y ubicaci&oacute;n" itemValue="6" /></div>
+                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Productos por Marca" itemValue="7" /></div>
+                                </p:selectOneRadio></div>
+
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:commandButton  id="btnPrint" action="#{rinventory.doPrint()}" value="Imprimir" ajax="false"  />
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:commandButton  id="btnPrint2" action="#{rinventory.printFormat()}" value="Descargar" ajax="false"  />
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+                <br></br>
+                <br></br>
+            </ui:define>
+            <br></br>
+        </ui:composition>
+
+    </body>
+</html>
