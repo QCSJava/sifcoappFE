@@ -89,7 +89,7 @@ public class BusinessPartner implements Serializable {
     private boolean validfor;
     private String vatgroup;
     private String objtype;
-    private String debpayacct;
+    private String debpayacct="";
     private int docentry;
     private String pymcode;
     private String partdelivr;
@@ -1087,6 +1087,10 @@ public class BusinessPartner implements Serializable {
         }
         if (cardname.isEmpty()) {
             faceMessage("Ingrese un Nombre");
+            return false;
+        }
+        if (debpayacct == null || debpayacct.equals("")) {
+            faceMessage("Ingrese: Cuenta de deudor/acreedor");
             return false;
         }
         return true;
