@@ -22,6 +22,10 @@ import com.sifcoapp.objects.common.to.ResultOutTO;
 import com.sifcoapp.objects.sales.to.SalesTO;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +35,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -115,6 +120,9 @@ public class ColecturiaBean implements Serializable {
     private String estado;
     private int idAnterior;
     private boolean rendered;
+
+    //
+    private String url;
 
 //</editor-fold>
     
@@ -474,18 +482,32 @@ public class ColecturiaBean implements Serializable {
 
     public void estateActualizar() {//se activa automaticamente despues de Guardar o buscar
         if (varEstados != 3) {
-            this.varEstados = Common.MTTOUPDATE; //2
-            this.botonEstado = "Actualizar";
+            if (varEstados == 1) {
+                this.varEstados = Common.MTTOUPDATE; //2
+                this.botonEstado = "Actualizar";
 
-            this.idCheck = true;
-            this.common = true;
-            this.rendered = true;
-           // this.documento = "1";
-            doTotal();
-            try {
-                reload();
-            } catch (IOException ex) {
+                this.idCheck = true;
+                this.common = true;
+                this.rendered = true;
+                doTotal();
+                RequestContext.getCurrentInstance().update("frmprt");
+                showHideDialog("dlgPtr", 1);
+
+                RequestContext.getCurrentInstance().update("frmColect");
+            } else {
+                this.varEstados = Common.MTTOUPDATE; //2
+                this.botonEstado = "Actualizar";
+
+                this.idCheck = true;
+                this.common = true;
+                this.rendered = true;
+                doTotal();
+                try {
+                    reload();
+                } catch (IOException ex) {
+                }
             }
+
         } else {
             this.varEstados = Common.MTTOUPDATE; //2
             this.botonEstado = "Actualizar";
@@ -493,8 +515,6 @@ public class ColecturiaBean implements Serializable {
             this.idCheck = true;
             this.common = true;
             this.rendered = true;
-            //this.documento = "1";
-            //doTotal();
             try {
                 reload();
             } catch (IOException ex) {
@@ -615,9 +635,16 @@ public class ColecturiaBean implements Serializable {
             lstPadre.clear();
             for (Object obj : lstTable) {
                 ColecturiaDetailTO det = (ColecturiaDetailTO) obj;
-                det.setValue1(vacio);
+                try {
+                    if (det.getPaidsum() == null || det.getPaidsum() < 0) {
+                        det.setPaidsum(0.0);
+                    }
+                } catch (Exception e) {
+                    det.setPaidsum(0.0);
+                }
+                /*det.setValue1(vacio);
                 det.setValue2(vacio);
-                det.setValue3(vacio);
+                det.setValue3(vacio);*/
                 this.lstPadre.add(det);
             }
             newColect.setColecturiaDetail(lstPadre);
@@ -631,6 +658,7 @@ public class ColecturiaBean implements Serializable {
             if (_res.getCodigoError() == 0) {//se realizo correctamente
                 this.totalFacValorAct = 0.0;
                 this.No = _res.getDocentry();
+                this.newColect.setDocentry(_res.getDocentry());
                 faceMessage(_res.getMensaje());
 
                 estateActualizar();
@@ -940,7 +968,7 @@ public class ColecturiaBean implements Serializable {
                         col.setValue1(col2.getValue1());
                         this.lstTable.add(col);
                         break;
-                    }else{
+                    } else {
                         if (col.getLinenum() == this.lineNum) {
                             this.lstTable.add(col);
                             break;
@@ -1034,7 +1062,7 @@ public class ColecturiaBean implements Serializable {
     public void anularColet() {
         if (newColect.getSeries() == 2 || newColect.getTranstype() == 2) {
             faceMessage("No se puede anular");
-        }else{
+        } else {
             faceMessage("anular colecturia");
             estateGuardar();
             this.documento = "2";
@@ -1118,6 +1146,14 @@ public class ColecturiaBean implements Serializable {
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="G & S">
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public Double getTotalFacValorAct() {
         return totalFacValorAct;
     }
@@ -1448,4 +1484,44 @@ public class ColecturiaBean implements Serializable {
 
 //</editor-fold>
     
+//<editor-fold defaultstate="collapsed" desc="IMPRIMIR FORMA 2">
+    public String printInvoice() throws UnsupportedEncodingException {
+        //faceMessage(getApplicationUri());
+        //System.out.println(getApplicationUri()+"||----------------------------------------------------------------");
+        setUrl(getApplicationUri());
+        String nombre = session.getAttribute("username").toString().toUpperCase();
+        if (newColect.getDocentry() > 0) {
+            String foo = newColect.getDocentry() + "";
+            String bar = nombre;
+            return "/PrintColectView?faces-redirect=true"
+                    + "&foo=" + URLEncoder.encode(foo, "UTF-8")
+                    + "&bar=" + URLEncoder.encode(bar, "UTF-8");
+        } else {
+            faceMessage("No se puede imprimir");
+            return "/view/bank/Colecturia.xhtml";
+        }
+    }
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="redirect">
+    public void redirect() throws IOException {
+        String url2 = getUrl() + "/faces/view/bank/Colecturia.xhtml"; //url donde se redirige la pantalla
+        FacesContext fc = FacesContext.getCurrentInstance();
+        fc.getExternalContext().redirect(url2);
+    }
+
+    public String getApplicationUri() {
+        try {
+            FacesContext ctxt = FacesContext.getCurrentInstance();
+            ExternalContext ext = ctxt.getExternalContext();
+            URI uri = new URI(ext.getRequestScheme(),
+                    null, ext.getRequestServerName(), ext.getRequestServerPort(),
+                    ext.getRequestContextPath(), null, null);
+            return uri.toASCIIString();
+        } catch (URISyntaxException e) {
+            throw new FacesException(e);
+        }
+    }
+//</editor-fold>
+
 }//cierre de clase

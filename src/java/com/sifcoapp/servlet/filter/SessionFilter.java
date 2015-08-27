@@ -51,6 +51,8 @@ public class SessionFilter implements Filter {
                 || url.contains("testPrintInvoice")
                 || url.contains("testPrintView")
                 || url.contains("PrintDeliveryView")
+                || url.contains("PrintColectView")
+                || url.contains("ColectPrint")
                 || url.contains("RemisionPrint")) {
             allowedRequest = true;
             //System.out.println("url permitida: " + url);
@@ -80,6 +82,7 @@ public class SessionFilter implements Filter {
                             || url.contains("/sifcoappFE/servlets/report/PDF")
                             || url.contains("Pdf")
                             || url.contains("index")
+                            || url.contains("ColectPrint")
                             || url.contains("RemisionPrint")) {
                         allowedRequest = true;
                         System.out.println("url permitida: " + url);

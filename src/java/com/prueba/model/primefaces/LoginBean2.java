@@ -11,7 +11,6 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import javax.faces.application.FacesMessage;
 import com.sifcoapp.client.SecurityEJBClient;
-import com.sifcoapp.objects.security.to.ProfileOutTO;
 import com.sifcoapp.objects.security.to.UserAppInTO;
 import com.sifcoapp.objects.security.to.UserAppOutTO;
 import com.sifcoapp.objects.utilities.PasswordService;
@@ -20,7 +19,6 @@ import java.util.logging.Logger;
  import com.sifcoapp.objects.security.to.UserTO;
 import java.io.IOException;
 import javax.faces.context.ExternalContext;
-import static org.jboss.weld.context.cache.RequestScopedBeanCache.invalidate;
 import org.primefaces.context.RequestContext;
 @ManagedBean(name = "loginBean")
 @SessionScoped

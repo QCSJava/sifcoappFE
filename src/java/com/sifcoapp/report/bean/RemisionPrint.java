@@ -5,14 +5,9 @@
  */
 package com.sifcoapp.report.bean;
 
-import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.client.SalesEJBClient;
-import com.sifcoapp.objects.admin.to.CatalogTO;
 import com.sifcoapp.objects.sales.to.DeliveryDetailTO;
 import com.sifcoapp.objects.sales.to.DeliveryTO;
-import com.sifcoapp.objects.sales.to.SalesDetailTO;
-import com.sifcoapp.objects.sales.to.SalesTO;
-import com.sifcoapp.report.common.numerosAletras;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.NumberFormat;
@@ -26,9 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 
 public class RemisionPrint extends HttpServlet {
 
-    private static AdminEJBClient AdminEJBService;
+    //private static AdminEJBClient AdminEJBService;
     private static SalesEJBClient SalesEJBService;
-    private numerosAletras convertNumber;
+    //private numerosAletras convertNumber;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,7 +39,7 @@ public class RemisionPrint extends HttpServlet {
         Double total = 0.0;
         try {
             SalesEJBService = new SalesEJBClient();
-            AdminEJBService = new AdminEJBClient();
+            //AdminEJBService = new AdminEJBClient();
 
             var = SalesEJBService.getDeliveryByKey(Integer.parseInt(request2.getParameter("foo")));
             total = formatNumber(var.getDoctotal());

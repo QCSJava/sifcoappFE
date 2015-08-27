@@ -19,7 +19,12 @@ import com.sifcoapp.objects.catalog.to.BusinesspartnerTO;
 import com.sifcoapp.objects.catalogos.Common;
 import com.sifcoapp.objects.common.to.ResultOutTO;
 import com.sifcoapp.report.common.numerosAletras;
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -28,9 +33,11 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
@@ -113,6 +120,9 @@ public class CheckForPaymentBean implements Serializable {
     private boolean common;
     private int toolbarBoton;
     private boolean confirm;
+    
+    //
+    private String url;
 
 //</editor-fold>
     
@@ -892,6 +902,97 @@ public class CheckForPaymentBean implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G & S">
+
+    public static BankEJBClient getBankEJBClient() {
+        return BankEJBClient;
+    }
+
+    public static void setBankEJBClient(BankEJBClient BankEJBClient) {
+        CheckForPaymentBean.BankEJBClient = BankEJBClient;
+    }
+
+    public static CatalogEJBClient getCatalogEJB() {
+        return CatalogEJB;
+    }
+
+    public static void setCatalogEJB(CatalogEJBClient CatalogEJB) {
+        CheckForPaymentBean.CatalogEJB = CatalogEJB;
+    }
+
+    public static AccountingEJBClient getAccountingEJBClient() {
+        return AccountingEJBClient;
+    }
+
+    public static void setAccountingEJBClient(AccountingEJBClient AccountingEJBClient) {
+        CheckForPaymentBean.AccountingEJBClient = AccountingEJBClient;
+    }
+
+    public static AdminEJBClient getAdminEJBService() {
+        return AdminEJBService;
+    }
+
+    public static void setAdminEJBService(AdminEJBClient AdminEJBService) {
+        CheckForPaymentBean.AdminEJBService = AdminEJBService;
+    }
+
+    public HttpSession getSession() {
+        return session;
+    }
+
+    public void setSession(HttpSession session) {
+        this.session = session;
+    }
+
+    public numerosAletras getConvertNumber() {
+        return convertNumber;
+    }
+
+    public void setConvertNumber(numerosAletras convertNumber) {
+        this.convertNumber = convertNumber;
+    }
+
+    public CheckForPaymentTO getNewCheck() {
+        return newCheck;
+    }
+
+    public void setNewCheck(CheckForPaymentTO newCheck) {
+        this.newCheck = newCheck;
+    }
+
+    public List getListaBusqueda() {
+        return listaBusqueda;
+    }
+
+    public void setListaBusqueda(List listaBusqueda) {
+        this.listaBusqueda = listaBusqueda;
+    }
+
+    public int getToolbarBoton() {
+        return toolbarBoton;
+    }
+
+    public void setToolbarBoton(int toolbarBoton) {
+        this.toolbarBoton = toolbarBoton;
+    }
+
+    public boolean isConfirm() {
+        return confirm;
+    }
+
+    public void setConfirm(boolean confirm) {
+        this.confirm = confirm;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+    
+    
+    
     public CheckForPaymentTO getSelectCheck() {
         return selectCheck;
     }
@@ -1085,4 +1186,45 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="IMPRIMIR FORMA 2">
+    public String printInvoice() throws UnsupportedEncodingException {
+        //faceMessage(getApplicationUri());
+        //System.out.println(getApplicationUri()+"||----------------------------------------------------------------");
+        setUrl(getApplicationUri());
+       //String nombre = session.getAttribute("username").toString().toUpperCase();
+        if (newCheck.getCheckkey()> 0) {
+            String foo = newCheck.getCheckkey() + "";
+            String bar = "xyz";
+            return "/PrintCheckView?faces-redirect=true"
+                    + "&foo=" + URLEncoder.encode(foo, "UTF-8")
+                    + "&bar=" + URLEncoder.encode(bar, "UTF-8");
+        } else {
+            faceMessage("No se puede imprimir");
+            return "/view/bank/CheckForPayment.xhtml";
+        }
+    }
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="redirect">
+    public void redirect() throws IOException {
+        String url2 = getUrl() + "/faces/view/bank/CheckForPayment.xhtml"; //url donde se redirige la pantalla
+        FacesContext fc = FacesContext.getCurrentInstance();
+        fc.getExternalContext().redirect(url2);
+    }
+
+    public String getApplicationUri() {
+        try {
+            FacesContext ctxt = FacesContext.getCurrentInstance();
+            ExternalContext ext = ctxt.getExternalContext();
+            URI uri = new URI(ext.getRequestScheme(),
+                    null, ext.getRequestServerName(), ext.getRequestServerPort(),
+                    ext.getRequestContextPath(), null, null);
+            return uri.toASCIIString();
+        } catch (URISyntaxException e) {
+            throw new FacesException(e);
+        }
+    }
+//</editor-fold>
+    
 }//cierre de clase
