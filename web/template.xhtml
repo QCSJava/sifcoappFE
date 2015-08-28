@@ -56,12 +56,6 @@
             <p:growl autoUpdate="true"/>
             <div class="ui-grid-row">
                 <div class="ui-grid-col-2" >
-                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
- 
-                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
-                        <p:graphicImage url="./../../resources/Images/imagen.gif" />
-                    </p:dialog>
-                    
                     <h:form id="hbMenuForm">
                         <p:panelMenu  model="#{MenuModel.simpleMenuModel}" widgetVar="hbPanelMenu" id="hbPanelMenu2"/>  
 

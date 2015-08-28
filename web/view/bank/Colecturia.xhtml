@@ -40,7 +40,7 @@
 
                             </p:commandButton>
 
-                            <p:commandButton  tabindex="-1"  ajax="false"  icon="ui-icon-print" disabled="#{salesBean.btnPrint}"/>
+                            <p:commandButton tabindex="-1" ajax="false" action="#{colecturiaBean.printInvoice()}" icon="ui-icon-print" />
 
                         </f:facet>
                     </p:toolbar>
@@ -65,7 +65,7 @@
                                 <p:outputLabel value="Estado"/>
                             </div>
                             <div class="ui-grid-col-4">
-                                
+
                                 <p:selectOneMenu id="console" value="#{colecturiaBean.estado}"  disabled="#{colecturiaBean.idCheck}" style="width:115px">
                                     <f:selectItem itemLabel="Estado" itemValue="-1" />
                                     <f:selectItem itemLabel="Abierto" itemValue="1" />
@@ -287,6 +287,34 @@
                                     </div>
                                     <div class="ui-grid-col-1">
                                         <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{colecturiaBean.cancelDialog}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+
+                <h:form id="frmprt">
+                    <p:dialog header="Confirmacion" widgetVar="dlgPtr" width="230" modal="true" resizable="false">
+                        <p:focus for="qw" />
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea imprimir documento?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton id="qw" ajax="false" action="#{colecturiaBean.printInvoice()}" icon="ui-icon-print" onclick="PF('dlgPtr').hide();" />
+                                        <!-- <h:commandButton action="#/{salesBean.printInvoice()}" onclick="PF('dlgPtr').hide();"/>-->
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  onclick="PF('dlgPtr').hide();" />
                                     </div>
                                 </div>
                             </div>
