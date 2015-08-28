@@ -28,7 +28,6 @@ import javax.faces.event.ActionEvent;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
-
 @ManagedBean(name = "Accassignment")
 @ViewScoped
 public class AccassignmentBean implements Serializable {
@@ -1425,7 +1424,7 @@ public class AccassignmentBean implements Serializable {
              */
             AccassignmentTO accAss = new AccassignmentTO();
             accAss = AccountingEJBClient.getAccAssignment();
-            
+
             this.linkact_1 = doCodeName(accAss.getLinkact_1()); //Clientes Locales
             this.linkact_9 = doCodeName(accAss.getLinkact_9()); //Clientes Extranjeros
             this.linkact_2 = doCodeName(accAss.getLinkact_2()); //Cheques Recibidos
@@ -1652,10 +1651,9 @@ public class AccassignmentBean implements Serializable {
 //        //this.phandlewt=doCodeName(accAss.get no se encuentra en el metodo
 //        this.sdfltwt = doCodeName(accAss.getSdfltwt();
 //        this.pdfltwt = doCodeName(accAss.getPdfltwt();
-        //getAccAssignment
+            //getAccAssignment
             // this.arcmact = doCodeName(accAss.getArcmact();
-            this.LtsAccount = AccountingEJBClient.getAccount(2);
- 
+            //this.LtsAccount = AccountingEJBClient.getAccount(2);
         } catch (Exception ex) {
             Logger.getLogger(AccassignmentBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1664,7 +1662,7 @@ public class AccassignmentBean implements Serializable {
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="code - name">
-    public String doCodeName(String code){
+    public String doCodeName(String code) {
         try {
             if (code != null) {
                 AccountTO acc = new AccountTO();
@@ -1679,7 +1677,7 @@ public class AccassignmentBean implements Serializable {
         return null;
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="Guardar en base">
     public void doSave() {
         ResultOutTO _return = null;
@@ -1810,19 +1808,18 @@ public class AccassignmentBean implements Serializable {
 
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="BOTON PRINCIPAL">
-    public void btnPrincipal(){
+    public void btnPrincipal() {
         try {
             showHideDialog("dlgC2", 1);
         } catch (Exception e) {
         }
     }
-    
+
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="extractAccNumber">
-   
     public String extractAccNumber(String _input) {
         String _result = null;
         if (_input != null && _input.length() > 0) {
@@ -1839,9 +1836,8 @@ public class AccassignmentBean implements Serializable {
 
     }
 //</editor-fold>
-    
-//<editor-fold defaultstate="collapsed" desc="completeText">
 
+//<editor-fold defaultstate="collapsed" desc="completeText">
     public List<String> completeText(String query) {
         List _result = null;
         String var = null;
@@ -1870,12 +1866,10 @@ public class AccassignmentBean implements Serializable {
         }
         return results;
     }
-    
+
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="SIN USO">
-    
-
 //public List<String> completeCode(String query) {
 //        List _result = null;
 //        String var = null;
@@ -1972,18 +1966,17 @@ public class AccassignmentBean implements Serializable {
 ////        }
 //        
 //    }
-    
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="findAccount">
     public void findAccount(SelectEvent event) {
         /*try {
-            //_result = AdminEJBService.getArticles(newCod, newNomArt);
-            AccountTO _result = AccountingEJBClient.getAccountByKey(event.toString());
-        } catch (Exception e) {
-            faceMessage(e.getMessage() + " -- " + e.getCause());
-        }*/
-        faceMessage(event.toString()+" Agregado");
+         //_result = AdminEJBService.getArticles(newCod, newNomArt);
+         AccountTO _result = AccountingEJBClient.getAccountByKey(event.toString());
+         } catch (Exception e) {
+         faceMessage(e.getMessage() + " -- " + e.getCause());
+         }*/
+        faceMessage(event.toString() + " Agregado");
 
     }
 //</editor-fold>
@@ -2004,17 +1997,17 @@ public class AccassignmentBean implements Serializable {
             faceMessage(e.getMessage() + "---" + e.getCause());
         }
     }
-    
+
     public void cancelDialog(ActionEvent actionEvent) {
         RequestContext rc = RequestContext.getCurrentInstance();
         rc.execute("PF('dlgC2').hide();");
     }
-    
+
     public void confirmDialog(ActionEvent actionEvent) {
         showHideDialog("dlgC2", 2);
         doSave();
     }
-    
+
     public void faceMessage(String var) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(var));
     }

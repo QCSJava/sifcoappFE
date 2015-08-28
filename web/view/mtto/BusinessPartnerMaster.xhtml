@@ -211,7 +211,7 @@
                                              process="@this    idpartner idnombre idtipo idgrupo idrfc padre:idtel1 padre:idtel2 padre:idcel padre:idfax padre:idemail padre:idweb 
                                              padre:idcontacto padre:isActive padre:idcontacto padre:idnrc padre:idcomen padre:iddui  
                                              padre:idlimite padre:taxRetention padre:idproveedores padre:SNagroup padre:idramo padre:idpago 
-                                             padre:idprecio  :frmDialog:Codigocuenta :frmDialog:nombrecuenta 
+                                             padre:idprecio  :frmDialog:Codigocuenta
                                              "  update=":frmDialog:dialogo01">
 
                             </p:commandButton>
@@ -224,39 +224,54 @@
 
                 <h:form id="frmDialog">
                     <p:dialog  header="Cuentas Asociadas - Proveedores" id="dialogo01" widgetVar="dlg01" modal="true"  width="1000" height="250" closeOnEscape="true"
-                              >
+                               >
                         <div class="ui-grid-row">
-                            <div class="ui-grid-col-1"><p:spacer/></div>
-                            <div class="ui-grid-col-4">
+                            <div class="ui-grid-col-1">
                                 <p:outputLabel value="Numero" for="inNumero"/>
-                                <p:spacer height="0" width="60"/>
-                                <p:outputLabel value="Codigo" for="Codigocuenta"/>
                             </div>
                             <div class="ui-grid-col-2">
-                                <p:outputLabel value="Nombre Cuenta" for="nombrecuenta"/>
+                                <p:outputLabel value="Codigo 1" for="Codigocuenta"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Codigo 2" for="Codigocuenta2"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Codigo 3" for="Codigocuenta3"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Codigo 4" for="Codigocuenta4"/>
                             </div>
                         </div>
 
                         <div class="ui-grid-row">
-                            <div class="ui-grid-col-1"><p:spacer/> </div>
-                            <div class="ui-grid-col-4">
-                                <p:inputText id="inNumero" size="8" value="#{businessPartner.inNumero}"/>
-                                <p:spacer height="0" width="35"/>
-                                <p:autoComplete id="Codigocuenta" size="25" forceSelection="true" minQueryLength="2" value="#{businessPartner.codigoCuenta}"
+                            <div class="ui-grid-col-1">
+                                <p:inputText id="inNumero" size="5" value="#{businessPartner.inNumero}"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:autoComplete id="Codigocuenta" size="20" forceSelection="true" minQueryLength="2" value="#{businessPartner.codigoCuenta}"
                                                 completeMethod="#{businessPartner.completeCode}" effect="fade" label="Codigo" scrollHeight="250">
-                                    <p:ajax event="itemSelect" listener="#{businessPartner.findAccount}" update="Codigocuenta nombrecuenta"/>
+                                </p:autoComplete>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:autoComplete id="Codigocuenta2" size="20" forceSelection="true" minQueryLength="2" value="#{businessPartner.codigoCuenta2}"
+                                                completeMethod="#{businessPartner.completeCode}" effect="fade" label="Codigo" scrollHeight="250">
+                                </p:autoComplete>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:autoComplete id="Codigocuenta3" size="20" forceSelection="true" minQueryLength="2" value="#{businessPartner.codigoCuenta3}"
+                                                completeMethod="#{businessPartner.completeCode}" effect="fade" label="Codigo" scrollHeight="250">
+                                </p:autoComplete>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:autoComplete id="Codigocuenta4" size="20" forceSelection="true" minQueryLength="2" value="#{businessPartner.codigoCuenta4}"
+                                                completeMethod="#{businessPartner.completeCode}" effect="fade" label="Codigo" scrollHeight="250">
                                 </p:autoComplete>
                             </div>
 
-                            <div class="ui-grid-col-5">
-                                <p:autoComplete id="nombrecuenta" size="50" forceSelection="true" minQueryLength="2" value="#{businessPartner.nombreCuenta}"
-                                                completeMethod="#{businessPartner.completeText}" effect="fade" label="Cuenta" scrollHeight="250">
-                                    <p:ajax event="itemSelect" listener="#{businessPartner.findAccount}" update="Codigocuenta nombrecuenta" />
-                                </p:autoComplete>
-                            </div>
+
                             <div class="ui-grid-col-1">
-                                <p:commandButton value="Agregar" action="#{businessPartner.addAcc()}" process="@this, inNumero Codigocuenta nombrecuenta"
-                                                 update="inNumero Codigocuenta nombrecuenta accTable"/>
+                                <p:commandButton value="Agregar" action="#{businessPartner.addAcc()}" process="@this, inNumero Codigocuenta Codigocuenta2 Codigocuenta3 Codigocuenta4"
+                                                 update="inNumero Codigocuenta Codigocuenta2 Codigocuenta3 Codigocuenta4 accTable"/>
                             </div>
                         </div>
 
@@ -277,14 +292,20 @@
                                 <h:outputText value="#{Rec.acctype}" />
                             </p:column>
 
-                            <p:column headerText="Codigo Cuenta" sortBy="#{Rec.acctcode}"  style="width: 10%">
+                            <p:column headerText="Codigo Cuenta 1" sortBy="#{Rec.acctcode}"  style="width: 10%">
                                 <h:outputText value="#{Rec.acctcode}" />
                             </p:column>
-                            <p:column headerText="Nombre Cuenta" sortBy="#{Rec.cardcode}" style="width: 30%">
-                                <h:outputText value="#{Rec.cardcode}" />
+
+                            <p:column headerText="Codigo Cuenta 2" sortBy="#{Rec.acctcode}"  style="width: 10%">
+                                <h:outputText value="#{Rec.acctcode2}" />
                             </p:column>
-                            <p:column headerText="Saldo" sortBy="#{Rec.balance}" style="width: 10%">
-                                <h:outputText value="#{Rec.balance}" />
+
+                            <p:column headerText="Codigo Cuenta 3" sortBy="#{Rec.acctcode}"  style="width: 10%">
+                                <h:outputText value="#{Rec.acctcode3}" />
+                            </p:column>
+
+                            <p:column headerText="Codigo Cuenta 4" sortBy="#{Rec.acctcode}"  style="width: 10%">
+                                <h:outputText value="#{Rec.acctcode4}" />
                             </p:column>
 
                         </p:dataTable>
