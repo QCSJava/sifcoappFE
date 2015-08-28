@@ -643,8 +643,8 @@ public class ColecturiaBean implements Serializable {
                     det.setPaidsum(0.0);
                 }
                 /*det.setValue1(vacio);
-                det.setValue2(vacio);
-                det.setValue3(vacio);*/
+                 det.setValue2(vacio);
+                 det.setValue3(vacio);*/
                 this.lstPadre.add(det);
             }
             newColect.setColecturiaDetail(lstPadre);
@@ -954,27 +954,29 @@ public class ColecturiaBean implements Serializable {
 
         if (varEstados != 1) {
             this.lstTable.clear();
-            List lstAux = null;
-            try {
-                lstAux = BankEJBClient.get_ges_colecturiaConcept1(codSocio);
-            } catch (Exception ex) {
-                Logger.getLogger(ColecturiaBean.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            /*List lstAux = null;
+             try {
+             lstAux = BankEJBClient.get_ges_colecturiaConcept1(codSocio);
+             } catch (Exception ex) {
+             Logger.getLogger(ColecturiaBean.class.getName()).log(Level.SEVERE, null, ex);
+             }*/
             for (Object obj : var.getColecturiaDetail()) {
-                for (Object obj2 : lstAux) {
-                    ColecturiaConceptTO col2 = (ColecturiaConceptTO) obj2;
-                    ColecturiaDetailTO col = (ColecturiaDetailTO) obj;
-                    if (col.getLinenum() != this.lineNum && col.getLinenum() == col2.getLinenum()) {
-                        col.setValue1(col2.getValue1());
-                        this.lstTable.add(col);
-                        break;
-                    } else {
-                        if (col.getLinenum() == this.lineNum) {
-                            this.lstTable.add(col);
-                            break;
-                        }
-                    }
-                }
+                ColecturiaDetailTO col = (ColecturiaDetailTO) obj;
+                this.lstTable.add(col);
+                /*for (Object obj2 : lstAux) {
+                 ColecturiaConceptTO col2 = (ColecturiaConceptTO) obj2;
+                 //ColecturiaDetailTO col = (ColecturiaDetailTO) obj;
+                 if (col.getLinenum() != this.lineNum && col.getLinenum() == col2.getLinenum()) {
+                 col.setValue1(col2.getValue1());
+                 this.lstTable.add(col);
+                 break;
+                 } else {
+                 if (col.getLinenum() == this.lineNum) {
+                 this.lstTable.add(col);
+                 break;
+                 }
+                 }
+                 }*/
             }
         } else {
             this.lstTable.clear();
