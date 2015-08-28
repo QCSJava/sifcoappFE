@@ -12,8 +12,6 @@ import com.sifcoapp.objects.admin.to.EnterpriseTO;
 import com.sifcoapp.sociedad.model.Sociedad;
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -27,7 +25,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean(name="sociedad")
 @RequestScoped
-public class sociedadBean implements Serializable{
+public class SociedadBean implements Serializable{
     private static AdminEJBClient AdminEJBService=null;
       private static final long serialVersionUID = 1L;
     
@@ -93,28 +91,41 @@ public class sociedadBean implements Serializable{
  @PostConstruct
     public void initForm() {
 
-        try {
-            if (AdminEJBService == null) {
-                AdminEJBService = new AdminEJBClient();
-            }
-            System.out.println("se ejecuto");
-            EnterpriseTO resp=null;
-            resp=AdminEJBService.getEnterpriseInfo();
-            
-            System.out.println(resp.getCompnyName());
-            System.out.println(resp.getCompnyAddr());
-            this.compnyName = resp.getCompnyName();
-            this.compnyAddr=resp.getCompnyAddr();
-            this.crintHeadr=resp.getCrintHeadr();
-            this.e_Mail=resp.getE_Mail();
-            this.fax=resp.getFax();
-            this.manager=resp.getManager();
-            this.phone1=resp.getPhone1();
-            this.phone2=resp.getPhone2();
-            this.taxIdNum=resp.getTaxIdNum();
-            this.catalogClassLst = AdminEJBService.findCatalog(CATALOGOCOUNTRY);
-            
-            
+        if (AdminEJBService == null) {
+            AdminEJBService = new AdminEJBClient();
+        }
+        try{
+        System.out.println("se ejecuto");
+        EnterpriseTO resp=null;
+        resp=AdminEJBService.getEnterpriseInfo();
+		 // Aqui tengo el resultado de la informacion de la cuenta
+        
+		System.out.println(resp.getCompnyName());
+		System.out.println(resp.getCompnyAddr());
+                System.out.println(resp.getCountry_catalog());
+                this.compnyName = resp.getCompnyName();
+                this.compnyAddr=resp.getCompnyAddr();
+                this.crintHeadr=resp.getCrintHeadr();
+                this.e_Mail=resp.getE_Mail();
+                this.fax=resp.getFax();
+                this.manager=resp.getManager();
+                this.phone1=resp.getPhone1();
+                this.phone1="50322222222";
+                this.phone2=resp.getPhone2();
+                this.taxIdNum=resp.getTaxIdNum();
+                this.catalogClassLst = AdminEJBService.findCatalog(CATALOGOCOUNTRY);
+                              
+                //aqui obtengo lo que es el pais en su respuesta del backend recibo "01"
+                //es el codigo del pais.
+                this.country_catalog=resp.getCountry_catalog();
+                
+                //necesitaria un metodo en el cual yo pudiera buscar por el nombre de la tabla
+                //un codigo, para que me devuelva la descripcion
+                //por ejemplo asi.
+               // this.country_catalog = AdminEJBService.findCatalog(CATALOGOCOUNTRY,country_catalog);
+                
+        
+                
 //        this.articleClassLst = AdminEJBService.findCatalog(CATALOGOCLASES);
 //        this.articleGroupLst = AdminEJBService.findCatalog(CATALOGOGROUP);
 //        this.setShoppingDefaultProv((List<CatalogTO>) AdminEJBService.findCatalog(CATALOGDEFAULTPROV));
@@ -122,10 +133,8 @@ public class sociedadBean implements Serializable{
 //        this.setSalesMeasUnitLst((List<CatalogTO>) AdminEJBService.findCatalog(CATALOGSALESMESUNIT));
 //        this.branchArticlesLst=new Vector();
 //        this.branchArticlesLst.add(new BranchArticlesTO(new BranchTO("01","Almacen-001","00","00"),"01","01",new Double(1),new Double(2),new Double(3),new Double(4),new Double(5),new Double(6),"false",false));
-        } catch (Exception ex) {
-            Logger.getLogger(sociedadBean.class.getName()).log(Level.SEVERE, null, ex);
+        }catch( Exception e){
         }
-        
         
     }        
 
@@ -222,7 +231,7 @@ public class sociedadBean implements Serializable{
     /**
      * Creates a new instance of sociedadBean
      */
-    public sociedadBean() {
+    public SociedadBean() {
 //        EnterpriseTO resp=null;
 //		
 //		resp=AdminEJBService.getEnterpriseInfo();
@@ -234,7 +243,7 @@ public class sociedadBean implements Serializable{
     
     
     
-    public String addAction() {
+    public String addAction() throws Exception {
         if (AdminEJBService==null)
             AdminEJBService=new AdminEJBClient();
         Sociedad so=new Sociedad(this.code,this.compnyAddr,this.compnyName,this.country_catalog,this.crintHeadr,this.e_Mail,this.fax,this.phone1,this.phone2,this.taxIdNum,this.manager);
@@ -253,11 +262,7 @@ public class sociedadBean implements Serializable{
         parameters.setPhone2(this.phone2);
         parameters.setTaxIdNum(this.taxIdNum);
         
-        try {
-            resp=AdminEJBService.saveEnterprise(parameters);
-        } catch (Exception ex) {
-            Logger.getLogger(sociedadBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        resp=AdminEJBService.saveEnterprise(parameters);
         System.out.println(resp.getRespCode());
         if(resp.getRespCode()==0){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Actualizado!","Correctamente!"));

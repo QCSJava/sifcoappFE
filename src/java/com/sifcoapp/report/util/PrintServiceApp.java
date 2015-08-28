@@ -36,8 +36,6 @@ import net.sf.jasperreports.engine.type.HorizontalAlignEnum;
 import net.sf.jasperreports.engine.type.ScaleImageEnum;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRSaver;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimplePrintServiceExporterConfiguration;
 //import net.sf.jasperreports.export.SimpleExporterInput;
 //import net.sf.jasperreports.export.SimplePrintServiceExporterConfiguration;
 
@@ -46,7 +44,7 @@ import net.sf.jasperreports.export.SimplePrintServiceExporterConfiguration;
  * @author ri00642
  */
 public class PrintServiceApp {
-     public static void fill() throws JRException
+  /*   public static void fill() throws JRException
   {
     long start = System.currentTimeMillis();
     ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -107,7 +105,7 @@ public class PrintServiceApp {
     line.setHeight(0);
     page.addElement(line);
     
-    JRPrintImage image = new JRBasePrintImage(jasperPrint.getDefaultStyleProvider());
+    /*JRPrintImage image = new JRBasePrintImage(jasperPrint.getDefaultStyleProvider());
     image.setX(45);
     image.setY(55);
     image.setWidth(165);
@@ -208,5 +206,5 @@ public class PrintServiceApp {
 
     System.err.println("Printing time : " + (System.currentTimeMillis() - start));
   }
-  
+*/  
 }

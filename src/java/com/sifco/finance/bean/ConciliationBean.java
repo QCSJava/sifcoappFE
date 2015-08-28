@@ -327,8 +327,6 @@ public class ConciliationBean implements Serializable {
             } else {
                 newBank.setSystotal(this.valor);
             }
-            
-            RequestContext.getCurrentInstance().update("frmConci");
 
             try {
                 _res = BankreconciliationEJBClient.bankreconciliationaux_mtto(newBank, Common.MTTOINSERT);
@@ -766,15 +764,15 @@ public class ConciliationBean implements Serializable {
                 //cod name acc
                 reportParameters.put("codAcc", this.newCodCuenta);
                 reportParameters.put("nameAcc", this.newNomCuenta);
-                System.out.println("cuenta conciliaciones " + this.newCodCuenta);
+
                 //totales 
-                reportParameters.put("conciliar1", new Double("210201010121"));
-                reportParameters.put("conciliar2", new Double("210201010121"));
+                reportParameters.put("conciliar1", 105.00);
+                reportParameters.put("conciliar2", 500.00);
 
                 this.bean.setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "FILE"));
                 this.bean.setFileName("##-CON");
                 this.bean.setParameters(reportParameters);
-                this.bean.setReportName("/bank/ConciliationReport");
+                this.bean.setReportName("/bank/ConciliationReport1");
                 this.bean.execute();
 
             } catch (Exception e) {

@@ -81,18 +81,24 @@ public class ChartAccounts implements Serializable {
     private Date lastDate = LastDate();
     private int numDet = 50;
     private String nameCodAcc;
-    private Double t1 = 0.0, t2 = 0.0, t3 = 0.0;
+    private Double t1=0.0, t2=0.0, t3=0.0;
 
     //__________________________________________________________________________
     //btn
     private boolean btnEnable = true;
+    
+    
+    
+    
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Get and Set" >
-    public JournalEntryLinesTO getSelect() {
+    
+    public JournalEntryLinesTO getSelect() {    
         return select;
     }
-
+    
     public void setSelect(JournalEntryLinesTO select) {
         this.select = select;
     }
@@ -116,7 +122,7 @@ public class ChartAccounts implements Serializable {
     public Double getT3() {
         return t3;
     }
-
+    
     public void setT3(Double t3) {
         this.t3 = t3;
     }
@@ -124,12 +130,12 @@ public class ChartAccounts implements Serializable {
     public boolean isBtnEnable() {
         return btnEnable;
     }
-
+    
     public String getNameCodAcc() {
         return nameCodAcc;
     }
-
-    public void setNameCodAcc(String nameCodAcc) {
+    
+    public void setNameCodAcc(String nameCodAcc) {    
         this.nameCodAcc = nameCodAcc;
     }
 
@@ -140,7 +146,8 @@ public class ChartAccounts implements Serializable {
     public void setNumDet(int numDet) {
         this.numDet = numDet;
     }
-
+    
+    
     public void setBtnEnable(boolean btnEnable) {
         this.btnEnable = btnEnable;
     }
@@ -492,6 +499,7 @@ public class ChartAccounts implements Serializable {
     }
 
 //</editor-fold> 
+    
 //<editor-fold defaultstate="collapsed" desc="Load de la pantalla">
     //load de la pantalla    
     @PostConstruct
@@ -504,17 +512,17 @@ public class ChartAccounts implements Serializable {
     }
 
 //</editor-fold>
-    public void updTreeAcc() {
-        try {
-            facesMessage("Actualizando");
-            //llenarRoot();
-            //seachAcc("11", "");
-            searchAcct();
-        } catch (Exception e) {
-            facesMessage(e.getCause() + " " + e.getCause());
-        }
+    
+public void updTreeAcc(){
+    try {
+        facesMessage("Actualizando");
+        //llenarRoot();
+        seachAcc("11", "");
+    } catch (Exception e) {
+        facesMessage(e.getCause() + " " + e.getCause() );
     }
-
+}
+    
 //<editor-fold defaultstate="collapsed" desc="Llenar arbol">
     public void llenarRoot() {
         try {
@@ -582,13 +590,13 @@ public class ChartAccounts implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(ChartAccounts.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
         setAcctcode(newAccount.getAcctcode());
         setAcctname(newAccount.getAcctname());
         postable = (newAccount.getPostable().equals("N"));
         setLevels(newAccount.getLevels());
         currtotal = newAccount.getCurrtotal();
-
+        
         if (newAccount.getPostable().equals("Y")) {
             btnEnable = false;
         } else {
@@ -598,6 +606,7 @@ public class ChartAccounts implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Boton Principal">
     public void btnPrincipal() {
         showHideDialog("dlgC2", 1);
@@ -628,13 +637,14 @@ public class ChartAccounts implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="funciones varias">
+    
     public String formatNumber(Double num) {
         String st = null;
         try {
             NumberFormat nf = NumberFormat.getInstance();
             nf.setMaximumFractionDigits(2);
-            String var = num + "";
-
+            String var = num+"";
+            
             st = nf.format(num);
             if (!st.contains(".")) {
                 st = st + ".00";
@@ -648,7 +658,7 @@ public class ChartAccounts implements Serializable {
 
         return st;
     }
-
+    
     public void confirmDialog(ActionEvent actionEvent) {
         showHideDialog("dlgC2", 2);
         UpdtAcc();
@@ -707,39 +717,39 @@ public class ChartAccounts implements Serializable {
             _res = accEJBService.getEntryDetail(entry);
             for (Object obj : _res) {
                 JournalEntryLinesTO jour = (JournalEntryLinesTO) obj;
-                if (jour.getTotalvat() != null) {
-                    t1 = t1 + jour.getTotalvat();
+                if (jour.getTotalvat()!= null) {
+                    t1= t1 + jour.getTotalvat();
                 }
                 if (jour.getDebit() != null) {
-                    t2 = t2 + jour.getDebit();
+                    t2= t2 + jour.getDebit();
                 }
                 if (jour.getCredit() != null) {
-                    t3 = t3 + jour.getCredit();
+                    t3= t3 + jour.getCredit();
                 }
                 this.lstAccTable.add(jour);
             }
             t1 = t2 - t3;
-
+            
             t1 = Double.parseDouble(formatNumber(t1));
             t2 = Double.parseDouble(formatNumber(t2));
             t3 = Double.parseDouble(formatNumber(t3));
             RequestContext.getCurrentInstance().update("detList");
             showHideDialog("dlgC3", 1);
         } catch (Exception e) {
-            facesMessage(e.getMessage() + " " + e.getCause());
+            facesMessage(e.getMessage() +" "+e.getCause());
         }
 
     }
 //</editor-fold>
-
+    
 //<editor-fold defaultstate="collapsed" desc="btn Upd dialog">
-    public void updDialog() {
+    public void updDialog(){
         t1 = 0.0;
         t2 = 0.0;
         t3 = 0.0;
         this.lstAccTable.clear();
         List _res = null;
-        // facesMessage("saldo");
+       // facesMessage("saldo");
         JournalEntryLinesInTO entry = new JournalEntryLinesInTO();
         entry.setAccount(acctcode);
         entry.setRefdate(firstDate);
@@ -747,20 +757,20 @@ public class ChartAccounts implements Serializable {
         entry.setTransid(numDet);
         entry.setTotalvat(currtotal);
         this.nameCodAcc = "";
-        nameCodAcc = this.acctcode + "-" + this.acctname;
-
+        nameCodAcc = this.acctcode +"-"+ this.acctname;
+        
         try {
             _res = accEJBService.getEntryDetail(entry);
             for (Object obj : _res) {
                 JournalEntryLinesTO jour = (JournalEntryLinesTO) obj;
-                if (jour.getTotalvat() != null) {
-                    t1 = t1 + jour.getTotalvat();
+                if (jour.getTotalvat()!= null) {
+                    t1= t1 + jour.getTotalvat();
                 }
                 if (jour.getDebit() != null) {
-                    t2 = t2 + jour.getDebit();
+                    t2= t2 + jour.getDebit();
                 }
                 if (jour.getCredit() != null) {
-                    t3 = t3 + jour.getCredit();
+                    t3= t3 + jour.getCredit();
                 }
                 this.lstAccTable.add(jour);
             }
@@ -771,29 +781,29 @@ public class ChartAccounts implements Serializable {
             RequestContext.getCurrentInstance().update("dlgupd");
             //showHideDialog("dlgC3", 1);
         } catch (Exception e) {
-            facesMessage(e.getMessage() + " " + e.getCause());
+            facesMessage(e.getMessage() +" "+e.getCause());
         }
     }
 //</editor-fold>
-
+    
 //<editor-fold defaultstate="collapsed" desc="Realizar busqueda">
     public void seachAcc(String accCode, String accName) {
         //Colapsar todo el arbol
         collapsingORexpanding(this.root, false);
         //Buscar codigo o nombre
-        searchAcc2(this.root, accCode, accName);
+        searchAcc2(this.root,accCode,accName);
     }
 
     public boolean searchAcc2(TreeNode nodoP, String accCode, String accName) {
         boolean result = false;
         if (nodoP.getChildren().isEmpty()) {
             AccountTO var = (AccountTO) nodoP.getData();
-            if (var.getAcctcode().equals(accCode)) {//|| var.getAcctname().equals(accName)) {
+            if (var.getAcctcode().equals(accCode) ){//|| var.getAcctname().equals(accName)) {
                 nodoP.setSelected(true);
                 nodoP.setExpanded(true);
                 return true;
             }
-            return false;
+            return false;   
 
         } else {
             for (TreeNode s : nodoP.getChildren()) {
@@ -804,14 +814,14 @@ public class ChartAccounts implements Serializable {
                 result = searchAcc2(s, accCode, accName);
                 nodoP.setExpanded(result);
                 /*if (nodoP.getChildren().isEmpty()) {
-                 AccountTO var = (AccountTO) s.getData();
-                 if (var.getAcctcode().equals(accCode) || var.getAcctname().contains(accName)) {
-                 nodoP.setSelected(true);
-                 nodoP.setExpanded(true);
-                 return true;
-                 }
+                    AccountTO var = (AccountTO) s.getData();
+                    if (var.getAcctcode().equals(accCode) || var.getAcctname().contains(accName)) {
+                        nodoP.setSelected(true);
+                        nodoP.setExpanded(true);
+                        return true;
+                    }
                     
-                 }*/
+                }*/
                 return result;
             }
 
@@ -830,62 +840,8 @@ public class ChartAccounts implements Serializable {
             n.setSelected(false);
         }
     }
-
-    public void searchAcct() {
-        //Colapsar todo el arbol
-        collapsingORexpanding(this.root, false);
-
-        //Buscar cuenta        
-        boolean result = false;
-        TreeNode nodoP = this.root;
-
-        String accCode = "21";
-        String accName = "";
-
-        for (TreeNode s : nodoP.getChildren()) {
-            if (result) {
-                //nodoP.setExpanded(true);
-                break;
-            }
-
-            AccountTO var = (AccountTO) s.getData();
-            if (var.getAcctcode().equals(accCode)/* || var.getAcctname().contains(accName)*/) {
-                nodoP.setSelected(true);
-                nodoP.setExpanded(true);
-                result = true;
-            }
-
-            if (!nodoP.getChildren().isEmpty()) {
-                searchAcct2(s, accCode, accName);
-            }
-        }
-    }
-
-    public boolean searchAcct2(TreeNode nodoP, String accCode, String accName) {
-        boolean result = false;
-
-        for (TreeNode s : nodoP.getChildren()) {
-            if (result) {
-                //nodoP.setExpanded(true);
-                return result;
-            }
-
-            AccountTO var = (AccountTO) s.getData();
-            if (var.getAcctcode().equals(accCode)/* || var.getAcctname().contains(accName)*/) {
-                nodoP.setSelected(true);
-                nodoP.setExpanded(true);
-                result = true;
-                return result;
-            }
-
-            if (!nodoP.getChildren().isEmpty()) {
-                searchAcct2(s, accCode, accName);
-            }
-        }
-        return result;
-    }
-
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="primer dia y ultimo">
     public int getYear() {
         Calendar cal = Calendar.getInstance();
@@ -911,4 +867,5 @@ public class ChartAccounts implements Serializable {
     }
 
 //</editor-fold>
+    
 }//cierre de clase

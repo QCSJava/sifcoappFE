@@ -14,7 +14,6 @@ import com.sifcoapp.objects.security.to.UserTO;
 import com.sifcoapp.objects.utilities.PasswordService;
 import com.sifcoapp.report.bean.ReportsBean;
 import com.sifcoapp.report.common.AbstractReportBean.ExportOption;
-import com.sifcoapp.report.util.PrintServiceApp;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -503,15 +502,15 @@ public void downloadFile() {
 
 //<editor-fold defaultstate="collapsed" desc="Imprimir factura" > 
     public void printInvoicePreformat() {
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        /*Map<String, Object> reportParameters = new HashMap<String, Object>();
 
          reportParameters.put("rtitle", "Hello JasperReports");
 
          getBean().setParameters(reportParameters);
          getBean().setReportName("report1");
          getBean().setExportOption(ExportOption.valueOf(ExportOption.class, this.getExportOption()));
-         getBean().execute();
-        PrintServiceApp.printInvoice();
+         getBean().execute();*/
+        //PrintServiceApp.printInvoice();
 
     }
 

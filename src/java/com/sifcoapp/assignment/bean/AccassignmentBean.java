@@ -1654,7 +1654,7 @@ public class AccassignmentBean implements Serializable {
 //        this.pdfltwt = doCodeName(accAss.getPdfltwt();
         //getAccAssignment
             // this.arcmact = doCodeName(accAss.getArcmact();
-            this.LtsAccount = AccountingEJBClient.getAccountByFilter(null,null);
+            this.LtsAccount = AccountingEJBClient.getAccount(2);
  
         } catch (Exception ex) {
             Logger.getLogger(AccassignmentBean.class.getName()).log(Level.SEVERE, null, ex);

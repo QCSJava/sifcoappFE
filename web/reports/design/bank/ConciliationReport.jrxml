@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ConciliationReport" language="groovy" pageWidth="612" pageHeight="792" columnWidth="472" leftMargin="85" rightMargin="55" topMargin="35" bottomMargin="35" uuid="a6f3a40f-b871-4d3b-8a62-584efa423e71">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="12"/>
 	<parameter name="fechaHasta" class="java.util.Date"/>
 	<parameter name="corpName" class="java.lang.String"/>
 	<parameter name="reportName" class="java.lang.String"/>
@@ -107,7 +107,7 @@ order by tipo desc, debcred]]>
 					<textFieldExpression><![CDATA[$P{saldoEscrito}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="395" y="0" width="77" height="16" uuid="6df7f0e6-4d94-4b06-8666-a7bf6a570a1d">
+					<reportElement x="428" y="0" width="44" height="16" uuid="6df7f0e6-4d94-4b06-8666-a7bf6a570a1d">
 						<printWhenExpression><![CDATA[$F{tipo}.equals("1")]]></printWhenExpression>
 					</reportElement>
 					<textElement>
@@ -282,36 +282,36 @@ order by tipo desc, debcred]]>
 		</band>
 	</title>
 	<detail>
-		<band height="29">
+		<band height="12">
 			<textField>
-				<reportElement x="50" y="3" width="64" height="14" uuid="7b28923e-4fd2-4111-baf2-fb0fedf3a01d"/>
+				<reportElement x="50" y="0" width="64" height="12" uuid="7b28923e-4fd2-4111-baf2-fb0fedf3a01d"/>
 				<textElement>
-					<font size="10"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{id1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="121" y="3" width="232" height="14" uuid="4f7b25bd-9ef3-4b8e-b6b9-e2963adcc569"/>
+				<reportElement x="121" y="0" width="232" height="12" uuid="4f7b25bd-9ef3-4b8e-b6b9-e2963adcc569"/>
 				<textElement>
-					<font size="10"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{line}]]></textFieldExpression>
 			</textField>
 			<textField pattern=" #,##0.00" isBlankWhenNull="false">
-				<reportElement x="361" y="3" width="61" height="14" uuid="f394c1be-ddb0-4fff-9cef-7b65e2a5d5e3">
+				<reportElement x="361" y="0" width="61" height="12" uuid="f394c1be-ddb0-4fff-9cef-7b65e2a5d5e3">
 					<printWhenExpression><![CDATA[$F{deb}.doubleValue() > 0.0]]></printWhenExpression>
 				</reportElement>
 				<textElement>
-					<font size="10"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{deb}]]></textFieldExpression>
 			</textField>
 			<textField pattern=" #,##0.00">
-				<reportElement x="361" y="3" width="61" height="14" uuid="62f81299-6752-4525-9745-4b06c82db0e3">
+				<reportElement x="361" y="0" width="61" height="12" uuid="62f81299-6752-4525-9745-4b06c82db0e3">
 					<printWhenExpression><![CDATA[$F{cred}.doubleValue() > 0.0]]></printWhenExpression>
 				</reportElement>
 				<textElement>
-					<font size="10" isItalic="false"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cred}]]></textFieldExpression>
 			</textField>

@@ -21,6 +21,14 @@
         <servlet-name>Pdf</servlet-name>
         <servlet-class>com.sifcoapp.report.bean.Pdf</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ColectPrint</servlet-name>
+        <servlet-class>com.sifcoapp.report.bean.ColectPrint</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CheckPrint</servlet-name>
+        <servlet-class>com.sifcoapp.report.bean.CheckPrint</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
@@ -37,6 +45,14 @@
         <servlet-name>RemisionPrint</servlet-name>
         <servlet-class>com.sifcoapp.report.bean.RemisionPrint</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>ColectPrint</servlet-name>
+        <url-pattern>/ColectPrint</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckPrint</servlet-name>
+        <url-pattern>/CheckPrint</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -94,7 +110,6 @@
         <servlet-name>ImageServlet</servlet-name>
         <servlet-class>net.sf.jasperreports.j2ee.servlets.ImageServlet</servlet-class>
     </servlet>
-    
     <!-- JasperReports Servlet Mapping -->
     <servlet-mapping>
         <servlet-name>PdfServlet</servlet-name>
