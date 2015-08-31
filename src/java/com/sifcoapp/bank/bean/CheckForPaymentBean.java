@@ -120,12 +120,11 @@ public class CheckForPaymentBean implements Serializable {
     private boolean common;
     private int toolbarBoton;
     private boolean confirm;
-    
+
     //
     private String url;
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -216,7 +215,6 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocioName(SelectEvent event) {
         List socio = new Vector();
@@ -403,12 +401,24 @@ public class CheckForPaymentBean implements Serializable {
     }
 
     public void estateActualizar() {//se activa automaticamente despues de Guardar o buscar
-        this.varEstados = Common.MTTOUPDATE; //2
-        this.botonEstado = "Actualizar";
+        if (varEstados == 1) {
+            this.varEstados = Common.MTTOUPDATE; //2
+            this.botonEstado = "Actualizar";
 
-        this.idCheck = true;
-        this.common = true;
-        RequestContext.getCurrentInstance().update("frmCheck");
+            this.idCheck = true;
+            this.common = true;
+
+            RequestContext.getCurrentInstance().update("frmprt");
+            showHideDialog("dlgPtr", 1);
+            RequestContext.getCurrentInstance().update("frmCheck");
+        } else {
+            this.varEstados = Common.MTTOUPDATE; //2
+            this.botonEstado = "Actualizar";
+
+            this.idCheck = true;
+            this.common = true;
+            RequestContext.getCurrentInstance().update("frmCheck");
+        }
     }
 
     public void estateBuscar() {
@@ -484,6 +494,7 @@ public class CheckForPaymentBean implements Serializable {
             _res = BankEJBClient.ges_cfp0_checkforpayment_mtto(newCheck, Common.MTTOINSERT); //1 insert
 
             if (_res.getCodigoError() == 0) {//se realizo correctamente
+                this.newCheck.setCheckkey(_res.getDocentry());
                 idInterno = _res.getDocentry();
                 faceMessage(_res.getMensaje());
 
@@ -584,11 +595,11 @@ public class CheckForPaymentBean implements Serializable {
             searchCheck.setVendorname(favorDe);
         }
 
-        if (referencia.equals("")) {
+        /*if (referencia.equals("")) {
             searchCheck.setTransref(vacio);
         } else {
             searchCheck.setTransref(referencia);
-        }
+        }*/
 
         searchCheck.setPmntdate(fechaConta);
 
@@ -651,7 +662,6 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Botones toolbar " > 
     public void botonNuevo(ActionEvent actionEvent) {
         if (varEstados != 2 && validarClear()) {
@@ -698,7 +708,6 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     public void confirmDialog(ActionEvent actionEvent) {
         showHideDialog("dlgC2", 2);
@@ -723,7 +732,7 @@ public class CheckForPaymentBean implements Serializable {
 
     public boolean validarClear() {
         try {
-            if (!banco.equals("-1") || impVencido != null || codSocio!= null || codCuenta != null || !referencia.equals("")|| !comentario.equals("") || NoCheque > 0 || !firma.equals("")) {
+            if (!banco.equals("-1") || impVencido != null || codSocio != null || codCuenta != null || !referencia.equals("") || !comentario.equals("") || NoCheque > 0 || !firma.equals("")) {
                 return true;
             }
         } catch (Exception e) {
@@ -902,7 +911,6 @@ public class CheckForPaymentBean implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G & S">
-
     public static BankEJBClient getBankEJBClient() {
         return BankEJBClient;
     }
@@ -990,9 +998,7 @@ public class CheckForPaymentBean implements Serializable {
     public void setUrl(String url) {
         this.url = url;
     }
-    
-    
-    
+
     public CheckForPaymentTO getSelectCheck() {
         return selectCheck;
     }
@@ -1186,14 +1192,13 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="IMPRIMIR FORMA 2">
     public String printInvoice() throws UnsupportedEncodingException {
         //faceMessage(getApplicationUri());
         //System.out.println(getApplicationUri()+"||----------------------------------------------------------------");
         setUrl(getApplicationUri());
-       //String nombre = session.getAttribute("username").toString().toUpperCase();
-        if (newCheck.getCheckkey()> 0) {
+        //String nombre = session.getAttribute("username").toString().toUpperCase();
+        if (newCheck.getCheckkey() > 0) {
             String foo = newCheck.getCheckkey() + "";
             String bar = "xyz";
             return "/PrintCheckView?faces-redirect=true"
@@ -1205,7 +1210,7 @@ public class CheckForPaymentBean implements Serializable {
         }
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="redirect">
     public void redirect() throws IOException {
         String url2 = getUrl() + "/faces/view/bank/CheckForPayment.xhtml"; //url donde se redirige la pantalla
@@ -1226,5 +1231,5 @@ public class CheckForPaymentBean implements Serializable {
         }
     }
 //</editor-fold>
-    
+
 }//cierre de clase

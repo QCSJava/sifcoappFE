@@ -58,9 +58,9 @@ public class JournalEntry implements Serializable{
     private boolean disableY;
     //listas
     List listaPadre = new Vector();
-    ArrayList<JournalEntryLinesTO> listaDetalles= new ArrayList<JournalEntryLinesTO>();
+    ArrayList<JournalEntryLinesTO> listaDetalles= new ArrayList<>();
     private List listaBusqueda = new Vector();
-    private ArrayList<JournalEntryTO> listaBusquedaTable = new ArrayList<JournalEntryTO>();
+    private ArrayList<JournalEntryTO> listaBusquedaTable = new ArrayList<>();
     private Object selectJournal = new JournalEntryTO();
     //para el encabezado
     private int number;//numero

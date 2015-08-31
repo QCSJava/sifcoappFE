@@ -5,8 +5,17 @@
  */
 package com.sifcoapp.report.bean;
 
+import com.sifcoapp.client.AccountingEJBClient;
+import com.sifcoapp.client.BankEJBClient;
+import com.sifcoapp.objects.accounting.to.JournalEntryLinesTO;
+import com.sifcoapp.objects.accounting.to.JournalEntryTO;
+import com.sifcoapp.objects.bank.to.CheckForPaymentTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +38,39 @@ public class CheckPrint extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        BankEJBClient BankEJBClient = new BankEJBClient();
+        AccountingEJBClient AccountingEJBClient = new AccountingEJBClient();
+        String pkCheck = request.getParameter("foo");
+        JournalEntryTO det = new JournalEntryTO();
+        ArrayList<JournalEntryLinesTO> listaDetalles = new ArrayList<>();
+        CheckForPaymentTO cheque = new CheckForPaymentTO();
+        try {
+            cheque = BankEJBClient.get_cfp0_checkforpaymentByKey(Integer.parseInt(pkCheck));
+            det = AccountingEJBClient.getJournalEntryByKey(Integer.parseInt(cheque.getTransref()));
+        } catch (Exception ex) {
+            Logger.getLogger(CheckPrint.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        for (Object obj : det.getJournalentryList()) {
+            JournalEntryLinesTO line = (JournalEntryLinesTO) obj;
+            listaDetalles.add(line);
+        }
+
+        //FECHA DEL CHEQUE FORMATEADA
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(cheque.getPmntdate());
+        
+        int anio_ = calendar.get(Calendar.YEAR);
+        int mes_ = calendar.get(Calendar.MONTH)+1;
+        int dia_ = calendar.get(Calendar.DAY_OF_MONTH);
+        
+        String nameMes = getMes(mes_);
+        String var = anio_ + "";
+        var = var.substring(2);
+        String espacio = " ";
+        
+
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -39,6 +81,10 @@ public class CheckPrint extends HttpServlet {
                     + "        <title>Cheques Print</title>\n"
                     + "        <meta charset=\"UTF-8\">\n"
                     + "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+                    + "<script type=\"text/javascript\">\n"
+                    + "window.print();\n"
+                    + "window.open('', '_self', ''); window.close(); \n"
+                    + "</script>"
                     + "\n"
                     + "    </head>\n"
                     + "\n"
@@ -49,7 +95,7 @@ public class CheckPrint extends HttpServlet {
                     + "            <table style=\"width:100%\" border=\"0\">\n"
                     + "\n"
                     + "                <!-- espacio superior-->\n"
-                    + "                <tr style=\"height: 60px\"></tr>\n"
+                    + "                <tr style=\"height: 45px\"></tr>\n"
                     + "\n"
                     + "                <tr>\n"
                     + "                    <!-- margen izquierdo-->\n"
@@ -59,56 +105,56 @@ public class CheckPrint extends HttpServlet {
                     + "                    <td>\n"
                     + "                        <table border=\"0\" style=\"width: 100%\">\n"
                     + "\n"
-                    + "                            <tr style=\"height: 350px\">\n"
+                    + "                            <tr style=\"height: 303px\">\n"
                     + "                                <td>\n"
                     + "                                    <table border=\"0\" style=\"width: 100%\">\n"
                     + "                                        <tr style=\"height: 30px\">\n"
-                    + "                                            <td style=\"width: 57%\">\n"
+                    + "                                            <td style=\"width: 60%\">\n"
                     + "\n"
                     + "                                            </td>\n"
                     + "                                            <td>\n"
-                    + "                                                0123456789\n"
+                    + "                                                " + cheque.getAcctnum() + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
-                    + "                                        <tr style=\"height: 40px\">\n"
-                    + "                                            <td style=\"width: 58%\">\n"
+                    + "                                        <tr style=\"height: 35px\">\n"
+                    + "                                            <td style=\"width: 60%\">\n"
                     + "\n"
                     + "                                            </td>\n"
                     + "                                            <td>\n"
-                    + "                                                325\n"
+                    + "                                                " + cheque.getChecknum() + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
                     + "                                    </table>\n"
                     + "                                    <table border=\"0\" style=\"width: 100%\">\n"
-                    + "                                        <tr style=\"height: 25px\">\n"
+                    + "                                        <tr style=\"height: 22px\">\n"
                     + "                                            <td style=\"width: 15%\">\n"
                     + "\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"width: 30%; text-align: center\">\n"
-                    + "                                                27 agosto\n"
+                    + "                                                " + dia_ + "" + espacio + "" + nameMes + "\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"width: 6%\">\n"
                     + "\n"
                     + "                                            </td>\n"
-                    + "                                            <td style=\"width: 9%\">\n"
-                    + "                                                15\n"
+                    + "                                            <td style=\"width: 11%\">\n"
+                    + "                                               " + var + "\n"
                     + "                                            </td>\n"
                     + "                                            <td >\n"
-                    + "                                                250.00\n"
+                    + "                                                " + cheque.getChecksum() + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
                     + "                                    </table>\n"
                     + "                                    <table border=\"0\" style=\"width: 85%; margin-left: 100px\">\n"
-                    + "                                        <tr style=\"height: 25px\">\n"
+                    + "                                        <tr style=\"height: 18px\">\n"
                     + "                                            <td style=\"width: 10%\"></td>\n"
                     + "                                            <td >\n"
-                    + "                                                NELSON EDGARDO GAMEZ CRUZ.\n"
+                    + "                                                " + cheque.getVendorname().toUpperCase() + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
-                    + "                                        <tr style=\"height: 25px\">\n"
+                    + "                                        <tr style=\"height: 18px\">\n"
                     + "                                            <td ></td>\n"
                     + "                                            <td>\n"
-                    + "                                                DOSCIENTOS CINCUENTA DOLARES 00/100\n"
+                    + "                                                " + cheque.getTotalwords().toUpperCase() + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
                     + "                                        <tr style=\"height: 25px\">\n"
@@ -116,14 +162,14 @@ public class CheckPrint extends HttpServlet {
                     + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
-                    + "                                        <tr style=\"height: 80px\">\n"
+                    + "                                        <tr style=\"height: 60px\">\n"
                     + "                                            <td>\n"
                     + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
                     + "                                        <tr style=\"height: 40px; vertical-align: bottom\">\n"
                     + "                                            <td>\n"
-                    + "                                                AGRICOLA\n"
+                    + "                                                " + cheque.getBankname().toUpperCase() + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
                     + "                                        <tr style=\"height: 20px\">\n"
@@ -140,56 +186,55 @@ public class CheckPrint extends HttpServlet {
                     + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
-                    + "                            <tr style=\"height: 500px\">\n"
+                    + "                            <tr style=\"height: 400px\">\n"
                     + "                                <td>\n"
                     + "                                    <table style=\"width: 98%; margin-left: 15px\" border=\"0\">\n"
-                    + "                                        <tr style=\"height: 10px\"/>\n"
                     + "                                        <tr style=\"height: 20px\">\n"
                     + "                                            <td style=\"width: 14%\">\n"
-                    + "                                                CODIGO\n"
+                    + "                                                " + listaDetalles.get(0).getAccount().toUpperCase() + "\n"
                     + "                                            </td>\n"
-                    + "                                            <td style=\"width: 55%\">\n"
-                    + "                                                CONCEPTO\n"
-                    + "                                            </td>\n"
-                    + "                                            <td style=\"text-align: center\">\n"
-                    + "                                                200.00\n"
+                    + "                                            <td style=\"width: 48%\">\n"
+                    + "                                                " + listaDetalles.get(0).getAcctname().toUpperCase() + "\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"text-align: center\">\n"
-                    + "                                                200.00\n"
+                    + "                                               $ " + listaDetalles.get(0).getDebit() + "\n"
+                    + "                                            </td>\n"
+                    + "                                            <td style=\"text-align: center\">\n"
+                    + "                                               $ " + listaDetalles.get(0).getCredit() + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
                     + "                                        <tr style=\"height: 20px\">\n"
                     + "                                            <td style=\"width: 12%\">\n"
-                    + "                                                CODIGO\n"
+                    + "                                                " + listaDetalles.get(1).getAccount().toUpperCase() + "\n"
                     + "                                            </td>\n"
-                    + "                                            <td style=\"width: 55%\">\n"
-                    + "                                                CONCEPTO\n"
-                    + "                                            </td>\n"
-                    + "                                            <td style=\"text-align: center\">\n"
-                    + "                                                100.00\n"
+                    + "                                            <td >\n"
+                    + "                                                " + listaDetalles.get(1).getAcctname().toUpperCase() + "\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"text-align: center\">\n"
-                    + "                                                100.00\n"
+                    + "                                                $ " + listaDetalles.get(1).getDebit() + "\n"
+                    + "                                            </td>\n"
+                    + "                                            <td style=\"text-align: center\">\n"
+                    + "                                                $ " + listaDetalles.get(1).getCredit() + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
-                    + "                                        <tr style=\"height: 435px\"/>\n"
+                    + "                                        <tr style=\"height: 335px\"/>\n"
                     + "                                    </table>\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
-                    + "                            <tr style=\"height: 30px\">\n"
+                    + "                            <tr style=\"height: 36px\">\n"
                     + "                                <td>\n"
                     + "                                    <table style=\"width: 100%\" border=\"0\">\n"
                     + "                                        <tr>\n"
-                    + "                                            <td style=\"width: 12%\">\n"
+                    + "                                            <td style=\"width: 14%\">\n"
                     + "\n"
                     + "                                            </td>\n"
-                    + "                                            <td style=\"width: 55%\">\n"
+                    + "                                            <td style=\"width: 48%\">\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"text-align: center\">\n"
-                    + "                                                100.00\n"
+                    + "                                                $ " + listaDetalles.get(0).getDebit() + "\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"text-align: center\">\n"
-                    + "                                                100.00\n"
+                    + "                                                $ " + listaDetalles.get(0).getDebit() + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
                     + "                                    </table>\n"
@@ -247,5 +292,39 @@ public class CheckPrint extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String getMes(int month) {
+        String monthString;
+        switch (month) {
+            case 1:  monthString = "ENERO";
+                     break;
+            case 2:  monthString = "FEBRERO";
+                     break;
+            case 3:  monthString = "MARZO";
+                     break;
+            case 4:  monthString = "ABRIL";
+                     break;
+            case 5:  monthString = "MAYO";
+                     break;
+            case 6:  monthString = "JUNIO";
+                     break;
+            case 7:  monthString = "JULIO";
+                     break;
+            case 8:  monthString = "AGOSTO";
+                     break;
+            case 9:  monthString = "SEPTIEMBRE";
+                     break;
+            case 10: monthString = "OCTUBRE";
+                     break;
+            case 11: monthString = "NOVIEMBRE";
+                     break;
+            case 12: monthString = "DICIEMBRE";
+                     break;
+            default: monthString = "MES INVALIDO";
+                     break;
+        }
+        return monthString;
+    
+    }
 
 }
