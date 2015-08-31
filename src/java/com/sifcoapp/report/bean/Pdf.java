@@ -144,12 +144,14 @@ public class Pdf extends HttpServlet {
 
                 if (i < tam) {
                     SalesDetailTO var2 = (SalesDetailTO) det.get(i);
+                    String des = var2.getDscription();
+                    des = des.substring(0, 35);
                     out.println(
                             "                            <tr style=\"height: 18px; width: 100%\" >\n"
                             + "\n"
                             + "                                <td style=\"width: 40px\">" + var2.getQuantity() + "</td>\n"
                             + "                                <td style=\"width: 100px\">" + var2.getItemcode() + "</td>\n"
-                            + "                                <td style=\"width: 270px\">" + var2.getDscription() + "</td>\n"
+                            + "                                <td style=\"width: 270px\">" + des.toUpperCase() + "</td>\n"
                             + "                                <td style=\"width: 60px\">$" + var2.getPrice() + "</td>\n"
                             + "                                <td style=\"width: 50px\">" + "$0.00" + "</td>\n"
                             + "                                <td style=\"width: 50px\">" + "$0.00" + "</td>\n"
