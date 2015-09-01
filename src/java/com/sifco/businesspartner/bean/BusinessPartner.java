@@ -160,6 +160,8 @@ public class BusinessPartner implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="getters and setters">
+    
+    
 
     public String getCodigoCuenta4() {
         return codigoCuenta4;
@@ -1170,10 +1172,10 @@ public class BusinessPartner implements Serializable {
         //-------------- FALTA LISTA DE CUENTAS ASOCIADAS E INDICADORES DE RETENCION
         for (BusinesspartnerAcountTO obj : listaAccAddTable) {
             obj.setCardcode(cardcode);
-            obj.setAcctcode(codigoCuenta);
+            /*obj.setAcctcode(codigoCuenta);
             obj.setAcctcode2(codigoCuenta2);
             obj.setAcctcode3(codigoCuenta3);
-            obj.setAcctcode4(codigoCuenta4);
+            obj.setAcctcode4(codigoCuenta4);*/
             obj.setBalance(0.0);
             listaAccAdd.add(obj);
         }
