@@ -136,36 +136,36 @@
                                              disabledSelection="#{colecturiaBean.common}"
                                              sortBy="#{det.linenum}">
 
-                                    <p:column headerText="ID pago" style="width: 3%">
+                                    <p:column headerText="ID pago" style="width: 3%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{det.linenum}"/>
                                     </p:column>
 
-                                    <p:column headerText="Concepto"  style="width: 10%">
+                                    <p:column headerText="Concepto"  style="width: 10%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{det.dscription}" />
                                     </p:column>
 
-                                    <p:column headerText="Saldo Actual." style="width: 8%" >
+                                    <p:column headerText="Saldo Actual." style="width: 8%; font-size: #{commonBean.sizeFont1}" >
                                         <h:outputText value="$ #{det.linenum == colecturiaBean.lineNum? colecturiaBean.totalFacValorAct : det.value1}" style="float: right"/>
                                     </p:column>
 
-                                    <p:column headerText="Valor"  style="width: 8%">
+                                    <p:column headerText="Valor"  style="width: 8%; font-size: #{commonBean.sizeFont1}">
                                         <p:inputText tabindex="9" value="#{det.paidsum}" size="10" disabled="#{colecturiaBean.common || colecturiaBean.ifCancelacion? true:false}" readonly="#{det.linenum == colecturiaBean.lineNum? true:false}"
                                                      style="float: right">
                                             <p:ajax event="blur" listener="#{colecturiaBean.doTotal}" update="tableDetailColet"/>
                                         </p:inputText>
                                     </p:column>
 
-                                    <p:column headerText="Saldo Nuevo"  style="width: 8%">
+                                    <p:column headerText="Saldo Nuevo"  style="width: 8%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText style="float: right" value="$ #{det.value3}" />
                                     </p:column>
 
                                     <p:columnGroup type="footer" id="foot">
                                         <p:row>
-                                            <p:column footerText="" style="width: 8%"/>
-                                            <p:column colspan="2" footerText="Total: " style="text-align:right"/>
-                                            <p:column footerText="#{colecturiaBean.t1}" style="width: 8%"/>
-                                            <p:column id="t2" footerText="$ #{colecturiaBean.t2}" style="width: 8%"/>
-                                            <p:column footerText="#{colecturiaBean.t3}" style="width: 8%"/>
+                                            <p:column footerText="" style="width: 8%; font-size: #{commonBean.sizeFont1}"/>
+                                            <p:column colspan="2" footerText="Total: " style="text-align:right; font-size: #{commonBean.sizeFont1}"/>
+                                            <p:column footerText="#{colecturiaBean.t1}" style="width: 8%; font-size: #{commonBean.sizeFont1}"/>
+                                            <p:column id="t2" footerText="$ #{colecturiaBean.t2}" style="width: 8%; font-size: #{commonBean.sizeFont1}"/>
+                                            <p:column footerText="#{colecturiaBean.t3}" style="width: 8%; font-size: #{commonBean.sizeFont1}"/>
                                         </p:row>
                                     </p:columnGroup>
 

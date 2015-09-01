@@ -203,7 +203,7 @@ public class DeliveryBean implements Serializable {
             lstTipoPago = AdminEJBService.findCatalog(CATALOGOTYPEPAY);
             listaAlmacenes = AdminEJBService.getBranch(var, var);
             lstEstados = Common.getDocStatusList();
-            this.alm = ParameterEJBClient.getParameterbykey(6).getValue1();
+            //this.alm = ParameterEJBClient.getParameterbykey(6).getValue1();
         } catch (Exception e) {
             faceMessage("Error: Al inicializar pantalla " + e.getMessage());
         }
@@ -868,12 +868,12 @@ public class DeliveryBean implements Serializable {
             this.creditNote = true;
             this.required1 = true;
             this.rendered = false;
-            
+
             RequestContext.getCurrentInstance().update("frmprt");
             showHideDialog("dlgPtr", 1);
 
             RequestContext.getCurrentInstance().update("frmDelivery");
-            
+
         } else {
             this.varEstados = Common.MTTOUPDATE; //2
             this.botonEstado = "Actualizar";
@@ -1493,6 +1493,11 @@ public class DeliveryBean implements Serializable {
             faceMessage("Ingrese al menos un Articulo");
             return false;
         }
+        
+        if (this.alm.equals(ParameterEJBClient.getParameterbykey(6).getValue1())) {
+            faceMessage("Almacen no valido");
+            return false;
+        }
 
         return true;
     }
@@ -1521,7 +1526,7 @@ public class DeliveryBean implements Serializable {
         this.codSocio = null;
         this.equipo = 0;
         this.refe = 0;
-        this.alm = ParameterEJBClient.getParameterbykey(6).getValue1();
+        this.alm = null;//ParameterEJBClient.getParameterbykey(6).getValue1();
         if (tipo == 1) {
             Date d = new Date();
             this.setFechaConta(d);

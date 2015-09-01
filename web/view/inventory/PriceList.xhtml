@@ -93,19 +93,19 @@
 
                                     <p:ajax event="rowSelect"  process="@this tableDetailPrice"/>
 
-                                    <p:column headerText="#" style="width: 2%">
+                                    <p:column headerText="#" style="width: 2%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{rowIndex+1}" />
                                     </p:column>
 
-                                    <p:column headerText="" style=" width: 2%">
+                                    <p:column headerText="" style=" width: 2%; font-size: #{commonBean.sizeFont1}">
                                         <p:commandButton icon="ui-icon-search" actionListener="#{priceListBean.showList}" process="@this tableDetailPrice"/>
                                     </p:column>
                                     
-                                    <p:column headerText="Codigo" style="width: 3%">
+                                    <p:column headerText="Codigo" style="width: 3%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{Art.listnum}" />
                                     </p:column>
 
-                                    <p:column headerText="Nombre Lista" style="width: 10%">
+                                    <p:column headerText="Nombre Lista" style="width: 10%; font-size: #{commonBean.sizeFont1}">
                                         <p:cellEditor>
                                             <f:facet name="output">
                                                 <h:outputText value="#{Art.listname}" />
@@ -116,7 +116,7 @@
                                         </p:cellEditor>
                                     </p:column>
 
-                                    <p:column headerText="Lista Base" style="width: 10%">
+                                    <p:column headerText="Lista Base" style="width: 10%; font-size: #{commonBean.sizeFont1}">
                                         <p:cellEditor>
                                             <f:facet name="output">
                                                 <p:selectOneMenu  value="#{Art.base_num}" disabled="true" style="width: 100%">
@@ -131,7 +131,7 @@
                                         </p:cellEditor>
                                     </p:column>
 
-                                    <p:column headerText="Factor Lista " style="width: 6%">
+                                    <p:column headerText="Factor Lista " style="width: 6%; font-size: #{commonBean.sizeFont1}">
                                         <p:cellEditor>
                                             <f:facet name="output">
                                                 <h:outputText value="#{Art.factor}" />
@@ -142,7 +142,7 @@
                                         </p:cellEditor>
                                     </p:column>
 
-                                    <p:column headerText="Editar" style="width:5%" rendered="#{Art.listnum == 2 or Art.listnum == 1? false:true}"> 
+                                    <p:column headerText="Editar" style="width:5%; font-size: #{commonBean.sizeFont1}" rendered="#{Art.listnum == 2 or Art.listnum == 1? false:true}"> 
                                         <p:rowEditor /> 
                                     </p:column>
 
