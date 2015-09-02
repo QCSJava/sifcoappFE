@@ -29,15 +29,19 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 public class repPurchases implements Serializable {
 
+//<editor-fold defaultstate="collapsed" desc="VARIABLES">
     private String fcode;
     private String fname;
     private Date fdatefrom;
     private Date fdateto;
     @ManagedProperty(value = "#{reportsBean}")
     private ReportsBean bean;
-    private static AdminEJBClient AdminEJBService=null;
+    private static AdminEJBClient AdminEJBService = null;
     private int ftype;
 
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="INIT">
     @PostConstruct
     public void initForm() {
         this.setFtype(1);
@@ -53,6 +57,9 @@ public class repPurchases implements Serializable {
         }
     }
 
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="DOPRINT">
     /*
      * despliega pdf a pantalla
      * Rutilio
@@ -62,8 +69,18 @@ public class repPurchases implements Serializable {
         this.print(0);
     }
 
+    public void printFormat() {
+        this.print(1);
+    }
+
+    public repPurchases() {
+    }
+
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="Print">
     public void print(int _type) {
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        Map<String, Object> reportParameters = new HashMap<>();
         String _whereclausule = null;
         String _whereclausuleSR = null;
         String _reportname = null;
@@ -71,9 +88,9 @@ public class repPurchases implements Serializable {
         Date datefrom = this.getFdatefrom();
         Calendar cal1 = GregorianCalendar.getInstance();
         cal1.setTime(this.getFdatefrom());
-        EnterpriseTO resp=null;
+        EnterpriseTO resp = null;
         try {
-            resp=AdminEJBService.getEnterpriseInfo();
+            resp = AdminEJBService.getEnterpriseInfo();
         } catch (Exception ex) {
             Logger.getLogger(repPurchases.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -192,7 +209,6 @@ public class repPurchases implements Serializable {
             }
         }
         if (this.ftype == 11) {
-            
 
             _reportname = "/purchase/purchBook";
 
@@ -210,7 +226,7 @@ public class repPurchases implements Serializable {
         System.out.println(_reportname);
         System.out.println(_reportTitle);
         System.out.println(resp.getCrintHeadr());
-        
+
         reportParameters.put("corpName", resp.getCrintHeadr());
         reportParameters.put("PNRC", resp.getTaxIdNum());
         reportParameters.put("pdocdate", this.getFdatefrom());
@@ -231,13 +247,16 @@ public class repPurchases implements Serializable {
         getBean().execute();
 
     }
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="funciones varias">
     public static Date addDays(Date date, int days) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.DATE, days); //minus number would decrement the days
         return cal.getTime();
     }
+
     /*
      * Retorna el nombre del mes a partir del mes de un calendario
      * Rutilio Iraheta
@@ -252,16 +271,9 @@ public class repPurchases implements Serializable {
         return _return;
     }
 
-    public void printFormat() {
-        this.print(1);
-    }
-
-    /**
-     * Creates a new instance of repsales
-     */
-    public repPurchases() {
-    }
-
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="G&S">
     /**
      * @return the fcode
      */
@@ -346,4 +358,6 @@ public class repPurchases implements Serializable {
         this.ftype = ftype;
     }
 
-}
+//</editor-fold>
+    
+}//cierre de clase
