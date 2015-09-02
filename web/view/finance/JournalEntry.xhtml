@@ -230,6 +230,13 @@
                                 <p:column headerText="Número Transacción" sortBy="#{Rec.transid}" >
                                     <h:outputText value="#{Rec.transid}" />
                                 </p:column>
+                                
+                                <p:column headerText="Monto Total" sortBy="#{Rec.transid}" >
+                                    <h:outputText value="#{Rec.loctotal}" >
+                                        <f:convertNumber type="currency"  currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                    </h:outputText>
+                                </p:column>
+                                
                                 <p:column headerText="Fecha Contabilizacion" sortBy="#{Rec.refdate}" >
                                     <h:outputText value="#{Rec.refdate}">
                                         <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -245,6 +252,7 @@
                                         <f:convertDateTime pattern="dd/MM/yyyy" />
                                     </h:outputText>
                                 </p:column>
+                                
                             </p:dataTable>
                         </p:dialog> 
 
@@ -276,6 +284,7 @@
                         </p:panel> 
                     </p:dialog>
                 </h:form>
+                
                 <h:form>
                     <p:dialog header="Confirmacion" widgetVar="dlg10" width="230" modal="true" resizable="false">
                         <p:panel>
