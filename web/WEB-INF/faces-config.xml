@@ -61,7 +61,7 @@
     </application>
     <application>
         <resource-bundle>
-            <base-name>com.sifcoapp.assignment.view.message_assignment</base-name>
+            <base-name>com.sifcoapp.assignment.bean.message_assignment</base-name>
             <var>msg_assigment</var>
         </resource-bundle>
     </application> 

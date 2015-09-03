@@ -6,7 +6,6 @@
         <Node id="login.xhtml" x="150" y="600" zoom="true"/>
         <Node id="index.xhtml" x="650" y="150" zoom="true"/>
         <Node id="template.xhtml" x="400" y="150" zoom="true"/>
-        <Node id="LoginB.xhtml" x="400" y="600" zoom="false"/>
         <Node id="templates/default/content.xhtml" x="650" y="600" zoom="true"/>
         <Node id="templates/default/header.xhtml" x="1150" y="300" zoom="true"/>
         <Node id="templates/default/main.xhtml" x="1400" y="150" zoom="true"/>
