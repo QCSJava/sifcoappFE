@@ -277,7 +277,7 @@ public class SalesBean implements Serializable {
 //<editor-fold defaultstate="collapsed" desc="Autocmplete" > 
     public List<String> compSocioCode(String query) {
         List _result = null;
-
+        
         BusinesspartnerInTO in = new BusinesspartnerInTO();
         in.setCardcode(query);
         in.setCardtype("C");

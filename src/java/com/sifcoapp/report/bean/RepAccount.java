@@ -5,6 +5,7 @@
  */
 package com.sifcoapp.report.bean;
 
+import com.sifcoapp.client.AccountingEJBClient;
 import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.objects.admin.to.EnterpriseTO;
 import com.sifcoapp.report.common.AbstractReportBean;
@@ -69,6 +70,9 @@ public class RepAccount implements Serializable {
     }
 
     public void print(int _type) throws Exception {
+        AccountingEJBClient accEJBService = new AccountingEJBClient();
+        accEJBService.Update_endTotal();
+        
         Map<String, Object> reportParameters = new HashMap<>();
         String _whereclausule = null;
         String _whereclausuleSR = null;
