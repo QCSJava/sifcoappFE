@@ -20,11 +20,12 @@ public class CommonBean implements Serializable{
     }
     
 //<editor-fold defaultstate="collapsed" desc="VARIABLES">
+    //cifras decimales
     private int minFractionDigits1 = 2;
     private int minFractionDigits2 = 4;
     private int minFractionDigits3 = 2;
     
-    private String sizeFont1 = "13px";
+    private String sizeFont1 = "13px"; //tama;o de letras de tablas
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="G & S">

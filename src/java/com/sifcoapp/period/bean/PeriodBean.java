@@ -24,7 +24,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 
 
-@ManagedBean(name = "period")
+@ManagedBean(name = "periodBean")
 public class PeriodBean implements Serializable {
 
 public PeriodBean() {}

@@ -46,7 +46,6 @@ import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import org.apache.commons.io.IOUtils;
 
-
 public class ReportConfigUtil {
 
     /**
@@ -92,10 +91,10 @@ public class ReportConfigUtil {
 
     public static JasperPrint fillReport(File reportFile, Map<String, Object> parameters, Connection conn) throws JRException {
         parameters.put("BaseDir", reportFile.getParentFile());
-        
+
         /*parametro localidades para monedas estatico*/
-        parameters.put(JRParameter.REPORT_LOCALE, Locale.US); 
-        
+        parameters.put(JRParameter.REPORT_LOCALE, Locale.US);
+
         JasperPrint jasperPrint = JasperFillManager.fillReport(reportFile.getPath(), parameters, conn);
 
         return jasperPrint;
@@ -127,9 +126,9 @@ public class ReportConfigUtil {
         exportReport(exporter, jasperPrint, out);
     }
 
-    public static void exportReportAsExcel(JasperPrint jasperPrint, PrintWriter out,ServletContext context,  ExternalContext ec, String fileName) throws JRException, FileNotFoundException, IOException {
+    public static void exportReportAsExcel(JasperPrint jasperPrint, PrintWriter out, ServletContext context, ExternalContext ec, String fileName) throws JRException, FileNotFoundException, IOException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        String ruta = context.getRealPath("WEB-INF") +"\\balance.xls";
+        String ruta = context.getRealPath("WEB-INF") + "\\balance.xls";
         //OutputStream outputfile = new FileOutputStream(new File("d:/output/JasperReport1.xls"));//make sure to have the directory. excel file will export here
         OutputStream outputfile = new FileOutputStream(new File(ruta));//make sure to have the directory. excel file will export here
 
@@ -143,43 +142,42 @@ public class ReportConfigUtil {
         exporterXLS.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
         exporterXLS.exportReport();
         outputfile.write(output.toByteArray());
-       
-        ec.responseReset(); 
-        ec.setResponseContentType(ec.getMimeType(ruta)); 
+
+        ec.responseReset();
+        ec.setResponseContentType(ec.getMimeType(ruta));
 
         //ec.setResponseContentLength(contentLength); 
-        ec.setResponseHeader("Content-Disposition", "attachment; filename=\"" + fileName + ".xls\""); 
+        ec.setResponseHeader("Content-Disposition", "attachment; filename=\"" + fileName + ".xls\"");
 
         InputStream input = new FileInputStream(ruta);
         OutputStream output2 = ec.getResponseOutputStream();
-        
+
         IOUtils.copy(input, output2);
-        
+
     }
 
-    public static void exportToPDFFile(ServletContext context,  ExternalContext ec, JasperPrint jasperPrint, String fileName) throws FileNotFoundException, IOException {
-        String ruta = context.getRealPath("WEB-INF") +"\\"+ fileName + ".pdf";
+    public static void exportToPDFFile(ServletContext context, ExternalContext ec, JasperPrint jasperPrint, String fileName) throws FileNotFoundException, IOException {
+        String ruta = context.getRealPath("WEB-INF") + "\\" + fileName + ".pdf";
         System.out.println(ruta);
         try {
             JasperExportManager.exportReportToPdfFile(jasperPrint, ruta);
             //enviandolo al browser
-        ec.responseReset(); 
-        ec.setResponseContentType(ec.getMimeType(ruta)); 
-        //ec.setResponseContentLength(contentLength); 
-        ec.setResponseHeader("Content-Disposition", "attachment; filename=\"" + fileName + ".pdf\""); 
+            ec.responseReset();
+            ec.setResponseContentType(ec.getMimeType(ruta));
+            //ec.setResponseContentLength(contentLength); 
+            ec.setResponseHeader("Content-Disposition", "attachment; filename=\"" + fileName + ".pdf\"");
 
-        InputStream input = new FileInputStream(ruta);
-        OutputStream output = ec.getResponseOutputStream();
-        IOUtils.copy(input, output);
+            InputStream input = new FileInputStream(ruta);
+            OutputStream output = ec.getResponseOutputStream();
+            IOUtils.copy(input, output);
 
-        System.out.println("Sending to browser...");
+            System.out.println("Sending to browser...");
         } catch (JRException ex) {
             Logger.getLogger(ReportConfigUtil.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     //public static void exportReportASPDF(JasperPrint jasperPrint, String pdfPath, ExternalContext ec) {
-
     public static void exportReportASPDF(JasperPrint jasperPrint, HttpServletResponse response) {
         //JasperExportManager exporter = null;
         JRExporter exporter = null;

@@ -5,7 +5,7 @@
  */
 package com.sifco.common.bean;
 
-import com.prueba.model.primefaces.Util;
+import com.sifco.login.bean.Util;
 import java.io.Serializable;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;

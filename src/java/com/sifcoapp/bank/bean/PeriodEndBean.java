@@ -5,7 +5,7 @@
  */
 package com.sifcoapp.bank.bean;
 
-import com.prueba.model.primefaces.Util;
+import com.sifco.login.bean.Util;
 import com.sifcoapp.client.AccountingEJBClient;
 import com.sifcoapp.objects.accounting.to.JournalEntryTO;
 import com.sifcoapp.objects.common.to.ResultOutTO;

@@ -5,7 +5,7 @@
  */
 package com.sifcoapp.report.util;
 
-import java.text.SimpleDateFormat;
+/*import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,7 +38,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRSaver;
 //import net.sf.jasperreports.export.SimpleExporterInput;
 //import net.sf.jasperreports.export.SimplePrintServiceExporterConfiguration;
-
+*/
 /**
  *
  * @author ri00642

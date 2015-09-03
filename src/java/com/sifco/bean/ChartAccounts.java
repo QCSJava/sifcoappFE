@@ -516,8 +516,8 @@ public class ChartAccounts implements Serializable {
 public void updTreeAcc(){
     try {
         facesMessage("Actualizando");
-        //llenarRoot();
-        seachAcc("11", "");
+        llenarRoot();
+        //seachAcc("11", "");
     } catch (Exception e) {
         facesMessage(e.getCause() + " " + e.getCause() );
     }

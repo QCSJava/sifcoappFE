@@ -5,8 +5,8 @@
  */
 package com.sifco.bean;
 
-import com.prueba.model.primefaces.LoginBean2;
-import com.prueba.model.primefaces.Util;
+import com.sifco.login.bean.LoginBean2;
+import com.sifco.login.bean.Util;
 import com.sifcoapp.client.SecurityEJBClient;
 import com.sifcoapp.objects.security.to.ProfileDetOutTO;
 import com.sifcoapp.objects.security.to.ProfileInTO;

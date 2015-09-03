@@ -5,7 +5,7 @@
  */
 package com.sifcoapp.bank.bean;
 
-import com.prueba.model.primefaces.Util;
+import com.sifco.login.bean.Util;
 import com.sifcoapp.client.AccountingEJBClient;
 import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.client.BankEJBClient;
@@ -125,6 +125,7 @@ public class CheckForPaymentBean implements Serializable {
     private String url;
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -215,6 +216,7 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocioName(SelectEvent event) {
         List socio = new Vector();
@@ -662,6 +664,7 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Botones toolbar " > 
     public void botonNuevo(ActionEvent actionEvent) {
         if (varEstados != 2 && validarClear()) {
@@ -708,6 +711,7 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     public void confirmDialog(ActionEvent actionEvent) {
         showHideDialog("dlgC2", 2);
@@ -1192,6 +1196,7 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="IMPRIMIR FORMA 2">
     public String printInvoice() throws UnsupportedEncodingException {
         //faceMessage(getApplicationUri());

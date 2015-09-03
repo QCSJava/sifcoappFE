@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.prueba.model.primefaces;
+package com.sifco.login.bean;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;

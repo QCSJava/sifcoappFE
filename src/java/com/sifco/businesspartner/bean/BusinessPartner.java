@@ -5,7 +5,7 @@
  */
 package com.sifco.businesspartner.bean;
 
-import com.prueba.model.primefaces.Util;
+import com.sifco.login.bean.Util;
 import com.sifcoapp.assignment.bean.AccassignmentBean;
 import com.sifcoapp.client.AccountingEJBClient;
 import com.sifcoapp.client.AdminEJBClient;
