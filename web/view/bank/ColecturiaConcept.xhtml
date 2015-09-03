@@ -178,7 +178,7 @@
                             </div>
 
                             <div class="ui-grid-col-1">
-                                <p:outputLabel value="Suma o Resta" />
+                                <p:outputLabel value="Suma" />
                             </div>
                             <div class="ui-grid-col-2">
                                 <p:selectOneRadio id="confirmado" value="#{conceptBean.sumRes}">
@@ -248,46 +248,46 @@
                                 </p:contextMenu>
 
                                 <p:dataTable  id="tableConcept" value="#{conceptBean.lstTable}" var="concept" rowIndexVar="rowIndex" scrollHeight="100%" scrollable="true"
-                                             style="height: 220px" selection="#{conceptBean.selectConcept}" selectionMode="single" rowKey="#{concept.linenum}"
+                                             style="height: 300px" selection="#{conceptBean.selectConcept}" selectionMode="single" rowKey="#{concept.linenum}"
                                              sortBy="#{concept.linenum}">
 
-                                    <p:column headerText="#" style="width: 10px">
+                                    <p:column headerText="#" style="width: 10px; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{rowIndex+1}" />
                                     </p:column>
 
-                                    <p:column headerText="No. Linea" style="width: 10%">
+                                    <p:column headerText="No. Linea" style="width: 10%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{concept.linenum}" />
                                     </p:column>
 
-                                    <p:column headerText="Estado de linea" style="width: 15%">
+                                    <p:column headerText="Estado de linea" style="width: 15%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{concept.linestatus}" />
                                     </p:column>
 
-                                    <p:column headerText="Descripcion" style="width: 40%">
+                                    <p:column headerText="Descripcion" style="width: 40%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{concept.dscription}" />
                                     </p:column>
 
-                                    <p:column headerText="Tipo objeto" style="width: 15%">
+                                    <p:column headerText="Tipo objeto" style="width: 15%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{concept.objtype}" />
                                     </p:column>
 
-                                    <p:column headerText="Reparto" style="width: 15%">
+                                    <p:column headerText="Reparto" style="width: 15%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{concept.ocrcode}" />
                                     </p:column>
 
-                                    <p:column headerText="Núm. operacion" style="width: 15%">
+                                    <p:column headerText="Núm. operacion" style="width: 15%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{concept.transid}" />
                                     </p:column>
 
-                                    <p:column headerText="Total pagado" style="width: 15%">
+                                    <p:column headerText="Total pagado" style="width: 15%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{concept.paidsum}" />
                                     </p:column>
 
-                                    <p:column headerText="Impuesto total" style="width: 15%">
+                                    <p:column headerText="Impuesto total" style="width: 15%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{concept.vatsum}" />
                                     </p:column>
 
-                                    <p:column headerText="Cuenta Asociada" style="width: 15%">
+                                    <p:column headerText="Cuenta Asociada" style="width: 15%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{concept.ctlaccount}" />
                                     </p:column>
 
