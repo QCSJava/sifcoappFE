@@ -25,7 +25,7 @@
                                     <p:outputLabel  value="Año: " />
                                     <p:selectOneMenu id="catalogClassLst"  style="width:150px" value="#{periodBean.anio}">
                                         <f:selectItem itemLabel="Seleccionar Año" itemValue="" noSelectionOption="true" />
-                                        <f:selectItems value="#{periodBean.catalogyear}" var="model" itemLabel="#{model.catvalue}" itemValue="#{model.catcode}"/>
+                                        <f:selectItems value="#{periodBean.catalogyear}" var="model" itemLabel="#{model.catvalue}" itemValue="#{model.catvalue}"/>
                                     </p:selectOneMenu>     
                                     <p:commandButton value="Agregar" update="period" actionListener="#{periodBean.doSavePeriod()}" styleClass="ui-priority-primary"/>
 
@@ -102,11 +102,11 @@
                                             </f:facet>
                                             <p:cellEditor> 
                                                 <f:facet name="output"> 
-                                                    <h:outputText value="#{period.f_duedate}" /> 
+                                                    <h:outputText value="#{period.t_refdate}" /> 
                                                 </f:facet> 
                                                 <f:facet name="input">
                                                     <!--p:calendar id="popup1" value="#{period.f_duedate}" /-->
-                                                    <p:inputText value="#{period.f_duedate}" style="width:100%" disabled="true"/>
+                                                    <p:inputText value="#{period.t_refdate}" style="width:100%" disabled="true"/>
                                                 </f:facet> 
                                             </p:cellEditor> 
                                         </p:column>
