@@ -55,7 +55,7 @@
     </application>
     <application>
         <resource-bundle>
-            <base-name>com.sifcoapp.warehouse.view.message</base-name>
+            <base-name>com.sifcoapp.warehouse.bean.message</base-name>
             <var>msg</var>
         </resource-bundle>
     </application>
