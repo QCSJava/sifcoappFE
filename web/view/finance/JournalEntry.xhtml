@@ -102,13 +102,13 @@
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-1"></div>
                             <div class="ui-grid-col-3">
-                                <p:autoComplete tabindex="6"  id="Codigocuenta" size="35" forceSelection="true" minQueryLength="3" value="#{JournalEntry.account}"
+                                <p:autoComplete tabindex="6"  id="Codigocuenta" size="35" forceSelection="true" minQueryLength="2" value="#{JournalEntry.account}"
                                                 completeMethod="#{JournalEntry.completeCode}" effect="fade" label="Codigo" >
                                     <p:ajax event="itemSelect" listener="#{JournalEntry.findAccount}" update="Codigocuenta nombrecuenta"/>
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-4">
-                                <p:autoComplete tabindex="7"  id="nombrecuenta"  size="50" forceSelection="true" minQueryLength="3" value="#{JournalEntry.shortname}"
+                                <p:autoComplete tabindex="7"  id="nombrecuenta"  size="50" forceSelection="true" minQueryLength="2" value="#{JournalEntry.shortname}"
                                                 completeMethod="#{JournalEntry.completeText}" effect="fade" label="Cuenta" >
                                     <p:ajax event="itemSelect" listener="#{JournalEntry.findAccount}" update="Codigocuenta nombrecuenta" />
                                 </p:autoComplete>

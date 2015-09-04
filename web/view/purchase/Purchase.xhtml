@@ -62,7 +62,7 @@
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2"><p:outputLabel value="Socio de Negocio" for="inSocio"/></div>
                             <div class="ui-grid-col-2">
-                                <p:autoComplete  disabled="#{purchaseBean.selected}" required="#{purchaseBean.required1}" id="inSocio" forceSelection="true" minQueryLength="3" value="#{purchaseBean.socioNeg}"
+                                <p:autoComplete  disabled="#{purchaseBean.selected}" required="#{purchaseBean.required1}" id="inSocio" forceSelection="true" minQueryLength="2" value="#{purchaseBean.socioNeg}"
                                                  completeMethod="#{purchaseBean.compSocioName}" effect="fade" size="30" label="Socio de Negocio" 
                                                  valueChangeListener="#{purchaseBean.stateChange3}">
                                     <p:ajax event="itemSelect" listener="#{purchaseBean.selectSocio}" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad newPrecio newImpuesto" />
@@ -78,7 +78,7 @@
                                 <p:outputLabel value="Codigo Socio" for="inCodSocio"/>
                             </div>
                             <div class="ui-grid-col-2">
-                                <p:autoComplete  disabled="#{purchaseBean.selected}" required="#{purchaseBean.required1}" id="inCodSocio" forceSelection="true" minQueryLength="3" value="#{purchaseBean.codSocio}"
+                                <p:autoComplete  disabled="#{purchaseBean.selected}" required="#{purchaseBean.required1}" id="inCodSocio" forceSelection="true" minQueryLength="2" value="#{purchaseBean.codSocio}"
                                                  completeMethod="#{purchaseBean.compSocioCode}" effect="fade" size="15" label="Socio de Negocio" 
                                                  valueChangeListener="#{purchaseBean.stateChange4}">
                                     <p:ajax event="itemSelect" listener="#{purchaseBean.selectSocioCod}" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad newPrecio newImpuesto" />
@@ -167,14 +167,14 @@
                         <div class="ui-grid-row">
 
                             <div class="ui-grid-col-2">
-                                <p:autoComplete tabindex="12" scrollHeight="250" widgetVar="getFocus" required="true" id="newCod" forceSelection="true" minQueryLength="3" value="#{purchaseBean.newCod}" disabled="#{purchaseBean.disabledComun}"
+                                <p:autoComplete tabindex="12" scrollHeight="250" widgetVar="getFocus" required="true" id="newCod" forceSelection="true" minQueryLength="2" value="#{purchaseBean.newCod}" disabled="#{purchaseBean.disabledComun}"
                                                 completeMethod="#{goodsReceiptBean.completeCode}" effect="fade" size="25" label="Codigo">
                                     <p:ajax event="itemSelect" listener="#{purchaseBean.findArticle}" update="newCod newNomArt newUnidad newExistencia newPrecio" />
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-3">
                                 <p:spacer width="15" height="0"/>
-                                <p:autoComplete tabindex="13" scrollHeight="250" required="true" id="newNomArt" forceSelection="true" minQueryLength="3" value="#{purchaseBean.newNomArt}" disabled="#{purchaseBean.disabledComun}"
+                                <p:autoComplete tabindex="13" scrollHeight="250" required="true" id="newNomArt" forceSelection="true" minQueryLength="2" value="#{purchaseBean.newNomArt}" disabled="#{purchaseBean.disabledComun}"
                                                 completeMethod="#{goodsReceiptBean.completeText}" effect="fade" size="35" label="Nombre Articulo">
                                     <p:ajax event="itemSelect" listener="#{purchaseBean.findArticle}" update="newCod newNomArt newUnidad newExistencia newPrecio" />
                                 </p:autoComplete>
