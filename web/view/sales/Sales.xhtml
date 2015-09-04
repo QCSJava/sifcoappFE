@@ -97,7 +97,7 @@
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2"><p:outputLabel value="Socio de Negocio" for="inSocio"/></div>
                             <div class="ui-grid-col-2">
-                                <p:autoComplete disabled="#{salesBean.selected}" required="#{salesBean.required1}" id="inSocio" forceSelection="true" minQueryLength="3" value="#{salesBean.socioNeg}"
+                                <p:autoComplete disabled="#{salesBean.selected}" required="#{salesBean.required1}" id="inSocio" forceSelection="true" minQueryLength="2" value="#{salesBean.socioNeg}"
                                                 completeMethod="#{salesBean.compSocioName}" effect="fade" size="30" label="Socio de Negocio" 
                                                 valueChangeListener="#{salesBean.stateChange3}">
                                     <p:ajax event="itemSelect" listener="#{salesBean.selectSocio}" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad btnCopy" />
@@ -111,7 +111,7 @@
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2"><p:outputLabel value="Codigo Socio" for="inCodSocio"/></div>
                             <div class="ui-grid-col-2">
-                                <p:autoComplete disabled="#{salesBean.selected}" required="#{salesBean.required1}" id="inCodSocio" forceSelection="true" minQueryLength="3" value="#{salesBean.codSocio}"
+                                <p:autoComplete disabled="#{salesBean.selected}" required="#{salesBean.required1}" id="inCodSocio" forceSelection="true" minQueryLength="2" value="#{salesBean.codSocio}"
                                                 completeMethod="#{salesBean.compSocioCode}" effect="fade" size="15" label="Socio de Negocio" 
                                                 valueChangeListener="#{salesBean.stateChange4}">
                                     <p:ajax event="itemSelect" listener="#{salesBean.selectSocioCod}" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad btnCopy" />
@@ -184,14 +184,14 @@
                         <div class="ui-grid-row">
 
                             <div class="ui-grid-col-2">
-                                <p:autoComplete scrollHeight="250" tabindex="11" widgetVar="getFocus" required="true" id="newCod" forceSelection="true" minQueryLength="3" value="#{salesBean.newCod}" disabled="#{salesBean.disabledComun}"
+                                <p:autoComplete scrollHeight="250" tabindex="11" widgetVar="getFocus" required="true" id="newCod" forceSelection="true" minQueryLength="2" value="#{salesBean.newCod}" disabled="#{salesBean.disabledComun}"
                                                 completeMethod="#{goodsReceiptBean.completeCode}" effect="fade" size="25" label="Codigo">
                                     <p:ajax event="itemSelect" listener="#{salesBean.findArticle}" update="newCod newNomArt newUnidad newExistencia newPrecio" />
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-3">
                                 <p:spacer width="15" height="0"/>
-                                <p:autoComplete scrollHeight="250" tabindex="12" required="true" id="newNomArt" forceSelection="true" minQueryLength="3" value="#{salesBean.newNomArt}" disabled="#{salesBean.disabledComun}"
+                                <p:autoComplete scrollHeight="250" tabindex="12" required="true" id="newNomArt" forceSelection="true" minQueryLength="2" value="#{salesBean.newNomArt}" disabled="#{salesBean.disabledComun}"
                                                 completeMethod="#{goodsReceiptBean.completeText}" effect="fade" size="35" label="Nombre Articulo">
                                     <p:ajax event="itemSelect" listener="#{salesBean.findArticle}" update="newCod newNomArt newUnidad newExistencia newPrecio" />
                                 </p:autoComplete>
