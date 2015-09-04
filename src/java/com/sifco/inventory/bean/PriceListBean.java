@@ -430,7 +430,7 @@ public class PriceListBean implements Serializable {
             faceMessage("Seleccione lista base");
             return false;
         }
-        if (this.newFactor < 1) {
+        if (this.newFactor == null || this.newFactor < 1) {
             faceMessage("Ingrese un factor correcto");
             return false;
         }
