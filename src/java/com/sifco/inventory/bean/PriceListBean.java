@@ -44,7 +44,7 @@ public class PriceListBean implements Serializable {
     private int newBase;
 
     @Digits(integer = 14, fraction = 2, message = "Factor Inadecuado")
-    private Double newFactor;
+    private Double newFactor = 1.0;
 
     private ArrayList<PricesListTO> listaDetalles = new ArrayList<>(); //DataTable
     private List listaObjetos = new Vector();
