@@ -145,7 +145,11 @@ public class Pdf extends HttpServlet {
                 if (i < tam) {
                     SalesDetailTO var2 = (SalesDetailTO) det.get(i);
                     String des = var2.getDscription();
-                    des = des.substring(0, 35);
+                    int largo = des.length();
+                    if (largo > 35) {
+                        des = des.substring(0, 35);
+                    }
+                    
                     out.println(
                             "                            <tr style=\"height: 18px; width: 100%\" >\n"
                             + "\n"
