@@ -33,6 +33,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletResponse;
@@ -40,7 +41,7 @@ import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 
 @ManagedBean(name = "user")
-@ApplicationScoped
+@SessionScoped
 public class UserBean implements Serializable {
 
     HttpSession session = Util.getSession();
@@ -87,7 +88,6 @@ public class UserBean implements Serializable {
     private ReportsBean bean;
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Botones Toolbar" >    
     public void doNew(ActionEvent actionEvent) {
         cleanBean();
@@ -104,8 +104,18 @@ public class UserBean implements Serializable {
         estateBuscar();
     }
 
+    public void refresh(ActionEvent actionEvent) {
+        //faceMessage("entro");
+        if (SecurityEJBService == null) {
+            SecurityEJBService = new SecurityEJBClient();
+        }
+
+        this.setProfilesLst((List<ProfileTO>) SecurityEJBService.getProfile());
+        //RequestContext.getCurrentInstance().update("profilecode");
+        
+    }
+
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Boton Principal" >
     public void botonPrincipal(ActionEvent actionEvent) {
         switch (varEstados) {
@@ -372,7 +382,6 @@ public class UserBean implements Serializable {
      // }
      }*/
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones varias" > 
     public void confirmDialog(ActionEvent actionEvent) {
         showHideDialog("dlgC", 2);
@@ -454,7 +463,6 @@ public class UserBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Imprimir" > 
     public void printReport() {
         Map<String, Object> reportParameters = new HashMap<String, Object>();
@@ -469,7 +477,7 @@ public class UserBean implements Serializable {
     }
     //</editor-fold>
 
-public void downloadFile() {
+    public void downloadFile() {
         System.out.println("here");
         File file = new File("C:\\workspace\\debitotarjeta.txt");
         InputStream fis;
@@ -515,11 +523,7 @@ public void downloadFile() {
     }
 
     //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="G & S" >
-    
-    
-
     public boolean isReNick() {
         return reNick;
     }
@@ -587,7 +591,7 @@ public void downloadFile() {
     public void setSecurityEJBService(SecurityEJBClient SecurityEJBService) {
         this.SecurityEJBService = SecurityEJBService;
     }
-    
+
     public void setSelectU(UserTO selectU) {
         this.selectU = selectU;
     }
@@ -785,7 +789,6 @@ public void downloadFile() {
     }
 
 //</editor-fold>
-
     public ReportsBean getBean() {
         return bean;
     }
@@ -793,5 +796,5 @@ public void downloadFile() {
     public void setBean(ReportsBean bean) {
         this.bean = bean;
     }
-    
+
 }//cierre de clase

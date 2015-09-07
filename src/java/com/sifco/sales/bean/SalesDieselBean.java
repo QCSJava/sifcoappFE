@@ -136,9 +136,7 @@ public class SalesDieselBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="G & S">
-
     public static CatalogEJBClient getCatalogEJB() {
         return CatalogEJB;
     }
@@ -186,9 +184,7 @@ public class SalesDieselBean implements Serializable {
     public void setCtlAcc(String ctlAcc) {
         this.ctlAcc = ctlAcc;
     }
-    
-    
-    
+
     public boolean isDisabledComun() {
         return disabledComun;
     }
@@ -526,7 +522,7 @@ public class SalesDieselBean implements Serializable {
         if (AdminEJBService == null) {
             AdminEJBService = new AdminEJBClient();
         }
-        
+
         if (ParameterEJBClient == null) {
             ParameterEJBClient = new ParameterEJBClient();
         }
@@ -539,7 +535,6 @@ public class SalesDieselBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocio(SelectEvent event) {
         List socio = new Vector();
@@ -579,7 +574,7 @@ public class SalesDieselBean implements Serializable {
                     try {
                         System.out.println("articulo unico, llenar campos en pantalla");
                         BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                        ctlAcc   = art.getDebpayacct();
+                        ctlAcc = art.getDebpayacct();
                         codSocio = art.getCardcode();
                         socioNeg = art.getCardname();
 
@@ -588,7 +583,7 @@ public class SalesDieselBean implements Serializable {
                     }
                 } else {
                     BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                    ctlAcc   = art.getDebpayacct();
+                    ctlAcc = art.getDebpayacct();
                     codSocio = art.getCardcode();
                     socioNeg = art.getCardname();
                     faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
@@ -736,7 +731,7 @@ public class SalesDieselBean implements Serializable {
                 break;
 
             case 3:
-                 doSearch();
+                doSearch();
                 break;
 
             default:
@@ -805,7 +800,7 @@ public class SalesDieselBean implements Serializable {
             newBill = new SalesTO();
         }
         String vacio = null;
-        
+
         if (varEstados == 2) {
             try {
                 newBill = SalesEJBService.getSalesByKey(docEntry);
@@ -851,7 +846,6 @@ public class SalesDieselBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="BUSCAR EN BASE">
     public void doSearch() {
         listaBusqueda.clear();
@@ -879,7 +873,6 @@ public class SalesDieselBean implements Serializable {
 
         searchBill.setDocdate(fechaConta);
 
-       
         try {
             listaBusqueda = SalesEJBService.getSales(searchBill);
         } catch (Exception e) {
@@ -930,34 +923,48 @@ public class SalesDieselBean implements Serializable {
                 //SalesDetailTO newDetalle = new SalesDetailTO();
                 ArticlesTO thisArt = new ArticlesTO();
                 CatalogTO thisCat = new CatalogTO();
-                String codDiesel;
-                codDiesel = ParameterEJBClient.getParameterbykey(3).getValue1();
-                
+                String codDiesel, formaPago;
+
                 //temporal
-                setNewCod(codDiesel);
                 try {
+                    codDiesel = ParameterEJBClient.getParameterbykey(3).getValue1();
+                    setNewCod(codDiesel);
+
                     thisArt = AdminEJBService.getArticlesByKey(newCod);
-                setNewPrecio(thisArt.getPrice(Integer.parseInt(ParameterEJBClient.getParameterbykey(5).getValue1())));
-                setNewUnidad(thisArt.getBuyUnitMsr());
-                setNewNomArt(thisArt.getItemName());
+                    this.selectSocio = new BusinesspartnerTO();
+                    this.selectSocio = CatalogEJB.get_businesspartnerBykey(codSocio);
 
-                newDetalle.setItemcode(newCod);
-                newDetalle.setDscription(newNomArt);
-                newDetalle.setQuantity(newCantidad);
+                    if (selectSocio.getGroupcode().equals("1")) {
+                        formaPago = ParameterEJBClient.getParameterbykey(5).getValue1();
+                    } else {
+                        formaPago = ParameterEJBClient.getParameterbykey(5).getValue2();
+                        //setNewPrecio(thisArt.getPrice(Integer.parseInt(ParameterEJBClient.getParameterbykey(5).getValue2())));
+                    }
 
-                newDetalle.setPrice(newPrecio);
-                newDetalle.setPricebefdi(newPrecio);
+                    CatalogTO cat = AdminEJBService.findCatalogByKey(formaPago, 8);
+                    int listP = Integer.parseInt(cat.getCatvalue2());
+                    setNewPrecio(thisArt.getPrice(listP));
+                    
 
-                newDetalle.setLinetotal(newPrecio * newCantidad);
-                newDetalle.setUnitmsr(newUnidad);
-                newDetalle.setLinenum(1);//UUID.randomUUID().hashCode());
+                    setNewUnidad(thisArt.getBuyUnitMsr());
+                    setNewNomArt(thisArt.getItemName());
 
-                
+                    newDetalle.setItemcode(newCod);
+                    newDetalle.setDscription(newNomArt);
+                    newDetalle.setQuantity(newCantidad);
+
+                    newDetalle.setPrice(newPrecio);
+                    newDetalle.setPricebefdi(newPrecio);
+
+                    newDetalle.setLinetotal(newPrecio * newCantidad);
+                    newDetalle.setUnitmsr(newUnidad);
+                    newDetalle.setLinenum(1);//UUID.randomUUID().hashCode());
+
                     if (thisArt.getWtliable().equals("Y")) {
                         newDetalle.setTaxstatus("Y");
                         faceMessage("se calcularan impuestos");
 
-                        if (thisArt.getVatgourpsa().equals("FOV")) { 
+                        if (thisArt.getVatgourpsa().equals("FOV")) {
                             //faceMessage("articulo aplica: iva, fov, cotrans");
                             thisCat = (CatalogTO) thisArt.getVatgourpsaList().get(0);
                             Double impIVA = (Integer.parseInt(thisCat.getCatvalue()) + 0.0) / 100; //%de IVA
@@ -1047,7 +1054,6 @@ public class SalesDieselBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="funciones para calculos de impuestos">
     public Double calcularGravadas(SalesDetailTO detail) {
 
@@ -1149,9 +1155,7 @@ public class SalesDieselBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones varias">
-    
     //evento al seleccionar un elemento del dialogo facturas
     public void selectDialogBill() {
         if (SalesEJBService == null) {
@@ -1175,7 +1179,7 @@ public class SalesDieselBean implements Serializable {
             Logger.getLogger(SalesBean.class.getName()).log(Level.SEVERE, null, ex);
             faceMessage("Error en busqueda por PK");
         }
-        
+
         try {
             //doSetCreditNote();
         } catch (Exception e) {
@@ -1188,7 +1192,7 @@ public class SalesDieselBean implements Serializable {
         RequestContext.getCurrentInstance().update("frmSales");
 
     }
-    
+
     public void llenarPantalla(SalesTO var) {
         setEstadoDoc(var.getDocstatus());
         setDocEntry(var.getDocentry());
@@ -1197,7 +1201,7 @@ public class SalesDieselBean implements Serializable {
         setCodSocio(var.getCardcode());
         setEquipo(Integer.parseInt(var.getRef2()));
         setRefe(var.getRef1());
-        
+
         setFechaConta(var.getDocdate());
 
         SalesDetailTO detail;

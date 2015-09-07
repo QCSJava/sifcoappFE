@@ -86,7 +86,7 @@
                                                      rowIndexVar="rowIndex"  scrollable="true" scrollHeight="250" selection="#{profileBean.selectDetail}" selectionMode="multiple"
                                                      emptyMessage="No hay registros" style="width: 70%">
 
-                                            <p:ajax  event="rowSelect"  listener="#{profileBean.updateProfile()}"  />
+                                            <p:ajax  event="rowSelect"    />
                                             <p:ajax  event="rowSelectCheckbox"  listener="#{profileBean.updateProfile}"   />
                                             <p:ajax  event="toggleSelect"  listener="#{profileBean.updateProfile}"   />
                                             <p:columnGroup type="header">

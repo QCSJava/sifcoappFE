@@ -34,7 +34,7 @@
                                              update="nickname username lastname profilecode password passwordConfirm locked botonPrincipal">
 
                             </p:commandButton>
-                            <p:commandButton tabindex="-1" type="button" title="Print" icon="ui-icon-print" />
+                            <p:commandButton tabindex="-1" actionListener="#{user.refresh}" process="@this" icon="ui-icon-refresh" update="profilecode"/>
                         </f:facet>
                     </p:toolbar>
 
@@ -142,7 +142,7 @@
                         </div>
                     </div>
                 </h:form>
-                
+
                 <h:form id="dlgListUser"> 
                     <p:dialog id="dlgUser" closeOnEscape="true" header="Usuarios encontrados" widgetVar="dlgU" modal="true"  width="1000">
 
