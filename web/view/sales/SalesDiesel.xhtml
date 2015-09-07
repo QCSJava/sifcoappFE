@@ -61,7 +61,7 @@
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2"><p:outputLabel value="Socio de Negocio" for="inSocio"/></div>
                             <div class="ui-grid-col-2">
-                                <p:autoComplete id="inSocio" forceSelection="true" minQueryLength="2" value="#{salesDieselBean.socioNeg}"
+                                <p:autoComplete scrollHeight="250" id="inSocio" forceSelection="true" minQueryLength="2" value="#{salesDieselBean.socioNeg}"
                                                 completeMethod="#{salesBean.compSocioName}" effect="fade" size="30" label="Socio de Negocio" 
                                                 valueChangeListener="#{salesBean.stateChange3}" disabled="#{salesDieselBean.disabledSearch}">
                                     <p:ajax event="itemSelect" listener="#{salesDieselBean.selectSocio}" update=" inSocio inCodSocio  " />
@@ -76,7 +76,7 @@
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2"><p:outputLabel value="Codigo Socio" for="inCodSocio"/></div>
                             <div class="ui-grid-col-2">
-                                <p:autoComplete id="inCodSocio" forceSelection="true" minQueryLength="2" value="#{salesDieselBean.codSocio}"
+                                <p:autoComplete scrollHeight="250" id="inCodSocio" forceSelection="true" minQueryLength="2" value="#{salesDieselBean.codSocio}"
                                                 completeMethod="#{salesBean.compSocioCode}" effect="fade" size="15" label="Socio de Negocio" 
                                                 valueChangeListener="#{salesBean.stateChange4}" disabled="#{salesDieselBean.disabledSearch}">
                                     <p:ajax event="itemSelect" listener="#{salesDieselBean.selectSocioCod}" update=" inSocio inCodSocio  " />

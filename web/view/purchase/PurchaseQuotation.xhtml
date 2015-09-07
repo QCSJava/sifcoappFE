@@ -63,7 +63,7 @@
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2"><p:outputLabel value="Socio de Negocio" for="inSocio"/></div>
                             <div class="ui-grid-col-2">
-                                <p:autoComplete tabindex="4" disabled="#{purchaseQuotationBean.selected}" required="#{purchaseQuotationBean.required1}" id="inSocio" forceSelection="true" minQueryLength="2" value="#{purchaseQuotationBean.socioNeg}"
+                                <p:autoComplete scrollHeight="250" tabindex="4" disabled="#{purchaseQuotationBean.selected}" required="#{purchaseQuotationBean.required1}" id="inSocio" forceSelection="true" minQueryLength="2" value="#{purchaseQuotationBean.socioNeg}"
                                                 completeMethod="#{purchaseQuotationBean.compSocioName}" effect="fade" size="30" label="Socio de Negocio" 
                                                 valueChangeListener="#{purchaseQuotationBean.stateChange3}">
                                     <p:ajax event="itemSelect" listener="#{purchaseQuotationBean.selectSocio}" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad newPrecio newImpuesto" />
@@ -78,7 +78,7 @@
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2"><p:outputLabel value="Codigo Socio" for="inCodSocio"/></div>
                             <div class="ui-grid-col-2">
-                                <p:autoComplete tabindex="6" disabled="#{purchaseQuotationBean.selected}" required="#{purchaseQuotationBean.required1}" id="inCodSocio" forceSelection="true" minQueryLength="2" value="#{purchaseQuotationBean.codSocio}"
+                                <p:autoComplete scrollHeight="250" tabindex="6" disabled="#{purchaseQuotationBean.selected}" required="#{purchaseQuotationBean.required1}" id="inCodSocio" forceSelection="true" minQueryLength="2" value="#{purchaseQuotationBean.codSocio}"
                                                 completeMethod="#{purchaseQuotationBean.compSocioCode}" effect="fade" size="15" label="Socio de Negocio" 
                                                 valueChangeListener="#{purchaseQuotationBean.stateChange4}">
                                     <p:ajax event="itemSelect" listener="#{purchaseQuotationBean.selectSocioCod}" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad newPrecio newImpuesto" />
