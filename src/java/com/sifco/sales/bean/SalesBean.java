@@ -435,7 +435,7 @@ public class SalesBean implements Serializable {
                     ctlaccount = art.getDebpayacct();
                     codSocio = art.getCardcode();
                     socioNeg = art.getCardname();
-                    faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
+                    faceMessage("Error: Mas de un elemento encontrado, nombre de socio repetido");
                 }
             }
         }
