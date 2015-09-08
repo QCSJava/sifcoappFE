@@ -28,12 +28,12 @@
                             <span class="ui-separator">
                                 <span class="ui-icon ui-icon-grip-dotted-vertical" />
                             </span>
-                                <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document"  process="@this" actionListener="#{priceListBean.botonNuevo}"
+                            <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document"  process="@this" actionListener="#{priceListBean.botonNuevo}"
                                              update="frmPriceList">
 
                             </p:commandButton>
 
-                                <p:commandButton tabindex="-1" type="button" title="Print" icon="ui-icon-print" />
+                            <p:commandButton tabindex="-1" type="button" title="Print" icon="ui-icon-print" />
                         </f:facet>
                     </p:toolbar>
 
@@ -100,7 +100,7 @@
                                     <p:column headerText="" style=" width: 2%; font-size: #{commonBean.sizeFont1}">
                                         <p:commandButton icon="ui-icon-search" actionListener="#{priceListBean.showList}" process="@this tableDetailPrice"/>
                                     </p:column>
-                                    
+
                                     <p:column headerText="Codigo" style="width: 3%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{Art.listnum}" />
                                     </p:column>
@@ -158,7 +158,7 @@
                             </div>
                         </div>
 
-                    <!-- Div Principal -->
+                        <!-- Div Principal -->
                     </div>
 
                 </h:form>
@@ -171,9 +171,18 @@
                                 <p:dataTable editable="true" id="tableDet" var="Rec" value="#{priceListBean.listaHijos}"  scrollable="true" scrollHeight="99%" style="height: 99%"
                                              rowKey="#{Rec.itemcode}" rowIndexVar="rowIndex" selection="#{priceListBean.selectHijo}" selectionMode="multiple" rows="10"
                                              paginator="true"
-                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                                              rowsPerPageTemplate="5,10,15"
                                              resizableColumns="true" liveResize="true">
+
+                                    <f:facet name="{Exporters}" >
+                                        <p:spacer height="0" width="95%"/>
+                                        <h:commandLink >
+                                            <p:graphicImage name="../../resources/Images/img.jpg" width="24"/>
+                                            <p:dataExporter type="xls" target="tableDet" fileName="#{priceListBean.selectPriceList.listname}"
+                                                            />
+                                        </h:commandLink>
+                                    </f:facet>
 
                                     <p:ajax event="rowSelect"  process="@this"/>
 
@@ -207,7 +216,7 @@
                                         </p:cellEditor>
                                     </p:column>
 
-                                    <p:column headerText="Editar"  style="width:6%;text-align:center" >
+                                    <p:column exportable="false" headerText="Editar"  style="width:6%;text-align:center" >
                                         <p:rowEditor rendered="#{Rec.pricelist == 1 or Rec.pricelist == 2? false:true}"/> 
                                         <p:outputLabel value="No editable" rendered="#{Rec.pricelist == 1 or Rec.pricelist == 2? true:false}"/>
                                     </p:column>

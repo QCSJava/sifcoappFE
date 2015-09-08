@@ -269,9 +269,18 @@
                         <p:dataTable id="tableDialog" var="Rec" value="#{articles.listaBusquedaTable}"  scrollable="true" scrollHeight="100%" style="height: 100%" 
                                      selection="#{articles.selectArticle}" rowKey="#{Rec.itemCode}" selectionMode="single" rowIndexVar="rowIndex" 
                                      paginator="true" rows="10"
-                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                                      rowsPerPageTemplate="5,10,15"
                                      resizableColumns="true" liveResize="true">
+
+                            <f:facet name="{Exporters}" >
+                                <p:spacer height="0" width="95%"/>
+                                <h:commandLink >
+                                    <p:graphicImage name="../../resources/Images/img.jpg" width="24"/>
+                                    <p:dataExporter type="xls" target="tableDialog" fileName="Articulos"
+                                                    />
+                                </h:commandLink>
+                            </f:facet>
 
                             <p:ajax event="rowDblselect"  process="@this" listener="#{articles.selectDialog}"/>
 
@@ -309,6 +318,19 @@
                             <p:column headerText="Activo Fijo" sortBy="#{Rec.assetItem}" style="width: 60px">
                                 <h:outputText value="#{Rec.assetItem}" />
                             </p:column>
+                            
+                            <p:column headerText="Costo Promedio" sortBy="#{Rec.avgPrice}" style="width: 60px">
+                                <h:outputText value="$ #{Rec.avgPrice}" />
+                            </p:column>
+                            
+                            <p:column headerText="Existencia" sortBy="#{Rec.onHand}" style="width: 60px">
+                                <h:outputText value="#{Rec.onHand}" />
+                            </p:column>
+                            
+                            <p:column headerText="Codigo Adicional" sortBy="#{Rec.sww}" style="width: 60px">
+                                <h:outputText value="#{Rec.sww}" />
+                            </p:column>
+                            
                         </p:dataTable>
                     </h:form>  
                 </p:dialog> 
