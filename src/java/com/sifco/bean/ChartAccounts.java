@@ -34,10 +34,6 @@ import org.primefaces.model.TreeNode;
 
 @ManagedBean(name = "chartAccounts")
 @SessionScoped
-/**
- *
- * @author Jcastro
- */
 public class ChartAccounts implements Serializable {
 
     public ChartAccounts() {
@@ -866,6 +862,24 @@ public void updTreeAcc(){
         return c.getTime();
     }
 
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="Exporter">
+    /*public void postProcessXLS(Object document) {
+        HSSFWorkbook wb = (HSSFWorkbook) document;
+        HSSFSheet sheet = wb.getSheetAt(0);
+        HSSFRow header = sheet.getRow(0);
+         
+        HSSFCellStyle cellStyle = wb.createCellStyle();  
+        cellStyle.setFillForegroundColor(HSSFColor.GREEN.index);
+        cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+         
+        for(int i=0; i < header.getPhysicalNumberOfCells();i++) {
+            HSSFCell cell = header.getCell(i);
+             
+            cell.setCellStyle(cellStyle);
+        }
+    }*/
 //</editor-fold>
     
 }//cierre de clase

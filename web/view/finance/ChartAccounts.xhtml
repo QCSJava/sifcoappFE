@@ -174,7 +174,8 @@
                                 <p:spacer height="0" width="95%"/>
                                 <h:commandLink >
                                     <p:graphicImage name="../../resources/Images/img.jpg" width="24"/>
-                                    <p:dataExporter type="xls" target="dlgSaldo" fileName="Acc" />
+                                    <p:dataExporter type="xls" target="dlgSaldo" fileName="#{chartAccounts.acctcode} - #{chartAccounts.acctname}"
+                                                    />
                                 </h:commandLink>
                             </f:facet>
 
