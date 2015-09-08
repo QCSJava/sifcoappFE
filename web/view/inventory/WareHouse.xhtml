@@ -51,7 +51,7 @@
                                         </br>
                                         <p:panelGrid columns="2" style="width: 60%;">
 
-                                            <h:outputText value="Habilitado " />
+                                            <h:outputText value="Deshabilitado:" />
                                             <p:selectBooleanCheckbox value="#{warehouseBean.locked}" />
 
                                             <h:outputLabel value="Localidad: " for="WareHouseLst41"/>
@@ -67,7 +67,7 @@
                                             <p:outputLabel value="Ciudad: " for="city"/>
                                             <p:inputText required="#{warehouseBean.whscodereq}" id="city" value="#{warehouseBean.city}" size="#{msg['message.size']}"/>
 
-                                            <p:outputLabel value="Pais"/>
+                                            <p:outputLabel value="Pais:"/>
                                             <p:selectOneMenu required="#{warehouseBean.whscodereq}" id="WareHouseLst"  style="width:75%" value="#{warehouseBean.country}">
                                                 <f:selectItem itemLabel="Seleccionar Pais" itemValue="" noSelectionOption="true" />
                                                 <f:selectItems value="#{warehouseBean.ltsCatalog}" var="model" itemLabel="#{model.catvalue}" itemValue="#{model.catcode}"/>

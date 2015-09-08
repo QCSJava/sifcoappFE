@@ -136,6 +136,7 @@ public class SalesDieselBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="G & S">
     public static CatalogEJBClient getCatalogEJB() {
         return CatalogEJB;
@@ -535,6 +536,7 @@ public class SalesDieselBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocio(SelectEvent event) {
         List socio = new Vector();
@@ -631,7 +633,7 @@ public class SalesDieselBean implements Serializable {
                     try {
                         System.out.println("articulo unico, llenar campos en pantalla");
                         BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-
+                        ctlAcc = art.getDebpayacct();
                         codSocio = art.getCardcode();
                         socioNeg = art.getCardname();
 
@@ -640,6 +642,7 @@ public class SalesDieselBean implements Serializable {
                     }
                 } else {
                     BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
+                    ctlAcc = art.getDebpayacct();
                     codSocio = art.getCardcode();
                     socioNeg = art.getCardname();
                     faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
@@ -756,7 +759,7 @@ public class SalesDieselBean implements Serializable {
         newBill.setRef2("" + equipo);
         newBill.setRef1(refe);
         newBill.setDocdate(fechaConta);
-        //newBill.setTaxdate(fechaDoc);
+        newBill.setTaxdate(fechaConta);
         newBill.setSeries(Integer.parseInt(ParameterEJBClient.getParameterbykey(2).getValue1()));
         newBill.setPeymethod(ParameterEJBClient.getParameterbykey(5).getValue1());
         newBill.setTowhscode(ParameterEJBClient.getParameterbykey(4).getValue1());
@@ -846,6 +849,7 @@ public class SalesDieselBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="BUSCAR EN BASE">
     public void doSearch() {
         listaBusqueda.clear();
@@ -923,7 +927,7 @@ public class SalesDieselBean implements Serializable {
                 //SalesDetailTO newDetalle = new SalesDetailTO();
                 ArticlesTO thisArt = new ArticlesTO();
                 CatalogTO thisCat = new CatalogTO();
-                String codDiesel, formaPago;
+                String codDiesel, formaPago2;
 
                 //temporal
                 try {
@@ -935,16 +939,15 @@ public class SalesDieselBean implements Serializable {
                     this.selectSocio = CatalogEJB.get_businesspartnerBykey(codSocio);
 
                     if (selectSocio.getGroupcode().equals("1")) {
-                        formaPago = ParameterEJBClient.getParameterbykey(5).getValue1();
+                        formaPago2 = ParameterEJBClient.getParameterbykey(5).getValue1();
                     } else {
-                        formaPago = ParameterEJBClient.getParameterbykey(5).getValue2();
+                        formaPago2 = ParameterEJBClient.getParameterbykey(5).getValue2();
                         //setNewPrecio(thisArt.getPrice(Integer.parseInt(ParameterEJBClient.getParameterbykey(5).getValue2())));
                     }
 
-                    CatalogTO cat = AdminEJBService.findCatalogByKey(formaPago, 8);
+                    CatalogTO cat = AdminEJBService.findCatalogByKey(formaPago2, 8);
                     int listP = Integer.parseInt(cat.getCatvalue2());
                     setNewPrecio(thisArt.getPrice(listP));
-                    
 
                     setNewUnidad(thisArt.getBuyUnitMsr());
                     setNewNomArt(thisArt.getItemName());
@@ -1054,6 +1057,7 @@ public class SalesDieselBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="funciones para calculos de impuestos">
     public Double calcularGravadas(SalesDetailTO detail) {
 
@@ -1155,6 +1159,7 @@ public class SalesDieselBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Funciones varias">
     //evento al seleccionar un elemento del dialogo facturas
     public void selectDialogBill() {
