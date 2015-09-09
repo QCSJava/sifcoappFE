@@ -367,32 +367,75 @@
 
                 <h:form id="frmsoc">
                     <!-- Dialogo lista de socios --> 
-                    <p:dialog closeOnEscape="true" position="top" header="Socios de negocio" widgetVar="dlgListBusiness" modal="true"  width="900" height="250px" >
+                    <p:dialog closeOnEscape="true" position="top" header="Socios de negocio" widgetVar="dlgListBusiness" modal="true"  width="1300" height="250px" >
                         <p:dataTable  id="businesstable" var="Rec" value="#{businessPartner.listaBusquedaTable}"  scrollable="true" scrollHeight="100%"
-                                      selection="#{businessPartner.selectBusiness}" rowKey="#{Rec.cardcode}" selectionMode="single" rowIndexVar="rowIndex" >
+                                      selection="#{businessPartner.selectBusiness}" rowKey="#{Rec.cardcode}" selectionMode="single" rowIndexVar="rowIndex" 
+                                      resizableColumns="true"
+                                      paginatorTemplate="{Exporters}"
+                                      resizeMode="expand">
+                            
+                            <f:facet name="{Exporters}" >
+                                <p:spacer height="0" width="95%"/>
+                                <h:commandLink >
+                                    <p:graphicImage name="../../resources/Images/img.jpg" width="24"/>
+                                    <p:dataExporter type="xls" target="businesstable" fileName="SociosDeNegocio"/>
+                                </h:commandLink>
+                            </f:facet>
 
                             <p:ajax event="rowDblselect"  process="@this" listener="#{businessPartner.selectDialogBill}"/>
 
-                            <p:column headerText="#" style="width: 2%">
+                            <p:column headerText="#" >
                                 <h:outputText value="#{rowIndex + 1}" />
                             </p:column>
 
-                            <p:column headerText="No" style="width: 5%" sortBy="#{Rec.cardcode}" filterBy="#{Rec.cardcode}">
+                            <p:column headerText="No"  sortBy="#{Rec.cardcode}" filterBy="#{Rec.cardcode}">
                                 <h:outputText value="#{Rec.cardcode}" />
                             </p:column>
 
-                            <p:column headerText="Socio de Negocio" sortBy="#{Rec.cardname}" filterBy="#{Rec.cardname}" style="width: 10%">
+                            <p:column headerText="Socio de Negocio" sortBy="#{Rec.cardname}" filterBy="#{Rec.cardname}" >
                                 <h:outputText value="#{Rec.cardname}" />
                             </p:column>
-                            <p:column headerText="Tipo de Socio" sortBy="#{Rec.cardtype}" style="width: 5%">
-                                <h:outputText value="#{Rec.cardtype}" />
+                            <p:column headerText="Tipo" sortBy="#{Rec.cardtype}" >
+                                <h:outputText value="#{Rec.cardtype == 'C'? 'Cliente':'Proveedor'}" />
                             </p:column>
-                            <p:column headerText="Grupo" sortBy="#{Rec.groupcode}" style="width: 5%">
-                                <h:outputText value="#{Rec.groupcode}" />
+                            <p:column headerText="Grupo" sortBy="#{Rec.groupcode}" >
+                                <h:outputText value="#{Rec.groupcode == '1'? 'Propio':'Asociado'}" />
                             </p:column>
 
-                            <p:column headerText="RFC" sortBy="#{Rec.addid}" style="width: 5%">
-                                <h:outputText value="#{Rec.addid}" />
+                            <p:column headerText="Direccion" sortBy="#{Rec.address}" >
+                                <h:outputText value="#{Rec.address}" />
+                            </p:column>
+
+                            <p:column headerText="Telefono 1" sortBy="#{Rec.phone1}" >
+                                <h:outputText value="#{Rec.phone1}" />
+                            </p:column>
+
+                            <p:column headerText="Contacto" sortBy="#{Rec.cntctprsn}" >
+                                <h:outputText value="#{Rec.cntctprsn}" />
+                            </p:column>
+
+                            <p:column headerText="Comentarios" sortBy="#{Rec.notes}" >
+                                <h:outputText value="#{Rec.notes}" />
+                            </p:column>
+
+                            <p:column headerText="Credito" sortBy="#{Rec.creditline}" >
+                                <h:outputText value="#{Rec.creditline}" />
+                            </p:column>
+
+                            <p:column headerText="E-mail" sortBy="#{Rec.e_mail}" >
+                                <h:outputText value="#{Rec.e_mail}" />
+                            </p:column>
+
+                            <p:column headerText="Válido" sortBy="#{Rec.validfor}" >
+                                <h:outputText value="#{Rec.validfor== 'Y'? 'Si':'No'}" />
+                            </p:column>
+
+                            <p:column headerText="Cuentas de deudor/acreedor" sortBy="#{Rec.debpayacct}" >
+                                <h:outputText value="#{Rec.debpayacct}" />
+                            </p:column>
+
+                            <p:column headerText="Agrupación SN" sortBy="#{Rec.fathercard}" >
+                                <h:outputText value="#{Rec.fathercard}" />
                             </p:column>
 
                         </p:dataTable>

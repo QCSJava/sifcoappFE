@@ -669,11 +669,11 @@ public class TransfersBean implements Serializable{
         try {
             if (newCantidad > 0  && newCantidad != null) {
                 Double aux = (newCostoPromedio) * (newCantidad);
-                NumberFormat nf = NumberFormat.getInstance();
+                /*NumberFormat nf = NumberFormat.getInstance();
                 nf.setMaximumFractionDigits(2);
                 String st = nf.format(aux);
-                Double dou = Double.valueOf(st);
-                newTotal = dou;
+                Double dou = Double.valueOf(st);*/
+                newTotal = aux;
             }
         } catch (Exception e) {
             //faceMessage("Error al calcular total: " + e.getMessage() + "-" + e.getCause());

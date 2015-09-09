@@ -721,11 +721,11 @@ public class GoodsIssuesBean implements Serializable {
         try {
             if (newCostoPromedio > 0 && newCantidad > 0 && newCostoPromedio != null && newCantidad != null) {
                 Double aux = (newCostoPromedio) * (newCantidad);
-                NumberFormat nf = NumberFormat.getInstance();
+               /* NumberFormat nf = NumberFormat.getInstance();
                 nf.setMaximumFractionDigits(2);
                 String st = nf.format(aux);
-                Double dou = Double.valueOf(st);
-                newTotal = dou;
+                Double dou = Double.valueOf(st);*/
+                newTotal = aux;
             }
         } catch (Exception e) {
             //faceMessage("Error al calcular total: " + e.getMessage() + "-" + e.getCause());

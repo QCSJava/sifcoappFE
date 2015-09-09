@@ -602,11 +602,11 @@ public class SupplierCreditNotesBean implements Serializable {
         try {
             if (newPrecio > 0 && newCantidad > 0 && newPrecio != null && newCantidad != null) {
                 Double aux = (newPrecio) * (newCantidad);
-                NumberFormat nf = NumberFormat.getInstance();
+                /*NumberFormat nf = NumberFormat.getInstance();
                 nf.setMaximumFractionDigits(2);
                 String st = nf.format(aux);
                 Double dou = Double.valueOf(st);
-                //newTotal = dou;
+                //newTotal = dou;*/
                 newTotal = aux;
             }
         } catch (Exception e) {

@@ -134,7 +134,9 @@
                             </div>
                             <p:spacer width="15" height="0"/>
                             <div class="ui-grid-col-1">
-                                <h:outputText id="newTotal"         value="#{TransfersBean.newTotal}"/>
+                                <h:outputText id="newTotal"         value="#{TransfersBean.newTotal}">
+                                    <f:convertNumber minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                </h:outputText>
                             </div>
                             <div class="ui-grid-col-1">
                                 <h:outputText id="newUnidad"        value="#{TransfersBean.newUnidad}"/>

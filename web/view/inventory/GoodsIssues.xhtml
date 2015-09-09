@@ -119,15 +119,17 @@
                             <p:spacer width="15" height="0"/>
                             <div class="ui-grid-col-1">
                                 <h:outputText id="newCostoProm"    value="#{goodsIssuesBean.newCostoPromedio}"/>
-                                
+
                             </div>
                             <p:spacer width="15" height="0"/>
                             <div class="ui-grid-col-1">
-                                <h:outputText id="newTotal"         value="#{goodsIssuesBean.newTotal}"/>
+                                <h:outputText id="newTotal"         value="#{goodsIssuesBean.newTotal}">
+                                    <f:convertNumber minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                </h:outputText>
                             </div>
                             <div class="ui-grid-col-1">
                                 <h:outputText id="newUnidad"        value="#{goodsIssuesBean.newUnidad}"/>
-                                
+
                             </div>
                             <div class="ui-grid-col-1">
                                 <h:outputText id="newExistencia"    value="#{goodsIssuesBean.newExistencia}"/>

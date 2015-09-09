@@ -50,7 +50,7 @@ public class Pdf extends HttpServlet {
 
             var = SalesEJBService.getSalesByKey(Integer.parseInt(request.getParameter("foo")));//quemado
             _R = AdminEJBService.findCatalogByKey(var.getPeymethod(), 8);
-            total = formatNumber(var.getDoctotal());
+            total = var.getDoctotal();//formatNumber(var.getDoctotal());
             numberToletter = convertNumber.convertNumberToLetter(total);
 
         } catch (Exception ex) {
@@ -69,6 +69,12 @@ public class Pdf extends HttpServlet {
                     + "<script type=\"text/javascript\">\n"
                     + "window.print();\n"
                     + "window.open('', '_self', ''); window.close(); \n"
+                    + "</script>"
+                    + "\n"
+                    + "<script type=\"text/javascript\">\n"
+                    + "function currencyFormat (num) {\n"
+                    + "    return  num.toFixed(2).replace(/(\\d)(?=(\\d{3})+(?!\\d))/g, \"$1,\")\n"
+                    + "}\n"
                     + "</script>"
                     + "\n"
                     + "    </head>\n"
@@ -100,10 +106,10 @@ public class Pdf extends HttpServlet {
                     + "\n"
                     + "                                </td>\n"
                     + "                                <td style=\"width: 70%\">\n"
-                    + "                                    "+ var.getCardname().toUpperCase() +"\n"
+                    + "                                    " + var.getCardname().toUpperCase() + "\n"
                     + "                                </td>\n"
                     + "                                <td>\n"
-                    + "                                    " + var.getDocdate() +"\n"
+                    + "                                    " + var.getDocdate() + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                            <tr style=\"height: 18px\">\n"
@@ -114,13 +120,13 @@ public class Pdf extends HttpServlet {
                     + "\n"
                     + "                                </td>\n"
                     + "                                <td>\n"
-                    + "                                    " + "" +"\n"
+                    + "                                    " + "" + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                            <tr style=\"height: 18px\">\n"
                     + "                                <td></td>\n"
                     + "                                <td>\n"
-                    + "                                    " + "" +"\n"
+                    + "                                    " + "" + "\n"
                     + "                                </td>\n"
                     + "                                <td>\n"
                     + "                                    " + _R.getCatvalue().toUpperCase() + "\n"
@@ -149,7 +155,7 @@ public class Pdf extends HttpServlet {
                     if (largo > 35) {
                         des = des.substring(0, 35);
                     }
-                    
+
                     out.println(
                             "                            <tr style=\"height: 18px; width: 100%\" >\n"
                             + "\n"
@@ -194,7 +200,7 @@ public class Pdf extends HttpServlet {
                     + "                        " + numberToletter + "\n"
                     + "                    </td>\n"
                     + "                    <td valign=\"bot\">\n"
-                    + "                        $" + total + "\n"
+                    + "                        $ currencyFormat(" + total + ")\n"
                     + "                    </td>\n"
                     + "                </tr>\n"
                     + "                <tr style=\"height: 15.8px\">\n"
@@ -226,7 +232,7 @@ public class Pdf extends HttpServlet {
                     + "                    <td  style=\"width: 100px\">\n"
                     + "                    </td>\n"
                     + "                    <td>\n"
-                    + "                        $" + total + "\n"
+                    + "                        document.getElementsByTagName(td).innerHTML = currencyFormat(2665);\n"
                     + "                    </td>\n"
                     + "                </tr>\n"
                     + "            </table>\n"
@@ -290,12 +296,19 @@ public class Pdf extends HttpServlet {
 
     //<editor-fold defaultstate="collapsed" desc="Formato Numeros NO USADA">
     public Double formatNumber(Double num) {
-
-        NumberFormat nf = NumberFormat.getInstance();
-        nf.setMaximumFractionDigits(2);
-        String st = nf.format(num);
-        Double dou = Double.valueOf(st);
-        return dou;
+        try {
+            NumberFormat nf = NumberFormat.getInstance();
+            nf.setMaximumFractionDigits(2);
+            String var = num + "";
+            if (var.contains(",")) {
+                var.replace(",", "");
+            }
+            String st = nf.format(num);
+            Double dou = Double.valueOf(st);
+            return dou;
+        } catch (Exception e) {
+            return 0.0;
+        }
     }
 
 //</editor-fold>
