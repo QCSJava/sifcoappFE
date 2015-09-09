@@ -13,7 +13,6 @@ import com.sifcoapp.objects.sales.to.SalesTO;
 import com.sifcoapp.report.common.numerosAletras;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.NumberFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -232,7 +231,7 @@ public class Pdf extends HttpServlet {
                     + "                    <td  style=\"width: 100px\">\n"
                     + "                    </td>\n"
                     + "                    <td>\n"
-                    + "                        document.getElementsByTagName(td).innerHTML = currencyFormat(2665);\n"
+                    + "                        $" + total + "\n"
                     + "                    </td>\n"
                     + "                </tr>\n"
                     + "            </table>\n"
@@ -294,22 +293,4 @@ public class Pdf extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Formato Numeros NO USADA">
-    public Double formatNumber(Double num) {
-        try {
-            NumberFormat nf = NumberFormat.getInstance();
-            nf.setMaximumFractionDigits(2);
-            String var = num + "";
-            if (var.contains(",")) {
-                var.replace(",", "");
-            }
-            String st = nf.format(num);
-            Double dou = Double.valueOf(st);
-            return dou;
-        } catch (Exception e) {
-            return 0.0;
-        }
-    }
-
-//</editor-fold>
 }//cierre de clase

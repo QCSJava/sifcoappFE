@@ -367,12 +367,14 @@
 
                 <h:form id="frmsoc">
                     <!-- Dialogo lista de socios --> 
-                    <p:dialog closeOnEscape="true" position="top" header="Socios de negocio" widgetVar="dlgListBusiness" modal="true"  width="1300" height="250px" >
-                        <p:dataTable  id="businesstable" var="Rec" value="#{businessPartner.listaBusquedaTable}"  scrollable="true" scrollHeight="100%"
+                    <p:dialog closeOnEscape="true" position="top" header="Socios de negocio" widgetVar="dlgListBusiness" modal="true"  width="1300" height="400px" >
+                        <p:dataTable  id="businesstable" var="Rec" value="#{businessPartner.listaBusquedaTable}"  scrollable="true" 
                                       selection="#{businessPartner.selectBusiness}" rowKey="#{Rec.cardcode}" selectionMode="single" rowIndexVar="rowIndex" 
                                       resizableColumns="true"
+                                      resizeMode="expand"
+                                      paginator="true"
                                       paginatorTemplate="{Exporters}"
-                                      resizeMode="expand">
+                                      >
                             
                             <f:facet name="{Exporters}" >
                                 <p:spacer height="0" width="95%"/>
