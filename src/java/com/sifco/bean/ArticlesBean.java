@@ -1155,7 +1155,7 @@ public class ArticlesBean implements Serializable {
 
         //llenado de tab general
         setWritable(var.getWtliable() == null ? false : var.getWtliable().equals("Y"));
-        setSww(sww);
+        setSww(var.getSww());
         setValidfor(var.getValidFor() == null ? false : var.getValidFor().equals("Y") ? true : false);
 
         //llenado de tab compras

@@ -36,7 +36,7 @@
                                              update="frmPurchase">
 
                             </p:commandButton>
-                                <p:commandButton tabindex="-1" type="button" title="Print" icon="ui-icon-print" disabled="true"/>
+                                <p:commandButton rendered="false" tabindex="-1" type="button" title="Print" icon="ui-icon-print" disabled="true"/>
                         </f:facet>
                     </p:toolbar>
 
@@ -63,8 +63,8 @@
                             <div class="ui-grid-col-2"><p:outputLabel value="Socio de Negocio" for="inSocio"/></div>
                             <div class="ui-grid-col-2">
                                 <p:autoComplete scrollHeight="250"  disabled="#{purchaseBean.selected}" required="#{purchaseBean.required1}" id="inSocio" forceSelection="true" minQueryLength="2" value="#{purchaseBean.socioNeg}"
-                                                 completeMethod="#{purchaseBean.compSocioName}" effect="fade" size="30" label="Socio de Negocio" 
-                                                 valueChangeListener="#{purchaseBean.stateChange3}">
+                                                completeMethod="#{purchaseBean.compSocioName}" effect="fade" size="30" label="Socio de Negocio" 
+                                                valueChangeListener="#{purchaseBean.stateChange3}">
                                     <p:ajax event="itemSelect" listener="#{purchaseBean.selectSocio}" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad newPrecio newImpuesto" />
                                 </p:autoComplete>
                             </div>
@@ -79,13 +79,13 @@
                             </div>
                             <div class="ui-grid-col-2">
                                 <p:autoComplete scrollHeight="250"  disabled="#{purchaseBean.selected}" required="#{purchaseBean.required1}" id="inCodSocio" forceSelection="true" minQueryLength="2" value="#{purchaseBean.codSocio}"
-                                                 completeMethod="#{purchaseBean.compSocioCode}" effect="fade" size="15" label="Socio de Negocio" 
-                                                 valueChangeListener="#{purchaseBean.stateChange4}">
+                                                completeMethod="#{purchaseBean.compSocioCode}" effect="fade" size="15" label="Socio de Negocio" 
+                                                valueChangeListener="#{purchaseBean.stateChange4}">
                                     <p:ajax event="itemSelect" listener="#{purchaseBean.selectSocioCod}" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad newPrecio newImpuesto" />
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-4">
-                                
+
                             </div>
                             <div class="ui-grid-col-2">
                                 <p:outputLabel value="Fecha Vencimiento" for="f3"/>

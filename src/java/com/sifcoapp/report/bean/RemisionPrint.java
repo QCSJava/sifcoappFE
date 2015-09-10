@@ -291,13 +291,14 @@ public class RemisionPrint extends HttpServlet {
     }// </editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Formato Numeros NO USADA">
-    public Double formatNumber(Double num) {
-
+    public Double formatNumber(Double doctotal) {
+        /*
         NumberFormat nf = NumberFormat.getInstance();
         nf.setMaximumFractionDigits(2);
         String st = nf.format(num);
         Double dou = Double.valueOf(st);
-        return dou;
+        return dou;*/
+        return Math.floor(100 * doctotal) / 100;
     }
 
 //</editor-fold>
