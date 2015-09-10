@@ -29,6 +29,10 @@
         <servlet-name>CheckPrint</servlet-name>
         <servlet-class>com.sifcoapp.report.bean.CheckPrint</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SalesPrint</servlet-name>
+        <servlet-class>com.sifcoapp.report.bean.SalesPrint</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
@@ -52,6 +56,10 @@
     <servlet-mapping>
         <servlet-name>CheckPrint</servlet-name>
         <url-pattern>/CheckPrint</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SalesPrint</servlet-name>
+        <url-pattern>/SalesPrint</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

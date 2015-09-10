@@ -50,6 +50,8 @@ public class SessionFilter implements Filter {
                 || url.contains("Pdf")
                 || url.contains("testPrintInvoice")
                 || url.contains("testPrintView")
+                || url.contains("testSalesView")
+                || url.contains("SalesPrint")
                 || url.contains("PrintDeliveryView")
                 || url.contains("PrintColectView")
                 || url.contains("ColectPrint")
@@ -79,35 +81,36 @@ public class SessionFilter implements Filter {
             } else {
                 ArrayList<String> urlListUsr = (ArrayList<String>) session.getAttribute("urlsUser");
                 //if (!urlListUsr.contains(url)) {
-                    if (url.contains("/sifcoappFE/faces/javax.faces.resource/")
-                            || url.contains("login")
-                            || url.contains("/sifcoappFE/servlets/report/PDF")
-                            || url.contains("Pdf")
-                            || url.contains("index")
-                            || url.contains("ColectPrint")
-                            || url.contains("CheckPrint")
-                            || url.contains("RemisionPrint")) {
-                        allowedRequest = true;
-                        System.out.println("url permitida: " + url);
+                if (url.contains("/sifcoappFE/faces/javax.faces.resource/")
+                        || url.contains("login")
+                        || url.contains("/sifcoappFE/servlets/report/PDF")
+                        || url.contains("Pdf")
+                        || url.contains("index")
+                        || url.contains("ColectPrint")
+                        || url.contains("CheckPrint")
+                        || url.contains("SalesPrint")
+                        || url.contains("RemisionPrint")) {
+                    allowedRequest = true;
+                    System.out.println("url permitida: " + url);
+                } else {
+                    System.out.println("perfil invalido " + url);
+                    int _validurl = 0;
+                    for (int x = 0; x < urlListUsr.size(); x++) {
+                        System.out.println(urlListUsr.get(x));
+                        if (url.contains(urlListUsr.get(x))) {
+                            _validurl = 1;
+                        }
+                    }
+                    if (_validurl == 1) {
+                        System.out.println("perfil valido " + url);
                     } else {
                         System.out.println("perfil invalido " + url);
-                        int _validurl=0;
-                        for (int x = 0; x < urlListUsr.size(); x++) {
-                            System.out.println(urlListUsr.get(x));
-                            if (url.contains(urlListUsr.get(x))){
-                                _validurl=1;
-                            }
-                        }
-                        if (_validurl==1){
-                            System.out.println("perfil valido " + url);
-                        }else{
-                            System.out.println("perfil invalido " + url);
-                            response.sendRedirect(request.getContextPath() + "/faces/login.xhtml");
-                        }
-                            
+                        response.sendRedirect(request.getContextPath() + "/faces/login.xhtml");
                     }
+
+                }
                     //response.sendRedirect(request.getContextPath() + "/faces/login.xhtml");
-               // }
+                // }
             }
         }
 

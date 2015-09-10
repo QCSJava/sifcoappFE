@@ -6,7 +6,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Imprimir Factura - Consumidor Final</title>
+        <title>Imprimir Factura - Credito Fiscal</title>
 
     </h:head>
     <h:body>
@@ -17,7 +17,7 @@
                 }, 1000);
 
             </script>
-            <iframe  src="#{request.contextPath}/Pdf?#{request.queryString}"
+            <iframe  src="#{request.contextPath}/SalesPrint?#{request.queryString}"
                      width="0%" height="0%" frameborder="0"  />
             <p:poll interval="1" listener="#{salesBean.redirect}" />
 

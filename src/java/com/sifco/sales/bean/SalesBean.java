@@ -198,7 +198,6 @@ public class SalesBean implements Serializable {
     private String url;
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -277,7 +276,7 @@ public class SalesBean implements Serializable {
 //<editor-fold defaultstate="collapsed" desc="Autocmplete" > 
     public List<String> compSocioCode(String query) {
         List _result = null;
-        
+
         BusinesspartnerInTO in = new BusinesspartnerInTO();
         in.setCardcode(query);
         in.setCardtype("C");
@@ -326,7 +325,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocio(SelectEvent event) {
         List socio = new Vector();
@@ -567,10 +565,10 @@ public class SalesBean implements Serializable {
             if (newPrecio > 0 && newCantidad > 0 && newPrecio != null && newCantidad != null) {
                 Double aux = (newPrecio) * (newCantidad);
                 /*NumberFormat nf = NumberFormat.getInstance();
-                nf.setMaximumFractionDigits(2);
-                String st = nf.format(aux);
-                Double dou = Double.valueOf(st);
-                //newTotal = dou;*/
+                 nf.setMaximumFractionDigits(2);
+                 String st = nf.format(aux);
+                 Double dou = Double.valueOf(st);
+                 //newTotal = dou;*/
                 newTotal = aux;
             }
         } catch (Exception e) {
@@ -593,7 +591,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Boton Agregar al DATATABLE">
     public void accionAgregar(ActionEvent actionEvent) {
         try {
@@ -727,7 +724,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Calcular Impuestos y TOTAL">
     public void calcularTotalBill(ArrayList<SalesDetailTO> listaArt) {
         Double totalAux = 0.0;
@@ -745,7 +741,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="funciones para calculos de impuestos">
     public Double calcularGravadas(ArrayList<SalesDetailTO> listaArt) {
         Double sumTotal = 0.0;
@@ -845,7 +840,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Eliminar del dataTable" > 
     public void deleteDetalle() {
         try {
@@ -1035,7 +1029,7 @@ public class SalesBean implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="GUARDAR EN BASE">
     public void doSave() {
-        
+
         int line = 0;
 
         if (newBill == null) {
@@ -1301,7 +1295,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="COPY FROM REMISION">
     public void copyFromRemision() {
         //faceMessage("Copiar desde remision");
@@ -1455,7 +1448,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar un almacen y Forma de pago">
     public void stateChange1(ValueChangeEvent event) {
 
@@ -1562,7 +1554,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     private boolean validatePrice() {
         if (this.newPrecio < 0) {
@@ -1894,15 +1885,30 @@ public class SalesBean implements Serializable {
         //System.out.println(getApplicationUri()+"||----------------------------------------------------------------");
         setUrl(getApplicationUri());
         if (newBill.getDocentry() > 0) {
-            String foo = newBill.getDocentry() + "";
-            String bar = "xyz";
-            return "/testPrintView?faces-redirect=true"
-                    + "&foo=" + URLEncoder.encode(foo, "UTF-8")
-                    + "&bar=" + URLEncoder.encode(bar, "UTF-8");
+            if (newBill.getSeries() == 1 || newBill.getSeries() == 2) {
+                if (newBill.getSeries() == 1) {//consumidor final
+                    String foo = newBill.getDocentry() + "";
+                    String bar = "xyz";
+                    return "/testPrintView?faces-redirect=true"
+                            + "&foo=" + URLEncoder.encode(foo, "UTF-8")
+                            + "&bar=" + URLEncoder.encode(bar, "UTF-8");
+                }
+                if (newBill.getSeries() == 2) {//credito fiscal
+                    String foo = newBill.getDocentry() + "";
+                    String bar = "xyz";
+                    return "/testSalesView?faces-redirect=true"
+                            + "&foo=" + URLEncoder.encode(foo, "UTF-8")
+                            + "&bar=" + URLEncoder.encode(bar, "UTF-8");
+                }
+            } else {
+                faceMessage("No se puede imprimir este tipo de documento");
+                return "/view/sales/Sales.xhtml";
+            }
         } else {
             faceMessage("No se puede imprimir");
             return "/view/sales/Sales.xhtml";
         }
+        return null;
     }
 //</editor-fold>
 
@@ -1928,7 +1934,6 @@ public class SalesBean implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G & S" >
-
     public String getUrl() {
         return url;
     }
@@ -1936,7 +1941,7 @@ public class SalesBean implements Serializable {
     public void setUrl(String url) {
         this.url = url;
     }
-    
+
     public static CatalogEJBClient getCatalogEJB() {
         return CatalogEJB;
     }
@@ -2522,6 +2527,4 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold> 
-    
-    
 }//Cierre de clase

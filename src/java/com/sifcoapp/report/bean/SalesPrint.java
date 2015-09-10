@@ -21,7 +21,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class Pdf extends HttpServlet {
+/**
+ *
+ * @author Valentin
+ */
+public class SalesPrint extends HttpServlet {
 
     private static AdminEJBClient AdminEJBService;
     private static SalesEJBClient SalesEJBService;
@@ -49,8 +53,9 @@ public class Pdf extends HttpServlet {
 
             var = SalesEJBService.getSalesByKey(Integer.parseInt(request.getParameter("foo")));//quemado
             _R = AdminEJBService.findCatalogByKey(var.getPeymethod(), 8);
-            total = var.getDoctotal();//formatNumber(var.getDoctotal());
-            numberToletter = convertNumber.convertNumberToLetter(total);
+            total = var.getDoctotal() - var.getVatsum();//formatNumber(var.getDoctotal());
+            numberToletter = convertNumber.convertNumberToLetter(var.getDoctotal());
+            
 
         } catch (Exception ex) {
             Logger.getLogger(Pdf.class.getName()).log(Level.SEVERE, null, ex);
@@ -95,7 +100,7 @@ public class Pdf extends HttpServlet {
                     + "                                    \n"
                     + "                                </td>\n"
                     + "                                <td style=\"height: 25px; width: 25%\">\n"
-                    + "                                    " + var.getRef1() + "\n"
+                    + "                                    " + var.getRef1()+"\n"
                     + "                                </td>\n"
                     + "                                <td style=\"height: 25px\">\n"
                     + "                                    \n"
@@ -176,10 +181,10 @@ public class Pdf extends HttpServlet {
                             + "                                <td style=\"width: 40px\">" + var2.getQuantity() + "</td>\n"
                             + "                                <td style=\"width: 100px\">" + var2.getItemcode() + "</td>\n"
                             + "                                <td style=\"width: 270px\">" + des.toUpperCase() + "</td>\n"
-                            + "                                <td style=\"width: 60px\">$" + truncarDouble(var2.getPriceafvat()) + "</td>\n"
+                            + "                                <td style=\"width: 60px\">$" + truncarDouble(var2.getPrice()) + "</td>\n"
                             + "                                <td style=\"width: 50px\">" + "$0.00" + "</td>\n"
                             + "                                <td style=\"width: 50px\">" + "$0.00" + "</td>\n"
-                            + "                                <td style=\"width: 10px\">$" + truncarDouble(var2.getGtotal()) + "</td>\n"
+                            + "                                <td style=\"width: 10px\">$" + truncarDouble(var2.getLinetotal()) + "</td>\n"
                             + "\n"
                             + "                            </tr>\n");
 
@@ -222,7 +227,7 @@ public class Pdf extends HttpServlet {
                     + "                    <td   style=\"width: 100px\">\n"
                     + "                    </td>\n"
                     + "                    <td>\n"
-                    + "                        $0.00\n"
+                    + "                        $" + truncarDouble(var.getVatsum()) + "\n"
                     + "                    </td>\n"
                     + "                </tr>\n"
                     + "                <tr style=\"height: 15.8px\">\n"
@@ -246,7 +251,7 @@ public class Pdf extends HttpServlet {
                     + "                    <td  style=\"width: 100px\">\n"
                     + "                    </td>\n"
                     + "                    <td>\n"
-                    + "                        $" + truncarDouble(total) + "\n"
+                    + "                        $" + truncarDouble(var.getDoctotal()) + "\n"
                     + "                    </td>\n"
                     + "                </tr>\n"
                     + "            </table>\n"
@@ -307,9 +312,9 @@ public class Pdf extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
+
     private Double truncarDouble(Double doctotal) {
         return Math.floor(100 * doctotal) / 100;
     }
 
-}//cierre de clase
+}
