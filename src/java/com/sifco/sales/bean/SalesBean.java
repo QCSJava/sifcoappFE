@@ -1627,12 +1627,6 @@ public class SalesBean implements Serializable {
             faceMessage("Error en busqueda por PK");
         }
 
-        try {
-            //doSetCreditNote();
-        } catch (Exception e) {
-            faceMessage(e.getMessage() + " - " + e.getCause());
-        }
-
         listaBusqueda = new Vector();
         listaBusquedaTable = new ArrayList<>();
         selectBill = new SalesTO();

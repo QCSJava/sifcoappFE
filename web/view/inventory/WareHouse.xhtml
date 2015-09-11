@@ -20,11 +20,11 @@
                             <span class="ui-separator">
                                 <span class="ui-icon ui-icon-grip-dotted-vertical" />
                             </span>
-                                <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document" actionListener="#{warehouseBean.doNew}" update="growl" process="@this" >
+                            <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document" actionListener="#{warehouseBean.doNew}" update="growl" process="@this" >
                                 <p:ajax update="formAlm:tabView" resetValues="true" />
                             </p:commandButton>
 
-                                <p:commandButton tabindex="-1" title="Buscar" process="@this" icon="ui-icon-search" actionListener="#{warehouseBean.setToSearch}" >   
+                            <p:commandButton tabindex="-1" title="Buscar" process="@this" icon="ui-icon-search" actionListener="#{warehouseBean.setToSearch}" >   
                                 <p:ajax update="formAlm:tabView" resetValues="true" />
                             </p:commandButton>
 
@@ -74,31 +74,8 @@
                                             </p:selectOneMenu>
                                         </p:panelGrid>
 
-
-                                        <p:dialog closeOnEscape="true" id="dlgUser" header="Almacenes encontrados" widgetVar="dlgU" modal="true"  width="600">
-                                            <h:form id="dlgListUser">   
-                                                <p:dataTable resizableColumns="true" liveResize="true" id="dtUser" var="alm" value ="#{warehouseBean.listaBusquedaTable}" scrollable="true" scrollHeight="250"
-                                                             selection="#{warehouseBean.selectUser}" selectionMode="single" rowIndexVar="rowIndex" rowKey="#{alm.whscode}" emptyMessage="No se encontraron Almacenes">
-
-                                                    <p:ajax event="rowDblselect"  process="@this" listener="#{warehouseBean.selectDialog}"/>
-
-                                                    <p:column headerText="#" style="width: 2%">
-                                                        <h:outputText value="#{rowIndex + 1}" />
-                                                    </p:column>
-
-                                                    <p:column filterBy="#{warehouseBeand}" style="width: 6%" headerText="Id" filterMatchMode="contains">
-                                                        <h:outputText value="#{alm.whscode}" />
-                                                    </p:column>
-
-                                                    <p:column filterBy="#{alm.whsname}" style="width: 6%" headerText="Nombre" filterMatchMode="contains">
-                                                        <h:outputText value="#{alm.whsname}" />
-                                                    </p:column>
-                                                </p:dataTable>
-                                            </h:form>  
-                                        </p:dialog>
-
                                     </p:tab>
-                                    
+
                                     <p:tab title="Finanzas">
 
                                         <p:panel  style="overflow-y: auto;height: 400px;">    
@@ -127,7 +104,7 @@
                                                     <p:column style="font-weight: bold;"><h:outputText value="#{msg['message.SaleCostAc']}"/></p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv2" forceSelection="true" minQueryLength="2" value="#{warehouseBean.salecostac}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="salecostac">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="salecostac">
 
                                                         </p:autoComplete>
                                                     </p:column>
@@ -136,7 +113,7 @@
                                                     <p:column style="font-weight: bold;"><h:outputText value="#{msg['message.TransferAc']}"/></p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv3" forceSelection="true" minQueryLength="2" value="#{warehouseBean.transferac}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="transferac">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="transferac">
 
                                                         </p:autoComplete>
                                                     </p:column>
@@ -145,7 +122,7 @@
                                                     <p:column style="font-weight: bold;"><h:outputText value="#{msg['message.RevenuesAc']}"/></p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv4" forceSelection="true" minQueryLength="2" value="#{warehouseBean.revenuesac}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="revenuesac">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="revenuesac">
 
                                                         </p:autoComplete>
                                                     </p:column>
@@ -154,7 +131,7 @@
                                                     <p:column style="font-weight: bold;"><h:outputText value="#{msg['message.VarianceAc']}"/></p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv5" forceSelection="true" minQueryLength="2" value="#{warehouseBean.varianceac}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="varianceac">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="varianceac">
 
                                                         </p:autoComplete>
                                                     </p:column>
@@ -165,7 +142,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv6" forceSelection="true" minQueryLength="2" value="#{warehouseBean.decreasac}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="decreasac">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="decreasac">
 
                                                         </p:autoComplete>
                                                     </p:column>
@@ -185,7 +162,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv8" forceSelection="true" minQueryLength="2" value="#{warehouseBean.returnac}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="returnac">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="returnac">
 
                                                         </p:autoComplete>
                                                     </p:column>
@@ -196,7 +173,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv9" forceSelection="true" minQueryLength="2" value="#{warehouseBean.expensesac}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="expensesac">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="expensesac">
 
                                                         </p:autoComplete>
                                                     </p:column>
@@ -207,7 +184,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv10" forceSelection="true" minQueryLength="2" value="#{warehouseBean.frrevenuac}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="frrevenuac">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="frrevenuac">
 
                                                         </p:autoComplete>
                                                     </p:column>
@@ -218,7 +195,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv11" forceSelection="true" minQueryLength="2" value="#{warehouseBean.frexpensac}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="frexpensac">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="frexpensac">
 
                                                         </p:autoComplete>
                                                     </p:column>
@@ -229,7 +206,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv12" forceSelection="true" minQueryLength="2" value="#{warehouseBean.pricedifac}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="pricedifac">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="pricedifac">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -239,7 +216,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv13" forceSelection="true" minQueryLength="2" value="#{warehouseBean.exchangeac}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="exchangeac">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="exchangeac">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -289,7 +266,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv18" forceSelection="true" minQueryLength="2" value="#{warehouseBean.shpdgdsact}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="shpdgdsact">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="shpdgdsact">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -299,7 +276,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv19" forceSelection="true" minQueryLength="2" value="#{warehouseBean.vatrevact}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="vatrevact">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="vatrevact">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -309,7 +286,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv20" forceSelection="true" minQueryLength="2" value="#{warehouseBean.decresglac}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="decresglac">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="decresglac">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -319,7 +296,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv21" forceSelection="true" minQueryLength="2" value="#{warehouseBean.incresglac}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="incresglac">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="incresglac">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -339,7 +316,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv23" forceSelection="true" minQueryLength="2" value="#{warehouseBean.stkoffsact}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="stkoffsact">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="stkoffsact">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -369,7 +346,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv26" forceSelection="true" minQueryLength="2" value="#{warehouseBean.costrvlact}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="costrvlact">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="costrvlact">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -379,7 +356,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv27" forceSelection="true" minQueryLength="2" value="#{warehouseBean.cstoffsact}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="cstoffsact">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="cstoffsact">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -389,7 +366,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv28" forceSelection="true" minQueryLength="2" value="#{warehouseBean.expclract}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="expclract">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="expclract">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -399,7 +376,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv29" forceSelection="true" minQueryLength="2" value="#{warehouseBean.expofstact}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="expofstact">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="expofstact">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -409,7 +386,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv30" forceSelection="true" minQueryLength="2" value="#{warehouseBean.arcmact}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="arcmact">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="arcmact">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -419,7 +396,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv31" forceSelection="true" minQueryLength="2" value="#{warehouseBean.apcmfrnact}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="apcmfrnact">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="apcmfrnact">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -439,7 +416,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv33" forceSelection="true" minQueryLength="2" value="#{warehouseBean.apcmact}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="apcmact">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="apcmact">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -449,7 +426,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv34" forceSelection="true" minQueryLength="2" value="#{warehouseBean.apcmfrnact}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="apcmfrnact">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="apcmfrnact">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -459,7 +436,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv35" forceSelection="true" minQueryLength="2" value="#{warehouseBean.revretact}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="revretact">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="revretact">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -469,7 +446,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv36" forceSelection="true" minQueryLength="2" value="#{warehouseBean.negstckact}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="negstckact">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="negstckact">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -479,7 +456,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv37" forceSelection="true" minQueryLength="2" value="#{warehouseBean.stkintnact}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="stkintnact">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="stkintnact">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -489,7 +466,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv38" forceSelection="true" minQueryLength="2" value="#{warehouseBean.purbalact}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="purbalact">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="purbalact">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -499,7 +476,7 @@
                                                     </p:column>
                                                     <p:column style="font-weight: bold;">
                                                         <p:autoComplete scrollHeight="250"  id="adv39" forceSelection="true" minQueryLength="2" value="#{warehouseBean.whicenact}"
-                                                                         completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="whicenact">
+                                                                        completeMethod="#{warehouseBean.completeText}" effect="fade" size="#{msg['message.size']}" label="whicenact">
                                                         </p:autoComplete>
                                                     </p:column>
                                                 </p:row>
@@ -516,7 +493,7 @@
 
                                             </p:panelGrid>
                                         </p:panel>
-                                        
+
                                     </p:tab>
                                 </p:tabView>
                             </div>
@@ -534,7 +511,31 @@
                         </div>
 
                     </div>
-                    
+
+                </h:form>
+
+                <h:form id="frmSearch">
+                    <p:dialog closeOnEscape="true" id="dlgUser" header="Almacenes encontrados" widgetVar="dlgU" modal="true"  width="600">
+
+                        <p:dataTable resizableColumns="true" liveResize="true" id="dtUser" var="alm" value ="#{warehouseBean.listaBusquedaTable}" scrollable="true" scrollHeight="250"
+                                     selection="#{warehouseBean.selectUser}" selectionMode="single" rowIndexVar="rowIndex" rowKey="#{alm.whscode}" emptyMessage="No se encontraron Almacenes">
+
+                            <p:ajax event="rowDblselect"  process="@this" listener="#{warehouseBean.selectDialog}"/>
+
+                            <p:column headerText="#" style="width: 2%">
+                                <h:outputText value="#{rowIndex + 1}" />
+                            </p:column>
+
+                            <p:column filterBy="#{warehouseBeand}" style="width: 6%" headerText="Id" filterMatchMode="contains">
+                                <h:outputText value="#{alm.whscode}" />
+                            </p:column>
+
+                            <p:column filterBy="#{alm.whsname}" style="width: 6%" headerText="Nombre" filterMatchMode="contains">
+                                <h:outputText value="#{alm.whsname}" />
+                            </p:column>
+                        </p:dataTable>
+
+                    </p:dialog>
                 </h:form>
 
             </ui:define>

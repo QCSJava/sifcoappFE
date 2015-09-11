@@ -869,7 +869,7 @@ public class WarehouseBean implements Serializable {
 
             BranchTO parameters = new BranchTO();
 
-            parameters.setWhscode(whscode.replaceAll("\\s",""));
+            parameters.setWhscode(whscode.replaceAll("\\s", ""));
             parameters.setWhsname(whsname);
             parameters.setCity(city);
             parameters.setLocation(location);
@@ -1205,6 +1205,7 @@ public class WarehouseBean implements Serializable {
                 }
                 //this.listaTable.add(var);
             }
+            RequestContext.getCurrentInstance().update("frmSearch");
             showHideDialog("dlgU", 1);
         } else {
             try {
@@ -1220,34 +1221,6 @@ public class WarehouseBean implements Serializable {
                 faceMessage("No se Encontro Almacen");
             }
         }
-//        if (nickname.isEmpty()) {
-//            try {
-//                this.setListaBusqueda(SecurityEJBService.getUser());
-//            } catch (Exception e) {
-//                faceMessage("Error al realizar busqueda");
-//            }
-//
-//            faceMessage("Seleccione un elemento");
-//
-//            for (Object user : listaBusqueda) {
-//                UserTO var = (UserTO) user;
-//                listaBusquedaTable.add(var);
-//            }
-//            showHideDialog("dlgU", 1);
-//        } else {
-//            try {
-//                UserTO var2 = SecurityEJBService.getUserByNickname(nickname);
-//                if (var2.getNickname().isEmpty()) {
-//                    faceMessage("No se encontro usuario");
-//                } else {
-//                    llenarPantallaUser(var2);
-//                    estateActualizar();
-//                }
-//            } catch (Exception ex) {
-//                Logger.getLogger(UserBean.class.getName()).log(Level.SEVERE, null, ex);
-//                faceMessage("No se encontro usuario");
-//            }
-//        }
     }
 
     public void faceMessage(String var) {
@@ -1264,18 +1237,7 @@ public class WarehouseBean implements Serializable {
         } catch (Exception ex) {
 
         }
-//        UserTO var = (UserTO) selectUser;
-//
-//        try {
-//            newUser = SecurityEJBService.getUserByNickname(var.getNickname());
-//            llenarPantallaUser(newUser);
-//            estateActualizar();
-//        } catch (Exception ex) {
-//            Logger.getLogger(UserBean.class.getName()).log(Level.SEVERE, null, ex);
-//            faceMessage("Error en busqueda por Nickname");
-//        }
-
-        listaBusqueda = new Vector();
+        listaBusqueda.clear();
         RequestContext.getCurrentInstance().update("formAlm");
 
     }
