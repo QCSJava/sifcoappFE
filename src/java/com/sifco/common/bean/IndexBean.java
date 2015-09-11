@@ -6,6 +6,8 @@
 package com.sifco.common.bean;
 
 import com.sifco.login.bean.Util;
+import com.sifcoapp.client.AdminEJBClient;
+import com.sifcoapp.objects.admin.to.EnterpriseTO;
 import java.io.Serializable;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -24,6 +26,8 @@ public class IndexBean implements Serializable {
     HttpSession session = Util.getSession();
     private int band = 0;
     private boolean stop = false;
+    
+    private static AdminEJBClient AdminEJBService = null;
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G & S">
@@ -43,6 +47,18 @@ public class IndexBean implements Serializable {
         this.stop = stop;
     }
 
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="NAME CORP">
+    public String nameCorp(){
+        try {
+            AdminEJBService = new AdminEJBClient();
+            EnterpriseTO resp = AdminEJBService.getEnterpriseInfo();
+            return resp.getCrintHeadr();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Funciones varias">
