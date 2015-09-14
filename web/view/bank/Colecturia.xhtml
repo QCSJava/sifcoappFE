@@ -145,7 +145,7 @@
                                     </p:column>
 
                                     <p:column headerText="Saldo Actual." style="width: 8%; font-size: #{commonBean.sizeFont1}" >
-                                        <h:outputText value="$ #{det.linenum == colecturiaBean.lineNum? colecturiaBean.totalFacValorAct : det.value1}" style="float: right"/>
+                                        <h:outputText value="$ #{det.docsubtype == 'N'? '' : det.linenum == colecturiaBean.lineNum? colecturiaBean.totalFacValorAct : det.value1}" style="float: right"/>
                                     </p:column>
 
                                     <p:column headerText="Valor"  style="width: 8%; font-size: #{commonBean.sizeFont1}">
@@ -156,7 +156,7 @@
                                     </p:column>
 
                                     <p:column headerText="Saldo Nuevo"  style="width: 8%; font-size: #{commonBean.sizeFont1}">
-                                        <h:outputText style="float: right" value="$ #{det.value3}" />
+                                        <h:outputText style="float: right" value="$ #{det.docsubtype == 'N'? '' : det.value3}" />
                                     </p:column>
 
                                     <p:columnGroup type="footer" id="foot">

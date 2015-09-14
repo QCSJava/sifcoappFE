@@ -70,7 +70,7 @@ public class ConceptBean implements Serializable {
     @Digits(integer = 14, fraction = 2, message = "Impuesto inadecuada")
     private Double vatSum;          //impuesto total
 
-    private String docSubType;      //subtipo de documento
+    private String docSubType = "Y";      //subtipo de documento
     private String valor1;          //valor 1
     private String valor2;          //valor 2
 

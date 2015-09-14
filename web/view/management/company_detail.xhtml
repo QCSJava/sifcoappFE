@@ -51,7 +51,7 @@
                                         <p:inputText id="manager" value="#{sociedad.manager}" />
 
                                         <p:outputLabel value="NRC :" />
-                                        <p:inputMask id="taxIdNum" value="#{sociedad.taxIdNum}" mask="999-99"/>
+                                        <p:inputText id="taxIdNum" value="#{sociedad.taxIdNum}" />
 
                                         <!--p:commandButton value="Reset" type="reset" /-->
                                         <p:commandButton value="Guardar" update="msgs" actionListener="#{sociedad.addAction()}" styleClass="ui-priority-primary"/>

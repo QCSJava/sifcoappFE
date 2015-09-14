@@ -145,19 +145,27 @@ public class ColectPrint extends HttpServlet {
 
             for (int i = 0; i < tam; i++) {
                 ColecturiaDetailTO var2 = (ColecturiaDetailTO) det.get(i);
+                String val1, val3;
+                if (var2.getDocsubtype().equals("N")) {
+                    val1="";
+                    val3="";
+                }else{
+                    val1=var2.getValue1().toUpperCase();
+                    val3=var2.getValue3().toUpperCase();
+                }
                 out.println(
                         "                            <tr style=\"height: 18px\">\n"
                         + "                                <td style=\"width: 36%\">\n"
                         + "                                    " + var2.getDscription().toUpperCase() + "\n"
                         + "                                </td>\n"
                         + "                                <td style=\"width: 10%; text-align: right\">\n"
-                        + "                                    " + var2.getValue1().toUpperCase() + "\n"
+                        + "                                    " + val1 + "\n"
                         + "                                </td>\n"
                         + "                                <td style=\"width: 10%; text-align: right\">\n"
                         + "                                    " + var2.getPaidsum() + "\n"
                         + "                                </td>\n"
                         + "                                <td style=\"width: 10%; text-align: right\">\n"
-                        + "                                    " + var2.getValue3().toUpperCase() + "\n"
+                        + "                                    " + val3 + "\n"
                         + "                                </td>\n"
                         + "                            </tr>\n");
             }

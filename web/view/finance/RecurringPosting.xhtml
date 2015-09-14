@@ -49,7 +49,7 @@
                                 <p:inputText id="rcurcode" value="#{RecurringPosting.rcurcode}" maxlength="8" readonly="#{RecurringPosting.disableX}"></p:inputText>
                             </div>
                             <div class="ui-grid-col-2"><p:inputText id="instance" value="#{RecurringPosting.instance}" readonly="true"></p:inputText></div>
-                            <div class="ui-grid-col-5"><p:inputText  style="width: 105%" id="rcurdesc" value="#{RecurringPosting.rcurdesc}"></p:inputText></div>
+                            <div class="ui-grid-col-5"><p:inputText  style="width: 105%" id="rcurdesc" value="#{RecurringPosting.memo}"></p:inputText></div>
 
                         </div>
                         <p:spacer height="7" width="0"></p:spacer>
@@ -70,7 +70,7 @@
                                 <p:inputText value="#{RecurringPosting.ref3}" id="ref3" ></p:inputText>
                             </div>
                             <div class="ui-grid-col-3">
-                                <p:inputTextarea id="coment" rows="3" cols="40" value="#{RecurringPosting.memo}" />
+                                <p:inputTextarea id="coment" rows="3" cols="40" value="#{RecurringPosting.rcurdesc}" />
                             </div>
                             <div class="ui-grid-col-2">
 
@@ -100,8 +100,8 @@
 
                         <div class="ui-grid-row" >  
                             <div class="ui-grid-col-1"></div>
-                            <div class="ui-grid-col-3"><h:outputText value="Cuenta de mayor/Código SN"/></div>
-                            <div class="ui-grid-col-4"><h:outputText value="Cuenta de mayor/Nombre SN" /></div>
+                            <div class="ui-grid-col-3"><h:outputText value="Codigo Cuenta"/></div>
+                            <div class="ui-grid-col-4"><h:outputText value="Nombre Cuenta" /></div>
                             <div class="ui-grid-col-2"><h:outputText value="Debe" /></div>
                             <div class="ui-grid-col-2"><h:outputText value="Haber" /> </div>
                         </div>
@@ -152,8 +152,8 @@
                                     <p:columnGroup type="header">
                                         <p:row>
                                             <p:column headerText="#" style="width: 5%" />
-                                            <p:column headerText="Cuenta de mayor/Código SN" style="width: 20%" />
-                                            <p:column headerText="Cuenta de mayor/Nombre SN" style="width: 35%" />
+                                            <p:column headerText="Codigo Cuenta" style="width: 20%" />
+                                            <p:column headerText="Nombre Cuenta" style="width: 35%" />
                                             <p:column headerText="Debe" style="width: 10%" />
                                             <p:column headerText="Haber" style="width: 10%"/>
                                         </p:row>

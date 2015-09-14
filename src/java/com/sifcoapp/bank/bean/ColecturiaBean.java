@@ -372,7 +372,7 @@ public class ColecturiaBean implements Serializable {
                     newCol.setTaxstatus(concept.getTaxstatus());
                     newCol.setAditional_account(concept.getAditional_account());
                     newCol.setFacturas(concept.getFacturas());
-
+                    newCol.setValue1("0.00");
                     newCol.setValue3("0.00");
                     this.lstTable.add(newCol);
                 } //else {
