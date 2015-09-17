@@ -30,7 +30,7 @@ import org.primefaces.model.TreeNode;
 
 @ManagedBean(name = "chartAccountsBean")
 @SessionScoped
-public class ChartAccountsBean implements Serializable{
+public class ChartAccountsBean implements Serializable {
 
     public ChartAccountsBean() {
     }
@@ -62,7 +62,6 @@ public class ChartAccountsBean implements Serializable{
     //__________________________________________________________________________
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="G & S">
     public TreeNode getRootAux() {
         return rootAux;
@@ -137,7 +136,6 @@ public class ChartAccountsBean implements Serializable{
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Init de la ventana">
     @PostConstruct
     public void init() {
@@ -153,18 +151,15 @@ public class ChartAccountsBean implements Serializable{
         //llenar arbol 2
         root2 = new DefaultTreeNode(accNode, null);
         rootAux = new DefaultTreeNode(accNode, null);
-        
+
         try {
             LLenarRoot2();
             LLenarRootAux1();
         } catch (Exception e) {
             facesMessage("Error");
         }
-        
-        
-        //cloneRoot2_to_aux();
 
-        
+        //cloneRoot2_to_aux();
     }
 //</editor-fold>
 
@@ -207,7 +202,6 @@ public class ChartAccountsBean implements Serializable{
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Clonar de root2 a rootAux">
     public void cloneAux_to_Root2() {
         AccountTO accNode = null;
@@ -231,7 +225,6 @@ public class ChartAccountsBean implements Serializable{
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Root 2">
     public void LLenarRoot2() {
         try {
@@ -244,7 +237,7 @@ public class ChartAccountsBean implements Serializable{
         this.root2 = createDocuments();
         root2.setExpanded(true);
     }
-    
+
     private void LLenarRootAux1() {
         try {
             this.setTreeAcc(accEJBService.getTreeAccount());
@@ -258,7 +251,6 @@ public class ChartAccountsBean implements Serializable{
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Crear Arbol Cuentas">
     public TreeNode createDocuments() {
         AccountTO accNode = null;
@@ -311,7 +303,7 @@ public class ChartAccountsBean implements Serializable{
             newNode.setAcctcode(this.AccCode);
             newNode.setPostable(this.opcion);
             newNode.setFinanse("Y");
-            newNode.setObjtype(4+"");
+            newNode.setObjtype(4 + "");
 
             TreeNode treeNode = new DefaultTreeNode(newNode, root1);
             treeNode.setExpanded(true);
@@ -335,7 +327,6 @@ public class ChartAccountsBean implements Serializable{
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="deleteNode">
     public void deleteNode() {
         selectedNode2.getChildren().clear();
@@ -343,6 +334,7 @@ public class ChartAccountsBean implements Serializable{
         selectedNode2.setParent(null);
 
         selectedNode2 = null;
+
     }
 
     public void deleteNodeFromRoot(TreeNode node) {
@@ -370,7 +362,7 @@ public class ChartAccountsBean implements Serializable{
             this.AccCode = null;
             this.AccName = null;
             this.opcion = null;
-            
+
             cloneRoot2_to_aux();
             //try {
             //    rootAux = (TreeNode) BeanUtils.cloneBean(root2);
@@ -383,7 +375,7 @@ public class ChartAccountsBean implements Serializable{
         } else {
             facesMessage("Esta cuenta no puede ser agregada en esta Posicion");
 
-            if (true){//ant.getFinanse() != null && ant.getFinanse().equals("Y")) {
+            if (true) {//ant.getFinanse() != null && ant.getFinanse().equals("Y")) {
                 setAccCode(ant.getAcctcode());
                 setAccName(ant.getAcctname());
                 setOpcion(ant.getPostable());
@@ -396,7 +388,7 @@ public class ChartAccountsBean implements Serializable{
                 this.opcion = null;
                 this.root1.getChildren().clear();
             }
-            
+
             cloneAux_to_Root2();
             //root2 = rootAux;
             deleteNodeFromRoot(dr);
@@ -455,8 +447,9 @@ public class ChartAccountsBean implements Serializable{
             res = accEJBService.saveTreeAccount(lstAcc);
             if (res.getCodigoError() == 0) {
                 facesMessage(res.getMensaje());
-            }else
+            } else {
                 facesMessage(res.getMensaje());
+            }
         } catch (Exception e) {
             facesMessage(e.getMessage() + " " + e.getCause());
         }
@@ -486,7 +479,6 @@ public class ChartAccountsBean implements Serializable{
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones de Validaciones">
     public boolean validateDestino(AccountTO des) {
         if (!des.getPostable().equals("N")) {
@@ -567,7 +559,6 @@ public class ChartAccountsBean implements Serializable{
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     public void reload() throws IOException {
         // ...
@@ -580,7 +571,5 @@ public class ChartAccountsBean implements Serializable{
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(var)); //To change body of generated methods, choose Tools | Templates.
     }
 //</editor-fold>
-
-    
 
 }//Cierre de Clase

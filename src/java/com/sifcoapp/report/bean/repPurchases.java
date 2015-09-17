@@ -236,7 +236,7 @@ public class repPurchases implements Serializable {
         reportParameters.put("PYEAR", cal1.get(Calendar.YEAR));
         reportParameters.put("reportName", _reportTitle);
         if (_type == 0) {
-            getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "FILE"));
+            getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "PDF"));
         }
         if (_type == 1) {
             getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "FILE"));

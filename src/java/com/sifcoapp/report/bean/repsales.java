@@ -119,7 +119,7 @@ public class repsales implements Serializable {
         if (this.ftype == 5) {
             _reportname = "/sales/SalesBySeller";
             _whereclausule = " h.docentry=d.docentry and docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2} and h.usersign=u.usersign";
-            _whereclausuleSR = "h.docentry=d.docentry and docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}";
+            _whereclausuleSR = " h.docentry=d.docentry and docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}";
             _reportTitle = "Ventas por Vendedor - Detallado";
             if (this.getFcode() != null && this.getFcode().length() > 0) {
                 _whereclausule += " and docnum=" + this.getFcode();
