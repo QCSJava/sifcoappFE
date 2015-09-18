@@ -74,19 +74,17 @@
                                     <div class="ui-grid-col-1"><f:selectItem itemLabel="Existencias y Costos" itemValue="1" /></div>
                                     <div class="ui-grid-col-1"><f:selectItem itemLabel="Kardex" itemValue="2" /></div>
                                     <div class="ui-grid-col-1"><f:selectItem itemLabel="Inventario F&iacute;sico" itemValue="3" /></div>
-                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Impresion C&oacute;digo Barra" itemValue="4" /></div>
                                     <div class="ui-grid-col-1"><f:selectItem itemLabel="Productos por Categor&iacute;a" itemValue="5" /></div>
                                     <div class="ui-grid-col-1"><f:selectItem itemLabel="Productos por Categor&iacute;a y ubicaci&oacute;n" itemValue="6" /></div>
-                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Productos por Marca" itemValue="7" /></div>
-                                </p:selectOneRadio></div>
+                                 </p:selectOneRadio></div>
 
                         </div>
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2">
-                                <p:commandButton  id="btnPrint" action="#{rinventory.doPrint()}" value="Imprimir" ajax="false"  />
+                                <p:commandButton process="@this isActive" id="btnPrint" action="#{rinventory.doPrint()}" value="Imprimir" ajax="false"  />
                             </div>
                             <div class="ui-grid-col-2">
-                                <p:commandButton  id="btnPrint2" action="#{rinventory.printFormat()}" value="Descargar" ajax="false"  />
+                                <p:commandButton process="@this isActive" id="btnPrint2" action="#{rinventory.printFormat()}" value="Descargar" ajax="false"  />
                             </div>
                         </div>
                     </div>

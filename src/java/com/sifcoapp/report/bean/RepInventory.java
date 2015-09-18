@@ -42,17 +42,18 @@ public class RepInventory implements Serializable {
     @Digits(integer = 14, fraction = 2, message = "Cantidad inadecuada")
     private double stock;
     private static AdminEJBClient AdminEJBService;
-    
+
     @PostConstruct
     public void initForm() {
         this.setFtype(1);
-        
+
     }
     /*
      * despliega pdf a pantalla
      * Rutilio
      * Abril 2015
      */
+
     public void doPrint() throws Exception {
         this.print(0);
     }
@@ -67,9 +68,9 @@ public class RepInventory implements Serializable {
         if (AdminEJBService == null) {
             AdminEJBService = new AdminEJBClient();
         }
-         EnterpriseTO resp=null;
+        EnterpriseTO resp = null;
         try {
-            resp=AdminEJBService.getEnterpriseInfo();
+            resp = AdminEJBService.getEnterpriseInfo();
         } catch (Exception ex) {
             Logger.getLogger(repPurchases.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -79,58 +80,58 @@ public class RepInventory implements Serializable {
 
             _whereclausule = " 1=1";
             if (this.getItemgroup() != null && !this.getItemgroup().equals("-1") && this.getItemgroup().length() > 0) {
-                _whereclausule += " and itmsgrpcod='" + this.getItemgroup()+"'";
-                
+                _whereclausule += " and itmsgrpcod='" + this.getItemgroup() + "'";
+
                 CatalogTO cat1 = new CatalogTO();
                 cat1 = AdminEJBService.findCatalogByKey(this.getItemgroup(), 3);
-                
-                _reportFilters="Grupo: " + cat1.getCatvalue();
+
+                _reportFilters = "Grupo: " + cat1.getCatvalue();
                 reportParameters.put("PFILTERS", _reportFilters);
-                               
+
             }
-            if (this.getItemtype()  != null && !this.getItemtype().equals("-1") && this.getItemtype().length() > 0) {
-                _whereclausule += " and itemtype='" + this.getItemtype()+"'";
-                
+            if (this.getItemtype() != null && !this.getItemtype().equals("-1") && this.getItemtype().length() > 0) {
+                _whereclausule += " and itemtype='" + this.getItemtype() + "'";
+
                 CatalogTO cat1 = new CatalogTO();
                 cat1 = AdminEJBService.findCatalogByKey(this.getItemtype(), 2);
-                
-                _reportFilters+="\nClase: " + cat1.getCatvalue();
+
+                _reportFilters += "\nClase: " + cat1.getCatvalue();
                 reportParameters.put("PFILTERS", _reportFilters);
-                               
+
             }
-            
-            if (this.getStock()>0) {
+
+            if (this.getStock() > 0) {
                 _whereclausule += " and onhand>=" + this.getStock();
-                               
-                _reportFilters+="\nPor existencia >=" + this.getStock();
+
+                _reportFilters += "\nPor existencia >=" + this.getStock();
                 reportParameters.put("PFILTERS", _reportFilters);
-                               
+
             }
-           
+
         } else if (this.ftype == 2) {
             _reportname = "/inventory/InvPhysical";
             _reportTitle = "Inventario Físico";
 
             _whereclausule = " art.itemcode=psl.itemcode and psl.pricelist=1";
             if (this.getItemgroup() != null && !this.getItemgroup().equals("-1") && this.getItemgroup().length() > 0) {
-                _whereclausule += " and itmsgrpcod='" + this.getItemgroup()+"'";
-                
+                _whereclausule += " and itmsgrpcod='" + this.getItemgroup() + "'";
+
                 CatalogTO cat1 = new CatalogTO();
                 cat1 = AdminEJBService.findCatalogByKey(this.getItemgroup(), 3);
-                
-                _reportFilters="Grupo: " + cat1.getCatvalue();
+
+                _reportFilters = "Grupo: " + cat1.getCatvalue();
                 reportParameters.put("PFILTERS", _reportFilters);
-                               
+
             }
-             if (this.getItemtype()  != null && !this.getItemtype().equals("-1") && this.getItemtype().length() > 0) {
-                _whereclausule += " and itemtype='" + this.getItemtype()+"'";
-                
+            if (this.getItemtype() != null && !this.getItemtype().equals("-1") && this.getItemtype().length() > 0) {
+                _whereclausule += " and itemtype='" + this.getItemtype() + "'";
+
                 CatalogTO cat1 = new CatalogTO();
                 cat1 = AdminEJBService.findCatalogByKey(this.getItemtype(), 2);
-                
-                _reportFilters+="\nClase: " + cat1.getCatvalue();
+
+                _reportFilters += "\nClase: " + cat1.getCatvalue();
                 reportParameters.put("PFILTERS", _reportFilters);
-                               
+
             }
         } else if (this.ftype == 3) {
             _reportname = "/inventory/InvPhysical";
@@ -138,49 +139,49 @@ public class RepInventory implements Serializable {
 
             _whereclausule = " art.itemcode=psl.itemcode and psl.pricelist=1";
             if (this.getItemgroup() != null && !this.getItemgroup().equals("-1") && this.getItemgroup().length() > 0) {
-                _whereclausule += " and itmsgrpcod='" + this.getItemgroup()+"'";
-                
+                _whereclausule += " and itmsgrpcod='" + this.getItemgroup() + "'";
+
                 CatalogTO cat1 = new CatalogTO();
                 cat1 = AdminEJBService.findCatalogByKey(this.getItemgroup(), 3);
-                
-                _reportFilters="Grupo: " + cat1.getCatvalue();
+
+                _reportFilters = "Grupo: " + cat1.getCatvalue();
                 reportParameters.put("PFILTERS", _reportFilters);
-                               
+
             }
-             if (this.getItemtype()  != null && !this.getItemtype().equals("-1") && this.getItemtype().length() > 0) {
-                _whereclausule += " and itemtype='" + this.getItemtype()+"'";
-                
+            if (this.getItemtype() != null && !this.getItemtype().equals("-1") && this.getItemtype().length() > 0) {
+                _whereclausule += " and itemtype='" + this.getItemtype() + "'";
+
                 CatalogTO cat1 = new CatalogTO();
                 cat1 = AdminEJBService.findCatalogByKey(this.getItemtype(), 2);
-                
-                _reportFilters+="\nClase: " + cat1.getCatvalue();
+
+                _reportFilters += "\nClase: " + cat1.getCatvalue();
                 reportParameters.put("PFILTERS", _reportFilters);
-                               
+
             }
         } else if (this.ftype == 4) {
-           _reportname = "/inventory/InvBarCode";
+            _reportname = "/inventory/InvBarCode";
             _reportTitle = "Barcode";
 
             _whereclausule = " art.itemcode=psl.itemcode and psl.pricelist=1";
             if (this.getItemgroup() != null && !this.getItemgroup().equals("-1") && this.getItemgroup().length() > 0) {
-                _whereclausule += " and itmsgrpcod='" + this.getItemgroup()+"'";
-                
+                _whereclausule += " and itmsgrpcod='" + this.getItemgroup() + "'";
+
                 CatalogTO cat1 = new CatalogTO();
                 cat1 = AdminEJBService.findCatalogByKey(this.getItemgroup(), 3);
-                
-                _reportFilters="Grupo: " + cat1.getCatvalue();
+
+                _reportFilters = "Grupo: " + cat1.getCatvalue();
                 reportParameters.put("PFILTERS", _reportFilters);
-                               
+
             }
-             if (this.getItemtype()  != null && !this.getItemtype().equals("-1") && this.getItemtype().length() > 0) {
-                _whereclausule += " and itemtype='" + this.getItemtype()+"'";
-                
+            if (this.getItemtype() != null && !this.getItemtype().equals("-1") && this.getItemtype().length() > 0) {
+                _whereclausule += " and itemtype='" + this.getItemtype() + "'";
+
                 CatalogTO cat1 = new CatalogTO();
                 cat1 = AdminEJBService.findCatalogByKey(this.getItemtype(), 2);
-                
-                _reportFilters+="\nClase: " + cat1.getCatvalue();
+
+                _reportFilters += "\nClase: " + cat1.getCatvalue();
                 reportParameters.put("PFILTERS", _reportFilters);
-                               
+
             }
         }
         if (this.ftype == 5) {
@@ -208,7 +209,7 @@ public class RepInventory implements Serializable {
             }
         }
 
-        reportParameters.put("corpName",resp.getCrintHeadr());
+        reportParameters.put("corpName", resp.getCrintHeadr());
         reportParameters.put("pdocdate", this.getFdatefrom());
         reportParameters.put("PDOCDATE2", this.getFdateto());
         reportParameters.put("PWHERE", _whereclausule);
@@ -226,7 +227,7 @@ public class RepInventory implements Serializable {
         System.out.println(_reportname);
         System.out.println(_reportTitle);
         System.out.println(resp.getCrintHeadr());
-        
+
         getBean().setParameters(reportParameters);
         getBean().setReportName(_reportname);
         getBean().execute();
