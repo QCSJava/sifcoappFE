@@ -60,9 +60,20 @@ public class ChartAccountsBean implements Serializable {
     private int index;
     private boolean validCode = true;
     //__________________________________________________________________________
+    private int cont;
 
 //</editor-fold>
 //<editor-fold defaultstate="collapsed" desc="G & S">
+
+    public int getCont() {
+        return cont;
+    }
+
+    public void setCont(int cont) {
+        this.cont = cont;
+    }
+    
+    
     public TreeNode getRootAux() {
         return rootAux;
     }
@@ -423,18 +434,19 @@ public class ChartAccountsBean implements Serializable {
         AccDetLst = root2.getChildren();
 
         for (Object node : AccDetLst) {
-            int cont = 1;
+            //int cont = 1;
+            this.setCont(1);
             int nivel = 1;
             TreeNode acc = (TreeNode) node;
             AccountTO padre = (AccountTO) acc.getData();
             if (acc.getChildCount() > 0) {
-                doSaveAux(padre, acc.getChildren(), lstAcc, cont, nivel + 1);
+                doSaveAux(padre, acc.getChildren(), lstAcc, nivel + 1);
             }
 
             AccountTO newAcc = (AccountTO) acc.getData();
             newAcc.setFinanse(null);
             newAcc.setFathernum(null);
-            newAcc.setGrpline(cont);
+            newAcc.setGrpline(getCont());
             lstAcc.add(newAcc);
         }
 
@@ -455,23 +467,24 @@ public class ChartAccountsBean implements Serializable {
         }
     }
 
-    public void doSaveAux(AccountTO padre, List hijos, List lstAcc, int cont, int nivel) {
+    public void doSaveAux(AccountTO padre, List hijos, List lstAcc, int nivel) {
         for (Object node : hijos) {
-            cont++;
+            //cont = cont + 1;
+            this.setCont(getCont()+1);
             TreeNode acc = (TreeNode) node;
 
             AccountTO newAcc = (AccountTO) acc.getData();
             newAcc.setFinanse(null);
             newAcc.setFathernum(padre.getAcctcode());
             newAcc.setGroupmask(padre.getGroupmask());
-            newAcc.setGrpline(cont);
+            newAcc.setGrpline(getCont());
             newAcc.setLevels(nivel);
             newAcc.setCurrtotal(0.0);
             newAcc.setEndtotal(0.0);
 
             if (acc.getChildCount() > 0) {
                 AccountTO padreH = (AccountTO) acc.getData();
-                doSaveAux(padreH, acc.getChildren(), lstAcc, cont, nivel + 1);
+                doSaveAux(padreH, acc.getChildren(), lstAcc, nivel + 1);
             }
 
             lstAcc.add(newAcc);
