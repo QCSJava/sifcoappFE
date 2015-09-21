@@ -7,6 +7,7 @@ package com.sifco.common.bean;
 
 import com.sifco.login.bean.Util;
 import com.sifcoapp.client.AdminEJBClient;
+import com.sifcoapp.client.ParameterEJBClient;
 import com.sifcoapp.objects.admin.to.EnterpriseTO;
 import java.io.Serializable;
 import javax.faces.application.FacesMessage;
@@ -22,15 +23,40 @@ public class IndexBean implements Serializable {
 
     public IndexBean() {
     }
+    
 //<editor-fold defaultstate="collapsed" desc="Declaraciones">
     HttpSession session = Util.getSession();
     private int band = 0;
     private boolean stop = false;
-    
+    private String profileCode;
     private static AdminEJBClient AdminEJBService = null;
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G & S">
+    public HttpSession getSession() {
+        return session;
+    }
+
+    public void setSession(HttpSession session) {
+        this.session = session;
+    }
+
+    public String getProfileCode() {
+        return profileCode;
+    }
+
+    public void setProfileCode(String profileCode) {
+        this.profileCode = profileCode;
+    }
+
+    public static AdminEJBClient getAdminEJBService() {
+        return AdminEJBService;
+    }
+
+    public static void setAdminEJBService(AdminEJBClient AdminEJBService) {
+        IndexBean.AdminEJBService = AdminEJBService;
+    }
+
     public int getBand() {
         return band;
     }
@@ -50,7 +76,7 @@ public class IndexBean implements Serializable {
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="NAME CORP">
-    public String nameCorp(){
+    public String nameCorp() {
         try {
             AdminEJBService = new AdminEJBClient();
             EnterpriseTO resp = AdminEJBService.getEnterpriseInfo();
@@ -63,13 +89,24 @@ public class IndexBean implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="Funciones varias">
     public void dlg() {
-        if (band == 0) {
-            stop = true;
-            band = 1;
-            showHideDialog("dlg001", 1);
+        try {
+            if (band == 0) {
+                stop = true;
+                band = 1;
+                ParameterEJBClient ParameterEJBClient = new ParameterEJBClient();
+                setProfileCode(ParameterEJBClient.getParameterbykey(8).getValue1());
+                int cmpCode = (int) session.getAttribute("profilecode");
+                if (getProfileCode().equals(cmpCode + "")) {
+                    showHideDialog("dlg001", 1);
+                } else {
+                    System.out.println("NO Recurring...");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Recurring...");
         }
     }
-    
+
     public void showHideDialog(String name, int openClose) {
         try {
             RequestContext rc = RequestContext.getCurrentInstance();
@@ -91,5 +128,5 @@ public class IndexBean implements Serializable {
     }
 
 //</editor-fold>
-
+    
 }//cierre de clase
