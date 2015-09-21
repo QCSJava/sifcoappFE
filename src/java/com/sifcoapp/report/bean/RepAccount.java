@@ -66,12 +66,7 @@ public class RepAccount implements Serializable {
         }
 
     }
-    /*
-     * despliega pdf a pantalla
-     * Rutilio
-     * Abril 2015
-     */
-
+    
     public void doPrint() throws Exception {
         this.print(0);
     }
@@ -204,6 +199,9 @@ public class RepAccount implements Serializable {
      */
     public RepAccount() {
     }
+
+//<editor-fold defaultstate="collapsed" desc="G & S">
+    
 
     /**
      * @return the fcode
@@ -358,5 +356,6 @@ public class RepAccount implements Serializable {
     public void setFdateReport(Date fdateReport) {
         this.fdateReport = fdateReport;
     }
-
-}
+//</editor-fold>
+    
+}//cierre de clase
