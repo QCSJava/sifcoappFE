@@ -379,7 +379,7 @@ public class CreditNotesBean implements Serializable {
                     try {
                         System.out.println("articulo unico, llenar campos en pantalla");
                         BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-
+                        ctlaccount = art.getDebpayacct();
                         codSocio = art.getCardcode();
                         socioNeg = art.getCardname();
 
@@ -388,6 +388,7 @@ public class CreditNotesBean implements Serializable {
                     }
                 } else {
                     BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
+                    ctlaccount = art.getDebpayacct();
                     codSocio = art.getCardcode();
                     socioNeg = art.getCardname();
                     faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");

@@ -58,6 +58,13 @@ public class RepAccount implements Serializable {
         this.setFdateReport(sDate);
         c1.set(c1.get(Calendar.YEAR), c1.get(Calendar.MONTH), 1);  //January 30th 2000
         sDate = c1.getTime();
+
+        try {
+            AccountingEJBClient accEJBService = new AccountingEJBClient();
+            accEJBService.Update_endTotal();
+        } catch (Exception e) {
+        }
+
     }
     /*
      * despliega pdf a pantalla
@@ -70,9 +77,9 @@ public class RepAccount implements Serializable {
     }
 
     public void print(int _type) throws Exception {
-        AccountingEJBClient accEJBService = new AccountingEJBClient();
-        accEJBService.Update_endTotal();
-        
+        //AccountingEJBClient accEJBService = new AccountingEJBClient();
+        //accEJBService.Update_endTotal();
+
         Map<String, Object> reportParameters = new HashMap<>();
         String _whereclausule = null;
         String _whereclausuleSR = null;
@@ -99,56 +106,53 @@ public class RepAccount implements Serializable {
             reportParameters.put("PWHEREACTIVOS", " groupmask in ('1')");
             reportParameters.put("PWHEREPASIVOS", " groupmask in ('2','3')");
             reportParameters.put("PMAXLEVEL", this.getReportLevel());
-            
+
             reportParameters.put("PREPORTSIGN1", " JESÚS RIVERA HERNANDEZ");
             reportParameters.put("PREPORTSIGNTITLE1", " REPRESENTANTE LEGAL");
-            
+
             reportParameters.put("PREPORTSIGN2", "NOÉ ANTONIO LÓPEZ GONZÁLEZ");
             reportParameters.put("PREPORTSIGNTITLE2", "TESORERO");
-            
+
             reportParameters.put("PREPORTSIGN3", "IRINEO CORTÉZ HERNÁNDEZ");
             reportParameters.put("PREPORTSIGNTITLE3", "PRESIDENTE JUNTA DE VIGILANCIA");
-            
+
             reportParameters.put("PREPORTSIGN4", "NOÉ SORIANO VILLALOBOS");
             reportParameters.put("PREPORTSIGNTITLE4", "CONTADOR GENERAL");
-            
+
         }
 
-
-        
         if (this.ftype == 2) {
-             _reportname = "/account/RepBalance";
+            _reportname = "/account/RepBalance";
             _reportTitle = "Balance de Comprobación";
 
             _whereclausule = " 1=1";
             reportParameters.put("PWHEREACTIVOS", " groupmask in ('1','4')");
             reportParameters.put("PWHEREPASIVOS", " groupmask in ('2','3','5')");
             reportParameters.put("PMAXLEVEL", this.getReportLevel());
-            
+
             reportParameters.put("PREPORTSIGN1", " JESÚS RIVERA HERNANDEZ");
             reportParameters.put("PREPORTSIGNTITLE1", " REPRESENTANTE LEGAL");
-            
+
             reportParameters.put("PREPORTSIGN2", "NOÉ ANTONIO LÓPEZ GONZÁLEZ");
             reportParameters.put("PREPORTSIGNTITLE2", "TESORERO");
-            
+
             reportParameters.put("PREPORTSIGN3", "IRINEO CORTÉZ HERNÁNDEZ");
             reportParameters.put("PREPORTSIGNTITLE3", "PRESIDENTE JUNTA DE VIGILANCIA");
-            
+
             reportParameters.put("PREPORTSIGN4", "NOÉ SORIANO VILLALOBOS");
             reportParameters.put("PREPORTSIGNTITLE4", "CONTADOR GENERAL");
         }
-        
-         if (this.ftype == 3) {
+
+        if (this.ftype == 3) {
             _reportname = "/account/RepIncomeStatement";
             _reportTitle = "Estado de Resultados";
 
             _whereclausule = " 1=1";
-            
+
             reportParameters.put("PCUENTASINGRESOS", " groupmask in ('5')");
-            reportParameters.put("PCUENTASGASTOS", " (groupmask in ('4') or acctcode='4') and acctcode<>'4101' and fathernum<>'4101'");         
+            reportParameters.put("PCUENTASGASTOS", " (groupmask in ('4') or acctcode='4') and acctcode<>'4101' and fathernum<>'4101'");
             reportParameters.put("PCUENTASCOSTOS", " groupmask in ('4') and (acctcode='4101' or fathernum='4101')");
             reportParameters.put("PCUENTASCOSTOS_TOTAL", " groupmask in ('4') and (acctcode='4101' or fathernum='4101') and levels=3");
-            
 
             reportParameters.put("PLEVELS", this.getReportLevel());
 
