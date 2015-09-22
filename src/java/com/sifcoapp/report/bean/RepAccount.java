@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.validation.constraints.Digits;
 
 /**
@@ -28,7 +28,7 @@ import javax.validation.constraints.Digits;
  * @author ri00642
  */
 @ManagedBean(name = "raccount")
-@RequestScoped
+@SessionScoped
 public class RepAccount implements Serializable {
 
     private String fcode;

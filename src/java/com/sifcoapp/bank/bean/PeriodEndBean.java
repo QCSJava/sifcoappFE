@@ -48,29 +48,23 @@ public class PeriodEndBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="btn guardar">
     public void doSave() {
-        //showHideDialog("dlgC2", 2);
-        faceMessage("Entro");
         if (accounting == null) {
             accounting = new AccountingEJBClient();
         }
 
-        /*faceMessage("Cerrar periodo");
-        rep.initForm();
-        rep.setFtype(3);
-        rep.setFdateReport(fecha);
-        rep.setReportLevel(3);*/
         JournalEntryTO journal = new JournalEntryTO();
         ResultOutTO _res;
         journal.setDuedate(fecha);
         journal.setUsersign((int) session.getAttribute("usersign"));
         try {
-            //rep.print(1);
-            //_res=accounting.fill_Journal_close(journal);
-            //faceMessage(_res.getMensaje());
-            //faceMessage("guardando");
+            _res = accounting.fill_Journal_close(journal);
+            if (_res.getCodigoError() == 0) {
+                faceMessage("Cierre contable generado con exito");
+            }else
+                faceMessage("Error al generar cierre contable");
+
         } catch (Exception ex) {
             faceMessage(ex.getMessage() + " " + ex.getCause());
             Logger.getLogger(PeriodEndBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -80,25 +74,18 @@ public class PeriodEndBean implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Descargar reporte">
-    public boolean DescRep() {
+    public void DescRep() {
         try {
-            rep.initForm();
-            rep.setFtype(3);
-            rep.setFdateReport(fecha);
-            rep.setReportLevel(3);
-            rep.print(1);
+            /*rep.initForm();
+             rep.setFtype(3);
+             rep.setFdateReport(fecha);
+             rep.setReportLevel(3);
+             rep.print(1);*/
             doSave();
-            return true;
+            //return true;
         } catch (Exception e) {
-            return false;
-        } 
-    }
-//</editor-fold>
-
-//<editor-fold defaultstate="collapsed" desc="btn Principal">
-    public void btnPrincipal() {
-        //faceMessage("guardar");
-        showHideDialog("dlgC2", 1);
+            // return false;
+        }
     }
 //</editor-fold>
 
@@ -111,32 +98,11 @@ public class PeriodEndBean implements Serializable {
     }
 
     public void confirmDialog() {
-        //showHideDialog("dlgC2", 2);
-        DescRep();
-        
-        /*try {
-         reload();
-         } catch (IOException ex) {
-         Logger.getLogger(PeriodEndBean.class.getName()).log(Level.SEVERE, null, ex);
-         }*/
+        faceMessage("Entro");
+        doSave();
     }
 
     //Mostrar u ocultar un dialogo; 1 muestra, 2 oculta
-    public void showHideDialog(String name, int openClose) {
-        try {
-            RequestContext rc = RequestContext.getCurrentInstance();
-            if (openClose == 1) {
-                rc.execute("PF('" + name + "').show();");
-            }
-            if (openClose == 2) {
-                rc.execute("PF('" + name + "').hide();");
-            }
-
-        } catch (Exception e) {
-            faceMessage(e.getMessage() + "---" + e.getCause());
-        }
-    }
-
     public void faceMessage(String var) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(var));
     }

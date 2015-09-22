@@ -36,10 +36,9 @@
                     <div  class="ui-grid ui-grid-responsive" id="divPrincipal">
                         <p:fieldset legend="Recomendaciones" style="margin-bottom:20px">
                             <h:panelGrid columns="1" cellpadding="5">
-                                <h:outputText  value="1. uquququququq uququququq quququququq" />
-                                <h:outputText  value="1. uquququququq uququququq quququququq" />
-                                <h:outputText  value="1. uquququququq uququququq quququququq" />
-                                <h:outputText  value="1. uquququququq uququququq quququququq" />
+                                <h:outputText  value="1. Asegúrese de realizar copia de la base de datos antes de realizar este proceso." />
+                                <h:outputText  value="2. Este proceso es irreversible." />
+                                <h:outputText  value="3. Este proceso podría tardar varios minutos." />
                             </h:panelGrid>
                         </p:fieldset>
                         <p:spacer width="0" height="10"/>
@@ -53,7 +52,7 @@
                         </div>
                         <p:spacer width="0" height="20"/>
                         <div class="ui-grid-row">
-                            <p:commandButton id="btnPrincipal" ajax="false" value="Ejecutar" action="#{periodEndBean.btnPrincipal()}"/>
+                            <p:commandButton id="btnPrincipal"  value="Ejecutar" onclick="PF('dlgC2').show();"/>
                             <p:defaultCommand target="btnPrincipal"/>
                         </div>
 
@@ -67,13 +66,13 @@
                             <div class="ui-grid ui-grid-responsive">
                                 <div class="ui-grid-row">
                                     <div class="ui-grid-col-10">
-                                        <h:outputText value="Desea guardar los cambios?" />
+                                        <h:outputText value="Asegúrese de realizar las recomendaciones; Desea ejecutar el método?" />
                                     </div>
                                 </div>
                                 <p:spacer height="15"/>
                                 <div class="ui-grid-row">
                                     <div class="ui-grid-col-1">
-                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="#{periodEndBean.confirmDialog}" ajax="false" onclick="PF('dlgC2').hide();" />
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="#{periodEndBean.confirmDialog}"  onclick="PF('dlgC2').hide();" />
                                     </div>
                                     <div class="ui-grid-col-4">
 
