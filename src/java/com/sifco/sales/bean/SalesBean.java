@@ -1041,7 +1041,7 @@ public class SalesBean implements Serializable {
         newBill.setCardname(socioNeg);
         newBill.setCardcode(codSocio);
         newBill.setRef2("" + equipo);
-        newBill.setRef1(refe + "");
+        newBill.setNumatcard(getRefe()+"");
         newBill.setDocdate(fechaConta);
         newBill.setTaxdate(fechaDoc);
         newBill.setSeries(tipoDoc);
@@ -1085,7 +1085,7 @@ public class SalesBean implements Serializable {
                 }
 
                 docEntry = _res.getDocentry();
-                newBill.setDocentry(docEntry);
+                newBill = SalesEJBService.getSalesByKey(docEntry);
                 docNum = docEntry; //
                 faceMessage(_res.getMensaje());
                 estateActualizar();
@@ -1118,7 +1118,7 @@ public class SalesBean implements Serializable {
         newBill.setCardcode(codSocio);
         newBill.setRef2("" + equipo);
 
-        newBill.setRef1(refe + "");
+        newBill.setNumatcard(refe + "");
 
         if (coment.equals("")) {
             newBill.setComments(vacio);
@@ -1176,7 +1176,7 @@ public class SalesBean implements Serializable {
         if (refe == 0) {
             searchBill.setRef1(vacio);
         } else {
-            searchBill.setRef1(refe + "");
+            searchBill.setNumatcard(refe + "");
         }
 
         searchBill.setDocdate(fechaConta);
@@ -1341,9 +1341,9 @@ public class SalesBean implements Serializable {
         searchDeli.setTaxdate(fechaDoc);
 
         if (refe == 0) {
-            searchDeli.setRef1(vacio);
+            searchDeli.setNumatcard(vacio);
         } else {
-            searchDeli.setRef1(refe + "");
+            searchDeli.setNumatcard(refe + "");
         }
 
         try {

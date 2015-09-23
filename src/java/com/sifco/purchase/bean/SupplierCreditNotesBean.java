@@ -1019,7 +1019,7 @@ public class SupplierCreditNotesBean implements Serializable {
         newSupplier.setCardname(socioNeg);
         newSupplier.setCardcode(codSocio);
         newSupplier.setRef2("" + equipo);
-        newSupplier.setRef1(refe);
+        newSupplier.setNumatcard(refe);
 
         newSupplier.setDocdate(fechaConta);
         newSupplier.setTaxdate(fechaDoc);
@@ -1048,6 +1048,7 @@ public class SupplierCreditNotesBean implements Serializable {
             if (_res.getCodigoError() == 0) {//se realizo correctamente
                 docEntry = _res.getDocentry();
                 docNum = docEntry; //
+                newSupplier = PurchaseEJBClient.getSupplierByKey(docEntry);
                 faceMessage(_res.getMensaje());
 
                 estateActualizar();
@@ -1082,9 +1083,9 @@ public class SupplierCreditNotesBean implements Serializable {
         newSupplier.setRef2("" + equipo);
         newSupplier.setCtlaccount(ctlaccount);
         if (refe.equals("")) {
-            newSupplier.setRef1(vacio);
+            newSupplier.setNumatcard(vacio);
         } else {
-            newSupplier.setRef1(refe);
+            newSupplier.setNumatcard(refe);
         }
 
         if (coment.equals("")) {
@@ -1142,9 +1143,9 @@ public class SupplierCreditNotesBean implements Serializable {
         }
 
         if (refe.equals("")) {
-            searchPurchase.setRef1(vacio);
+            searchPurchase.setNumatcard(vacio);
         } else {
-            searchPurchase.setRef1(refe);
+            searchPurchase.setNumatcard(refe);
         }
 
         searchPurchase.setDocdate(fechaConta);
@@ -1515,7 +1516,7 @@ public class SupplierCreditNotesBean implements Serializable {
         setSocioNeg(var.getCardname());
         setCodSocio(var.getCardcode());
         setEquipo(Integer.parseInt(var.getRef2()));
-        setRefe(var.getRef1());
+        setRefe(var.getNumatcard());
 
         setFechaConta(var.getDocdate());
         setFechaDoc(var.getTaxdate());

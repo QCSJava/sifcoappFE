@@ -80,7 +80,7 @@ public class repPurchases implements Serializable {
     
 //<editor-fold defaultstate="collapsed" desc="Print">
     public void print(int _type) {
-        Map<String, Object> reportParameters = new HashMap<>();
+         Map<String, Object> reportParameters = new HashMap<>();
         String _whereclausule = null;
         String _whereclausuleSR = null;
         String _reportname = null;

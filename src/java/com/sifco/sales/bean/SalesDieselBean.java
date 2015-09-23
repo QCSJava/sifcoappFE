@@ -757,7 +757,7 @@ public class SalesDieselBean implements Serializable {
         newBill.setCardname(socioNeg);
         newBill.setCardcode(codSocio);
         newBill.setRef2("" + equipo);
-        newBill.setRef1(refe);
+        newBill.setNumatcard(refe);
         newBill.setDocdate(fechaConta);
         newBill.setTaxdate(fechaConta);
         newBill.setSeries(Integer.parseInt(ParameterEJBClient.getParameterbykey(2).getValue1()));
@@ -781,6 +781,7 @@ public class SalesDieselBean implements Serializable {
             if (_res.getCodigoError() == 0) {//se realizo correctamente
                 docEntry = _res.getDocentry();
                 docNum = docEntry; //
+                newBill = SalesEJBService.getSalesByKey(docEntry);
                 faceMessage(_res.getMensaje());
 
                 estateActualizar();
@@ -821,9 +822,9 @@ public class SalesDieselBean implements Serializable {
         newBill.setRef2("" + equipo);
 
         if (refe.equals("")) {
-            newBill.setRef1(vacio);
+            newBill.setNumatcard(vacio);
         } else {
-            newBill.setRef1(refe);
+            newBill.setNumatcard(refe);
         }
 
         try {
@@ -870,9 +871,9 @@ public class SalesDieselBean implements Serializable {
         }
 
         if (refe.equals("")) {
-            searchBill.setRef1(vacio);
+            searchBill.setNumatcard(vacio);
         } else {
-            searchBill.setRef1(refe);
+            searchBill.setNumatcard(refe);
         }
 
         searchBill.setDocdate(fechaConta);
@@ -965,7 +966,7 @@ public class SalesDieselBean implements Serializable {
 
                     if (thisArt.getWtliable().equals("Y")) {
                         newDetalle.setTaxstatus("Y");
-                        faceMessage("se calcularan impuestos");
+                        //faceMessage("se calcularan impuestos");
 
                         if (thisArt.getVatgourpsa().equals("FOV")) {
                             //faceMessage("articulo aplica: iva, fov, cotrans");
@@ -1011,7 +1012,7 @@ public class SalesDieselBean implements Serializable {
                         }
                     } else {
                         newDetalle.setTaxstatus("N");
-                        //faceMessage("Articulo exento de impuestos");
+                        faceMessage("Articulo exento de impuestos");
                         Double impIVA = 0.0; //%de IVA
                         Double impArt = 0.0; //(precio unitario * cantidad) * 0.13%
                         Double impCOT = 0.0;
@@ -1205,7 +1206,7 @@ public class SalesDieselBean implements Serializable {
         setSocioNeg(var.getCardname());
         setCodSocio(var.getCardcode());
         setEquipo(Integer.parseInt(var.getRef2()));
-        setRefe(var.getRef1());
+        setRefe(var.getNumatcard());
 
         setFechaConta(var.getDocdate());
 

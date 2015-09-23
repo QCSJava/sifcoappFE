@@ -996,7 +996,7 @@ public class PurchaseBean implements Serializable {
         newPurchase.setCardname(socioNeg);
         newPurchase.setCardcode(codSocio);
         newPurchase.setRef2("" + equipo);
-        newPurchase.setRef1(refe);
+        newPurchase.setNumatcard(refe);
 
         newPurchase.setDocdate(fechaConta);
         newPurchase.setTaxdate(fechaDoc);
@@ -1028,6 +1028,7 @@ public class PurchaseBean implements Serializable {
             if (_res.getCodigoError() == 0) {//se realizo correctamente
                 docEntry = _res.getDocentry();
                 docNum = docEntry; //
+                newPurchase = PurchaseEJBClient.getPurchaseByKey(docEntry);
                 faceMessage(_res.getMensaje());
 
                 estateActualizar();
@@ -1063,9 +1064,9 @@ public class PurchaseBean implements Serializable {
         newPurchase.setCtlaccount(ctlaccount);
 
         if (refe.equals("")) {
-            newPurchase.setRef1(vacio);
+            newPurchase.setNumatcard(vacio);
         } else {
-            newPurchase.setRef1(refe);
+            newPurchase.setNumatcard(refe);
         }
 
         if (coment.equals("")) {
@@ -1125,9 +1126,9 @@ public class PurchaseBean implements Serializable {
         }
 
         if (refe.equals("")) {
-            searchPurchase.setRef1(vacio);
+            searchPurchase.setNumatcard(vacio);
         } else {
-            searchPurchase.setRef1(refe);
+            searchPurchase.setNumatcard(refe);
         }
 
         searchPurchase.setDocdate(fechaConta);
@@ -1382,7 +1383,7 @@ public class PurchaseBean implements Serializable {
         } catch (Exception e) {
         }
         
-        setRefe(var.getRef1());
+        setRefe(var.getNumatcard());
 
         setFechaConta(var.getDocdate());
         setFechaDoc(var.getTaxdate());

@@ -1009,9 +1009,9 @@ public class PurchaseQuotationBean implements Serializable {
         newQuotation.setRef2("" + equipo);
 
         if (refe.equals("")) {
-            newQuotation.setRef1(vacio);
+            newQuotation.setNumatcard(vacio);
         } else {
-            newQuotation.setRef1(refe);
+            newQuotation.setNumatcard(refe);
         }
 
         newQuotation.setDocdate(fechaConta);
@@ -1048,6 +1048,7 @@ public class PurchaseQuotationBean implements Serializable {
             if (_res.getCodigoError() == 0) {//se realizo correctamente
                 docEntry = _res.getDocentry();
                 docNum = docEntry; //
+                newQuotation = PurchaseEJBClient.getPurchaseQuotationByKey(docEntry);
                 faceMessage(_res.getMensaje());
 
                 estateActualizar();
@@ -1082,9 +1083,9 @@ public class PurchaseQuotationBean implements Serializable {
         newQuotation.setRef2("" + equipo);
 
         if (refe.equals("")) {
-            newQuotation.setRef1(vacio);
+            newQuotation.setNumatcard(vacio);
         } else {
-            newQuotation.setRef1(refe);
+            newQuotation.setNumatcard(refe);
         }
 
         if (coment.equals("")) {
@@ -1144,9 +1145,9 @@ public class PurchaseQuotationBean implements Serializable {
         }
 
         if (refe.equals("")) {
-            searchPurchase.setRef1(vacio);
+            searchPurchase.setNumatcard(vacio);
         } else {
-            searchPurchase.setRef1(refe);
+            searchPurchase.setNumatcard(refe);
         }
 
         searchPurchase.setDocdate(fechaDoc);
@@ -1382,7 +1383,7 @@ public class PurchaseQuotationBean implements Serializable {
         setSocioNeg(var.getCardname());
         setCodSocio(var.getCardcode());
         setEquipo(Integer.parseInt(var.getRef2()));
-        setRefe(var.getRef1());
+        setRefe(var.getNumatcard());
 
         setFechaConta(var.getDocdate());
         setFechaDoc(var.getTaxdate());

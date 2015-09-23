@@ -95,7 +95,7 @@ public class Pdf extends HttpServlet {
                     + "                                    \n"
                     + "                                </td>\n"
                     + "                                <td style=\"height: 25px; width: 25%\">\n"
-                    + "                                    " + var.getRef1() + "\n"
+                    + "                                    " + var.getNumatcard()+ "\n"
                     + "                                </td>\n"
                     + "                                <td style=\"height: 25px\">\n"
                     + "                                    \n"

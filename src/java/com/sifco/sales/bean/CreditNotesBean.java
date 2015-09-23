@@ -915,7 +915,7 @@ public class CreditNotesBean implements Serializable {
         if (refe.equals("")) {
             newCredit.setRef1(vacio);
         } else {
-            newCredit.setRef1(refe);
+            newCredit.setNumatcard(refe);
         }
 
         if (coment.equals("")) {
@@ -945,16 +945,12 @@ public class CreditNotesBean implements Serializable {
             if (_res.getCodigoError() == 0) {//se realizo correctamente
                 if (isBill) {
                     this.isBill = false;
-                   // faceMessage("actualizar remison " + this.docEntryBill);
-                    //updBillCopy(this.docEntryBill);
                 }
-                
                 docEntry = _res.getDocentry();
                 docNum = docEntry; //
+                newCredit = SalesEJBService.getClientCrediByKey(docEntry);
                 faceMessage(_res.getMensaje());
-
                 estateActualizar();
-
             } else {
                 faceMessage(_res.getMensaje());
             }
@@ -985,9 +981,9 @@ public class CreditNotesBean implements Serializable {
         newCredit.setRef2("" + equipo);
 
         if (refe.equals("")) {
-            newCredit.setRef1(vacio);
+            newCredit.setNumatcard(vacio);
         } else {
-            newCredit.setRef1(refe);
+            newCredit.setNumatcard(refe);
         }
 
         if (coment.equals("")) {
@@ -1045,9 +1041,9 @@ public class CreditNotesBean implements Serializable {
         }
 
         if (refe.equals("")) {
-            searchBill.setRef1(vacio);
+            searchBill.setNumatcard(vacio);
         } else {
-            searchBill.setRef1(refe);
+            searchBill.setNumatcard(refe);
         }
 
         searchBill.setDocdate(fechaConta);
@@ -1263,7 +1259,7 @@ public class CreditNotesBean implements Serializable {
             newCredit.setCardname(newBill.getCardname());
             newCredit.setCardcode(newBill.getCardcode());
             newCredit.setRef2(newBill.getRef2());
-            newCredit.setRef1(newBill.getRef1());
+            newCredit.setNumatcard(newBill.getRef1());
 
             newCredit.setDocdate(newBill.getDocdate());
             newCredit.setDocduedate(newBill.getDocduedate());
@@ -1319,7 +1315,7 @@ public class CreditNotesBean implements Serializable {
         searchBill.setCardname(socioNeg);
         //searchBill.setDocstatus("O");
         searchBill.setCanceled("N");
-        searchBill.setRef1(refe);
+        searchBill.setNumatcard(refe);
         searchBill.setDocdate(fechaConta);
         searchBill.setTaxdate(fechaDoc);
 
@@ -1513,7 +1509,7 @@ public class CreditNotesBean implements Serializable {
         setSocioNeg(var.getCardname());
         setCodSocio(var.getCardcode());
         setEquipo(Integer.parseInt(var.getRef2()));
-        setRefe(var.getRef1());
+        setRefe(var.getNumatcard());
 
         setFechaConta(var.getDocduedate());
         setFechaDoc(var.getDocdate());

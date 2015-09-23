@@ -48,6 +48,7 @@ public class PeriodEndBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="btn guardar">
     public void doSave() {
         if (accounting == null) {
@@ -62,8 +63,9 @@ public class PeriodEndBean implements Serializable {
             _res = accounting.fill_Journal_close(journal);
             if (_res.getCodigoError() == 0) {
                 faceMessage("Cierre contable generado con exito");
-            }else
+            } else {
                 faceMessage("Error al generar cierre contable");
+            }
 
         } catch (Exception ex) {
             faceMessage(ex.getMessage() + " " + ex.getCause());
@@ -98,7 +100,7 @@ public class PeriodEndBean implements Serializable {
     }
 
     public void confirmDialog() {
-        faceMessage("Entro");
+        //faceMessage("Entro");
         doSave();
     }
 

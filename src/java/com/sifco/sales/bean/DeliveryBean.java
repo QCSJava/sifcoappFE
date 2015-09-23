@@ -956,7 +956,7 @@ public class DeliveryBean implements Serializable {
         newDelivery.setCardname(socioNeg);
         newDelivery.setCardcode(codSocio);
         newDelivery.setRef2("" + equipo);
-        newDelivery.setRef1(refe + "");
+        newDelivery.setNumatcard(refe + "");
 
         newDelivery.setDocdate(fechaConta);
         newDelivery.setTaxdate(fechaDoc);
@@ -990,7 +990,7 @@ public class DeliveryBean implements Serializable {
             if (_res.getCodigoError() == 0) {//se realizo correctamente
                 docEntry = _res.getDocentry();
                 docNum = docEntry; //
-                newDelivery.setDocentry(docEntry);
+                newDelivery = SalesEJBService.getDeliveryByKey(docEntry);
                 faceMessage(_res.getMensaje());
 
                 estateActualizar();
@@ -1023,7 +1023,7 @@ public class DeliveryBean implements Serializable {
         newDelivery.setCardname(socioNeg);
         newDelivery.setCardcode(codSocio);
         newDelivery.setRef2("" + equipo);
-        newDelivery.setRef1(refe + "");
+        newDelivery.setNumatcard(refe + "");
 
         if (coment.equals("")) {
             newDelivery.setComments(vacio);
@@ -1080,9 +1080,9 @@ public class DeliveryBean implements Serializable {
         }
 
         if (refe == 0) {
-            searchDeli.setRef1(vacio);
+            searchDeli.setNumatcard(vacio);
         } else {
-            searchDeli.setRef1(refe + "");
+            searchDeli.setNumatcard(refe + "");
         }
 
         searchDeli.setDocdate(fechaConta);
@@ -1460,7 +1460,7 @@ public class DeliveryBean implements Serializable {
         setComent(var.getComments());
 
         try {
-            setRefe(Integer.parseInt(var.getRef1()));
+            setRefe(Integer.parseInt(var.getNumatcard()));
         } catch (Exception e) {
             setRefe(0);
         }

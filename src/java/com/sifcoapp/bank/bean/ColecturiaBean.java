@@ -615,14 +615,14 @@ public class ColecturiaBean implements Serializable {
             newColect.setReceiptnum(idAnterior); //pk de donde se genera anulacion
             ArrayList<ColecturiaDetailTO> newPadreLst = new ArrayList<>();
             newPadreLst = newDetails();
-            String vacio = null;
+            //String vacio = null;
             for (ColecturiaDetailTO obj : newPadreLst) {
                 for (ColecturiaDetailTO obj2 : lstTable) {
                     if (obj.getLinenum() == obj2.getLinenum()) {
                         obj.setPaidsum(obj2.getPaidsum());
-                        obj.setValue1(vacio);
+                        /*obj.setValue1(vacio);
                         obj.setValue2(vacio);
-                        obj.setValue3(vacio);
+                        obj.setValue3(vacio);*/
                         break;
                     }
                 }

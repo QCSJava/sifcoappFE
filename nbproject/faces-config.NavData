@@ -2,7 +2,6 @@
 <Scene Scope="Project" version="2">
     <Scope Scope="Faces Configuration Only"/>
     <Scope Scope="Project">
-        <Node id="Periodo.xhtml" x="843" y="210" zoom="true"/>
         <Node id="login.xhtml" x="150" y="600" zoom="true"/>
         <Node id="index.xhtml" x="650" y="150" zoom="true"/>
         <Node id="template.xhtml" x="400" y="150" zoom="true"/>
