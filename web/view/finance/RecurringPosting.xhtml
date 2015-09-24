@@ -29,7 +29,6 @@
                                              update="formRecurring">
 
                             </p:commandButton>
-                            <p:commandButton tabindex="-1" type="button" title="Print" icon="ui-icon-print" />
                         </f:facet>
                     </p:toolbar>
 
@@ -262,8 +261,8 @@
                                 <h:outputText value="#{Rec.rcurcode}" />
                             </p:column>
 
-                            <p:column headerText="Descripción" sortBy="#{Rec.rcurdesc}">
-                                <h:outputText value="#{Rec.rcurdesc}" />
+                            <p:column headerText="Descripción" sortBy="#{Rec.memo}">
+                                <h:outputText value="#{Rec.memo}" />
                             </p:column>
 
                             <p:column headerText="Total Operación" sortBy="#{Rec.volume}" >
