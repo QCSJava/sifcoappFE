@@ -25,13 +25,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import org.primefaces.context.RequestContext;
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
 @ManagedBean(name = "ChartAccountsBudget")
-@ApplicationScoped
+@SessionScoped
 /**
  *
  * @author Jcastro

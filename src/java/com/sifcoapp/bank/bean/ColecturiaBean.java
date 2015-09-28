@@ -44,8 +44,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.util.ComponentUtils;
 
 @ManagedBean(name = "colecturiaBean")
 @SessionScoped
@@ -418,6 +420,7 @@ public class ColecturiaBean implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="Total detalles">
     public void doTotal() {
+        //faceMessage("entro upd total");
         this.t2 = 0.0;
         for (Object lst : lstTable) {
             ColecturiaDetailTO det = (ColecturiaDetailTO) lst;
@@ -434,7 +437,7 @@ public class ColecturiaBean implements Serializable {
         }
         t2 = Double.parseDouble(formatNumber(t2)) + totalFac;
         doTotalAct();
-        RequestContext.getCurrentInstance().update("frmColect");
+        //RequestContext.getCurrentInstance().update("frmColect");
     }
 
     public void doTotalAct() {
@@ -621,8 +624,8 @@ public class ColecturiaBean implements Serializable {
                     if (obj.getLinenum() == obj2.getLinenum()) {
                         obj.setPaidsum(obj2.getPaidsum());
                         /*obj.setValue1(vacio);
-                        obj.setValue2(vacio);
-                        obj.setValue3(vacio);*/
+                         obj.setValue2(vacio);
+                         obj.setValue3(vacio);*/
                         break;
                     }
                 }

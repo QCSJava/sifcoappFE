@@ -49,7 +49,7 @@
                                 </div>
                                 <br></br>
                                 <div class="ui-grid-row">
-                                    <p:selectOneRadio id="isActive" value="#{chartAccounts.postable}">
+                                    <p:selectOneRadio disabled="true" id="isActive" value="#{chartAccounts.postable}">
                                         <div class="ui-grid-col-1"><f:selectItem itemLabel="Titulo" itemValue="true" /></div>
                                         <div class="ui-grid-col-1"><f:selectItem itemLabel="Cuenta Activa" itemValue="false" /></div>
                                     </p:selectOneRadio>
@@ -174,7 +174,7 @@
                                 <p:spacer height="0" width="95%"/>
                                 <h:commandLink >
                                     <p:graphicImage name="../../resources/Images/img.jpg" width="24"/>
-                                    <p:dataExporter type="xls" target="dlgSaldo" fileName="#{chartAccounts.acctcode} - #{chartAccounts.acctname}"
+                                    <p:dataExporter type="xls" target="dlgSaldo" fileName="#{chartAccounts.nameToEx}"
                                                     />
                                 </h:commandLink>
                             </f:facet>

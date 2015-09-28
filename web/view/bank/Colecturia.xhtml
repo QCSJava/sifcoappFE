@@ -129,12 +129,16 @@
                         <p:spacer width="0" height="20" />
 
                         <div class="ui-grid-row">
-                            <div class="ui-grid-col-12">
+                            
+                            <p:poll interval="10" listener="#{colecturiaBean.doTotal}" update="tableDetailColet" process="@this tableDetailColet"/>
+                            <div id="tabTable" class="ui-grid-col-12">
                                 <p:dataTable id="tableDetailColet" var="det" value="#{colecturiaBean.lstTable}"  scrollable="true" scrollHeight="90%" style="height: 350px"
                                              rowKey="#{det.linenum}" selectionMode="single" selection="#{colecturiaBean.selectDet}"
                                              emptyMessage="Seleccione un Socio de Negocio" editable="true"
                                              disabledSelection="#{colecturiaBean.common}"
-                                             sortBy="#{det.linenum}">
+                                             sortBy="#{det.linenum}"
+                                             >
+
 
                                     <p:column headerText="ID pago" style="width: 3%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{det.linenum}"/>
@@ -149,14 +153,14 @@
                                     </p:column>
 
                                     <p:column headerText="Valor"  style="width: 8%; font-size: #{commonBean.sizeFont1}">
-                                        <p:inputText tabindex="9" value="#{det.paidsum}" size="10" disabled="#{colecturiaBean.common || colecturiaBean.ifCancelacion? true:false}" readonly="#{det.linenum == colecturiaBean.lineNum? true:false}"
-                                                     style="float: right">
-                                            <p:ajax event="blur" listener="#{colecturiaBean.doTotal}" update="tableDetailColet"/>
+                                        <p:inputText id="valor1" tabindex="9" value="#{det.paidsum}" size="10" disabled="#{colecturiaBean.common || colecturiaBean.ifCancelacion? true:false}" readonly="#{det.linenum == colecturiaBean.lineNum? true:false}"
+                                                     >
+                                            
                                         </p:inputText>
                                     </p:column>
 
                                     <p:column headerText="Saldo Nuevo"  style="width: 8%; font-size: #{commonBean.sizeFont1}">
-                                        <h:outputText style="float: right" value="$ #{det.docsubtype == 'N'? '' : det.value3}" />
+                                        <h:outputText id="newS" style="float: right" value="$ #{det.docsubtype == 'N'? '' : det.value3}" />
                                     </p:column>
 
                                     <p:columnGroup type="footer" id="foot">

@@ -624,6 +624,12 @@ public class ConceptBean implements Serializable {
         }
         return false;
     }
+    
+    public void doNew(){
+        ColecturiaConceptTO var = new ColecturiaConceptTO();
+        llenarPantalla(var);
+        estateGuardar();
+    }
 
     public void llenarPantalla(ColecturiaConceptTO var) {
         setAcctCode1(var.getAcctcode());
