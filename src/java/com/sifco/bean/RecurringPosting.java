@@ -105,7 +105,6 @@ public class RecurringPosting implements Serializable {
     //para el footer de la pagina
 
 //</editor-fold>
-   
 //<editor-fold defaultstate="collapsed" desc="Getters and setters">
     public RecurringPosting() {
     }
@@ -463,7 +462,6 @@ public class RecurringPosting implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="init de la ventana">
     @PostConstruct
     public void initForm() {
@@ -514,7 +512,7 @@ public class RecurringPosting implements Serializable {
         Iterator<AccountTO> iterator = _result.iterator();
         while (iterator.hasNext()) {
             AccountTO cuentas = (AccountTO) iterator.next();
-            results.add(cuentas.getAcctname());
+            results.add(cuentas.getAcctcode() + "-" + cuentas.getAcctname());
         }
         return results;
     }
@@ -535,51 +533,55 @@ public class RecurringPosting implements Serializable {
         Iterator<AccountTO> iterator = _result.iterator();
         while (iterator.hasNext()) {
             AccountTO cuentas = (AccountTO) iterator.next();
-            results.add(cuentas.getAcctcode());
+            results.add(cuentas.getAcctcode() + "-" + cuentas.getAcctname());
         }
         return results;
     }
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del autocomplete" > 
-    public void findAccount(SelectEvent event) {
+    public void findAccount() {
         List account2 = new Vector();
-        String var = null;
-        if (event.getObject().toString() != var) {
-            List _result = null;
+        List _result = null;
+        String[] newName = null;
+        String codigo = null, nombre = null;
 
-            try {
-                _result = AccountingEJBClient.getAccountByFilter(account, shortname);
-
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                account = null;
-                shortname = null;
-            }
-            if (_result.isEmpty()) {
-                this.account = null;
-                this.shortname = null;
+        if (shortname != null) {
+            newName = shortname.split("-");
+            codigo = newName[0];
+            nombre = newName[1];
+        } else {
+            if (account != null) {
+                newName = account.split("-");
+                codigo = newName[0];
+                nombre = newName[1];
             } else {
-                Iterator<AccountTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    AccountTO articulo = (AccountTO) iterator.next();
-                    account2.add(articulo);
-                }
-                if (account2.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        AccountTO art = (AccountTO) account2.get(0);
-                        account = art.getAcctcode();
-                        shortname = art.getAcctname();
-                    } catch (Exception ex) {
-                        Logger.getLogger(BusinessPartner.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    AccountTO art = (AccountTO) account2.get(0);
-                    account = art.getAcctcode();
-                    shortname = art.getAcctname();
-                    faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
-                }
+                codigo = account;
+                nombre = shortname;
+            }
+        }
+
+        try {
+            _result = AccountingEJBClient.getAccountByFilter(codigo, nombre);
+        } catch (Exception e) {
+            faceMessage(e.getMessage() + " -- " + e.getCause());
+            account = null;
+            shortname = null;
+        }
+        if (_result.isEmpty()) {
+            this.account = null;
+            this.shortname = null;
+        } else {
+            for (Object obj : _result) {
+                AccountTO articulo = (AccountTO) obj;
+                account2.add(articulo);
+            }
+            if (account2.size() == 1) {
+                AccountTO art = (AccountTO) account2.get(0);
+                account = art.getAcctcode();
+                shortname = art.getAcctname();
+            } else {
+                faceMessage("Error: codigo repetido");
             }
         }
     }
@@ -1216,7 +1218,6 @@ public class RecurringPosting implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del ComboBox Frecuencia" > 
     public void stateChangeListener(ValueChangeEvent event) {
         System.out.print(event.getNewValue());
@@ -1395,7 +1396,6 @@ public class RecurringPosting implements Serializable {
     }
 
 //</editor-fold>
-    
     public void Add(SelectEvent event) {
         Iterator<RecurringPostingsTO> iterator = RecurringSelected.iterator();
         totalVolumen = 0.0;
@@ -1410,5 +1410,5 @@ public class RecurringPosting implements Serializable {
     public void Rest(SelectEvent event) {
         faceMessage("nooo");
     }
-    
+
 }//cierre de clase
