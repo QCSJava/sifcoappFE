@@ -130,7 +130,7 @@
 
                         <div class="ui-grid-row">
                             
-                            <p:poll interval="10" listener="#{colecturiaBean.doTotal}" update="tableDetailColet" process="@this tableDetailColet"/>
+                            
                             <div id="tabTable" class="ui-grid-col-12">
                                 <p:dataTable id="tableDetailColet" var="det" value="#{colecturiaBean.lstTable}"  scrollable="true" scrollHeight="90%" style="height: 350px"
                                              rowKey="#{det.linenum}" selectionMode="single" selection="#{colecturiaBean.selectDet}"

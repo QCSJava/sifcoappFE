@@ -127,6 +127,7 @@ public class ColecturiaBean implements Serializable {
     private String url;
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Load de pantalla">
     @PostConstruct
     public void initForm() {
@@ -159,6 +160,7 @@ public class ColecturiaBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Autocomplete Socio" > 
     public List<String> compSocioCode(String query) {
         List _result = null;
@@ -211,6 +213,7 @@ public class ColecturiaBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocioName() {
         String[] newName = nameSocio.split("-");
@@ -246,8 +249,11 @@ public class ColecturiaBean implements Serializable {
                     ctlAcc = art.getDebpayacct();
                     codSocio = art.getCardcode();
                     nameSocio = art.getCardname();
-                    llenarListaDetalles();
-                    doTotal();
+                    if (varEstados == 1) {
+                       llenarListaDetalles();
+                        doTotal(); 
+                    }
+                    
                 } catch (Exception ex) {
                     Logger.getLogger(CheckForPaymentBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -471,6 +477,7 @@ public class ColecturiaBean implements Serializable {
     public void botonPrincipal(ActionEvent actionEvent) {
         switch (varEstados) {
             case 1:
+                doTotal();
                 if (validarColect()) {
                     showHideDialog("dlgC2", 1);
                 }
@@ -649,6 +656,7 @@ public class ColecturiaBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="BUSCAR EN BASE">
     public void doSearch() {
         ColecturiaInTO search = new ColecturiaInTO();
@@ -1074,6 +1082,7 @@ public class ColecturiaBean implements Serializable {
     }//final funcion
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="G & S">
     public String getUrl() {
         return url;
@@ -1412,6 +1421,7 @@ public class ColecturiaBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="IMPRIMIR FORMA 2">
     public String printInvoice() throws UnsupportedEncodingException {
         //faceMessage(getApplicationUri());
