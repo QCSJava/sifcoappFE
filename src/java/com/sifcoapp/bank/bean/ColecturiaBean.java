@@ -127,7 +127,6 @@ public class ColecturiaBean implements Serializable {
     private String url;
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Load de pantalla">
     @PostConstruct
     public void initForm() {
@@ -160,14 +159,13 @@ public class ColecturiaBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Autocomplete Socio" > 
     public List<String> compSocioCode(String query) {
         List _result = null;
 
         BusinesspartnerInTO in = new BusinesspartnerInTO();
         in.setCardcode(query);
-        //in.setCardtype("P");
+        in.setCardtype("C");
 
         try {
             _result = CatalogEJB.get_businesspartner(in);
@@ -192,7 +190,7 @@ public class ColecturiaBean implements Serializable {
 
         BusinesspartnerInTO in = new BusinesspartnerInTO();
         in.setCardname(query);
-        //in.setCardtype("P");
+        in.setCardtype("C");
 
         try {
             _result = CatalogEJB.get_businesspartner(in);
@@ -207,128 +205,56 @@ public class ColecturiaBean implements Serializable {
 
         while (iterator.hasNext()) {
             BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-            results.add(articulo.getCardname());
+            results.add(articulo.getCardcode() + "-" + articulo.getCardname());
         }
         return results;
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
-    public void selectSocioName(SelectEvent event) {
+    public void selectSocioName() {
+        String[] newName = nameSocio.split("-");
+        selectSocioCod(newName[0]);
+    }
+
+    public void selectSocioCod(String code) {
         List socio = new Vector();
-        String var = null;
+        List _result = null;
+        BusinesspartnerInTO in = new BusinesspartnerInTO();
+        in.setCardcode(codSocio == null ? code : codSocio);
 
-        /*if (selectSocio == null) {
-         selectSocio = new BusinesspartnerTO();
-         }*/
-        if (event.getObject().toString() != var) {
-            List _result = null;
+        try {
+            _result = CatalogEJB.get_businesspartner(in);
 
-            BusinesspartnerInTO in = new BusinesspartnerInTO();
-            //in.setCardcode(codSocio);
-            in.setCardname(nameSocio);
-
-            try {
-                _result = CatalogEJB.get_businesspartner(in);
-
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                codSocio = null;
-                nameSocio = null;
+        } catch (Exception e) {
+            faceMessage(e.getMessage() + " -- " + e.getCause());
+            codSocio = null;
+            nameSocio = null;
+        }
+        if (_result.isEmpty()) {
+            this.codSocio = null;
+            this.nameSocio = null;
+        } else {
+            for (Object obj : _result) {
+                BusinesspartnerTO articulo = (BusinesspartnerTO) obj;
+                socio.add(articulo);
             }
-            if (_result.isEmpty()) {
-                this.codSocio = null;
-                this.nameSocio = null;
-
-            } else {
-                Iterator<BusinesspartnerTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-                    socio.add(articulo);
-                    //this.setSelectSocio(articulo);//----------------------------
-                }
-                if (socio.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                        ctlAcc = art.getDebpayacct();
-                        codSocio = art.getCardcode();
-                        nameSocio = art.getCardname();
-                        llenarListaDetalles();
-                        doTotal();
-
-                    } catch (Exception ex) {
-                        Logger.getLogger(CheckForPaymentBean.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
+            if (socio.size() == 1) {
+                try {
+                    System.out.println("articulo unico, llenar campos en pantalla");
                     BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
                     ctlAcc = art.getDebpayacct();
                     codSocio = art.getCardcode();
                     nameSocio = art.getCardname();
                     llenarListaDetalles();
-                    faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
+                    doTotal();
+                } catch (Exception ex) {
+                    Logger.getLogger(CheckForPaymentBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
-        }
-
-    }
-
-    public void selectSocioCod(SelectEvent event) {
-        List socio = new Vector();
-        String var = null;
-
-        /*if (selectSocio == null) {
-         selectSocio = new BusinesspartnerTO();
-         }*/
-        if (event.getObject().toString() != var) {
-            List _result = null;
-
-            BusinesspartnerInTO in = new BusinesspartnerInTO();
-            in.setCardcode(codSocio);
-            //in.setCardname(nameSocio);
-
-            try {
-                _result = CatalogEJB.get_businesspartner(in);
-
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                codSocio = null;
-                nameSocio = null;
-            }
-            if (_result.isEmpty()) {
-                this.codSocio = null;
-                this.nameSocio = null;
-
             } else {
-                Iterator<BusinesspartnerTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-                    socio.add(articulo);
-                    //this.setSelectSocio(articulo);//----------------------------
-                }
-                if (socio.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                        ctlAcc = art.getDebpayacct();
-                        codSocio = art.getCardcode();
-                        nameSocio = art.getCardname();
-                        llenarListaDetalles();
-                        doTotal();
-                    } catch (Exception ex) {
-                        Logger.getLogger(CheckForPaymentBean.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                    ctlAcc = art.getDebpayacct();
-                    codSocio = art.getCardcode();
-                    nameSocio = art.getCardname();
-                    faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
-                }
+                faceMessage("Error codigo repetido");
             }
         }
-
     }
 //</editor-fold>
 
@@ -630,7 +556,7 @@ public class ColecturiaBean implements Serializable {
                     }
                 }
             }
-            newColect.setColecturiaDetail(newPadreLst);
+            newColect.setColecturiaDetail(lstTable);
 
             //update al colet de donde se genera anulacion: transtype = 2 (anulado)
         } else {
@@ -723,7 +649,6 @@ public class ColecturiaBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="BUSCAR EN BASE">
     public void doSearch() {
         ColecturiaInTO search = new ColecturiaInTO();
@@ -1149,7 +1074,6 @@ public class ColecturiaBean implements Serializable {
     }//final funcion
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="G & S">
     public String getUrl() {
         return url;
@@ -1488,7 +1412,6 @@ public class ColecturiaBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="IMPRIMIR FORMA 2">
     public String printInvoice() throws UnsupportedEncodingException {
         //faceMessage(getApplicationUri());

@@ -198,6 +198,7 @@ public class SalesBean implements Serializable {
     private String url;
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -325,6 +326,7 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocio(SelectEvent event) {
         List socio = new Vector();
@@ -591,6 +593,7 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Boton Agregar al DATATABLE">
     public void accionAgregar(ActionEvent actionEvent) {
         try {
@@ -724,6 +727,7 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Calcular Impuestos y TOTAL">
     public void calcularTotalBill(ArrayList<SalesDetailTO> listaArt) {
         Double totalAux = 0.0;
@@ -741,6 +745,7 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="funciones para calculos de impuestos">
     public Double calcularGravadas(ArrayList<SalesDetailTO> listaArt) {
         Double sumTotal = 0.0;
@@ -840,6 +845,7 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Eliminar del dataTable" > 
     public void deleteDetalle() {
         try {
@@ -1041,7 +1047,7 @@ public class SalesBean implements Serializable {
         newBill.setCardname(socioNeg);
         newBill.setCardcode(codSocio);
         newBill.setRef2("" + equipo);
-        newBill.setNumatcard(getRefe()+"");
+        newBill.setNumatcard(getRefe() + "");
         newBill.setDocdate(fechaConta);
         newBill.setTaxdate(fechaDoc);
         newBill.setSeries(tipoDoc);
@@ -1278,7 +1284,7 @@ public class SalesBean implements Serializable {
         newCredit.setCardname(newBill.getCardname());
         newCredit.setCardcode(newBill.getCardcode());
         newCredit.setRef2(newBill.getRef2());
-        newCredit.setRef1(newBill.getRef1());
+        newCredit.setRef1(newBill.getNumatcard());
 
         newCredit.setDocdate(newBill.getDocdate());
         newCredit.setDocduedate(newBill.getDocduedate());
@@ -1383,7 +1389,7 @@ public class SalesBean implements Serializable {
             newBill.setCardname(newDelivery.getCardname());
             newBill.setCardcode(newDelivery.getCardcode());
             newBill.setRef2(newDelivery.getRef2());
-            newBill.setRef1(newDelivery.getRef1());
+            newBill.setNumatcard(newDelivery.getNumatcard());
             newBill.setDocdate(newDelivery.getDocdate());
             newBill.setTaxdate(newDelivery.getTaxdate());
             newBill.setSeries(newDelivery.getSeries());
@@ -1448,6 +1454,7 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar un almacen y Forma de pago">
     public void stateChange1(ValueChangeEvent event) {
 
@@ -1554,6 +1561,7 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     private boolean validatePrice() {
         if (this.newPrecio < 0) {
@@ -1667,6 +1675,12 @@ public class SalesBean implements Serializable {
 
         setComent(var.getComments());
 
+        try {
+            setRefe(Integer.parseInt(var.getNumatcard()));
+        } catch (Exception e) {
+            setRefe(0);
+        }
+
         if (tipo == 2) {
             for (Object detBill : var.getSalesDetails()) {
                 DeliveryDetailTO bill = (DeliveryDetailTO) detBill;
@@ -1708,11 +1722,6 @@ public class SalesBean implements Serializable {
         } else {
             setDocEntry(var.getDocentry());
             setDocNum(var.getDocnum());
-            try {
-                setRefe(Integer.parseInt(var.getRef1()));
-            } catch (Exception e) {
-                setRefe(0);
-            }
 
             for (Object detalle : var.getSalesDetails()) {
                 SalesDetailTO det = (SalesDetailTO) detalle;
@@ -2521,4 +2530,5 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold> 
+    
 }//Cierre de clase

@@ -150,14 +150,14 @@
 
                             <div class="ui-grid-col-2">
                                 <p:autoComplete tabindex="10" scrollHeight="250" required="true" id="newCodCuenta" forceSelection="true" minQueryLength="2" value="#{goodsIssuesBean.newCodCuenta}" disabled="#{goodsIssuesBean.disableComun}"
-                                                completeMethod="#{purchaseBean.completeCode}" effect="fade" size="25" label="Codigo Cuenta">
+                                                completeMethod="#{goodsReceiptBean.completeCode2}" effect="fade" size="25" label="Codigo Cuenta">
                                     <p:ajax event="itemSelect" listener="#{goodsIssuesBean.findAccount}" update="newCodCuenta newNomCuenta" />
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-3">
                                 <p:spacer width="15" height="0"/>
                                 <p:autoComplete tabindex="11" scrollHeight="250"  required="true" id="newNomCuenta" forceSelection="true" minQueryLength="2" value="#{goodsIssuesBean.newNomCuenta}" disabled="#{goodsIssuesBean.disableComun}"
-                                                completeMethod="#{purchaseBean.completeName}" effect="fade" size="35" label="Nombre Cuenta">
+                                                completeMethod="#{goodsReceiptBean.completeName}" effect="fade" size="35" label="Nombre Cuenta">
                                     <p:ajax event="itemSelect" listener="#{goodsIssuesBean.findAccount}" update="newCodCuenta newNomCuenta" />
                                 </p:autoComplete>
                             </div>

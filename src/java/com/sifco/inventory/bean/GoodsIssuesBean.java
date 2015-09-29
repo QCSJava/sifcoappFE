@@ -113,14 +113,13 @@ public class GoodsIssuesBean implements Serializable {
     private int toolbarBoton;
     private boolean rendered;
     //</editor-fold>
-    
-    
+
 //<editor-fold defaultstate="collapsed" desc="G & S" >
     public boolean isRendered() {
         return rendered;
     }
 
-    public void setRendered(boolean rendered) {    
+    public void setRendered(boolean rendered) {
         this.rendered = rendered;
     }
 
@@ -421,7 +420,6 @@ public class GoodsIssuesBean implements Serializable {
     }
 
     //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -508,57 +506,54 @@ public class GoodsIssuesBean implements Serializable {
 //<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del autocomplete CUENTA" > 
     public void findAccount(SelectEvent event) {
         List account = new Vector();
-        String var = null;
-        if (event.getObject().toString() != var) {
-            List _result = null;
+        List _result = null;
 
-            try {
-                if (newCodCuenta != null || newNomCuenta != null) {
-                    _result = AccountingEJBClient.getAccountByFilter(newCodCuenta, newNomCuenta);
-                }
+        String[] newName = null;
+        String codigo = null, nombre = null;
 
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                newCodCuenta = null;
-                newNomCuenta = null;
-            }
-            if (_result.isEmpty()) {
-                this.newCodCuenta = null;
-                this.newNomCuenta = null;
-
+        if (newNomCuenta != null) {
+            newName = newNomCuenta.split("-");
+            codigo = newName[0];
+            nombre = newName[1];
+        } else {
+            if (newCodCuenta != null) {
+                newName = newCodCuenta.split("-");
+                codigo = newName[0];
+                nombre = newName[1];
             } else {
-                Iterator<AccountTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    AccountTO articulo = (AccountTO) iterator.next();
-                    account.add(articulo);
-                }
-                if (account.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        AccountTO art = (AccountTO) account.get(0);
-                        if (newCodCuenta != null || newNomCuenta != null) {
-                            newCodCuenta = art.getAcctcode();
-                            newNomCuenta = art.getAcctname();
-                        }
-                    } catch (Exception ex) {
-                        Logger.getLogger(BusinessPartner.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    for (Object ac : account) {
-                        AccountTO art = (AccountTO) ac;
-                        if (newNomCuenta.equals(art.getAcctname())) {
-                            newCodCuenta = art.getAcctcode();
-                            newNomCuenta = art.getAcctname();
-                            break;
-                        }
-                    }
+                codigo = newCodCuenta;
+                nombre = newNomCuenta;
+            }
+        }
 
-                    /* AccountTO art = (AccountTO) account.get(0);
-                     if (newCodCuenta != null || newNomCuenta != null) {
-                     newCodCuenta = art.getAcctcode();
-                     newNomCuenta = art.getAcctname();
-                     }*/
+        try {
+            _result = AccountingEJBClient.getAccountByFilter(codigo, nombre);
+        } catch (Exception e) {
+            faceMessage(e.getMessage() + " -- " + e.getCause());
+            newCodCuenta = null;
+            newNomCuenta = null;
+        }
+        if (_result.isEmpty()) {
+            this.newCodCuenta = null;
+            this.newNomCuenta = null;
+
+        } else {
+            for (Object obj : _result) {
+                AccountTO articulo = (AccountTO) obj;
+                account.add(articulo);
+            }
+            if (account.size() == 1) {
+                try {
+                    AccountTO art = (AccountTO) account.get(0);
+                    if (newCodCuenta != null || newNomCuenta != null) {
+                        newCodCuenta = art.getAcctcode();
+                        newNomCuenta = art.getAcctname();
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(GoodsReceiptBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            } else {
+                faceMessage("Error codigo repetido");
             }
         }
     }
@@ -697,7 +692,9 @@ public class GoodsIssuesBean implements Serializable {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
     }
+
     //valida que los campos esten llenos para agregar un detalle al datatable
+
     public boolean validarNull() {
         return !newCodCuenta.isEmpty() && !newCod.isEmpty() && !newNomArt.isEmpty() && newCantidad > 0; //&& !newUnidad.isEmpty();
     }
@@ -721,10 +718,10 @@ public class GoodsIssuesBean implements Serializable {
         try {
             if (newCostoPromedio > 0 && newCantidad > 0 && newCostoPromedio != null && newCantidad != null) {
                 Double aux = (newCostoPromedio) * (newCantidad);
-               /* NumberFormat nf = NumberFormat.getInstance();
-                nf.setMaximumFractionDigits(2);
-                String st = nf.format(aux);
-                Double dou = Double.valueOf(st);*/
+                /* NumberFormat nf = NumberFormat.getInstance();
+                 nf.setMaximumFractionDigits(2);
+                 String st = nf.format(aux);
+                 Double dou = Double.valueOf(st);*/
                 newTotal = aux;
             }
         } catch (Exception e) {
@@ -883,7 +880,6 @@ public class GoodsIssuesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Guardar en base" > 
     public void saveIssues() {
         int line = 0;

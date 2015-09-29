@@ -6,6 +6,7 @@
 package com.sifcoapp.bank.bean;
 
 import com.sifco.login.bean.Util;
+import com.sifcoapp.assignment.bean.AccassignmentBean;
 import com.sifcoapp.client.AccountingEJBClient;
 import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.client.BankEJBClient;
@@ -67,8 +68,8 @@ public class CheckForPaymentBean implements Serializable {
     //Pantalla
     private String codSocio;        //codigo de socio
     private String nameSocio;       //nombre del socio
-    private String codCuenta;       //codigo de cuenta
-    private String nameCuenta;      //nombre de cuenta
+    private String newCodCuenta;       //codigo de cuenta
+    private String newNomCuenta;      //nombre de cuenta
 
     private int idInterno;          //id interno del cheque
     private String referencia;      //referencia
@@ -125,7 +126,6 @@ public class CheckForPaymentBean implements Serializable {
     private String url;
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -216,7 +216,48 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
-    
+//<editor-fold defaultstate="collapsed" desc="Autocompletado de CUENTA ">
+    public List<String> completeName(String query) {
+        List _result = null;
+
+        String filterByCode = null;
+        try {
+
+            _result = AccountingEJBClient.getAccountByFilter(filterByCode, query, "Y");
+        } catch (Exception ex) {
+            Logger.getLogger(AccassignmentBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        List<String> results = new ArrayList<>();
+
+        Iterator<AccountTO> iterator = _result.iterator();
+        while (iterator.hasNext()) {
+            AccountTO cuentas = (AccountTO) iterator.next();
+            results.add(cuentas.getAcctcode() + "-" + cuentas.getAcctname());
+        }
+        return results;
+    }
+
+    public List<String> completeCode(String query) {
+        List _result = null;
+
+        String filterByName = null;
+        try {
+            _result = AccountingEJBClient.getAccountByFilter(query, filterByName, "Y");
+        } catch (Exception ex) {
+            Logger.getLogger(AccassignmentBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        List<String> results = new ArrayList<>();
+
+        Iterator<AccountTO> iterator = _result.iterator();
+        while (iterator.hasNext()) {
+            AccountTO cuentas = (AccountTO) iterator.next();
+            results.add(cuentas.getAcctcode() + "-" + cuentas.getAcctname());
+        }
+        return results;
+    }
+//</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocioName(SelectEvent event) {
         List socio = new Vector();
@@ -340,51 +381,54 @@ public class CheckForPaymentBean implements Serializable {
 //<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del autocomplete CUENTA" > 
     public void findAccount(SelectEvent event) {
         List account = new Vector();
-        String var = null;
-        if (event.getObject().toString() != var) {
-            List _result = null;
+        List _result = null;
 
-            try {
-                if (codCuenta != null || nameCuenta != null) {
-                    _result = AccountingEJBClient.getAccountByFilter(codCuenta, nameCuenta);
-                }
+        String[] newName = null;
+        String codigo = null, nombre = null;
 
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                codCuenta = null;
-                nameCuenta = null;
-            }
-            if (_result.isEmpty()) {
-                this.codCuenta = null;
-                this.nameCuenta = null;
-
+        if (newNomCuenta != null) {
+            newName = newNomCuenta.split("-");
+            codigo = newName[0];
+            nombre = newName[1];
+        } else {
+            if (newCodCuenta != null) {
+                newName = newCodCuenta.split("-");
+                codigo = newName[0];
+                nombre = newName[1];
             } else {
-                Iterator<AccountTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    AccountTO articulo = (AccountTO) iterator.next();
-                    account.add(articulo);
-                }
-                if (account.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        AccountTO art = (AccountTO) account.get(0);
-                        if (codCuenta != null || nameCuenta != null) {
-                            codCuenta = art.getAcctcode();
-                            nameCuenta = art.getAcctname();
-                        }
-                    } catch (Exception ex) {
-                        Logger.getLogger(CheckForPaymentBean.class.getName()).log(Level.SEVERE, null, ex);
+                codigo = newCodCuenta;
+                nombre = newNomCuenta;
+            }
+        }
+
+        try {
+            _result = AccountingEJBClient.getAccountByFilter(codigo, nombre);
+        } catch (Exception e) {
+            faceMessage(e.getMessage() + " -- " + e.getCause());
+            newCodCuenta = null;
+            newNomCuenta = null;
+        }
+        if (_result.isEmpty()) {
+            this.newCodCuenta = null;
+            this.newNomCuenta = null;
+
+        } else {
+            for (Object obj : _result) {
+                AccountTO articulo = (AccountTO) obj;
+                account.add(articulo);
+            }
+            if (account.size() == 1) {
+                try {
+                    AccountTO art = (AccountTO) account.get(0);
+                    if (newCodCuenta != null || newNomCuenta != null) {
+                        newCodCuenta = art.getAcctcode();
+                        newNomCuenta = art.getAcctname();
                     }
-                } else {
-                    for (Object ac : account) {
-                        AccountTO art = (AccountTO) ac;
-                        if (nameCuenta.equals(art.getAcctname())) {
-                            codCuenta = art.getAcctcode();
-                            nameCuenta = art.getAcctname();
-                            break;
-                        }
-                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(CheckForPaymentBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            } else {
+                faceMessage("Error codigo repetido");
             }
         }
     }
@@ -488,7 +532,7 @@ public class CheckForPaymentBean implements Serializable {
         newCheck.setPmntdate(fechaConta);
         newCheck.setDetails(comentario);
         newCheck.setVendorcode(codSocio);
-        newCheck.setCheckacct(codCuenta);
+        newCheck.setCheckacct(newCodCuenta);
 
         try {
             ResultOutTO _res = null;
@@ -538,7 +582,7 @@ public class CheckForPaymentBean implements Serializable {
         newCheck.setPmntdate(fechaConta);
         newCheck.setDetails(comentario);
         newCheck.setVendorcode(codSocio);
-        newCheck.setCheckacct(codCuenta);
+        newCheck.setCheckacct(newCodCuenta);
         newCheck.setCheckkey(idInterno);
 
         try {
@@ -598,11 +642,10 @@ public class CheckForPaymentBean implements Serializable {
         }
 
         /*if (referencia.equals("")) {
-            searchCheck.setTransref(vacio);
-        } else {
-            searchCheck.setTransref(referencia);
-        }*/
-
+         searchCheck.setTransref(vacio);
+         } else {
+         searchCheck.setTransref(referencia);
+         }*/
         searchCheck.setPmntdate(fechaConta);
 
         if (comentario.equals("")) {
@@ -617,10 +660,10 @@ public class CheckForPaymentBean implements Serializable {
             searchCheck.setVendorcode(codSocio);
         }
 
-        if (codCuenta == null) {
+        if (newCodCuenta == null) {
             searchCheck.setCheckacct(vacio);
         } else {
-            searchCheck.setCheckacct(codCuenta);
+            searchCheck.setCheckacct(newCodCuenta);
         }
 
         try {
@@ -664,7 +707,6 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Botones toolbar " > 
     public void botonNuevo(ActionEvent actionEvent) {
         if (varEstados != 2 && validarClear()) {
@@ -711,7 +753,6 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     public void confirmDialog(ActionEvent actionEvent) {
         showHideDialog("dlgC2", 2);
@@ -736,7 +777,7 @@ public class CheckForPaymentBean implements Serializable {
 
     public boolean validarClear() {
         try {
-            if (!banco.equals("-1") || impVencido != null || codSocio != null || codCuenta != null || !referencia.equals("") || !comentario.equals("") || NoCheque > 0 || !firma.equals("")) {
+            if (!banco.equals("-1") || impVencido != null || codSocio != null || newCodCuenta != null || !referencia.equals("") || !comentario.equals("") || NoCheque > 0 || !firma.equals("")) {
                 return true;
             }
         } catch (Exception e) {
@@ -832,14 +873,14 @@ public class CheckForPaymentBean implements Serializable {
 
         } catch (Exception e) {
             faceMessage(e.getMessage() + " -- " + e.getCause());
-            codCuenta = null;
-            nameCuenta = null;
+            newCodCuenta = null;
+            newNomCuenta = null;
         }
 
         this.setCodSocio(var.getVendorcode());
         this.setNameSocio(_result2.getCardname());
-        this.setNameCuenta(art.getAcctname());
-        this.setCodCuenta(var.getCheckacct());
+        this.setNewNomCuenta(art.getAcctname());
+        this.setNewCodCuenta(var.getCheckacct());
 
     }
 
@@ -848,7 +889,7 @@ public class CheckForPaymentBean implements Serializable {
             faceMessage("Seleccione un socio de negocio");
             return false;
         }
-        if (codCuenta == null || nameCuenta == null) {
+        if (newCodCuenta == null || newNomCuenta == null) {
             faceMessage("Seleccione una Cuenta");
             return false;
         }
@@ -882,8 +923,8 @@ public class CheckForPaymentBean implements Serializable {
     public void cleanBean(int tipo) {
         codSocio = null;
         nameSocio = null;
-        codCuenta = null;
-        nameCuenta = null;
+        newCodCuenta = null;
+        newNomCuenta = null;
         idInterno = 0;
         referencia = null;
         comentario = null;
@@ -1083,20 +1124,20 @@ public class CheckForPaymentBean implements Serializable {
         this.nameSocio = nameSocio;
     }
 
-    public String getCodCuenta() {
-        return codCuenta;
+    public String getNewCodCuenta() {
+        return newCodCuenta;
     }
 
-    public void setCodCuenta(String codCuenta) {
-        this.codCuenta = codCuenta;
+    public void setNewCodCuenta(String newCodCuenta) {
+        this.newCodCuenta = newCodCuenta;
     }
 
-    public String getNameCuenta() {
-        return nameCuenta;
+    public String getNewNomCuenta() {
+        return newNomCuenta;
     }
 
-    public void setNameCuenta(String nameCuenta) {
-        this.nameCuenta = nameCuenta;
+    public void setNewNomCuenta(String newNomCuenta) {
+        this.newNomCuenta = newNomCuenta;
     }
 
     public int getIdInterno() {
@@ -1196,7 +1237,6 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="IMPRIMIR FORMA 2">
     public String printInvoice() throws UnsupportedEncodingException {
         //faceMessage(getApplicationUri());

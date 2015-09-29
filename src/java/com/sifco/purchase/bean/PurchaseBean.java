@@ -267,7 +267,8 @@ public class PurchaseBean implements Serializable {
 
 //</editor-fold>
     
-//<editor-fold defaultstate="collapsed" desc="Autocompletado de CUENTA ">
+//<editor-fold defaultstate="collapsed" desc="Autocompletado de CUENTA - NO USADA">
+    /*
     public List<String> completeName(String query) {
         List _result = null;
 
@@ -307,9 +308,11 @@ public class PurchaseBean implements Serializable {
         }
         return results;
     }
+    */
 //</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del autocomplete CUENTA" > 
+//<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del autocomplete CUENTA - NO USADA" > 
+    /*
     public void findAccount(SelectEvent event) {
         List account = new Vector();
         String var = null;
@@ -357,15 +360,12 @@ public class PurchaseBean implements Serializable {
                         }
                     }
 
-                    /* AccountTO art = (AccountTO) account.get(0);
-                     if (newCodCuenta != null || newNomCuenta != null) {
-                     newCodCuenta = art.getAcctcode();
-                     newNomCuenta = art.getAcctname();
-                     }*/
+                    
                 }
             }
         }
     }
+    */
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">

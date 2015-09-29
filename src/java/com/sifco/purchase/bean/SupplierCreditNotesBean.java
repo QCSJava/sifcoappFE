@@ -280,6 +280,7 @@ public class SupplierCreditNotesBean implements Serializable {
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="Autocompletado de CUENTA ">
+    /*
     public List<String> completeName(String query) {
         List _result = null;
 
@@ -319,9 +320,11 @@ public class SupplierCreditNotesBean implements Serializable {
         }
         return results;
     }
+    */
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del autocomplete CUENTA" > 
+    /*
     public void findAccount(SelectEvent event) {
         List account = new Vector();
         String var = null;
@@ -372,6 +375,7 @@ public class SupplierCreditNotesBean implements Serializable {
             }
         }
     }
+    */
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">

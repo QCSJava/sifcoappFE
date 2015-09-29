@@ -98,6 +98,7 @@ public class ConciliationBean implements Serializable {
     private static AdminEJBClient AdminEJBService = null;
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="G & S">
     public String getSaldoActual() {
         return saldoActual;
@@ -284,6 +285,7 @@ public class ConciliationBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="LOAD">
     @PostConstruct
     public void initForm() {
@@ -421,131 +423,67 @@ public class ConciliationBean implements Serializable {
 //<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del autocomplete CUENTA" > 
     public void findAccount(SelectEvent event) {
         List account = new Vector();
-        String var = null;
-        if (event.getObject().toString() != var) {
-            List _result = null;
+        List _result = null;
 
-            try {
-                if (newCodCuenta != null) {
-                    _result = AccountingEJBClient.getAccountByFilter(newCodCuenta, null);
-                }
+        String[] newName = null;
+        String codigo = null, nombre = null;
 
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                newCodCuenta = null;
-                newNomCuenta = null;
-            }
-            if (_result.isEmpty()) {
-                this.newCodCuenta = null;
-                this.newNomCuenta = null;
-
+        if (newNomCuenta != null) {
+            newName = newNomCuenta.split("-");
+            codigo = newName[0];
+            nombre = newName[1];
+        } else {
+            if (newCodCuenta != null) {
+                newName = newCodCuenta.split("-");
+                codigo = newName[0];
+                nombre = newName[1];
             } else {
-                Iterator<AccountTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    AccountTO articulo = (AccountTO) iterator.next();
-                    account.add(articulo);
+                codigo = newCodCuenta;
+                nombre = newNomCuenta;
+            }
+        }
+
+        try {
+            _result = AccountingEJBClient.getAccountByFilter(codigo, nombre);
+        } catch (Exception e) {
+            faceMessage(e.getMessage() + " -- " + e.getCause());
+            newCodCuenta = null;
+            newNomCuenta = null;
+        }
+        if (_result.isEmpty()) {
+            this.newCodCuenta = null;
+            this.newNomCuenta = null;
+
+        } else {
+            for (Object obj : _result) {
+                AccountTO articulo = (AccountTO) obj;
+                account.add(articulo);
+            }
+            if (account.size() == 1) {
+                System.out.println("articulo unico, llenar campos en pantalla");
+                AccountTO art = (AccountTO) account.get(0);
+                if (newCodCuenta != null || newNomCuenta != null) {
+                    newCodCuenta = art.getAcctcode();
+                    newNomCuenta = art.getAcctname();
+                    //saldoActual = "$ " + formatNum(art.getCurrtotal());
+                    EntryTO in = new EntryTO();
+                    JournalEntryLinesTO _res = new JournalEntryLinesTO();
+                    in.setAcctcode(this.newCodCuenta);
+                    in.setRefdate(fechaCuentas);
+                    _res = AccountingEJBClient.getsaldo(in);
+                    saldoActual = "$ " + formatNum(_res.getTotalvat());
+                    saldoActualR = formatNum(_res.getTotalvat());
+                    clearList();
+                    dataAcc(fechaCuentas, newCodCuenta);
                 }
-                if (account.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        AccountTO art = (AccountTO) account.get(0);
-                        if (newCodCuenta != null || newNomCuenta != null) {
-                            newCodCuenta = art.getAcctcode();
-                            newNomCuenta = art.getAcctname();
-                            //saldoActual = "$ " + formatNum(art.getCurrtotal());
-                            EntryTO in = new EntryTO();
-                            JournalEntryLinesTO _res = new JournalEntryLinesTO();
-                            in.setAcctcode(this.newCodCuenta);
-                            in.setRefdate(fechaCuentas);
-                            _res = AccountingEJBClient.getsaldo(in);
-                            saldoActual = "$ " + formatNum(_res.getTotalvat());
-                            saldoActualR = formatNum(_res.getTotalvat());
-                            clearList();
-                            dataAcc(fechaCuentas, newCodCuenta);
-                        }
-                    } catch (Exception ex) {
-                        Logger.getLogger(BusinessPartner.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    for (Object ac : account) {
-                        AccountTO art = (AccountTO) ac;
-                        if (newNomCuenta.equals(art.getAcctname())) {
-                            newCodCuenta = art.getAcctcode();
-                            newNomCuenta = art.getAcctname();
-                            //saldoActual = "$ " + formatNum(art.getCurrtotal());
-                            EntryTO in = new EntryTO();
-                            JournalEntryLinesTO _res = new JournalEntryLinesTO();
-                            in.setAcctcode(this.newCodCuenta);
-                            in.setRefdate(fechaCuentas);
-                            _res = AccountingEJBClient.getsaldo(in);
-                            saldoActual = "$ " + formatNum(_res.getTotalvat());
-                            saldoActualR = formatNum(_res.getTotalvat());
-                            clearList();
-                            dataAcc(fechaCuentas, newCodCuenta);
-                            break;
-                        }
-                    }
-                }
+            } else {
+                faceMessage("Error: codigo duplicado");
             }
         }
     }
 
-    public void findAccount2(SelectEvent event) {
-        List account = new Vector();
-        String var = null;
-        if (event.getObject().toString() != var) {
-            List _result = null;
-
-            try {
-                if (newNomCuenta != null) {
-                    _result = AccountingEJBClient.getAccountByFilter(null, newNomCuenta);
-                }
-
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                newCodCuenta = null;
-                newNomCuenta = null;
-            }
-            if (_result.isEmpty()) {
-                this.newCodCuenta = null;
-                this.newNomCuenta = null;
-
-            } else {
-                Iterator<AccountTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    AccountTO articulo = (AccountTO) iterator.next();
-                    account.add(articulo);
-                }
-                if (account.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        AccountTO art = (AccountTO) account.get(0);
-                        if (newCodCuenta != null || newNomCuenta != null) {
-                            newCodCuenta = art.getAcctcode();
-                            newNomCuenta = art.getAcctname();
-                            clearList();
-                            dataAcc(fechaCuentas, newCodCuenta);
-                        }
-                    } catch (Exception ex) {
-                        Logger.getLogger(BusinessPartner.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    for (Object ac : account) {
-                        AccountTO art = (AccountTO) ac;
-                        if (newNomCuenta.equals(art.getAcctname())) {
-                            newCodCuenta = art.getAcctcode();
-                            newNomCuenta = art.getAcctname();
-                            clearList();
-                            dataAcc(fechaCuentas, newCodCuenta);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
 //</editor-fold>
-
+    
 //<editor-fold defaultstate="collapsed" desc="Datos de cuenta seleccionada">
     public void dataAcc(Date f1, String accCode) {
         this.cargo1 = 0.0;
@@ -594,6 +532,7 @@ public class ConciliationBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="recalcular cargos/abonos">
     public void cargosAbonosUpd() {
         this.cargo = 0.0;
@@ -755,12 +694,12 @@ public class ConciliationBean implements Serializable {
                 reportParameters.put("fechaHasta", getFechaCuentas());
                 reportParameters.put("saldoEsrito", this.saldoFinal);
                 reportParameters.put("saldoMetodo", this.saldoActualR);
-                
+
                 //where t1.extrmatch isnull and t1.account != $P{codAcc} and t1.refdate > $P{fechaHasta}
                 // t1.extrmatch isnull and t1.account = $P{codAcc} and t1.refdate <= $P{fechaHasta}
                 String where = " t1.extrmatch isnull ";//and t1.account = $P{codAcc} and t1.refdate <= $P{fechaHasta}";
                 reportParameters.put("where1", where);
-                
+
                 //cod name acc
                 reportParameters.put("codAcc", this.newCodCuenta);
                 reportParameters.put("nameAcc", this.newNomCuenta);
@@ -778,8 +717,9 @@ public class ConciliationBean implements Serializable {
             } catch (Exception e) {
                 faceMessage("Error al generar reporte: " + e.getMessage() + " " + e.getCause());
             }
-        }else
+        } else {
             faceMessage("Ingrese saldo final bancario");
+        }
 
     }
     //</editor-fold>
