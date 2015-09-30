@@ -406,7 +406,7 @@ Doc.
 			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy">
 				<reportElement x="-1" y="0" width="47" height="15" uuid="c0ebb738-8b2a-476d-9645-91c0e6243edf"/>
 				<textElement>
-					<font size="6"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
 			</textField>
