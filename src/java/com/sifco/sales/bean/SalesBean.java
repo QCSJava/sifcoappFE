@@ -1891,7 +1891,7 @@ public class SalesBean implements Serializable {
             if (newBill.getSeries() == 1 || newBill.getSeries() == 2) {
                 if (newBill.getSeries() == 1) {//consumidor final
                     String foo = newBill.getDocentry() + "";
-                    String bar = "xyz";
+                    String bar = (String) session.getAttribute("userfullname");
                     return "/testPrintView?faces-redirect=true"
                             + "&foo=" + URLEncoder.encode(foo, "UTF-8")
                             + "&bar=" + URLEncoder.encode(bar, "UTF-8");
