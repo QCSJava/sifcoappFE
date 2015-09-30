@@ -14,6 +14,9 @@ import com.sifcoapp.objects.common.to.ResultOutTO;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -22,6 +25,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name = "dailyClosingBean")
 @SessionScoped
@@ -51,7 +55,8 @@ public class DailyClosingBean implements Serializable{
     //CMB
     private static final String CATALOGBANK = "Banks";
     private List<CatalogTO> lstBanks;
-    
+    //
+    private String newCodCuenta, newNomCuenta;
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="LOAD">
@@ -77,7 +82,7 @@ public class DailyClosingBean implements Serializable{
     public void tipeChange(){//ValueChangeEvent event) {
         //!event.getOldValue().equals("0")){//
         //faceMessage("entro");
-        if (this.tipoCierre != 0 && !this.accBank.equals("-1")) {
+        if (this.tipoCierre != 0) {
             try {
                 this.enableBtn = false;
                 AccountTO in = new AccountTO();
@@ -91,9 +96,65 @@ public class DailyClosingBean implements Serializable{
     }
 //</editor-fold>
     
+//<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del autocomplete CUENTA" > 
+    public void findAccount(SelectEvent event) {
+        List account = new Vector();
+        List _result = null;
+
+        String[] newName = null;
+        String codigo = null, nombre = null;
+
+        if (newNomCuenta != null) {
+            newName = newNomCuenta.split("-");
+            codigo = newName[0];
+            nombre = newName[1];
+        } else {
+            if (newCodCuenta != null) {
+                newName = newCodCuenta.split("-");
+                codigo = newName[0];
+                nombre = newName[1];
+            } else {
+                codigo = newCodCuenta;
+                nombre = newNomCuenta;
+            }
+        }
+
+        try {
+            _result = AccountingEJBClient.getAccountByFilter(codigo, nombre);
+        } catch (Exception e) {
+            faceMessage(e.getMessage() + " -- " + e.getCause());
+            newCodCuenta = null;
+            newNomCuenta = null;
+        }
+        if (_result.isEmpty()) {
+            this.newCodCuenta = null;
+            this.newNomCuenta = null;
+
+        } else {
+            for (Object obj : _result) {
+                AccountTO articulo = (AccountTO) obj;
+                account.add(articulo);
+            }
+            if (account.size() == 1) {
+                try {
+                    AccountTO art = (AccountTO) account.get(0);
+                    if (newCodCuenta != null || newNomCuenta != null) {
+                        newCodCuenta = art.getAcctcode();
+                        newNomCuenta = art.getAcctname();
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(CheckForPaymentBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                faceMessage("Error codigo repetido");
+            }
+        }
+    }
+//</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="GUARDAR EN BASE">
     public void doSave(){
-        if (!this.accBank.equals("-1") && this.saldoTrans>0.0 && this.tipoCierre != 0) {
+        if (this.saldoTrans>0.0 && this.tipoCierre != 0) {
             try {
                 ResultOutTO res = new ResultOutTO();
                 AccountTO in = new AccountTO();
@@ -101,7 +162,7 @@ public class DailyClosingBean implements Serializable{
                 in.setUsersing((int)session.getAttribute("usersign"));
                 in.setObjtype(tipoCierre+"");
                 in.setCreatedate(d);
-                in.setAcctcode(accBank);
+                in.setAcctcode(newCodCuenta);
                 in.setFormatcode(comment);
                 in.setCurrtotal(saldoTrans);
                 res = AccountingEJBClient.traslado_caja(in);
@@ -125,6 +186,8 @@ public class DailyClosingBean implements Serializable{
         this.saldoTrans = 0.0;
         this.comment = "";
         this.enableBtn = true;
+        this.newCodCuenta = "";
+        this.newNomCuenta = "";
     }
 //</editor-fold>
     
@@ -164,6 +227,38 @@ public class DailyClosingBean implements Serializable{
     
 //<editor-fold defaultstate="collapsed" desc="G & S">
 
+    public static AccountingEJBClient getAccountingEJBClient() {
+        return AccountingEJBClient;
+    }
+
+    public static void setAccountingEJBClient(AccountingEJBClient AccountingEJBClient) {
+        DailyClosingBean.AccountingEJBClient = AccountingEJBClient;
+    }
+
+    public HttpSession getSession() {
+        return session;
+    }
+
+    public void setSession(HttpSession session) {
+        this.session = session;
+    }
+
+    public String getNewCodCuenta() {
+        return newCodCuenta;
+    }
+
+    public void setNewCodCuenta(String newCodCuenta) {
+        this.newCodCuenta = newCodCuenta;
+    }
+
+    public String getNewNomCuenta() {
+        return newNomCuenta;
+    }
+
+    public void setNewNomCuenta(String newNomCuenta) {
+        this.newNomCuenta = newNomCuenta;
+    }
+    
     public static AdminEJBClient getAdminEJBService() {
         return AdminEJBService;
     }

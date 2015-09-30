@@ -68,16 +68,24 @@
                         <p:spacer width="0" height="10"/>
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2">
-                                <p:outputLabel value="Cuenta de Banco"/>
+                                <p:outputLabel value="Cuenta contable Banco"/>
+                            </div>
+                            <div class="ui-grid-col-5">
+                                <p:autoComplete scrollHeight="250" id="codCuenta" forceSelection="true" minQueryLength="2" value="#{dailyClosingBean.newCodCuenta}"
+                                                completeMethod="#{checkForPaymentBean.completeCode}" effect="fade" size="16" label="Codigo Cuenta"
+                                                >
+                                    <p:ajax event="itemSelect" listener="#{dailyClosingBean.findAccount}" update="codCuenta nameCuenta" />
+                                </p:autoComplete>
+
+                                <p:spacer width="10" height="0" />
+
+                                <p:autoComplete scrollHeight="250" id="nameCuenta" forceSelection="true" minQueryLength="2" value="#{dailyClosingBean.newNomCuenta}"
+                                                completeMethod="#{checkForPaymentBean.completeName}" effect="fade" size="37" label="Nombre Cuenta"
+                                                >
+                                    <p:ajax event="itemSelect" listener="#{dailyClosingBean.findAccount}" update="codCuenta nameCuenta" />
+                                </p:autoComplete>
                             </div>
 
-                            <div class="ui-grid-col-1">
-                                <p:selectOneMenu value="#{dailyClosingBean.accBank}" style="width:125px">
-                                    <f:selectItem itemLabel="Banco" itemValue="-1" />
-                                    <f:selectItems value="#{dailyClosingBean.lstBanks}" var="bank" itemLabel="#{bank.catvalue}" itemValue="#{bank.catvalue2}"/>
-                                    <p:ajax event="valueChange" listener="#{dailyClosingBean.tipeChange}" update="btnPrincipal, saldo"/>
-                                </p:selectOneMenu>
-                            </div>
                         </div>
                         <p:spacer width="0" height="10"/>
                         <div class="ui-grid-row">
