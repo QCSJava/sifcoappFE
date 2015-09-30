@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dailySalesControl.jrxml" pageWidth="595" pageHeight="842" columnWidth="455" leftMargin="85" rightMargin="55" topMargin="35" bottomMargin="35" uuid="d665bf20-2d51-4d8b-aae5-566096205736">
 	<property name="ireport.zoom" value="1.2100000000000002"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="101"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="pdocnum" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -353,7 +353,7 @@ Doc.
 				<text><![CDATA[Cliente]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="193" y="5" width="51" height="17" uuid="ec75697a-e26c-4e22-9df8-cf2d74fd3b72"/>
+				<reportElement x="204" y="5" width="51" height="17" uuid="ec75697a-e26c-4e22-9df8-cf2d74fd3b72"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -406,12 +406,12 @@ Doc.
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="-1" y="0" width="45" height="15" uuid="c0ebb738-8b2a-476d-9645-91c0e6243edf"/>
 				<textElement>
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="100" y="0" width="90" height="15" uuid="3bba158b-00ea-458d-b166-dcefbf745324"/>
+				<reportElement x="80" y="0" width="118" height="15" uuid="3bba158b-00ea-458d-b166-dcefbf745324"/>
 				<textElement>
 					<font size="6"/>
 				</textElement>
@@ -454,14 +454,14 @@ Doc.
 				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="44" y="0" width="55" height="15" uuid="bcf13113-1eab-441b-bd6d-3b14f221c6e1"/>
-				<textElement>
-					<font size="8"/>
+				<reportElement x="44" y="0" width="36" height="15" uuid="bcf13113-1eab-441b-bd6d-3b14f221c6e1"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{numatcard}]]></textFieldExpression>
 			</textField>
 			<textField pattern="$ #,##0.0000">
-				<reportElement x="190" y="0" width="51" height="15" uuid="92405a0c-228e-41e1-9758-686757b83593">
+				<reportElement x="198" y="0" width="51" height="15" uuid="92405a0c-228e-41e1-9758-686757b83593">
 					<printWhenExpression><![CDATA[$F{peymethod}.equals("1")]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
@@ -594,7 +594,7 @@ Doc.
 				<text><![CDATA[Ventas Totales  $ :]]></text>
 			</staticText>
 			<subreport>
-				<reportElement x="196" y="2" width="49" height="15" uuid="a3875710-483e-4d71-b635-6d2817959bdf"/>
+				<reportElement x="204" y="2" width="49" height="15" uuid="a3875710-483e-4d71-b635-6d2817959bdf"/>
 				<subreportParameter name="PDOCDATE2">
 					<subreportParameterExpression><![CDATA[$P{PDOCDATE2}]]></subreportParameterExpression>
 				</subreportParameter>
