@@ -402,7 +402,7 @@ Doc.
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="17" splitType="Stretch">
+		<band height="16" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="-1" y="0" width="45" height="15" uuid="c0ebb738-8b2a-476d-9645-91c0e6243edf"/>
 				<textElement>
@@ -410,10 +410,10 @@ Doc.
 				</textElement>
 				<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="80" y="0" width="118" height="15" uuid="3bba158b-00ea-458d-b166-dcefbf745324"/>
 				<textElement>
-					<font size="6"/>
+					<font size="8" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cardname}]]></textFieldExpression>
 			</textField>
