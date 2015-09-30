@@ -395,7 +395,7 @@ Doc.
 			<staticText>
 				<reportElement x="404" y="5" width="45" height="17" uuid="94919ecd-cc4c-4381-9806-ce7c0be0c35b"/>
 				<textElement textAlignment="Center">
-					<font size="8" isBold="true"/>
+					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Colecturía]]></text>
 			</staticText>
@@ -403,8 +403,8 @@ Doc.
 	</pageHeader>
 	<detail>
 		<band height="16" splitType="Stretch">
-			<textField pattern="dd/MM/yyyy">
-				<reportElement x="-1" y="0" width="45" height="15" uuid="c0ebb738-8b2a-476d-9645-91c0e6243edf"/>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy">
+				<reportElement x="-1" y="0" width="47" height="15" uuid="c0ebb738-8b2a-476d-9645-91c0e6243edf"/>
 				<textElement>
 					<font size="6"/>
 				</textElement>
@@ -437,7 +437,7 @@ Doc.
 			</textField>
 			<textField pattern="$ #,##0.0000">
 				<reportElement x="348" y="0" width="50" height="15" uuid="770f2df9-9ca6-410e-b4fb-5a4d45587829">
-					<printWhenExpression><![CDATA[$F{peymethod}.equals("5")]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{peymethod}.equals("4")]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
 					<font size="8"/>
@@ -453,8 +453,8 @@ Doc.
 				</textElement>
 				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="44" y="0" width="36" height="15" uuid="bcf13113-1eab-441b-bd6d-3b14f221c6e1"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="46" y="0" width="34" height="15" uuid="bcf13113-1eab-441b-bd6d-3b14f221c6e1"/>
 				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
