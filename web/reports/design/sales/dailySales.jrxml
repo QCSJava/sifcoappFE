@@ -28,156 +28,122 @@ join cat_tab1_catalogos c on c.catcode=cast(h.series as text) and c.tablecode=9
 where $P!{PWHERE}]]>
 	</queryString>
 	<field name="docentry" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Entrada doc.emis.
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Entrada doc.emis.]]></fieldDescription>
 	</field>
 	<field name="docnum" class="java.lang.Integer">
 		<fieldDescription><![CDATA[NÃºmero de documento]]></fieldDescription>
 	</field>
 	<field name="doctype" class="java.lang.String"/>
 	<field name="canceled" class="java.lang.String">
-		<fieldDescription><![CDATA[Cancelado
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Cancelado]]></fieldDescription>
 	</field>
 	<field name="docstatus" class="java.lang.String">
-		<fieldDescription><![CDATA[Status de documento
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Status de documento]]></fieldDescription>
 	</field>
 	<field name="objtype" class="java.lang.String"/>
 	<field name="docdate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha doc.
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Fecha doc.]]></fieldDescription>
 	</field>
 	<field name="docduedate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fe.vencimiento doc.
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Fe.vencimiento doc.]]></fieldDescription>
 	</field>
 	<field name="cardcode" class="java.lang.String">
-		<fieldDescription><![CDATA[Proveedor por defecto
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Proveedor por defecto]]></fieldDescription>
 	</field>
 	<field name="numatcard" class="java.lang.String">
-		<fieldDescription><![CDATA[NÃºmero de referencia del SN
-]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de referencia del SN]]></fieldDescription>
 	</field>
 	<field name="cardname" class="java.lang.String">
-		<fieldDescription><![CDATA[Nombre SN
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Nombre SN]]></fieldDescription>
 	</field>
 	<field name="discsum" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Descuento total
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Descuento total]]></fieldDescription>
 	</field>
 	<field name="doctotal" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Total del documento
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Total del documento]]></fieldDescription>
 	</field>
 	<field name="ref1" class="java.lang.String">
-		<fieldDescription><![CDATA[Referencia 1
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Referencia 1]]></fieldDescription>
 	</field>
 	<field name="ref2" class="java.lang.String">
-		<fieldDescription><![CDATA[Referencia 2
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Referencia 2]]></fieldDescription>
 	</field>
 	<field name="comments" class="java.lang.String"/>
 	<field name="jrnlmemo" class="java.lang.String">
-		<fieldDescription><![CDATA[Comentarios
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Comentarios]]></fieldDescription>
 	</field>
 	<field name="paidtodate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Pagado hasta la fecha
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Pagado hasta la fecha]]></fieldDescription>
 	</field>
 	<field name="transid" class="java.lang.Integer">
-		<fieldDescription><![CDATA[NÃºmero de operaciÃ³n
-]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de operaciÃ³n]]></fieldDescription>
 	</field>
 	<field name="receiptnum" class="java.lang.Integer">
-		<fieldDescription><![CDATA[NÃºmero de recibo
-]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de recibo]]></fieldDescription>
 	</field>
 	<field name="groupnum" class="java.lang.Integer">
-		<fieldDescription><![CDATA[CÃ³digo de condiciones de pago
-]]></fieldDescription>
+		<fieldDescription><![CDATA[CÃ³digo de condiciones de pago]]></fieldDescription>
 	</field>
 	<field name="confirmed" class="java.lang.String">
-		<fieldDescription><![CDATA[Confirmado
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Confirmado]]></fieldDescription>
 	</field>
 	<field name="createtran" class="java.lang.String">
-		<fieldDescription><![CDATA[Crear registro en el diario
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Crear registro en el diario]]></fieldDescription>
 	</field>
 	<field name="series" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Serie
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Serie]]></fieldDescription>
 	</field>
 	<field name="taxdate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha de documento
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Fecha de documento]]></fieldDescription>
 	</field>
 	<field name="filler" class="java.lang.String"/>
 	<field name="rounddif" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Importe de diferencias de redondeo
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Importe de diferencias de redondeo]]></fieldDescription>
 	</field>
 	<field name="rounding" class="java.lang.String">
-		<fieldDescription><![CDATA[Redondeo
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Redondeo]]></fieldDescription>
 	</field>
 	<field name="canceldate" class="java.sql.Date">
 		<fieldDescription><![CDATA[Fecha de cancelaciÃ³n]]></fieldDescription>
 	</field>
 	<field name="peymethod" class="java.lang.String">
-		<fieldDescription><![CDATA[Forma de pago
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Forma de pago]]></fieldDescription>
 	</field>
 	<field name="ctlaccount" class="java.lang.String">
-		<fieldDescription><![CDATA[Cuenta asociada
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Cuenta asociada]]></fieldDescription>
 	</field>
 	<field name="bplname" class="java.lang.String">
-		<fieldDescription><![CDATA[Nombre de sucursal
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Nombre de sucursal]]></fieldDescription>
 	</field>
 	<field name="vatregnum" class="java.lang.String">
-		<fieldDescription><![CDATA[NÃºmero de registro de IVA
-]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de registro de IVA]]></fieldDescription>
 	</field>
 	<field name="paidsum" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Total pagado
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Total pagado]]></fieldDescription>
 	</field>
 	<field name="towhscode" class="java.lang.String">
 		<fieldDescription><![CDATA[Para almacen]]></fieldDescription>
 	</field>
 	<field name="nret" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[No. Retencion
-]]></fieldDescription>
+		<fieldDescription><![CDATA[No. Retencion]]></fieldDescription>
 	</field>
 	<field name="namenp" class="java.lang.String">
-		<fieldDescription><![CDATA[RazÃ³n Social Cliente/Proveedor
-]]></fieldDescription>
+		<fieldDescription><![CDATA[RazÃ³n Social Cliente/Proveedor]]></fieldDescription>
 	</field>
 	<field name="quedan" class="java.lang.Integer">
-		<fieldDescription><![CDATA[No Quedan
-]]></fieldDescription>
+		<fieldDescription><![CDATA[No Quedan]]></fieldDescription>
 	</field>
 	<field name="fechreciva" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha de Reclamo de IVA
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Fecha de Reclamo de IVA]]></fieldDescription>
 	</field>
 	<field name="fquedan" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha de EmisiÃ³n de Quedan
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Fecha de EmisiÃ³n de Quedan]]></fieldDescription>
 	</field>
 	<field name="usersign" class="java.lang.Integer">
 		<fieldDescription><![CDATA[Firma de usuario]]></fieldDescription>
 	</field>
 	<field name="createdate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha de creaciÃ³n
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Fecha de creaciÃ³n]]></fieldDescription>
 	</field>
 	<field name="createtime" class="java.lang.Integer">
 		<fieldDescription><![CDATA[Hora de creaciÃ³n]]></fieldDescription>
@@ -186,116 +152,89 @@ where $P!{PWHERE}]]>
 		<fieldDescription><![CDATA[Subtipo de documento]]></fieldDescription>
 	</field>
 	<field name="vatsum" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Impuesto total
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Impuesto total]]></fieldDescription>
 	</field>
 	<field name="linenum" class="java.lang.Integer">
-		<fieldDescription><![CDATA[NÃºmero de lÃ­nea
-]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de lÃ­nea]]></fieldDescription>
 	</field>
 	<field name="targettype" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Clase de documento de destino
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Clase de documento de destino]]></fieldDescription>
 	</field>
 	<field name="baseref" class="java.lang.String">
-		<fieldDescription><![CDATA[Referencia base
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Referencia base]]></fieldDescription>
 	</field>
 	<field name="basetype" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Tipo de transacciÃ³n base
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Tipo de transacciÃ³n base]]></fieldDescription>
 	</field>
 	<field name="baseentry" class="java.lang.Integer">
-		<fieldDescription><![CDATA[ID interno de documento base
-]]></fieldDescription>
+		<fieldDescription><![CDATA[ID interno de documento base]]></fieldDescription>
 	</field>
 	<field name="baseline" class="java.lang.Integer">
-		<fieldDescription><![CDATA[NÃºmero de lÃ­nea base
-]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de lÃ­nea base]]></fieldDescription>
 	</field>
 	<field name="linestatus" class="java.lang.String">
-		<fieldDescription><![CDATA[Status de la lÃ­nea
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Status de la lÃ­nea]]></fieldDescription>
 	</field>
 	<field name="itemcode" class="java.lang.String">
-		<fieldDescription><![CDATA[NÃºmero de artÃ­culo
-]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de artÃ­culo]]></fieldDescription>
 	</field>
 	<field name="dscription" class="java.lang.String">
-		<fieldDescription><![CDATA[DescripciÃ³n del artÃ­culo
-]]></fieldDescription>
+		<fieldDescription><![CDATA[DescripciÃ³n del artÃ­culo]]></fieldDescription>
 	</field>
 	<field name="quantity" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Cantidad en doc.
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Cantidad en doc.]]></fieldDescription>
 	</field>
 	<field name="openqty" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Open Quantity
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Open Quantity]]></fieldDescription>
 	</field>
 	<field name="price" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Precio
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Precio]]></fieldDescription>
 	</field>
 	<field name="discprcnt" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Descuento % por lÃ­nea
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Descuento % por lÃ­nea]]></fieldDescription>
 	</field>
 	<field name="linetotal" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Total lÃ­neas
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Total lÃ­neas]]></fieldDescription>
 	</field>
 	<field name="whscode" class="java.lang.String"/>
 	<field name="acctcode" class="java.lang.String">
-		<fieldDescription><![CDATA[CÃ³digo de cuenta
-]]></fieldDescription>
+		<fieldDescription><![CDATA[CÃ³digo de cuenta]]></fieldDescription>
 	</field>
 	<field name="taxstatus" class="java.lang.String">
 		<fieldDescription><![CDATA[indicador de impuesto]]></fieldDescription>
 	</field>
 	<field name="pricebefdi" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Precio unitario
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Precio unitario]]></fieldDescription>
 	</field>
 	<field name="ocrcode" class="java.lang.String">
-		<fieldDescription><![CDATA[Norma de reparto
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Norma de reparto]]></fieldDescription>
 	</field>
 	<field name="vatgroup" class="java.lang.String">
-		<fieldDescription><![CDATA[Indicador de impuestos
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Indicador de impuestos]]></fieldDescription>
 	</field>
 	<field name="priceafvat" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Precio bruto
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Precio bruto]]></fieldDescription>
 	</field>
 	<field name="factor1" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Factor 1
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Factor 1]]></fieldDescription>
 	</field>
 	<field name="grssprofit" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Ingreso bruto lÃ­nea
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Ingreso bruto lÃ­nea]]></fieldDescription>
 	</field>
 	<field name="taxcode" class="java.lang.String">
-		<fieldDescription><![CDATA[Indicador de impuestos
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Indicador de impuestos]]></fieldDescription>
 	</field>
 	<field name="vatappld" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Impuesto aplicado
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Impuesto aplicado]]></fieldDescription>
 	</field>
 	<field name="unitmsr" class="java.lang.String">
-		<fieldDescription><![CDATA[Unidad
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Unidad]]></fieldDescription>
 	</field>
 	<field name="stockpricestockprice" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Costo del artÃ­culo
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Costo del artÃ­culo]]></fieldDescription>
 	</field>
 	<field name="gtotal" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Total bruto
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Total bruto]]></fieldDescription>
 	</field>
 	<field name="catcode" class="java.lang.String"/>
 	<field name="tablecode" class="java.lang.Integer"/>
@@ -308,7 +247,7 @@ where $P!{PWHERE}]]>
 	<variable name="variable1" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{vatsum}]]></variableExpression>
 	</variable>
-	<variable name="vatsum_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+	<variable name="vatsum_1" class="java.math.BigDecimal" resetType="Group" resetGroup="tipo_documento" calculation="Sum">
 		<variableExpression><![CDATA[$F{vatsum}]]></variableExpression>
 	</variable>
 	<variable name="doctotal_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
@@ -338,7 +277,24 @@ where $P!{PWHERE}]]>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="50"/>
+			<band height="50">
+				<textField evaluationTime="Group" evaluationGroup="tipo_documento" pattern="###0.00;(###0.00)">
+					<reportElement x="363" y="30" width="90" height="20" uuid="75b6d36a-68fb-43e6-8924-c0b69c639996"/>
+					<textFieldExpression><![CDATA[$V{doctotal_1}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="277" y="30" width="83" height="20" uuid="1b8789af-f90e-4c39-9c69-81a3cba52835"/>
+					<text><![CDATA[SubTotal:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="265" y="10" width="95" height="20" uuid="b67f446d-e5bb-47ec-a724-d86127024f8f"/>
+					<text><![CDATA[Subtotal Impuesto:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="363" y="10" width="87" height="20" uuid="8b7b6052-7d21-45a7-8515-0befdded8172"/>
+					<textFieldExpression><![CDATA[$V{vatsum_1}]]></textFieldExpression>
+				</textField>
+			</band>
 		</groupFooter>
 	</group>
 	<background>
@@ -502,14 +458,6 @@ where $P!{PWHERE}]]>
 	</columnFooter>
 	<pageFooter>
 		<band height="75" splitType="Stretch">
-			<textField pattern="###0.00;(###0.00)" isBlankWhenNull="true">
-				<reportElement x="362" y="5" width="90" height="20" uuid="e6a114a5-61b7-4fe1-9f53-2b903dbca6ad"/>
-				<textFieldExpression><![CDATA[$V{vatsum_1}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0.00;(###0.00)">
-				<reportElement x="362" y="25" width="90" height="20" uuid="75b6d36a-68fb-43e6-8924-c0b69c639996"/>
-				<textFieldExpression><![CDATA[$V{doctotal_1}]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement x="429" y="53" width="26" height="20" uuid="ddcddabf-65b5-420d-8bfb-7385a294694d"/>
 				<textFieldExpression><![CDATA[$V{PAGE_TOTAL}]]></textFieldExpression>
@@ -526,26 +474,18 @@ where $P!{PWHERE}]]>
 				<reportElement x="401" y="53" width="27" height="20" uuid="16309d0b-07fd-4a3f-a220-f4ffaee3cb1d"/>
 				<text><![CDATA[de]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="276" y="25" width="79" height="20" uuid="1b8789af-f90e-4c39-9c69-81a3cba52835"/>
-				<text><![CDATA[Total Bruto:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="276" y="5" width="83" height="20" uuid="b67f446d-e5bb-47ec-a724-d86127024f8f"/>
-				<text><![CDATA[Total impuestos:]]></text>
-			</staticText>
 			<line>
-				<reportElement x="0" y="4" width="455" height="1" uuid="b3352d82-7117-4cbe-a8d3-e322b91f1287"/>
+				<reportElement x="0" y="26" width="455" height="1" uuid="b3352d82-7117-4cbe-a8d3-e322b91f1287"/>
 			</line>
 			<textField>
-				<reportElement x="0" y="10" width="79" height="15" uuid="affe61ec-558c-4074-93af-8044a4b6a2af"/>
+				<reportElement x="0" y="38" width="79" height="15" uuid="affe61ec-558c-4074-93af-8044a4b6a2af"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{JASPER_REPORT}.getName()]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy h.mm a">
-				<reportElement x="0" y="27" width="100" height="20" uuid="5bb259d1-e657-46c4-a316-609ad6646e0e"/>
+				<reportElement x="0" y="55" width="100" height="20" uuid="5bb259d1-e657-46c4-a316-609ad6646e0e"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>

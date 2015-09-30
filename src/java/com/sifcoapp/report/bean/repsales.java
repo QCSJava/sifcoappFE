@@ -89,7 +89,7 @@ public class repsales implements Serializable {
         } else if (this.ftype == 2) {
             _reportname = "/sales/dailySales";
             _reportTitle = "Detalle de Ventas Diarias";
-            _whereclausule = " h.docentry=d.docentry and docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}";
+            _whereclausule = "docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}";
             if (this.getFcode() != null && this.getFcode().length() > 0) {
                 _whereclausule += " and docnum=" + this.getFcode();
             }
