@@ -13,6 +13,8 @@ import com.sifcoapp.objects.sales.to.SalesTO;
 import com.sifcoapp.report.common.numerosAletras;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,6 +43,13 @@ public class Pdf extends HttpServlet {
         CatalogTO _R = new CatalogTO();
         String numberToletter = null;
         Double total = 0.0;
+        String nombreVendedor = "";
+        //hora de impresion
+        Calendar calendario = new GregorianCalendar();
+        int hora, minutos;
+        hora = calendario.get(Calendar.HOUR);
+        minutos = calendario.get(Calendar.MINUTE);
+
         try {
             convertNumber = new numerosAletras() {
             };
@@ -48,6 +57,7 @@ public class Pdf extends HttpServlet {
             AdminEJBService = new AdminEJBClient();
 
             var = SalesEJBService.getSalesByKey(Integer.parseInt(request.getParameter("foo")));//quemado
+            nombreVendedor = request.getParameter("bar");
             _R = AdminEJBService.findCatalogByKey(var.getPeymethod(), 8);
             total = var.getDoctotal();//formatNumber(var.getDoctotal());
             numberToletter = convertNumber.convertNumberToLetter(total);
@@ -95,7 +105,7 @@ public class Pdf extends HttpServlet {
                     + "                                    \n"
                     + "                                </td>\n"
                     + "                                <td style=\"height: 25px; width: 25%\">\n"
-                    + "                                    " + var.getNumatcard()+ "\n"
+                    + "                                    " + var.getNumatcard() + "\n"
                     + "                                </td>\n"
                     + "                                <td style=\"height: 25px\">\n"
                     + "                                    \n"
@@ -119,11 +129,11 @@ public class Pdf extends HttpServlet {
                     + "                                <td style=\"width: 10%\">\n"
                     + "\n"
                     + "                                </td>\n"
-                    + "                                <td style=\"width: 70%\">\n"
+                    + "                                <td style=\"width: 65%\">\n"
                     + "                                    " + var.getCardcode() + "-" + var.getCardname().toUpperCase() + "\n"
                     + "                                </td>\n"
                     + "                                <td>\n"
-                    + "                                    " + var.getDocdate() + "\n"
+                    + "                                    " + var.getDocdate() +" HORA: "+hora+":"+minutos+"\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                            <tr style=\"height: 18px\">\n"
@@ -218,8 +228,9 @@ public class Pdf extends HttpServlet {
                     + "                    </td>\n"
                     + "                </tr>\n"
                     + "                <tr style=\"height: 15.8px\">\n"
-                    + "                    <td style=\"width: 50px\"/>\n"
-                    + "                    <td   style=\"width: 100px\">\n"
+                    + "                    <td/>\n"
+                    + "                    <td>\n"
+                    + "                        vendedor: " + nombreVendedor + "\n"
                     + "                    </td>\n"
                     + "                    <td>\n"
                     + "                        $0.00\n"
@@ -307,7 +318,7 @@ public class Pdf extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
+
     private Double truncarDouble(Double doctotal) {
         return Math.floor(100 * doctotal) / 100;
     }
