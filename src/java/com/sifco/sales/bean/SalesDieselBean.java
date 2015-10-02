@@ -28,6 +28,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
@@ -72,7 +73,7 @@ public class SalesDieselBean implements Serializable {
     private String socioNeg;        //Socio de Negocio
     private String codSocio;        //Codigo de Socio
     private int equipo;             //Equipo
-    private String refe;            //Referencia
+    private int refe=0;            //Referencia
 
     private Date fechaConta = new Date();   //Fecha Contabilizacion
 
@@ -294,13 +295,15 @@ public class SalesDieselBean implements Serializable {
         this.equipo = equipo;
     }
 
-    public String getRefe() {
+    public int getRefe() {
         return refe;
     }
 
-    public void setRefe(String refe) {
+    public void setRefe(int refe) {
         this.refe = refe;
     }
+
+    
 
     public Date getFechaConta() {
         return fechaConta;
@@ -527,14 +530,37 @@ public class SalesDieselBean implements Serializable {
         if (ParameterEJBClient == null) {
             ParameterEJBClient = new ParameterEJBClient();
         }
+        try {
+            setTipoDoc(Integer.parseInt(ParameterEJBClient.getParameterbykey(2).getValue1()));
+        } catch (EJBException | NumberFormatException e) {
+        }
 
         //llenar nombre de vendedor
         this.nomVendedor = session.getAttribute("userfullname").toString();
-
+        //setRef();
         estateGuardar();
 
     }
 
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="SET REF">
+    public void setRef() {
+        String num;
+        try {
+            num = SalesEJBService.last_INPUT(tipoDoc, "10");
+            if (isNum(num)) {
+                int ref = 0;
+                ref = Integer.parseInt(num);
+                ref = ref + 1;
+                this.refe = ref;
+            } else {
+                this.refe = 0;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(SalesBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
@@ -662,7 +688,7 @@ public class SalesDieselBean implements Serializable {
         this.disabledDocNum = true;
         this.disabledSearch = false;
         this.disabledComun = false;
-
+        setRef();
         RequestContext.getCurrentInstance().update("frmSalesDiesel");
 
     }
@@ -757,7 +783,7 @@ public class SalesDieselBean implements Serializable {
         newBill.setCardname(socioNeg);
         newBill.setCardcode(codSocio);
         newBill.setRef2("" + equipo);
-        newBill.setNumatcard(refe);
+        newBill.setNumatcard(refe+"");
         newBill.setDocdate(fechaConta);
         newBill.setTaxdate(fechaConta);
         newBill.setSeries(Integer.parseInt(ParameterEJBClient.getParameterbykey(2).getValue1()));
@@ -821,10 +847,10 @@ public class SalesDieselBean implements Serializable {
         newBill.setCardcode(codSocio);
         newBill.setRef2("" + equipo);
 
-        if (refe.equals("")) {
-            newBill.setNumatcard(vacio);
+        if (refe==0) {
+            newBill.setNumatcard(0+"");
         } else {
-            newBill.setNumatcard(refe);
+            newBill.setNumatcard(refe+"");
         }
 
         try {
@@ -870,10 +896,10 @@ public class SalesDieselBean implements Serializable {
             searchBill.setRef2("" + equipo);
         }
 
-        if (refe.equals("")) {
+        if (refe==0) {
             searchBill.setNumatcard(vacio);
         } else {
-            searchBill.setNumatcard(refe);
+            searchBill.setNumatcard(refe+"");
         }
 
         searchBill.setDocdate(fechaConta);
@@ -1162,6 +1188,17 @@ public class SalesDieselBean implements Serializable {
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="Funciones varias">
+    public boolean isNum(String num) {
+        if (num == null || num.isEmpty()) {
+            return false;
+        }
+        try {
+            Integer.parseInt(num);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
     //evento al seleccionar un elemento del dialogo facturas
     public void selectDialogBill() {
         if (SalesEJBService == null) {
@@ -1206,7 +1243,7 @@ public class SalesDieselBean implements Serializable {
         setSocioNeg(var.getCardname());
         setCodSocio(var.getCardcode());
         setEquipo(Integer.parseInt(var.getRef2()));
-        setRefe(var.getNumatcard());
+        setRefe(Integer.parseInt(var.getNumatcard()));
 
         setFechaConta(var.getDocdate());
 
@@ -1245,7 +1282,7 @@ public class SalesDieselBean implements Serializable {
         this.socioNeg = null;
         this.codSocio = null;
         this.equipo = 0;
-        this.refe = null;
+        this.refe = 0;
         if (tipo == 1) {
             Date d = new Date();
             this.setFechaConta(d);
@@ -1279,7 +1316,7 @@ public class SalesDieselBean implements Serializable {
             return true;
         }
         try {
-            if (socioNeg != null || codSocio != null || !refe.equals("")) {
+            if (socioNeg != null || codSocio != null || refe!=0) {
                 return true;
             }
         } catch (Exception e) {

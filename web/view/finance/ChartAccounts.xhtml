@@ -6,6 +6,19 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
+    <head>
+        <script>
+            function format(input)
+            {
+                var num = input.value.replace(/\./g, '');
+                if (!isNaN(num)) {
+                    num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g, '$1.');
+                    num = num.split('').reverse().join('').replace(/^[\.]/, '');
+                    input.value = num;
+                }
+            }
+        </script>
+    </head>
     <body>
         <ui:composition template="./../../template.xhtml">
             <ui:define name="content">
@@ -63,8 +76,8 @@
                                 <div class="ui-grid-row">
                                     <div class="ui-grid-col-4"><p:outputLabel value="Saldo"></p:outputLabel></div>
                                     <div class="ui-grid-col-8">
-                                        <p:inputText id="saldo" value="$#{chartAccounts.currtotal}" readonly="true">
-
+                                        <p:inputText id="saldo" value="#{chartAccounts.currtotal}" readonly="true">
+                                            <f:convertNumber  groupingUsed="true"/>
                                         </p:inputText>
                                         <!-- onclick="PF('dlgC3').show();"-->
                                         <p:commandButton id="btnLines" action="#{chartAccounts.btnSaldo()}" icon="fa fa-bars" disabled="#{chartAccounts.btnEnable}"/>
@@ -72,6 +85,7 @@
                                 </div>
                             </div>
                             <div class="ui-grid-col-8">
+
                                 <p:treeTable id="treeAcc" value="#{chartAccounts.root}" var="doc" style="margin-top:0; height: 500px"  selectionMode="single"
                                              selection="#{chartAccounts.selectedNode}" scrollable="true" scrollHeight="100%">
                                     <p:ajax event="select" listener="#{chartAccounts.onNodeSelect}" update=":principal:cuentamayor :principal:nombreacc :principal:isActive 
@@ -226,8 +240,8 @@
                                     <p:column footerText=""/>
                                     <p:column footerText=""/>
                                     <p:column footerText=""/>
-                                    <p:column colspan="6" footerText="Totales:" />
-                                    <p:column footerText="$ #{chartAccounts.t1}"/>
+                                    <p:column footerText="Totales:" />
+                                    <p:column footerText="$ #{chartAccounts.t1}" />
                                     <p:column footerText="$ #{chartAccounts.t2}"/>
                                     <p:column footerText="$ #{chartAccounts.t3}"/>
                                 </p:row>

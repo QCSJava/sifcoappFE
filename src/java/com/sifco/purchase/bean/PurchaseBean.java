@@ -104,7 +104,7 @@ public class PurchaseBean implements Serializable {
     @Digits(integer = 14, fraction = 2, message = "Cantidad inadecuada")
     private Double newCantidad;     //Cantidad
 
-    @Digits(integer = 14, fraction = 2, message = "Precio inadecuado")
+    @Digits(integer = 14, fraction = 4, message = "Precio inadecuado")
     private Double newPrecio;       //Precio
 
     private Double newTotal;        //Total de detalle
@@ -114,6 +114,8 @@ public class PurchaseBean implements Serializable {
     private String newCodCuenta;
     private String newNomCuenta;
     private String newImpuesto;
+    
+    private Double newDesc=0.0;
 
     private PurchaseDetailTO selectDetail = new PurchaseDetailTO(); //detalle seleccionado para eliminar
     private ArrayList<PurchaseDetailTO> listaDetalles = new ArrayList<>(); //DataTable 
@@ -593,14 +595,15 @@ public class PurchaseBean implements Serializable {
     //calcula el total visual en pantalla
     public void calcularTotal() {
         try {
+            faceMessage("...");
             if (newPrecio > 0 && newCantidad > 0 && newPrecio != null && newCantidad != null) {
-                Double aux = (newPrecio) * (newCantidad);
-                /*NumberFormat nf = NumberFormat.getInstance();
-                nf.setMaximumFractionDigits(2);
-                String st = nf.format(aux);
-                Double dou = Double.valueOf(st);
-                //newTotal = dou;*/
-                newTotal = aux;
+                if (newDesc > 0) {
+                    Double np = newPrecio - (newPrecio * (newDesc/100));
+                    //newPrecio = np;
+                    newTotal = (np) * (newCantidad);
+                }else{
+                    newTotal = (newPrecio) * (newCantidad);
+                }
             }
         } catch (Exception e) {
             System.out.println(e.getMessage() + " - " + e.getCause());
@@ -633,6 +636,9 @@ public class PurchaseBean implements Serializable {
                 if (listaPadre == null) {
                     listaPadre = new Vector();
                 }
+                
+                Double np = newPrecio - (newPrecio * (newDesc/100));
+                newPrecio = np;
 
                 PurchaseDetailTO newDetalle = new PurchaseDetailTO();
                 ArticlesTO thisArt = new ArticlesTO();
@@ -659,7 +665,7 @@ public class PurchaseBean implements Serializable {
                 newDetalle.setPrice(newPrecio);
                 newDetalle.setPricebefdi(newPrecio);
 
-                newDetalle.setLinetotal(newPrecio * newCantidad);
+                newDetalle.setLinetotal(newTotal);
                 newDetalle.setUnitmsr(newUnidad);
                 newDetalle.setLinenum(UUID.randomUUID().hashCode());
 
@@ -677,7 +683,7 @@ public class PurchaseBean implements Serializable {
                             //Double impCOT = Double.parseDouble(thisCat.getCatvalue3());
 
                             //newDetalle.setVatgroup(impIVA + "|" + impFOV + "|" + impCOT); //valor de los ipuestos
-                            Double impArt = ((newPrecio * newCantidad) * impIVA) + (newCantidad * impFOV) + (newCantidad * impCOT);
+                            Double impArt = ((newTotal) * impIVA) + (newCantidad * impFOV) + (newCantidad * impCOT);
                             //Double descuentos = 0.0;
 
                             newDetalle.setPriceafvat((newPrecio) + (newPrecio * impIVA) + (impFOV) + (impCOT)); //precio bruto  
@@ -693,7 +699,7 @@ public class PurchaseBean implements Serializable {
                             //faceMessage("articulo aplica a X impuesto de descripcion1");
                             thisCat = (CatalogTO) thisArt.getVatgourpsaList().get(0);
                             Double impIVA = (Integer.parseInt(thisCat.getCatvalue()) + 0.0) / 100; //%de IVA
-                            Double impArt = (newPrecio * newCantidad) * impIVA; //(precio unitario * cantidad) * 0.13%
+                            Double impArt = (newTotal) * impIVA; //(precio unitario * cantidad) * 0.13%
                             //Double descuentos = 0.0;
 
                             newDetalle.setPriceafvat((newPrecio) + (newPrecio * impIVA)); //total + impuesto de iva
@@ -710,7 +716,7 @@ public class PurchaseBean implements Serializable {
                         newDetalle.setTaxstatus("N");
                         //faceMessage("Articulo exento de impuestos");
                         Double impIVA = 0.0; //%de IVA
-                        Double impArt = (newPrecio * newCantidad) * impIVA; //(precio unitario * cantidad) * 0.13%
+                        Double impArt = (newTotal) * impIVA; //(precio unitario * cantidad) * 0.13%
                         //Double descuentos = 0.0;
 
                         newDetalle.setPriceafvat((newPrecio) + (newPrecio * impIVA)); //total + impuesto de iva
@@ -1496,6 +1502,7 @@ public class PurchaseBean implements Serializable {
         newPrecio = null;
         newCantidad = null;
         newTotal = null;
+        newDesc = 0.0;
         newUnidad = null;
         newExistencia = null;
 
@@ -1538,6 +1545,14 @@ public class PurchaseBean implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="G & S" >
 
+    public Double getNewDesc() {
+        return newDesc;
+    }
+
+    public void setNewDesc(Double newDesc) {
+        this.newDesc = newDesc;
+    }
+    
     public static CatalogEJBClient getCatalogEJB() {
         return CatalogEJB;
     }

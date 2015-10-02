@@ -5,11 +5,15 @@
  */
 package com.sifcoapp.report.bean;
 
+import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.client.SalesEJBClient;
+import com.sifcoapp.objects.admin.to.CatalogTO;
 import com.sifcoapp.objects.sales.to.DeliveryDetailTO;
 import com.sifcoapp.objects.sales.to.DeliveryTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class RemisionPrint extends HttpServlet {
 
-    //private static AdminEJBClient AdminEJBService;
+    private static AdminEJBClient AdminEJBService;
     private static SalesEJBClient SalesEJBService;
     //private numerosAletras convertNumber;
 
@@ -36,10 +40,18 @@ public class RemisionPrint extends HttpServlet {
     protected void processRequest(HttpServletRequest request2, HttpServletResponse response2) throws ServletException, IOException {
         DeliveryTO var = new DeliveryTO();
         Double total = 0.0;
+
+        //hora de impresion
+        Calendar calendario = new GregorianCalendar();
+        int hora, minutos;
+        hora = calendario.get(Calendar.HOUR);
+        minutos = calendario.get(Calendar.MINUTE);
+        CatalogTO _R = new CatalogTO();
+
         try {
             SalesEJBService = new SalesEJBClient();
             //AdminEJBService = new AdminEJBClient();
-
+            _R = AdminEJBService.findCatalogByKey(var.getPeymethod(), 8);
             var = SalesEJBService.getDeliveryByKey(Integer.parseInt(request2.getParameter("foo")));
             total = formatNumber(var.getDoctotal());
 
@@ -71,7 +83,20 @@ public class RemisionPrint extends HttpServlet {
                     + "                <!-- borde top y unica fila-->\n"
                     + "                <tr>\n"
                     + "                    <td style=\"height: 140px\">\n"
-                    + "\n"
+                    + "                    </td>\n"
+                    + "                    <td style=\"height: 140px\">\n"
+                    + "                        <table style=\"width: 100%; height: 100%\" border=\"0\">\n"
+                    + "                            <tr style=\"height: 60px\">\n"
+                    + "                                <td style=\"width: 250px\"/>\n"
+                    + "                                <td />\n"
+                    + "                            </tr>\n"
+                    + "                            <tr>\n"
+                    + "                                <td/>\n"
+                    + "                                <td style=\"vertical-align: top\">\n"
+                    + "                                    555\n"
+                    + "                                </td>\n"
+                    + "                            </tr>\n"
+                    + "                        </table>\n"
                     + "                    </td>\n"
                     + "                </tr>\n"
                     + "                <tr>\n"
@@ -88,11 +113,11 @@ public class RemisionPrint extends HttpServlet {
                     + "                            <tr style=\"height: 17px\">\n"
                     + "                                <td style=\"width: 16%\">\n"
                     + "                                </td>\n"
-                    + "                                <td style=\"width: 60%\">\n"
+                    + "                                <td style=\"width: 56%\">\n"
                     + "\n"
                     + "                                </td>\n"
                     + "                                <td >\n"
-                    + "                                    " + var.getDocdate() + "\n"
+                    + "                                    " + var.getDocdate() + " HORA: " + hora + ":" + minutos + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                        </table>\n"
@@ -195,10 +220,11 @@ public class RemisionPrint extends HttpServlet {
                 if (i < tam) {
                     DeliveryDetailTO var2 = (DeliveryDetailTO) det.get(i);
                     String detalle = null;
-                    if (var2.getDscription().length()>31) {
+                    if (var2.getDscription().length() > 31) {
                         detalle = var2.getDscription().substring(0, 31);
-                    }else
+                    } else {
                         detalle = var2.getDscription().toUpperCase();
+                    }
                     out.println(
                             "                            <tr style=\"height: 18px; width: 100%\" >\n"
                             + "\n"
@@ -292,11 +318,11 @@ public class RemisionPrint extends HttpServlet {
     //<editor-fold defaultstate="collapsed" desc="Formato Numeros NO USADA">
     public Double formatNumber(Double doctotal) {
         /*
-        NumberFormat nf = NumberFormat.getInstance();
-        nf.setMaximumFractionDigits(2);
-        String st = nf.format(num);
-        Double dou = Double.valueOf(st);
-        return dou;*/
+         NumberFormat nf = NumberFormat.getInstance();
+         nf.setMaximumFractionDigits(2);
+         String st = nf.format(num);
+         Double dou = Double.valueOf(st);
+         return dou;*/
         return Math.floor(100 * doctotal) / 100;
     }
 

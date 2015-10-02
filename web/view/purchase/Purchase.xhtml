@@ -27,7 +27,7 @@
                                 <span class="ui-icon ui-icon-grip-dotted-vertical" />
                             </span>
                             <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document" actionListener="#{purchaseBean.botonNuevo}"
-                                             update="frmPurchase, newCod newNomArt newCantidad newPrecio newTotal newUnidad newExistencia"
+                                             update="frmPurchase, newCod newNomArt newCantidad newPrecio newTotal newUnidad newExistencia newDesc"
                                              process="@this,   inTipoDoc inEquipo  inReferencia">
 
                             </p:commandButton>
@@ -65,7 +65,7 @@
                                 <p:autoComplete scrollHeight="250"  disabled="#{purchaseBean.selected}" required="#{purchaseBean.required1}" id="inSocio" forceSelection="true" minQueryLength="2" value="#{purchaseBean.socioNeg}"
                                                 completeMethod="#{purchaseBean.compSocioName}" effect="fade" size="30" label="Socio de Negocio" 
                                                 valueChangeListener="#{purchaseBean.stateChange3}">
-                                    <p:ajax event="itemSelect" listener="#{purchaseBean.selectSocio}" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad newPrecio newImpuesto" />
+                                    <p:ajax event="itemSelect" listener="#{purchaseBean.selectSocio}" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad newPrecio newDesc newImpuesto" />
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-4"></div>
@@ -81,7 +81,7 @@
                                 <p:autoComplete scrollHeight="250"  disabled="#{purchaseBean.selected}" required="#{purchaseBean.required1}" id="inCodSocio" forceSelection="true" minQueryLength="2" value="#{purchaseBean.codSocio}"
                                                 completeMethod="#{purchaseBean.compSocioCode}" effect="fade" size="15" label="Socio de Negocio" 
                                                 valueChangeListener="#{purchaseBean.stateChange4}">
-                                    <p:ajax event="itemSelect" listener="#{purchaseBean.selectSocioCod}" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad newPrecio newImpuesto" />
+                                    <p:ajax event="itemSelect" listener="#{purchaseBean.selectSocioCod}" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad newPrecio newDesc newImpuesto" />
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-4">
@@ -125,7 +125,7 @@
                                 <p:selectOneMenu  id="inForPago" style="width:80%" value="#{purchaseBean.formaPago}" required="#{purchaseBean.required1}" disabled="#{purchaseBean.selected}" valueChangeListener="#{purchaseBean.stateChange1}">
                                     <f:selectItem itemLabel="Forma de pago" itemValue="#{0}" />
                                     <f:selectItems value="#{purchaseBean.lstTipoPago}" var="typePay" itemLabel="#{typePay.catvalue}" itemValue="#{typePay.catcode}"/>
-                                    <p:ajax event="change" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad newPrecio newImpuesto"/>
+                                    <p:ajax event="change" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad newPrecio newDesc newImpuesto"/>
                                 </p:selectOneMenu>
                             </div>
                         </div>
@@ -139,7 +139,7 @@
                                 <p:selectOneMenu  id="inAlm" value="#{purchaseBean.alm}" style="width:80%" required="#{purchaseBean.required1}" disabled="#{purchaseBean.selected}" valueChangeListener="#{purchaseBean.stateChange2}">
                                     <f:selectItem itemLabel="Almacen" itemValue="-1" />
                                     <f:selectItems value="#{purchaseBean.listaAlmacenes}" var="model" itemLabel="#{model.whscode}" itemValue="#{model.whscode}"/>
-                                    <p:ajax event="change" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad newPrecio newImpuesto" />
+                                    <p:ajax event="change" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad newPrecio newDesc newImpuesto" />
                                 </p:selectOneMenu>
                             </div>
                         </div>
@@ -150,10 +150,11 @@
                         <div class="ui-grid-row">    
                             <div class="ui-grid-col-2"><h:outputText value="Codigo"/></div>
                             <div class="ui-grid-col-3"><p:spacer width="7%" height="0"/><h:outputText value="Nombre Articulo"/></div>
-                            <div class="ui-grid-col-1"><h:outputText value="Cantidad"/></div>
+                            <div class="ui-grid-col-1"><p:spacer width="20%" height="0"/><h:outputText value="Cantidad"/></div>
                             <div class="ui-grid-col-1"><p:spacer width="20%" height="0"/><h:outputText value="Precio"/></div>
+                            <div class="ui-grid-col-1"><p:spacer width="20%" height="0"/><h:outputText value="% Desc."/></div>
                             <div class="ui-grid-col-1"><p:spacer width="30%" height="0"/><h:outputText value="Total"/></div>
-                            <div class="ui-grid-col-4"><h:outputText value="Unidad Medida"/>
+                            <div class="ui-grid-col-2"><h:outputText value="Unidad Medida"/>
                                 <p:spacer width="15" height="0"/>
                                 <h:outputText value="Existencia"/>
                                 <p:spacer width="15" height="0"/>
@@ -169,32 +170,32 @@
                             <div class="ui-grid-col-2">
                                 <p:autoComplete tabindex="12" scrollHeight="250" widgetVar="getFocus" required="true" id="newCod" forceSelection="true" minQueryLength="2" value="#{purchaseBean.newCod}" disabled="#{purchaseBean.disabledComun}"
                                                 completeMethod="#{goodsReceiptBean.completeCode}" effect="fade" size="25" label="Codigo">
-                                    <p:ajax event="itemSelect" listener="#{purchaseBean.findArticle}" update="newCod newNomArt newUnidad newExistencia newPrecio" />
+                                    <p:ajax event="itemSelect" listener="#{purchaseBean.findArticle}" update="newCod newNomArt newUnidad newExistencia newPrecio newDesc" />
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-3">
-                                <p:spacer width="15" height="0"/>
                                 <p:autoComplete tabindex="13" scrollHeight="250" required="true" id="newNomArt" forceSelection="true" minQueryLength="2" value="#{purchaseBean.newNomArt}" disabled="#{purchaseBean.disabledComun}"
                                                 completeMethod="#{goodsReceiptBean.completeText}" effect="fade" size="35" label="Nombre Articulo">
-                                    <p:ajax event="itemSelect" listener="#{purchaseBean.findArticle}" update="newCod newNomArt newUnidad newExistencia newPrecio" />
+                                    <p:ajax event="itemSelect" listener="#{purchaseBean.findArticle}" update="newCod newNomArt newUnidad newExistencia newPrecio newDesc" />
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-1">
                                 <p:inputText tabindex="14" required="true" id="newCantidad" value="#{purchaseBean.newCantidad}" label="Cantidad" size="10" disabled="#{purchaseBean.disabledComun}">
-                                    <p:ajax event="keyup" update="newTotal" listener="#{purchaseBean.calcularTotal}"/>
+                                    <p:ajax event="blur" update="newTotal" listener="#{purchaseBean.calcularTotal}"/>
                                 </p:inputText>
-
                             </div>
-                            <p:spacer width="15" height="0"/>
                             <div class="ui-grid-col-1">
-
                                 <p:inputText tabindex="15" required="true" id="newPrecio" value="#{purchaseBean.newPrecio}" label="Precio" size="10" disabled="#{purchaseBean.disabledComun}">
                                     <p:ajax event="keyup" update="newTotal" listener="#{purchaseBean.calcularTotal}"/>
                                 </p:inputText>
-
                             </div>
-                            <p:spacer width="15" height="0"/>
                             <div class="ui-grid-col-1">
+                                <p:inputText tabindex="16" required="true" id="newDesc" value="#{purchaseBean.newDesc}" label="Descuento" size="10" disabled="#{purchaseBean.disabledComun}">
+                                    <p:ajax event="keyup" update="newTotal" listener="#{purchaseBean.calcularTotal}"/>
+                                </p:inputText>
+                            </div>
+                            <div class="ui-grid-col-1">
+                                <p:spacer width="25" height="0"/>
                                 <h:outputText id="newTotal"         value="#{purchaseBean.newTotal}">
                                     <f:convertNumber minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
                                 </h:outputText>
@@ -203,14 +204,13 @@
                                 <h:outputText id="newUnidad"        value="#{purchaseBean.newUnidad}"/>
                                 <p:spacer width="45%" height="0"/>
                                 <h:outputText id="newExistencia"    value="#{purchaseBean.newExistencia}"/>
-
                             </div>
 
                             <!-- Boton AGREGAR -->
                             <div class="ui-grid-col-1">
                                 <p:commandButton tabindex="19" id="botonAgregar" actionListener="#{purchaseBean.accionAgregar}" value="Agregar"   icon="ui-icon-check" disabled="#{purchaseBean.disabledComun}"
                                                  validateClient="true" process="@this newCod newNomArt newCantidad inForPago inAlm newImpuesto"
-                                                 update="tableDetailBill newCod newNomArt newCantidad newPrecio newTotal newUnidad newExistencia
+                                                 update="tableDetailBill newCod newNomArt newCantidad newPrecio newDesc newTotal newUnidad newExistencia
                                                  inGravadas inExcentas inIVA inRetencion inFovial inCotrans inTotal newImpuesto">
 
                                 </p:commandButton>
