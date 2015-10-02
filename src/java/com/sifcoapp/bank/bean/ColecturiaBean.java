@@ -71,6 +71,7 @@ public class ColecturiaBean implements Serializable {
     private String nameSocio;   //Nombre del socio
     private int equipo, serie, NoRecibo;
     private String observaciones;
+    private String group;
 
     private Double t1 = 0.0, t2 = 0.0, t3 = 0.0;  //Totales de detalles
 
@@ -249,6 +250,7 @@ public class ColecturiaBean implements Serializable {
                     ctlAcc = art.getDebpayacct();
                     codSocio = art.getCardcode();
                     nameSocio = art.getCardname();
+                    group = art.getGroupcode();
                     if (varEstados == 1) {
                        llenarListaDetalles();
                         doTotal(); 
@@ -542,7 +544,7 @@ public class ColecturiaBean implements Serializable {
         newColect.setTaxdate(fechaPago);
         newColect.setComments(observaciones);
         newColect.setDoctotal(t2);
-
+        newColect.setPrinted(group);
         newColect.setSeries(Integer.parseInt(documento)); //1 creacion, 2 reversion 
         newColect.setTranstype(Integer.parseInt(estado)); //1 abierto,  2 anulado
 
@@ -1084,6 +1086,15 @@ public class ColecturiaBean implements Serializable {
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="G & S">
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+    
     public String getUrl() {
         return url;
     }

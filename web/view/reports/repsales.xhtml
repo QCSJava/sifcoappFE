@@ -14,73 +14,78 @@
 
                 <h:form id="principal">
                     <br></br>
-                                        <p:toolbar id="toolbarBill">
+                    <p:toolbar id="toolbarBill">
                         <f:facet name="left">
                             <p:focus context="toolbarBill"/>
-                               Reportes Facturaci&oacute;n
+                            Reportes Facturaci&oacute;n
                             <span class="ui-separator">
                                 <span class="ui-icon ui-icon-grip-dotted-vertical" />
                             </span>
-                            
+
                         </f:facet>
                     </p:toolbar>
-                    <p:spacer width="0" height="10"/>
+                    <p:spacer width="0" height="5"/>
                     <div class="ui-grid ui-grid-responsive">
-                        
                         <div class="ui-grid-row">
-                            
-
                             <div class="ui-grid-col-2"><p:outputLabel value="Por Numero Comprobante:"></p:outputLabel></div>
-                            <div class="ui-grid-col-2"><p:inputText id="fcode" value="#{rsales.fcode}" size="50"></p:inputText></div>
+                            <div class="ui-grid-col-2"><p:inputText id="fcode" value="#{rsales.fcode}" size="15"></p:inputText></div>
                         </div>
                         <div class="ui-grid-row">
-
-                            
-                            <div class="ui-grid-col-2"><p:outputLabel value="Por Codigo Cliente"></p:outputLabel></div>
-                            <div class="ui-grid-col-2"><p:inputText id="fname" value="#{rsales.fname}"  size="50"></p:inputText></div>
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Por Codigo Cliente"/>
+                            </div>
+                            <div class="ui-grid-col-5">
+                                <p:autoComplete scrollHeight="250" required="false" id="fname" forceSelection="true" minQueryLength="2" value="#{rsales.fname}"
+                                                completeMethod="#{rsales.compSocioCode}" effect="fade" size="15" label="Codigo de Socio" 
+                                                >
+                                    <p:ajax event="itemSelect" listener="#{rsales.selectSocioCod(null)}" update="fname fname2 "/>
+                                </p:autoComplete>
+                                <p:spacer width="10" height="0" />
+                                <p:autoComplete scrollHeight="250" required="false" id="fname2" forceSelection="true" minQueryLength="2" value="#{rsales.fname2}"
+                                                completeMethod="#{rsales.compSocioName}" effect="fade" size="37" label="Socio de Negocio" 
+                                                >
+                                    <p:ajax event="itemSelect" listener="#{rsales.selectSocioName}" update="fname fname2 "/>
+                                </p:autoComplete>
+                            </div>
                         </div>
                         <div class="ui-grid-row">
-                            
                             <div class="ui-grid-col-2"><p:outputLabel  value="Fecha Inicio:" for="FechaInicio" ></p:outputLabel></div>
                             <div class="ui-grid-col-2">
                                 <p:calendar required="true" id="FechaInicio" value="#{rsales.fdatefrom}" showOn="button" size="10"  pattern="dd/MM/yyyy" />
                             </div>
                         </div>
                         <div class="ui-grid-row">
-                            
                             <div class="ui-grid-col-2"><p:outputLabel  value="Fecha Fin:" for="FechaFin" ></p:outputLabel></div>
                             <div class="ui-grid-col-2">
                                 <p:calendar required="true" id="FechaFin" value="#{rsales.fdateto}" showOn="button" size="10"  pattern="dd/MM/yyyy" />
                             </div>
                         </div>
+                        <p:spacer height="20" width="0"/>
                         <div class="ui-grid-row">
-                            
-
-                                <div class="ui-grid-col-2"><p:outputLabel  value="Tipo de Reporte:" for="isActive" ></p:outputLabel></div>
-                                <div class="ui-grid-col-2">
+                            <div class="ui-grid-col-2"><p:outputLabel  value="Tipo de Reporte:" for="isActive" ></p:outputLabel></div>
+                            <div class="ui-grid-col-8">
                                 <p:selectOneRadio layout="pageDirection" required="true" id="isActive" value="#{rsales.ftype}">
-                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Control Diario de Ventas" itemValue="1" /></div>
-                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Detalle de Ventas Diarias" itemValue="2" /></div>
-                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Ventas por Cliente - Resumido" itemValue="3" /></div>
-                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Ventas por Vendedor - Detallado" itemValue="5" /></div>
-                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Ventas por Vendedor - Resumido" itemValue="6" /></div>
-                                </p:selectOneRadio></div>
-  
-                        </div>
-                        <div class="ui-grid-row">
-                            <div class="ui-grid-col-2">
-                            <p:commandButton  id="btnPrint" action="#{rsales.doPrint()}" value="Imprimir" ajax="false"  />
+                                    <div class="ui-grid-col-4"><f:selectItem itemLabel="Control Diario de Ventas" itemValue="1" /></div>
+                                    <div class="ui-grid-col-4"><f:selectItem itemLabel="Detalle de Ventas Diarias" itemValue="2" /></div>
+                                    <div class="ui-grid-col-4"><f:selectItem itemLabel="Ventas por Cliente - Resumido" itemValue="3" /></div>
+                                    <div class="ui-grid-col-4"><f:selectItem itemLabel="Ventas por Vendedor - Detallado" itemValue="5" /></div>
+                                    <div class="ui-grid-col-4"><f:selectItem itemLabel="Ventas por Vendedor - Resumido" itemValue="6" /></div>
+                                </p:selectOneRadio>
                             </div>
-                            <div class="ui-grid-col-2">
-                            <p:commandButton  id="btnPrint2" action="#{rsales.printFormat()}" value="Descargar" ajax="false"  />
+                        </div>
+                        <p:spacer height="20" width="0"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-6">
+                                <p:commandButton  id="btnPrint" action="#{rsales.doPrint()}" value="Ver" ajax="false"  />
+                                <p:spacer height="0" width="15"/>
+                                <p:commandButton  id="btnPrint2" action="#{rsales.printFormat()}" value="Descargar PDF" ajax="false"  />
+                                <p:spacer height="0" width="15"/>
+                                <p:commandButton  id="btnPrint3" action="#{rsales.printFormatExcel()}" value="Descargar Excel" ajax="false"  />
                             </div>
                         </div>
                     </div>
                 </h:form>
-                <br></br>
-                <br></br>
             </ui:define>
-            <br></br>
         </ui:composition>
 
     </body>

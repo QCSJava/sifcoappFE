@@ -37,7 +37,7 @@ public class ColectPrint extends HttpServlet {
         String nombre = request.getParameter("bar");
         try {
             //nombre = session.getAttribute("username").toString().toUpperCase();
-            newColect = BankEJBClient.get_ges_colecturiaByKey(Integer.parseInt(request.getParameter("foo")));
+            newColect = BankEJBClient.get_ges_colecturiaByKey_print(Integer.parseInt(request.getParameter("foo")));
         } catch (Exception e) {
         }
 
