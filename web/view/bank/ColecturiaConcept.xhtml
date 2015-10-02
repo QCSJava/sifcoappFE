@@ -253,6 +253,8 @@
                                 <p:dataTable  id="tableConcept" value="#{conceptBean.lstTable}" var="concept" rowIndexVar="rowIndex" scrollHeight="100%" scrollable="true"
                                              style="height: 300px" selection="#{conceptBean.selectConcept}" selectionMode="single" rowKey="#{concept.linenum}"
                                              sortBy="#{concept.linenum}">
+                                    
+                                    <p:ajax event="rowSelect"  process="@this" listener="#{conceptBean.contexUpdate()}"/>
 
                                     <p:column headerText="#" style="width: 10px; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{rowIndex+1}" />
