@@ -6,9 +6,11 @@
 package com.sifco.bean;
 
 import com.sifcoapp.client.AccountingEJBClient;
+import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.objects.accounting.to.AccountTO;
 import com.sifcoapp.objects.accounting.to.JournalEntryLinesInTO;
 import com.sifcoapp.objects.accounting.to.JournalEntryLinesTO;
+import com.sifcoapp.objects.admin.to.CatalogTO;
 import com.sifcoapp.objects.catalogos.Common;
 import com.sifcoapp.objects.common.to.ResultOutTO;
 import java.io.Serializable;
@@ -22,6 +24,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.bean.ManagedBean;
@@ -41,7 +44,8 @@ public class ChartAccounts implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="Declaración de variables para formulario" >  
     private static AccountingEJBClient accEJBService;
-
+    private static AdminEJBClient AdminEJBService;
+    
     private String acctcode;
     private String acctname;
     private Double currtotal;
@@ -84,10 +88,40 @@ public class ChartAccounts implements Serializable {
     //__________________________________________________________________________
     //btn
     private boolean btnEnable = true;
+    
+    //
+    private List<CatalogTO> lstRubros;
+    private static final String CATALOGORUB = "Rubros_PC";
+    private String rubro;
 
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="Get and Set" >
+
+    public static AdminEJBClient getAdminEJBService() {
+        return AdminEJBService;
+    }
+
+    public static void setAdminEJBService(AdminEJBClient AdminEJBService) {
+        ChartAccounts.AdminEJBService = AdminEJBService;
+    }
+
+    public String getRubro() {
+        return rubro;
+    }
+
+    public void setRubro(String rubro) {
+        this.rubro = rubro;
+    }
+    
+    public List<CatalogTO> getLstRubros() {
+        return lstRubros;
+    }
+
+    public void setLstRubros(List<CatalogTO> lstRubros) {
+        this.lstRubros = lstRubros;
+    }
+    
     public String getNameToEx() {
         return nameToEx;
     }
@@ -507,6 +541,15 @@ public class ChartAccounts implements Serializable {
         if (accEJBService == null) {
             accEJBService = new AccountingEJBClient();
         }
+        
+        if (AdminEJBService == null) {
+            AdminEJBService = new AdminEJBClient();
+        }
+        
+        try {
+            lstRubros = AdminEJBService.findCatalog(CATALOGORUB);
+        } catch (Exception e) {
+        }
 
         llenarRoot();
     }
@@ -593,15 +636,12 @@ public class ChartAccounts implements Serializable {
 
         setAcctcode(newAccount.getAcctcode());
         setAcctname(newAccount.getAcctname());
+        setRubro(newAccount.getActtype());
         postable = (newAccount.getPostable().equals("N"));
         setLevels(newAccount.getLevels());
         currtotal = newAccount.getCurrtotal();
 
-        if (newAccount.getPostable().equals("Y")) {
-            btnEnable = false;
-        } else {
-            btnEnable = true;
-        }
+        btnEnable = !newAccount.getPostable().equals("Y");
         //RequestContext.getCurrentInstance().update("principal");
     }
 
@@ -619,14 +659,15 @@ public class ChartAccounts implements Serializable {
             try {
                 ResultOutTO Resp;
                 AccountTO updAcc = new AccountTO();
-                //updAcc = (AccountTO) this.selectedNode.getData();
                 updAcc.setAcctcode(this.acctcode);
                 updAcc = accEJBService.getAccountByKey(this.acctcode);
                 updAcc.setAcctname(this.acctname);
+                updAcc.setActtype(this.rubro);
                 Resp = accEJBService.cat_acc0_ACCOUNT_mtto(updAcc, Common.MTTOUPDATE);
                 llenarRoot();
-                this.acctname = null;
+                /*this.acctname = null;
                 this.acctcode = null;
+                this.rubro = "0";*/
                 RequestContext.getCurrentInstance().update("principal");
                 facesMessage("Update Realizado");
             } catch (Exception ex) {
@@ -743,7 +784,7 @@ public class ChartAccounts implements Serializable {
 
             RequestContext.getCurrentInstance().update("detList");
             showHideDialog("dlgC3", 1);
-        } catch (Exception e) {
+        } catch (EJBException | NumberFormatException e) {
             facesMessage(e.getMessage() + " " + e.getCause());
         }
 

@@ -30,7 +30,7 @@
                             <span class="ui-separator">
                                 <span class="ui-icon ui-icon-grip-dotted-vertical" />
                             </span>
-                            <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-refresh" actionListener="#{chartAccounts.updTreeAcc()}" 
+                            <p:commandButton tabindex="-1" title="Nuevo" icon="fa fa-refresh" actionListener="#{chartAccounts.updTreeAcc()}" 
                                              update="principal"         
                                              >
 
@@ -80,7 +80,17 @@
                                             <f:convertNumber  groupingUsed="true"/>
                                         </p:inputText>
                                         <!-- onclick="PF('dlgC3').show();"-->
-                                        <p:commandButton id="btnLines" action="#{chartAccounts.btnSaldo()}" icon="fa fa-bars" disabled="#{chartAccounts.btnEnable}"/>
+                                        <p:commandButton id="btnLines" action="#{chartAccounts.btnSaldo()}" icon="fa fa-list" disabled="#{chartAccounts.btnEnable}"/>
+                                    </div>
+                                </div>
+                                <br></br>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-4"><p:outputLabel value="Rubro"></p:outputLabel></div>
+                                    <div class="ui-grid-col-8">
+                                        <p:selectOneMenu id="rubro" value="#{chartAccounts.rubro}"  style="width:150px">
+                                            <f:selectItem itemLabel="Rubro de Cuenta" itemValue="0" />
+                                            <f:selectItems value="#{chartAccounts.lstRubros}" var="rub" itemLabel="#{rub.catvalue}" itemValue="#{rub.catcode}"/>
+                                        </p:selectOneMenu>
                                     </div>
                                 </div>
                             </div>
@@ -88,8 +98,10 @@
 
                                 <p:treeTable id="treeAcc" value="#{chartAccounts.root}" var="doc" style="margin-top:0; height: 500px"  selectionMode="single"
                                              selection="#{chartAccounts.selectedNode}" scrollable="true" scrollHeight="100%">
+                                    
                                     <p:ajax event="select" listener="#{chartAccounts.onNodeSelect}" update=":principal:cuentamayor :principal:nombreacc :principal:isActive 
-                                            :principal:nivel :principal:saldo :principal:pk :principal:btnLines" />
+                                            :principal:nivel :principal:saldo :principal:pk :principal:btnLines :principal:rubro" />
+                                    
                                     <f:facet name="header">
                                         Plan de cuentas
                                     </f:facet>
@@ -108,7 +120,7 @@
                         <br></br>
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2">
-                                <p:commandButton value="Guardar" actionListener="#{chartAccounts.btnPrincipal}" process="@this, nombreacc cuentamayor :principal:pk"/>
+                                <p:commandButton value="Guardar" actionListener="#{chartAccounts.btnPrincipal}" process="@this, rubro nombreacc cuentamayor :principal:pk"/>
                             </div>
                         </div>
                     </div>
@@ -174,7 +186,7 @@
                             </div>
                             <div class="ui-grid-col-2">
                                 <p:inputText size="16" value="#{chartAccounts.numDet}"/>
-                                <p:commandButton id="btnUpdate" icon="ui-icon-refresh" action="#{chartAccounts.updDialog}" update="dlgSaldo"/>
+                                <p:commandButton id="btnUpdate" icon="fa-refresh" action="#{chartAccounts.updDialog}" update="dlgSaldo"/>
                             </div>
                         </div>
                         <p:spacer width="0" height="5"/>
@@ -187,7 +199,7 @@
                             <f:facet name="{Exporters}" >
                                 <p:spacer height="0" width="95%"/>
                                 <h:commandLink >
-                                    <p:graphicImage name="../../resources/Images/img.jpg" width="24"/>
+                                    <p:graphicImage name="fa fa-bars" width="24"/>
                                     <p:dataExporter type="xls" target="dlgSaldo" fileName="#{chartAccounts.nameToEx}"
                                                     />
                                 </h:commandLink>

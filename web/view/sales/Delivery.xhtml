@@ -47,7 +47,9 @@
 
                     <!-- Div Principal outcome="ClientCreditNotes" -->
                     <div  class="ui-grid ui-grid-responsive" id="divPrincipal">
-
+                        <p:contextMenu id="DeleteDeli" >
+                            <p:menuitem value="Anular" actionListener="#{deliveryBean.DeleteDelivery}"  icon="ui-icon-close"/>
+                        </p:contextMenu>
 
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2"><p:outputLabel value="No." for="inNo" /></div>

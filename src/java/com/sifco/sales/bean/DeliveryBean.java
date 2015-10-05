@@ -1634,6 +1634,12 @@ public class DeliveryBean implements Serializable {
         }
     }
 //</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="Contex Eliminar">
+    public void DeleteDelivery(){
+        faceMessage("Eliminar nota de remision");
+    }
+//</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G & S">
     public ParameterEJBClient getParameterEJBClient() {
