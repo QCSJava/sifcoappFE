@@ -7,6 +7,7 @@ package com.sifcoapp.report.bean;
 
 import com.sifcoapp.client.AccountingEJBClient;
 import com.sifcoapp.client.AdminEJBClient;
+import com.sifcoapp.objects.admin.to.CatalogTO;
 import com.sifcoapp.objects.admin.to.EnterpriseTO;
 import com.sifcoapp.report.common.AbstractReportBean;
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,14 +25,11 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.validation.constraints.Digits;
 
-/**
- *
- * @author ri00642
- */
 @ManagedBean(name = "raccount")
 @SessionScoped
 public class RepAccount implements Serializable {
 
+//<editor-fold defaultstate="collapsed" desc="VARIABLES">
     private String fcode;
     private String fname;
     private Date fdatefrom;
@@ -45,7 +44,13 @@ public class RepAccount implements Serializable {
     private double stock;
     private static AdminEJBClient AdminEJBService;
     private Integer reportLevel;
+    private String rubro;
+    private List<CatalogTO> lstRubros;
+    private static final String CATALOGORUB = "Rubros_PC";
 
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="LOAD">
     @PostConstruct
     public void initForm() {
         this.setFtype(1);
@@ -59,40 +64,37 @@ public class RepAccount implements Serializable {
         c1.set(c1.get(Calendar.YEAR), c1.get(Calendar.MONTH), 1);  //January 30th 2000
         sDate = c1.getTime();
 
+        if (AdminEJBService == null) {
+            AdminEJBService = new AdminEJBClient();
+        }
+
         try {
+            lstRubros = AdminEJBService.findCatalog(CATALOGORUB);
             AccountingEJBClient accEJBService = new AccountingEJBClient();
             accEJBService.Update_endTotal();
         } catch (Exception e) {
         }
 
     }
+
+//</editor-fold>
     
-    public void doPrint() throws Exception {
-        this.print(0);
-    }
-
+//<editor-fold defaultstate="collapsed" desc="PRINT">
     public void print(int _type) throws Exception {
-        //AccountingEJBClient accEJBService = new AccountingEJBClient();
-        //accEJBService.Update_endTotal();
-
-        Map<String, Object> reportParameters = new HashMap<>();
-        String _whereclausule = null;
-        String _whereclausuleSR = null;
-        String _reportname = null;
-        String _reportTitle = null;
-        String _reportFilters = "";
-        Date datefrom = this.getFdatefrom();
-        Calendar cal1 = GregorianCalendar.getInstance();
-        cal1.setTime(this.getFdateReport());
         if (AdminEJBService == null) {
             AdminEJBService = new AdminEJBClient();
         }
-        EnterpriseTO resp = null;
-        try {
-            //resp = AdminEJBService.getEnterpriseInfo();
-        } catch (Exception ex) {
-            Logger.getLogger(repPurchases.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+        Map<String, Object> reportParameters = new HashMap<>();
+        String _whereclausule = null;
+        String _reportname = null;
+        String _reportTitle = null;
+        Date datefrom = this.getFdatefrom();
+        Date dateTo   = this.getFdateto();
+        Calendar cal1 = GregorianCalendar.getInstance();
+        cal1.setTime(this.getFdatefrom());
+        String Rubro = this.getRubro();
+        
         if (this.ftype == 1) {
             _reportname = "/account/RepBalance";
             _reportTitle = "Balance General";
@@ -172,36 +174,75 @@ public class RepAccount implements Serializable {
         reportParameters.put("pdocdate", this.getFdatefrom());
         reportParameters.put("PDOCDATE2", this.getFdateto());
         reportParameters.put("PWHERE", _whereclausule);
-        //reportParameters.put("PWHERESR", _whereclausuleSR);
         reportParameters.put("PFECHAREPORTE", "Al " + cal1.get(Calendar.DAY_OF_MONTH) + " de " + repPurchases.getNameMonth(cal1) + " " + cal1.get(Calendar.YEAR));
         reportParameters.put("reportName", _reportTitle);
+
         if (_type == 0) {
             this.bean = new ReportsBean();
             getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "PDF"));
+        } else {
+            if (_type == 1) {
+                this.bean = new ReportsBean();
+                getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "EXCEL"));
+                getBean().setFileName(_reportTitle);
+            } else {
+                if (_type == 2) {
+                    getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "FILE"));
+                    getBean().setFileName(_reportTitle);
+                }
+            }
         }
-        if (_type == 1) {
-            this.bean = new ReportsBean();
-            getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "EXCEL"));
-            getBean().setFileName(_reportTitle);
-        }
+
         getBean().setParameters(reportParameters);
         getBean().setReportName(_reportname);
         getBean().execute();
 
     }
 
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="Funciones varias">
+    public void doPrint() throws Exception {
+        this.print(0);
+    }
+
     public void printFormat() throws Exception {
         this.print(1);
     }
 
-    /**
-     * Creates a new instance of repsales
-     */
+    public void printFormatPDF() throws Exception {
+        this.print(2);
+    }
+
     public RepAccount() {
     }
 
-//<editor-fold defaultstate="collapsed" desc="G & S">
+//</editor-fold>
     
+//<editor-fold defaultstate="collapsed" desc="G & S">
+    public List<CatalogTO> getLstRubros() {
+        return lstRubros;
+    }
+
+    public void setLstRubros(List<CatalogTO> lstRubros) {
+        this.lstRubros = lstRubros;
+    }
+
+    public static AdminEJBClient getAdminEJBService() {
+        return AdminEJBService;
+    }
+
+    public static void setAdminEJBService(AdminEJBClient AdminEJBService) {
+        RepAccount.AdminEJBService = AdminEJBService;
+    }
+
+    public String getRubro() {
+        return rubro;
+    }
+
+    public void setRubro(String rubro) {
+        this.rubro = rubro;
+    }
 
     /**
      * @return the fcode
@@ -357,5 +398,5 @@ public class RepAccount implements Serializable {
         this.fdateReport = fdateReport;
     }
 //</editor-fold>
-    
+
 }//cierre de clase

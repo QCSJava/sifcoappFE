@@ -26,28 +26,30 @@
                     </p:toolbar>
 
                     <div class="ui-grid ui-grid-responsive">
-
+                        <p:spacer height="10" width="0"/>
                         <div class="ui-grid-row">                            
-                            <div class="ui-grid-col-2"><p:outputLabel  value="Fecha Inicio:" for="FechaInicio" ></p:outputLabel></div>
+                            <div class="ui-grid-col-2"><p:outputLabel  value="Reporte Del:" for="FechaInicio" ></p:outputLabel></div>
                             <div class="ui-grid-col-2">
                                 <p:calendar id="FechaInicio" value="#{raccount.fdatefrom}" showOn="button" size="10"  pattern="dd/MM/yyyy" />
                             </div>
                         </div>
                         <div class="ui-grid-row">
 
-                            <div class="ui-grid-col-2"><p:outputLabel  value="Fecha Fin:" for="FechaFin" ></p:outputLabel></div>
+                            <div class="ui-grid-col-2"><p:outputLabel  value="Reporte Al:" for="FechaFin" ></p:outputLabel></div>
                             <div class="ui-grid-col-2">
                                 <p:calendar id="FechaFin" value="#{raccount.fdateto}" showOn="button" size="10"  pattern="dd/MM/yyyy" />
                             </div>
                         </div>
+                        <p:spacer height="10" width="0"/>
                         <div class="ui-grid-row">
 
-                            <div class="ui-grid-col-2"><p:outputLabel  value="Reporte Al:" for="FechaReporte" ></p:outputLabel></div>
+                            <div class="ui-grid-col-2"><p:outputLabel  value="Rubro:" for="rubro" ></p:outputLabel></div>
                             <div class="ui-grid-col-2">
-                                <p:calendar id="FechaReporte" value="#{raccount.fdateReport}" showOn="button" size="10"  pattern="dd/MM/yyyy" />
+                                <p:selectOneMenu id="rubro" value="#{raccount.rubro}"  style="width:150px">
+                                    <f:selectItem itemLabel="Rubro de Cuenta" itemValue="0" />
+                                    <f:selectItems value="#{raccount.lstRubros}" var="rub" itemLabel="#{rub.catvalue}" itemValue="#{rub.catcode}"/>
+                                </p:selectOneMenu>
                             </div>
-                            <br/>
-                            <br/>
                         </div>
                         <div class="ui-grid-row">
 
@@ -60,16 +62,13 @@
                                     <f:selectItem itemLabel="4" itemValue="4" />   
                                     <f:selectItem itemLabel="5" itemValue="5" />   
                                     <f:selectItem itemLabel="6" itemValue="6" />   
-                                    <f:selectItem itemLabel="7" itemValue="7" />    
-                                    
+                                    <f:selectItem itemLabel="7" itemValue="7" /> 
                                 </p:selectOneMenu>
-
                             </div>
 
                         </div> 
+                        <p:spacer height="10" width="0"/>
                         <div class="ui-grid-row">
-
-
                             <div class="ui-grid-col-2"><p:outputLabel  value="Tipo de Reporte:" for="isActive" ></p:outputLabel></div>
                             <div class="ui-grid-col-2">
                                 <p:selectOneRadio layout="pageDirection" required="true" id="isActive" value="#{raccount.ftype}">
@@ -81,13 +80,14 @@
                                 </p:selectOneRadio></div>
 
                         </div>
-
+                        <p:spacer height="20" width="0"/>
                         <div class="ui-grid-row">
-                            <div class="ui-grid-col-2">
-                                <p:commandButton  id="btnPrint" action="#{raccount.doPrint()}" value="Imprimir" ajax="false"  />
-                            </div>
-                            <div class="ui-grid-col-2">
-                                <p:commandButton  id="btnPrint2" action="#{raccount.printFormat()}" value="Descargar" ajax="false"  />
+                            <div class="ui-grid-col-6">
+                                <p:commandButton  id="btnPrint" action="#{raccount.doPrint()}" value="Ver" ajax="false"  />
+                                <p:spacer height="0" width="15"/>
+                                <p:commandButton  id="btnPrint2" action="#{raccount.printFormatPDF()}" value="Descargar PDF" ajax="false"  />
+                                <p:spacer height="0" width="15"/>
+                                <p:commandButton  id="btnPrint3" action="#{raccount.printFormat()}" value="Descargar Excel" ajax="false"  />
                             </div>
                         </div>
                     </div>
