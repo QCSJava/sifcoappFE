@@ -241,6 +241,7 @@ public class repsales implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocioName() {
         String[] newName = fname2.split("-");
@@ -386,4 +387,5 @@ public class repsales implements Serializable {
     }
 
 //</editor-fold>
+    
 }//cierre de clase

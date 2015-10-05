@@ -148,8 +148,14 @@ public class ColectPrint extends HttpServlet {
                     val1="";
                     val3="";
                 }else{
-                    val1=var2.getValue1().toUpperCase();
-                    val3=var2.getValue3().toUpperCase();
+                    if (var2.getValue1() == null && var2.getValue3() == null) {
+                        val1="0.0";
+                        val3="0.0";
+                    }else{
+                        val1=var2.getValue1();
+                        val3=var2.getValue3();
+                    }
+                    
                 }
                 out.println(
                         "                            <tr style=\"height: 18px\">\n"
@@ -170,10 +176,7 @@ public class ColectPrint extends HttpServlet {
 
             Calendar calendario = new GregorianCalendar();
             int hora, minutos, segundos;
-            hora = calendario.get(Calendar.HOUR_OF_DAY);
-            if (hora > 12) {
-                hora = hora - 12;
-            }
+            hora = calendario.get(Calendar.HOUR);
             minutos = calendario.get(Calendar.MINUTE);
             segundos = calendario.get(Calendar.SECOND);
 
