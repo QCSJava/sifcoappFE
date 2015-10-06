@@ -1297,7 +1297,7 @@ public class ArticlesBean implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(ArticlesBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        _reportname = "/inventory/InvBarCode";
+        _reportname = "/inventory/InvBarCode2";
         _reportTitle = "Barcode";
 
         _whereclausule = "itemcode='"+this.getItemcode()+"'";

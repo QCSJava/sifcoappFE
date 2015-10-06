@@ -1301,6 +1301,7 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="COPY FROM REMISION">
     public void copyFromRemision() {
         //faceMessage("Copiar desde remision");
