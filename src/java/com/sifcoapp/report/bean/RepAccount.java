@@ -8,7 +8,6 @@ package com.sifcoapp.report.bean;
 import com.sifcoapp.client.AccountingEJBClient;
 import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.objects.admin.to.CatalogTO;
-import com.sifcoapp.objects.admin.to.EnterpriseTO;
 import com.sifcoapp.report.common.AbstractReportBean;
 import java.io.Serializable;
 import java.util.Calendar;
@@ -17,8 +16,6 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -49,7 +46,6 @@ public class RepAccount implements Serializable {
     private static final String CATALOGORUB = "Rubros_PC";
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="LOAD">
     @PostConstruct
     public void initForm() {
@@ -70,31 +66,31 @@ public class RepAccount implements Serializable {
 
         try {
             lstRubros = AdminEJBService.findCatalog(CATALOGORUB);
-            AccountingEJBClient accEJBService = new AccountingEJBClient();
-            accEJBService.Update_endTotal();
+            //AccountingEJBClient accEJBService = new AccountingEJBClient();
+            //accEJBService.Update_endTotal();
         } catch (Exception e) {
         }
 
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="PRINT">
     public void print(int _type) throws Exception {
         if (AdminEJBService == null) {
             AdminEJBService = new AdminEJBClient();
         }
-        
+
         Map<String, Object> reportParameters = new HashMap<>();
         String _whereclausule = null;
         String _reportname = null;
         String _reportTitle = null;
         Date datefrom = this.getFdatefrom();
-        Date dateTo   = this.getFdateto();
-        Calendar cal1 = GregorianCalendar.getInstance();
-        cal1.setTime(this.getFdatefrom());
+        Date dateTo = this.getFdateto();
+        Calendar Al = GregorianCalendar.getInstance(), Del = GregorianCalendar.getInstance();
+        Al.setTime(this.getFdateto());
+        Del.setTime(this.getFdatefrom());
         String Rubro = this.getRubro();
-        
+
         if (this.ftype == 1) {
             _reportname = "/account/RepBalance";
             _reportTitle = "Balance General";
@@ -141,17 +137,16 @@ public class RepAccount implements Serializable {
         }
 
         if (this.ftype == 3) {
-            _reportname = "/account/RepIncomeStatement";
-            _reportTitle = "Estado de Resultados";
+            _reportname = "/account/StatementCategory";
+            _reportTitle = "ESTADO DE RESULTADOS POR RUBRO";
 
-            _whereclausule = " 1=1";
+            //_whereclausule = " 1=1";
 
-            reportParameters.put("PCUENTASINGRESOS", " groupmask in ('5')");
-            reportParameters.put("PCUENTASGASTOS", " (groupmask in ('4') or acctcode='4') and acctcode<>'4101' and fathernum<>'4101'");
-            reportParameters.put("PCUENTASCOSTOS", " groupmask in ('4') and (acctcode='4101' or fathernum='4101')");
-            reportParameters.put("PCUENTASCOSTOS_TOTAL", " groupmask in ('4') and (acctcode='4101' or fathernum='4101') and levels=3");
-
-            reportParameters.put("PLEVELS", this.getReportLevel());
+            reportParameters.put("category", "TODOS LOS RUBROS");
+            reportParameters.put("numCategory", this.getRubro());
+            reportParameters.put("startdate", this.getFdatefrom());
+            reportParameters.put("enddate", this.getFdateto());
+            reportParameters.put("levels", this.getReportLevel());
 
         }
 
@@ -170,11 +165,26 @@ public class RepAccount implements Serializable {
             reportParameters.put("PLEVELS", this.getReportLevel());
 
         }
-        reportParameters.put("corpName", "ACOETMISAB");
-        reportParameters.put("pdocdate", this.getFdatefrom());
-        reportParameters.put("PDOCDATE2", this.getFdateto());
-        reportParameters.put("PWHERE", _whereclausule);
-        reportParameters.put("PFECHAREPORTE", "Al " + cal1.get(Calendar.DAY_OF_MONTH) + " de " + repPurchases.getNameMonth(cal1) + " " + cal1.get(Calendar.YEAR));
+        reportParameters.put("corpName", "ACOETMISAB DE R.L.");
+        reportParameters.put("startdate", this.getFdatefrom());
+        reportParameters.put("enddate", this.getFdateto());
+        if (this.ftype != 3) {
+            reportParameters.put("PWHERE", _whereclausule);
+        }
+        
+        int dia1, mes1, anio1, dia2, mes2, anio2;
+        
+        dia1 = Del.get(Calendar.DAY_OF_MONTH);
+        mes1 = Del.get(Calendar.MONTH);
+        mes1 = mes1 + 1;
+        anio1 = Del.get(Calendar.YEAR);
+        
+        dia2 = Al.get(Calendar.DAY_OF_MONTH);
+        mes2 = Al.get(Calendar.MONTH);
+        mes2 = mes2 + 1;
+        anio2 = Al.get(Calendar.YEAR);
+        
+        reportParameters.put("PFECHAREPORTE", "Del "+dia1+"/"+mes1+"/"+anio1+" Al "+dia2+"/"+mes2+"/"+anio2);
         reportParameters.put("reportName", _reportTitle);
 
         if (_type == 0) {
@@ -200,7 +210,6 @@ public class RepAccount implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones varias">
     public void doPrint() throws Exception {
         this.print(0);
@@ -218,7 +227,6 @@ public class RepAccount implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="G & S">
     public List<CatalogTO> getLstRubros() {
         return lstRubros;
