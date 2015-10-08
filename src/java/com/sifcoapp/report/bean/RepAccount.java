@@ -165,6 +165,15 @@ public class RepAccount implements Serializable {
             reportParameters.put("PLEVELS", this.getReportLevel());
 
         }
+        
+        if (this.ftype == 6) {
+            _reportname = "/account/StatementReserva";
+            _reportTitle = "ESTADO DE RESULTADOS CON RESERVA";
+            
+            
+            
+        }
+        
         reportParameters.put("corpName", "ACOETMISAB DE R.L.");
         reportParameters.put("startdate", this.getFdatefrom());
         reportParameters.put("enddate", this.getFdateto());
