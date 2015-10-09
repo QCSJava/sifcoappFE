@@ -56,6 +56,7 @@ where acctcode='1']]>
 	<field name="grprep" class="java.lang.String"/>
 	<variable name="sumendtotal" class="java.math.BigDecimal"/>
 	<variable name="sumendtotal_pasivo" class="java.math.BigDecimal"/>
+	<variable name="variable1" class="java.lang.String"/>
 	<group name="grprep">
 		<groupExpression><![CDATA[$F{grprep}]]></groupExpression>
 		<groupFooter>
@@ -73,6 +74,9 @@ where acctcode='1']]>
 				<subreport>
 					<reportElement x="300" y="4" width="60" height="20" uuid="8170a4e8-ee05-4407-9d39-82acd064f6a6"/>
 					<subreportParameter name="SUBREPORT_DIR"/>
+					<subreportParameter name="startdate">
+						<subreportParameterExpression><![CDATA[$P{pdocdate}]]></subreportParameterExpression>
+					</subreportParameter>
 					<subreportParameter name="PWHERECUENTAS">
 						<subreportParameterExpression><![CDATA[$P{PWHEREACTIVOS}]]></subreportParameterExpression>
 					</subreportParameter>
@@ -81,6 +85,9 @@ where acctcode='1']]>
 				</subreport>
 				<subreport>
 					<reportElement x="689" y="4" width="60" height="20" uuid="d2d4c07b-f378-432e-a276-f47fa1dd22bf"/>
+					<subreportParameter name="startdate">
+						<subreportParameterExpression><![CDATA[$P{pdocdate}]]></subreportParameterExpression>
+					</subreportParameter>
 					<subreportParameter name="PWHERECUENTAS">
 						<subreportParameterExpression><![CDATA[$P{PWHEREPASIVOS}]]></subreportParameterExpression>
 					</subreportParameter>
@@ -121,10 +128,12 @@ where acctcode='1']]>
 			<subreport>
 				<reportElement x="0" y="0" width="360" height="23" uuid="08dfaa3e-5042-44dd-8080-1fa7feecde85"/>
 				<subreportParameter name="SUBREPORT_DIR"/>
+				<subreportParameter name="startdate">
+					<subreportParameterExpression><![CDATA[$P{pdocdate}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="PLEVELS">
 					<subreportParameterExpression><![CDATA[$P{PMAXLEVEL}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="pfathernum"/>
 				<subreportParameter name="PWHERECUENTAS">
 					<subreportParameterExpression><![CDATA[$P{PWHEREACTIVOS}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -135,10 +144,12 @@ where acctcode='1']]>
 			<subreport>
 				<reportElement x="389" y="0" width="360" height="23" uuid="03d5e05d-3114-4d58-9710-61497f8cb88a"/>
 				<subreportParameter name="SUBREPORT_DIR"/>
+				<subreportParameter name="startdate">
+					<subreportParameterExpression><![CDATA[$P{pdocdate}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="PLEVELS">
 					<subreportParameterExpression><![CDATA[$P{PMAXLEVEL}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="pfathernum"/>
 				<subreportParameter name="PWHERECUENTAS">
 					<subreportParameterExpression><![CDATA[$P{PWHEREPASIVOS}]]></subreportParameterExpression>
 				</subreportParameter>
