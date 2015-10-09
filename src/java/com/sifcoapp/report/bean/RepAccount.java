@@ -367,7 +367,7 @@ public class RepAccount implements Serializable {
         String filterByCode = null;
         try {
 
-            _result = AccountingEJBClient.getAccountByFilter(filterByCode, query,"N");
+            _result = AccountingEJBClient.getAccountByFilter(filterByCode, query,null);
         } catch (Exception ex) {
             Logger.getLogger(RepAccount.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -389,7 +389,7 @@ public class RepAccount implements Serializable {
 
         String filterByName = null;
         try {
-            _result = AccountingEJBClient.getAccountByFilter(query, filterByName,"N");
+            _result = AccountingEJBClient.getAccountByFilter(query, filterByName,null);
         } catch (Exception ex) {
             Logger.getLogger(RepAccount.class.getName()).log(Level.SEVERE, null, ex);
         }
