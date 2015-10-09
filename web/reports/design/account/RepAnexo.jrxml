@@ -11,7 +11,7 @@
 	<parameter name="startdate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="lastdate" class="java.util.Date">
+	<parameter name="enddate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="account" class="java.lang.String">
@@ -24,26 +24,22 @@
   UNION
 
    SELECT t0.account,t1.acctname,t0.duedate,t0.transid,t0.objtype,t0.linememo,0.0 as currtotal, debit,credit
-  FROM cat_jdt1_journalentrylines t0 join cat_acc0_account t1 on t0.account=t1.acctcode  where t0.account=$P{account} and t0.duedate >=$P{startdate} and duedate <= $P{lastdate} order by duedate asc]]>
+  FROM cat_jdt1_journalentrylines t0 join cat_acc0_account t1 on t0.account=t1.acctcode  where t0.account=$P{account} and t0.duedate >=$P{startdate} and duedate <= $P{enddate} order by duedate asc]]>
 	</queryString>
 	<field name="account" class="java.lang.String">
-		<fieldDescription><![CDATA[CÃ³digo de cuenta
-]]></fieldDescription>
+		<fieldDescription><![CDATA[CÃ³digo de cuenta]]></fieldDescription>
 	</field>
 	<field name="acctname" class="java.lang.String"/>
 	<field name="duedate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha de vencimiento
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Fecha de vencimiento]]></fieldDescription>
 	</field>
 	<field name="transid" class="java.lang.Integer">
-		<fieldDescription><![CDATA[NÃºmero de operaciÃ³n
-]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de operaciÃ³n]]></fieldDescription>
 	</field>
 	<field name="objtype" class="java.lang.String"/>
 	<field name="comment" class="java.lang.String"/>
 	<field name="currtotal" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Saldo actual
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Saldo actual]]></fieldDescription>
 	</field>
 	<field name="debe" class="java.math.BigDecimal"/>
 	<field name="haber" class="java.math.BigDecimal"/>

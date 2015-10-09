@@ -365,7 +365,7 @@ public class JournalEntry implements Serializable {
         String filterByCode = null;
         try {
 
-            _result = AccountingEJBClient.getAccountByFilter(filterByCode, query, "Y");
+            _result = AccountingEJBClient.getAccountByFilter(filterByCode, query,"Y");
         } catch (Exception ex) {
             Logger.getLogger(AccassignmentBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -387,7 +387,7 @@ public class JournalEntry implements Serializable {
 
         String filterByName = null;
         try {
-            _result = AccountingEJBClient.getAccountByFilter(query, filterByName, "Y");
+            _result = AccountingEJBClient.getAccountByFilter(query, filterByName,"Y");
         } catch (Exception ex) {
             Logger.getLogger(AccassignmentBean.class.getName()).log(Level.SEVERE, null, ex);
         }
