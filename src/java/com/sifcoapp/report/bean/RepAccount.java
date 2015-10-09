@@ -122,11 +122,12 @@ public class RepAccount implements Serializable {
             if (this.ftype == 1) {
                 _reportname = "/account/RepBalance";
                 _reportTitle = "Balance General";
-
+                
                 _whereclausule = " 1=1";
                 reportParameters.put("PWHEREACTIVOS", " groupmask in ('1')");
                 reportParameters.put("PWHEREPASIVOS", " groupmask in ('2','3')");
                 reportParameters.put("PMAXLEVEL", this.getReportLevel());
+                reportParameters.put("pdocdate",this.getFdateto());
 
                 reportParameters.put("PREPORTSIGN1", " JESÚS RIVERA HERNANDEZ");
                 reportParameters.put("PREPORTSIGNTITLE1", " REPRESENTANTE LEGAL");
@@ -147,6 +148,7 @@ public class RepAccount implements Serializable {
                 _reportTitle = "Balance de Comprobación";
 
                 _whereclausule = " 1=1";
+                reportParameters.put("pdocdate",this.getFdateto());
                 reportParameters.put("PWHEREACTIVOS", " groupmask in ('1','4')");
                 reportParameters.put("PWHEREPASIVOS", " groupmask in ('2','3','5')");
                 reportParameters.put("PMAXLEVEL", this.getReportLevel());
