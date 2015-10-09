@@ -7,13 +7,17 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["C:\\workspace\\NBProjects\\sifcoappFE\\web\\reports\\design\\account\\"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="startdate" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[select sum(endtotal) endtotal
- from cat_acc0_account
+		<![CDATA[select sum(sal_inicio) endtotal
+ from sp_get_update_balance($P{startdate},$P{startdate})
 where $P!{PWHERECUENTAS} and levels=1]]>
 	</queryString>
 	<field name="endtotal" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Saldo inicial]]></fieldDescription>
+		<fieldDescription><![CDATA[Saldo inicial
+]]></fieldDescription>
 	</field>
 	<variable name="sumendtotal" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{endtotal}]]></variableExpression>
