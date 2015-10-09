@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RepIncomeStatement.jrxml" language="groovy" pageWidth="612" pageHeight="792" columnWidth="472" leftMargin="85" rightMargin="55" topMargin="35" bottomMargin="35" uuid="707d1793-2a3b-4cd8-8300-b30249552bc1">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="reportName" class="java.lang.String"/>
