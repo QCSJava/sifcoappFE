@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StatementReserva" language="groovy" pageWidth="612" pageHeight="792" columnWidth="472" leftMargin="85" rightMargin="55" topMargin="35" bottomMargin="35" whenResourceMissingType="Empty" uuid="e0fe8475-8e69-4dc8-b4e4-04149205e35c">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="163"/>
+	<property name="ireport.y" value="81"/>
 	<parameter name="numCategory" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -31,7 +31,11 @@
 	<parameter name="F4_TITLE" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select acctcode, acctname, coalesce(sal_inicio,0.00) AS sal_anterior, coalesce(sal_final,0.00) AS sal_final,levels,
-CASE WHEN acctcode = '4101' THEN 4.5 else groupmask END AS groupmask
+CASE WHEN acctcode = '4101' THEN 4.5 else groupmask END AS groupmask,
+CASE WHEN acctcode = '5' THEN sal_inicio else 0.0 END AS T1_1,
+CASE WHEN acctcode = '5' THEN sal_final else 0.0 END AS T1_2,
+CASE WHEN acctcode = '4' THEN sal_inicio else 0.0 END AS T2_1,
+CASE WHEN acctcode = '4' THEN sal_final else 0.0 END AS T2_2
 
 	from sp_get_update_balance($P{startdate},$P{enddate})
 	where levels <$P{levels} and groupmask in (4,5)
@@ -43,11 +47,27 @@ CASE WHEN acctcode = '4101' THEN 4.5 else groupmask END AS groupmask
 	<field name="sal_final" class="java.math.BigDecimal"/>
 	<field name="levels" class="java.lang.Integer"/>
 	<field name="groupmask" class="java.math.BigDecimal"/>
+	<field name="t1_1" class="java.math.BigDecimal"/>
+	<field name="t1_2" class="java.math.BigDecimal"/>
+	<field name="t2_1" class="java.math.BigDecimal"/>
+	<field name="t2_2" class="java.math.BigDecimal"/>
 	<variable name="sal_anterior_1" class="java.math.BigDecimal" resetType="Group" resetGroup="groupmask" calculation="Highest">
 		<variableExpression><![CDATA[$F{sal_anterior}]]></variableExpression>
 	</variable>
 	<variable name="sal_final_1" class="java.math.BigDecimal" resetType="Group" resetGroup="groupmask" calculation="Highest">
 		<variableExpression><![CDATA[$F{sal_final}]]></variableExpression>
+	</variable>
+	<variable name="t1_1_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{t1_1}]]></variableExpression>
+	</variable>
+	<variable name="t2_1_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{t2_1}]]></variableExpression>
+	</variable>
+	<variable name="t1_2_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{t1_2}]]></variableExpression>
+	</variable>
+	<variable name="t2_2_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{t2_2}]]></variableExpression>
 	</variable>
 	<group name="groupmask">
 		<groupExpression><![CDATA[$F{groupmask}]]></groupExpression>
@@ -118,25 +138,74 @@ CASE WHEN acctcode = '4101' THEN 4.5 else groupmask END AS groupmask
 					<text><![CDATA[TOTAL GASTOS DE OPERACION]]></text>
 				</staticText>
 				<textField pattern="#,##0.00">
-					<reportElement x="264" y="1" width="65" height="16" uuid="bcb8bea1-47c1-4a65-a1f0-83ae01a85d66"/>
+					<reportElement x="264" y="2" width="65" height="16" uuid="bcb8bea1-47c1-4a65-a1f0-83ae01a85d66">
+						<printWhenExpression><![CDATA[$F{groupmask}==5]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{sal_anterior_1}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{t1_1_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00">
-					<reportElement x="335" y="1" width="65" height="16" uuid="1db78944-eb04-4016-8fe4-7675d7bf23af"/>
+					<reportElement x="335" y="2" width="65" height="16" uuid="1db78944-eb04-4016-8fe4-7675d7bf23af">
+						<printWhenExpression><![CDATA[$F{groupmask}==4.5]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{sal_final_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00">
-					<reportElement x="407" y="1" width="65" height="16" uuid="bd62e1fe-03a7-43c2-82a7-4e091773b16b"/>
+					<reportElement x="407" y="2" width="65" height="16" uuid="bd62e1fe-03a7-43c2-82a7-4e091773b16b">
+						<printWhenExpression><![CDATA[$F{groupmask}==4.5]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{sal_final_1}+$V{sal_anterior_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="264" y="2" width="65" height="16" uuid="2f138a7a-a0ba-40b2-a9d7-8b6cbb012590">
+						<printWhenExpression><![CDATA[$F{groupmask}==4.5
+]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{sal_anterior_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="335" y="2" width="65" height="16" uuid="ffebb5de-f843-4819-ad28-0543e7fc195a">
+						<printWhenExpression><![CDATA[$F{groupmask}==5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{t1_2_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="264" y="2" width="65" height="16" uuid="8959916c-849a-4f4c-8f66-2f269918f510">
+						<printWhenExpression><![CDATA[$F{groupmask}==4]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{t2_1_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="335" y="2" width="65" height="16" uuid="e1fdf7ae-f38a-4229-980b-f196fd16d1b9">
+						<printWhenExpression><![CDATA[$F{groupmask}==4]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{t2_2_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="407" y="2" width="65" height="16" uuid="2ba862ca-13d7-43f8-bc12-c94056df72df">
+						<printWhenExpression><![CDATA[$F{groupmask}==5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{t1_1_1}+$V{t1_2_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="407" y="2" width="65" height="16" uuid="7713baf3-b304-4694-a577-5a44f7d52df4">
+						<printWhenExpression><![CDATA[$F{groupmask}==4]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{t2_1_1}+$V{t2_2_1}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -377,34 +446,6 @@ CASE WHEN acctcode = '4101' THEN 4.5 else groupmask END AS groupmask
 				</textElement>
 				<text><![CDATA[UTILIDAD NETA]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="407" y="18" width="65" height="16" uuid="d6106101-aad7-4f8b-83c7-5076ef0badf2"/>
-				<textElement textAlignment="Right">
-					<font fontName="Arial"/>
-				</textElement>
-				<text><![CDATA[3,000.00]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="407" y="34" width="65" height="16" uuid="7e20ad83-987f-4079-a200-0edcddd32fda"/>
-				<textElement textAlignment="Right">
-					<font fontName="Arial"/>
-				</textElement>
-				<text><![CDATA[3,000.00]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="407" y="50" width="65" height="16" uuid="3bf1e028-38b2-4901-b1a0-8b1d213bfcaf"/>
-				<textElement textAlignment="Right">
-					<font fontName="Arial"/>
-				</textElement>
-				<text><![CDATA[3,000.00]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="407" y="68" width="65" height="14" uuid="0fa5be1f-25ff-40f1-81de-f53c4bf37472"/>
-				<textElement textAlignment="Right">
-					<font fontName="Arial"/>
-				</textElement>
-				<text><![CDATA[3,000.00]]></text>
-			</staticText>
 			<line>
 				<reportElement x="407" y="83" width="65" height="1" uuid="bb9329e2-4351-4a3d-a5fa-11ad40b389c2"/>
 			</line>
@@ -475,6 +516,43 @@ CASE WHEN acctcode = '4101' THEN 4.5 else groupmask END AS groupmask
 					<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" pdfFontName="Courier"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{F4_TITLE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="264" y="2" width="65" height="16" uuid="80e8468b-6a8f-4cf3-a3ad-9a65067f9601"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{t1_1_1}-$V{t2_1_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="335" y="2" width="65" height="16" uuid="99e9a4b6-751c-46d2-b6aa-3201723c7482"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{t1_2_1}-$V{t2_2_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="407" y="2" width="65" height="16" uuid="085003f7-4200-48ba-9d85-5b62efc56103"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[($V{t1_1_1}-$V{t2_1_1}) + ($V{t1_2_1}-$V{t2_2_1})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="407" y="18" width="65" height="16" uuid="1752da55-588a-4cfe-8ce3-ed29697c6e89"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[(($V{t1_1_1}-$V{t2_1_1}) + ($V{t1_2_1}-$V{t2_2_1}))*($P{R1}/100)]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="407" y="34" width="65" height="16" uuid="9c9aa25d-2332-4ac1-bbdd-0666befcae07"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[(($V{t1_1_1}-$V{t2_1_1}) + ($V{t1_2_1}-$V{t2_2_1}))*($P{R2}/100)]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="407" y="50" width="65" height="16" uuid="10d8d9d3-74e2-43b8-967e-c444e0f2a205"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[(($V{t1_1_1}-$V{t2_1_1}) + ($V{t1_2_1}-$V{t2_2_1}))*($P{R3}/100)]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="407" y="68" width="65" height="16" uuid="50def96f-3cc6-43e9-9a49-e482f14fa9ef"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[((($V{t1_1_1}-$V{t2_1_1}) + ($V{t1_2_1}-$V{t2_2_1}))*($P{R1}/100))+
+((($V{t1_1_1}-$V{t2_1_1}) + ($V{t1_2_1}-$V{t2_2_1}))*($P{R2}/100))+
+((($V{t1_1_1}-$V{t2_1_1}) + ($V{t1_2_1}-$V{t2_2_1}))*($P{R3}/100))]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

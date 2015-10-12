@@ -129,22 +129,22 @@ public class RepAccount implements Serializable {
                 reportParameters.put("PMAXLEVEL", this.getReportLevel());
                 reportParameters.put("pdocdate",this.getFdateto());
 
-                reportParameters.put("PREPORTSIGN1", " JESÚS RIVERA HERNANDEZ");
-                reportParameters.put("PREPORTSIGNTITLE1", " REPRESENTANTE LEGAL");
+                reportParameters.put("PREPORTSIGN1", ParameterEJBClient.getParameterbykey(19).getValue1());
+                reportParameters.put("PREPORTSIGNTITLE1", ParameterEJBClient.getParameterbykey(19).getValue2());
 
-                reportParameters.put("PREPORTSIGN2", "NOÉ ANTONIO LÓPEZ GONZÁLEZ");
-                reportParameters.put("PREPORTSIGNTITLE2", "TESORERO");
+                reportParameters.put("PREPORTSIGN2", ParameterEJBClient.getParameterbykey(20).getValue1());
+                reportParameters.put("PREPORTSIGNTITLE2", ParameterEJBClient.getParameterbykey(20).getValue2());
 
-                reportParameters.put("PREPORTSIGN3", "IRINEO CORTÉZ HERNÁNDEZ");
-                reportParameters.put("PREPORTSIGNTITLE3", "PRESIDENTE JUNTA DE VIGILANCIA");
+                reportParameters.put("PREPORTSIGN3", ParameterEJBClient.getParameterbykey(21).getValue1());
+                reportParameters.put("PREPORTSIGNTITLE3", ParameterEJBClient.getParameterbykey(21).getValue2());
 
-                reportParameters.put("PREPORTSIGN4", "NOÉ SORIANO VILLALOBOS");
-                reportParameters.put("PREPORTSIGNTITLE4", "CONTADOR GENERAL");
+                reportParameters.put("PREPORTSIGN4", ParameterEJBClient.getParameterbykey(22).getValue1());
+                reportParameters.put("PREPORTSIGNTITLE4", ParameterEJBClient.getParameterbykey(22).getValue2());
 
             }
 
             if (this.ftype == 2) {
-                _reportname = "/account/RepBalance";
+                _reportname = "/account/BalanceCheck";
                 _reportTitle = "Balance de Comprobación";
 
                 _whereclausule = " 1=1";
@@ -153,17 +153,17 @@ public class RepAccount implements Serializable {
                 reportParameters.put("PWHEREPASIVOS", " groupmask in ('2','3','5')");
                 reportParameters.put("PMAXLEVEL", this.getReportLevel());
 
-                reportParameters.put("PREPORTSIGN1", " JESÚS RIVERA HERNANDEZ");
-                reportParameters.put("PREPORTSIGNTITLE1", " REPRESENTANTE LEGAL");
+                reportParameters.put("PREPORTSIGN1", ParameterEJBClient.getParameterbykey(19).getValue1());
+                reportParameters.put("PREPORTSIGNTITLE1", ParameterEJBClient.getParameterbykey(19).getValue2());
 
-                reportParameters.put("PREPORTSIGN2", "NOÉ ANTONIO LÓPEZ GONZÁLEZ");
-                reportParameters.put("PREPORTSIGNTITLE2", "TESORERO");
+                reportParameters.put("PREPORTSIGN2", ParameterEJBClient.getParameterbykey(20).getValue1());
+                reportParameters.put("PREPORTSIGNTITLE2", ParameterEJBClient.getParameterbykey(20).getValue2());
 
-                reportParameters.put("PREPORTSIGN3", "IRINEO CORTÉZ HERNÁNDEZ");
-                reportParameters.put("PREPORTSIGNTITLE3", "PRESIDENTE JUNTA DE VIGILANCIA");
+                reportParameters.put("PREPORTSIGN3", ParameterEJBClient.getParameterbykey(21).getValue1());
+                reportParameters.put("PREPORTSIGNTITLE3", ParameterEJBClient.getParameterbykey(21).getValue2());
 
-                reportParameters.put("PREPORTSIGN4", "NOÉ SORIANO VILLALOBOS");
-                reportParameters.put("PREPORTSIGNTITLE4", "CONTADOR GENERAL");
+                reportParameters.put("PREPORTSIGN4", ParameterEJBClient.getParameterbykey(22).getValue1());
+                reportParameters.put("PREPORTSIGNTITLE4", ParameterEJBClient.getParameterbykey(22).getValue2());
             }
 
             if (this.ftype == 3) {

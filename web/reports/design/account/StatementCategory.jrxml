@@ -20,17 +20,25 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select acctcode, acctname, coalesce(sal_inicio,0.00) AS sal_anterior, coalesce(sal_final,0.00) AS sal_final,levels, groupmask, acttype
+		<![CDATA[select acctcode, acctname, coalesce(sal_inicio,0.00) AS sal_anterior, coalesce(sal_final,0.00) AS sal_final,levels, groupmask, acttype,
+CASE WHEN acctcode = '5' THEN sal_inicio else 0.0 END AS T1_1,
+CASE WHEN acctcode = '5' THEN sal_final else 0.0 END AS T1_2,
+CASE WHEN acctcode = '4' THEN sal_inicio else 0.0 END AS T2_1,
+CASE WHEN acctcode = '4' THEN sal_final else 0.0 END AS T2_2
 	from sp_get_update_balance($P{startdate},$P{enddate})
 	where groupmask in (4,5) and levels < $P{levels} and acttype = $P{numCategory}]]>
 	</queryString>
-	<field name="acctcode" class="java.lang.String"/>
-	<field name="acctname" class="java.lang.String"/>
-	<field name="sal_anterior" class="java.math.BigDecimal"/>
-	<field name="sal_final" class="java.math.BigDecimal"/>
 	<field name="levels" class="java.lang.Integer"/>
 	<field name="groupmask" class="java.lang.Integer"/>
+	<field name="acctcode" class="java.lang.String"/>
+	<field name="acctname" class="java.lang.String"/>
 	<field name="acttype" class="java.lang.String"/>
+	<field name="sal_anterior" class="java.math.BigDecimal"/>
+	<field name="sal_final" class="java.math.BigDecimal"/>
+	<field name="t1_1" class="java.math.BigDecimal"/>
+	<field name="t1_2" class="java.math.BigDecimal"/>
+	<field name="t2_1" class="java.math.BigDecimal"/>
+	<field name="t2_2" class="java.math.BigDecimal"/>
 	<variable name="sal_anterior_1" class="java.math.BigDecimal" resetType="Group" resetGroup="GroupMask" calculation="Highest">
 		<variableExpression><![CDATA[$F{sal_anterior}]]></variableExpression>
 	</variable>
@@ -45,6 +53,18 @@
 	</variable>
 	<variable name="sal_anterior_3" class="java.math.BigDecimal" resetType="Group" resetGroup="GroupMask" calculation="Highest">
 		<variableExpression><![CDATA[$F{sal_anterior}]]></variableExpression>
+	</variable>
+	<variable name="t1_1_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{t1_1}]]></variableExpression>
+	</variable>
+	<variable name="t2_1_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{t2_1}]]></variableExpression>
+	</variable>
+	<variable name="t1_2_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{t1_2}]]></variableExpression>
+	</variable>
+	<variable name="t2_2_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{t2_2}]]></variableExpression>
 	</variable>
 	<group name="GroupMask">
 		<groupExpression><![CDATA[$F{groupmask}]]></groupExpression>
@@ -61,20 +81,48 @@
 					<textElement verticalAlignment="Middle"/>
 					<text><![CDATA[----Subtotal----]]></text>
 				</staticText>
-				<textField pattern="#,##0.00">
-					<reportElement x="335" y="2" width="65" height="20" uuid="c0bef98d-3b41-4829-b705-1859a2ea5754"/>
+				<textField pattern="#,##0.00" isBlankWhenNull="false">
+					<reportElement x="407" y="2" width="65" height="20" uuid="9b20a421-fdef-4b40-8a37-33212400143a">
+						<printWhenExpression><![CDATA[$F{groupmask}==5]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$V{sal_final_1}]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement x="407" y="3" width="65" height="20" uuid="9b20a421-fdef-4b40-8a37-33212400143a"/>
-					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$V{sal_anterior_3} + $V{sal_final_1}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{t1_1_1}+$V{t1_2_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00">
-					<reportElement x="265" y="3" width="64" height="20" uuid="dfee59a5-be95-4752-a458-62c42305b9a1"/>
+					<reportElement x="264" y="2" width="65" height="20" uuid="045c855c-c335-458c-8e79-1f0bfe3b54a5">
+						<printWhenExpression><![CDATA[$F{groupmask}==5]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$V{sal_anterior_3}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{t1_1_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="264" y="2" width="65" height="20" uuid="3ed5c275-1949-4b49-be46-6dee41b7f41e">
+						<printWhenExpression><![CDATA[$F{groupmask}==4]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{t2_1_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="335" y="2" width="65" height="20" uuid="960b10f4-3ddf-4537-9618-6e78cd95c99b">
+						<printWhenExpression><![CDATA[$F{groupmask}==5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{t1_2_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="335" y="2" width="65" height="20" uuid="43441551-4695-434a-b48d-cd538845adc4">
+						<printWhenExpression><![CDATA[$F{groupmask}==4
+]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{t2_2_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="407" y="2" width="65" height="20" uuid="9bc46394-4944-42ad-9f14-6c6d0366df2b">
+						<printWhenExpression><![CDATA[$F{groupmask}==4]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{t2_1_1}+$V{t2_2_1}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -168,7 +216,8 @@
 			<textField pattern="#,##0.00">
 				<reportElement x="335" y="0" width="65" height="16" uuid="7a1a7b22-d3f7-43e8-9cda-d292de54cc99"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{sal_final} != null? $F{sal_final} : 0.00]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sal_final}
+]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="407" y="0" width="65" height="16" uuid="b35977f1-12dc-46f4-b91b-323b02e268c7"/>
@@ -184,7 +233,7 @@
 				<textElement textAlignment="Right">
 					<font isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{sal_anterior} != null? $F{sal_anterior}:0.00]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sal_anterior}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -233,20 +282,20 @@
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[----Utilidad ó (Pérdida) Bruta----]]></text>
 			</staticText>
-			<textField pattern="#,##0.00">
-				<reportElement x="265" y="2" width="65" height="20" uuid="76a09caa-8fe9-4e40-b2d0-30a3190397ac"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$V{sal_anterior_2}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="335" y="2" width="65" height="20" uuid="45459dab-6642-44d5-b9f3-7f3de625ed35"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$V{sal_final_2}]]></textFieldExpression>
-			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="407" y="2" width="65" height="20" uuid="520f4a26-f11d-4039-af89-a42dabae7dd3"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$V{sal_anterior_2} + $V{sal_final_2}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($V{t1_1_1}-$V{t2_1_1})+($V{t1_2_1}-$V{t2_2_1})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="265" y="2" width="64" height="20" uuid="ad6576ee-c83c-48eb-b078-7ffdd8867b3f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{t1_1_1}-$V{t2_1_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="335" y="3" width="65" height="20" uuid="1b4a7079-81b1-4926-806c-07cfa8b51a9e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{t1_2_1}-$V{t2_2_1}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
