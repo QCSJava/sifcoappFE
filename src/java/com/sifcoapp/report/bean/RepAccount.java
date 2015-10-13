@@ -144,7 +144,7 @@ public class RepAccount implements Serializable {
             }
 
             if (this.ftype == 2) {
-                _reportname = "/account/BalanceCheck";
+                _reportname = "/account/RepBalance";
                 _reportTitle = "Balance de Comprobación";
 
                 _whereclausule = " 1=1";
@@ -179,11 +179,13 @@ public class RepAccount implements Serializable {
             }
 
             if (this.ftype == 4) {
-                _reportname = "/account/RepDailyAccount";
+                _reportname = "/account/BDaily";
                 _reportTitle = "Libro Diario";
 
-                _whereclausule = " h.transid=d.transid and c.acctcode=d.account and h.refdate>=$P{pdocdate} and h.refdate<=$P{PDOCDATE2}";
-
+                //_whereclausule = " h.transid=d.transid and c.acctcode=d.account and h.refdate>=$P{pdocdate} and h.refdate<=$P{PDOCDATE2}";
+                reportParameters.put("startdate", this.getFdatefrom());
+                reportParameters.put("enddate", this.getFdateto());
+                reportParameters.put("account", this.getAccount());
             }
             if (this.ftype == 5) {
                 _reportname = "/account/RepAuxDaily";
@@ -237,17 +239,28 @@ public class RepAccount implements Serializable {
             }
 
             if (this.ftype == 8) {
-                _reportname = "/account/BDaily";
+                _reportname = "/account/CBDjournal";
                 _reportTitle = "DIARIO MAYOR";
 
                 reportParameters.put("startdate", this.getFdatefrom());
                 reportParameters.put("enddate", this.getFdateto());
                 reportParameters.put("account", this.getAccount());
+                reportParameters.put("level", this.getReportLevel());
 
             }
+            
+            if (this.ftype == 9) {
+                _reportname = "/account/BDjournal";
+                _reportTitle = "DIARIO MAYOR";
+                
+                reportParameters.put("startdate", this.getFdatefrom());
+                reportParameters.put("enddate", this.getFdateto());
+                reportParameters.put("account", this.getAccount());
+            }
+            
             reportParameters.put("reportName", _reportTitle);
             reportParameters.put("corpName", "ACOETMISAB DE R.L.");
-            if (this.ftype != 3) {
+            if (this.ftype != 3 || this.ftype != 8 || this.ftype != 7 || this.ftype != 6) {
                 reportParameters.put("PWHERE", _whereclausule);
             }
 

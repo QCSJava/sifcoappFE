@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StatementReserva" language="groovy" pageWidth="612" pageHeight="792" columnWidth="472" leftMargin="85" rightMargin="55" topMargin="35" bottomMargin="35" whenResourceMissingType="Empty" uuid="e0fe8475-8e69-4dc8-b4e4-04149205e35c">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="163"/>
-	<property name="ireport.y" value="81"/>
+	<property name="ireport.x" value="116"/>
+	<property name="ireport.y" value="129"/>
 	<parameter name="numCategory" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -30,12 +30,12 @@
 	<parameter name="F3_TITLE" class="java.lang.String"/>
 	<parameter name="F4_TITLE" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select acctcode, acctname, coalesce(sal_inicio,0.00) AS sal_anterior, coalesce(sal_final,0.00) AS sal_final,levels,
+		<![CDATA[select acctcode, acctname, coalesce(sal_inicio,0.00) AS sal_anterior, coalesce(sal_debe,0.00)- coalesce(sal_haber,0.00) AS sal_final,levels,
 CASE WHEN acctcode = '4101' THEN 4.5 else groupmask END AS groupmask,
 CASE WHEN acctcode = '5' THEN sal_inicio else 0.0 END AS T1_1,
-CASE WHEN acctcode = '5' THEN sal_final else 0.0 END AS T1_2,
+CASE WHEN acctcode = '5' THEN coalesce(sal_debe,0.00)- coalesce(sal_haber,0.00) else 0.0 END AS T1_2,
 CASE WHEN acctcode = '4' THEN sal_inicio else 0.0 END AS T2_1,
-CASE WHEN acctcode = '4' THEN sal_final else 0.0 END AS T2_2
+CASE WHEN acctcode = '4' THEN coalesce(sal_debe,0.00)- coalesce(sal_haber,0.00) else 0.0 END AS T2_2
 
 	from sp_get_update_balance($P{startdate},$P{enddate})
 	where levels <$P{levels} and groupmask in (4,5)
@@ -550,9 +550,13 @@ CASE WHEN acctcode = '4' THEN sal_final else 0.0 END AS T2_2
 			<textField pattern="#,##0.00">
 				<reportElement x="407" y="68" width="65" height="16" uuid="50def96f-3cc6-43e9-9a49-e482f14fa9ef"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[((($V{t1_1_1}-$V{t2_1_1}) + ($V{t1_2_1}-$V{t2_2_1}))*($P{R1}/100))+
+				<textFieldExpression><![CDATA[(($V{t1_1_1}-$V{t2_1_1}) + ($V{t1_2_1}-$V{t2_2_1}))-
+
+(((($V{t1_1_1}-$V{t2_1_1}) + ($V{t1_2_1}-$V{t2_2_1}))*($P{R1}/100))+
 ((($V{t1_1_1}-$V{t2_1_1}) + ($V{t1_2_1}-$V{t2_2_1}))*($P{R2}/100))+
-((($V{t1_1_1}-$V{t2_1_1}) + ($V{t1_2_1}-$V{t2_2_1}))*($P{R3}/100))]]></textFieldExpression>
+((($V{t1_1_1}-$V{t2_1_1}) + ($V{t1_2_1}-$V{t2_2_1}))*($P{R3}/100)))
+
+    ]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
