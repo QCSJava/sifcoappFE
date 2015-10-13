@@ -11,9 +11,7 @@
         <ui:composition template="./../../template.xhtml">
 
             <ui:define name="content">
-
                 <h:form id="principal">
-                    <br></br>
                     <p:toolbar id="toolbarBill">
                         <f:facet name="left">
                             <p:focus context="toolbarBill"/>
@@ -24,7 +22,7 @@
 
                         </f:facet>
                     </p:toolbar>
-
+                    <p:spacer width="0" height="5"/>
                     <div class="ui-grid ui-grid-responsive">
                         <div class="ui-grid-row"> 
                             <div class="ui-grid-col-2">
@@ -50,21 +48,23 @@
                         </div>
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2"><p:outputLabel value="Por Existencia"></p:outputLabel></div>
-                            <div class="ui-grid-col-2"><p:inputText id="fname" value="#{rinventory.stock}"  size="50"></p:inputText></div>
+                            <div class="ui-grid-col-2"><p:inputText id="fname" value="#{rinventory.stock}"  size="15"></p:inputText></div>
                         </div>
+                        <p:spacer width="0" height="10"/>
                         <div class="ui-grid-row">                            
                             <div class="ui-grid-col-2"><p:outputLabel  value="Fecha Inicio:" for="FechaInicio" ></p:outputLabel></div>
                             <div class="ui-grid-col-2">
-                                <p:calendar id="FechaInicio" value="#{rinventory.fdatefrom}" showOn="button" size="10"  pattern="dd/MM/yyyy" />
+                                <p:calendar id="FechaInicio" value="#{rinventory.fdatefrom}" showOn="button" size="15"  pattern="dd/MM/yyyy" />
                             </div>
                         </div>
                         <div class="ui-grid-row">
 
                             <div class="ui-grid-col-2"><p:outputLabel  value="Fecha Fin:" for="FechaFin" ></p:outputLabel></div>
                             <div class="ui-grid-col-2">
-                                <p:calendar id="FechaFin" value="#{rinventory.fdateto}" showOn="button" size="10"  pattern="dd/MM/yyyy" />
+                                <p:calendar id="FechaFin" value="#{rinventory.fdateto}" showOn="button" size="15"  pattern="dd/MM/yyyy" />
                             </div>
                         </div>
+                        <p:spacer width="0" height="10"/>
                         <div class="ui-grid-row">
 
 
@@ -77,12 +77,14 @@
                                 </p:selectOneRadio></div>
 
                         </div>
+                        <p:spacer width="0" height="10"/>
                         <div class="ui-grid-row">
-                            <div class="ui-grid-col-2">
-                                <p:commandButton process="@this isActive" id="btnPrint" action="#{rinventory.doPrint()}" value="Imprimir" ajax="false"  />
-                            </div>
-                            <div class="ui-grid-col-2">
-                                <p:commandButton process="@this isActive" id="btnPrint2" action="#{rinventory.printFormat()}" value="Descargar" ajax="false"  />
+                            <div class="ui-grid-col-6">
+                                <p:commandButton process="@this isActive" id="btnPrint" action="#{rinventory.doPrint()}" value="Ver" ajax="false"  />
+                                <p:spacer height="0" width="15"/>
+                                <p:commandButton process="@this isActive" id="btnPrint2" action="#{rinventory.printFormat()}" value="Descargar PDF" ajax="false"  />
+                                <p:spacer height="0" width="15"/>
+                                <p:commandButton process="@this isActive" id="btnPrint3" action="#{rinventory.printFormatExcel()}" value="Descargar Excel" ajax="false"  />
                             </div>
                         </div>
                     </div>

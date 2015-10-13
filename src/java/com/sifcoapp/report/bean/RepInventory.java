@@ -30,6 +30,7 @@ import javax.validation.constraints.Digits;
 @RequestScoped
 public class RepInventory implements Serializable {
 
+//<editor-fold defaultstate="collapsed" desc="VARIABLES">
     private String fcode;
     private String fname;
     private Date fdatefrom;
@@ -42,29 +43,26 @@ public class RepInventory implements Serializable {
     @Digits(integer = 14, fraction = 2, message = "Cantidad inadecuada")
     private double stock;
     private static AdminEJBClient AdminEJBService;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="INIT">
     @PostConstruct
     public void initForm() {
         this.setFtype(1);
 
     }
-    /*
-     * despliega pdf a pantalla
-     * Rutilio
-     * Abril 2015
-     */
+//</editor-fold>
 
-    public void doPrint() throws Exception {
-        this.print(0);
-    }
-
+//<editor-fold defaultstate="collapsed" desc="PRINT">
     public void print(int _type) throws Exception {
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        
+        Map<String, Object> reportParameters = new HashMap<>();
         String _whereclausule = null;
         String _whereclausuleSR = null;
         String _reportname = null;
         String _reportTitle = null;
         String _reportFilters = "";
+        
         if (AdminEJBService == null) {
             AdminEJBService = new AdminEJBClient();
         }
@@ -74,6 +72,7 @@ public class RepInventory implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(repPurchases.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         if (this.ftype == 1) {
             _reportname = "/inventory/InvCostStock";
             _reportTitle = "Existencias y Costos";
@@ -108,7 +107,9 @@ public class RepInventory implements Serializable {
 
             }
 
-        } else if (this.ftype == 2) {
+        }
+        
+        if (this.ftype == 2) {
             _reportname = "/inventory/InvPhysical";
             _reportTitle = "Inventario Físico";
 
@@ -133,7 +134,9 @@ public class RepInventory implements Serializable {
                 reportParameters.put("PFILTERS", _reportFilters);
 
             }
-        } else if (this.ftype == 3) {
+        }
+        
+        if (this.ftype == 3) {
             _reportname = "/inventory/InvPhysical";
             _reportTitle = "Inventario Físico";
 
@@ -158,7 +161,9 @@ public class RepInventory implements Serializable {
                 reportParameters.put("PFILTERS", _reportFilters);
 
             }
-        } else if (this.ftype == 4) {
+        } 
+        
+        if (this.ftype == 4) {
             _reportname = "/inventory/InvBarCode";
             _reportTitle = "Barcode";
 
@@ -184,6 +189,7 @@ public class RepInventory implements Serializable {
 
             }
         }
+        
         if (this.ftype == 5) {
             _reportname = "/sales/SalesBySeller";
             _whereclausule = " h.docentry=d.docentry and docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2} and h.usersign=u.usersign";
@@ -196,6 +202,7 @@ public class RepInventory implements Serializable {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
         }
+        
         if (this.ftype == 6) {
             _reportname = "/sales/SalesBySellRes";
             _whereclausule = " docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2} and h.usersign=u.usersign";
@@ -215,14 +222,22 @@ public class RepInventory implements Serializable {
         reportParameters.put("PWHERE", _whereclausule);
         reportParameters.put("PWHERESR", _whereclausuleSR);
         reportParameters.put("reportName", _reportTitle);
+        
         if (_type == 0) {
             getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "PDF"));
+        } else {
+            if (_type == 1) {
+                getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "FILE"));
+                getBean().setFileName(_reportTitle);
+            } else {
+                if (_type == 2) {
+                    this.bean = new ReportsBean();
+                    getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "EXCEL"));
+                    getBean().setFileName(_reportTitle);
+                }
+            }
         }
-        if (_type == 1) {
-            //getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "FILE"));
-            getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "EXCEL"));
-            getBean().setFileName(_reportTitle);
-        }
+        
         System.out.println(_whereclausule);
         System.out.println(_reportname);
         System.out.println(_reportTitle);
@@ -233,16 +248,27 @@ public class RepInventory implements Serializable {
         getBean().execute();
 
     }
-
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="funciones varias">
+    public void doPrint() throws Exception {
+        this.print(0);
+    }
+    
     public void printFormat() throws Exception {
         this.print(1);
     }
+    
+    public void printFormatExcel() throws Exception {
+        this.print(2);
+    }
 
-    /**
-     * Creates a new instance of repsales
-     */
     public RepInventory() {
     }
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="G & S">
+    
 
     /**
      * @return the fcode
@@ -369,5 +395,6 @@ public class RepInventory implements Serializable {
     public void setStock(double stock) {
         this.stock = stock;
     }
+//</editor-fold>
 
-}
+}//cierre de clase

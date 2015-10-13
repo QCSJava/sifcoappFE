@@ -6,14 +6,19 @@
 package com.sifcoapp.report.bean;
 
 import com.sifcoapp.client.AdminEJBClient;
+import com.sifcoapp.client.CatalogEJBClient;
 import com.sifcoapp.objects.admin.to.EnterpriseTO;
+import com.sifcoapp.objects.catalog.to.BusinesspartnerInTO;
+import com.sifcoapp.objects.catalog.to.BusinesspartnerTO;
 import com.sifcoapp.report.common.AbstractReportBean;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -32,12 +37,14 @@ public class repPurchases implements Serializable {
 //<editor-fold defaultstate="collapsed" desc="VARIABLES">
     private String fcode;
     private String fname;
+    private String fname2;
     private Date fdatefrom;
     private Date fdateto;
     @ManagedProperty(value = "#{reportsBean}")
     private ReportsBean bean;
     private static AdminEJBClient AdminEJBService = null;
     private int ftype;
+    private static CatalogEJBClient CatalogEJB;
 
 //</editor-fold>
     
@@ -54,6 +61,9 @@ public class repPurchases implements Serializable {
         this.setFdatefrom(sDate);
         if (AdminEJBService == null) {
             AdminEJBService = new AdminEJBClient();
+        }
+        if (CatalogEJB == null) {
+            CatalogEJB = new CatalogEJBClient();
         }
     }
 
@@ -73,6 +83,10 @@ public class repPurchases implements Serializable {
         this.print(1);
     }
 
+    public void printFormatExcel() {
+        this.print(2);
+    }
+
     public repPurchases() {
     }
 
@@ -80,7 +94,8 @@ public class repPurchases implements Serializable {
     
 //<editor-fold defaultstate="collapsed" desc="Print">
     public void print(int _type) {
-         Map<String, Object> reportParameters = new HashMap<>();
+
+        Map<String, Object> reportParameters = new HashMap<>();
         String _whereclausule = null;
         String _whereclausuleSR = null;
         String _reportname = null;
@@ -89,11 +104,13 @@ public class repPurchases implements Serializable {
         Calendar cal1 = GregorianCalendar.getInstance();
         cal1.setTime(this.getFdatefrom());
         EnterpriseTO resp = null;
+        
         try {
             resp = AdminEJBService.getEnterpriseInfo();
         } catch (Exception ex) {
             Logger.getLogger(repPurchases.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         if (this.ftype == 1) {
             _reportname = "/purchase/DailyPurchase";
             _reportTitle = "Control Diario de Compras";
@@ -105,7 +122,9 @@ public class repPurchases implements Serializable {
             if (this.getFname() != null && this.getFname().length() > 0) {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
-        } else if (this.ftype == 2) {
+        } 
+        
+        if (this.ftype == 2) {
             _reportname = "/purchase/DailyPurchaseDet";
             _reportTitle = "Productos comprados por Proveedor";
             _whereclausule = " p.docentry=d.docentry and docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}";
@@ -115,7 +134,9 @@ public class repPurchases implements Serializable {
             if (this.getFname() != null && this.getFname().length() > 0) {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
-        } else if (this.ftype == 3) {
+        } 
+        
+        if (this.ftype == 3) {
             _reportname = "/purchase/DailyPurchaseProv";
             _reportTitle = " Compras por proveedor - RESUMEN";
             _whereclausule = " docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}";
@@ -125,7 +146,9 @@ public class repPurchases implements Serializable {
             if (this.getFname() != null && this.getFname().length() > 0) {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
-        } else if (this.ftype == 4) {
+        } 
+        
+        if (this.ftype == 4) {
             _reportname = "/purchase/DailyPurchaseProvVou";
             _reportTitle = "Facturas por proveedores";
             _whereclausule = " docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}";
@@ -136,6 +159,7 @@ public class repPurchases implements Serializable {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
         }
+        
         if (this.ftype == 5) {
             _reportname = "/purchase/suggestPurch";
             _whereclausule = " h.docentry=d.docentry and docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2} and h.usersign=u.usersign";
@@ -148,6 +172,7 @@ public class repPurchases implements Serializable {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
         }
+
         if (this.ftype == 6) {
             _reportname = "/purchase/DaiPurchItmGrp";
             _whereclausule = " p.docentry=d.docentry and docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}";
@@ -160,6 +185,7 @@ public class repPurchases implements Serializable {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
         }
+
         if (this.ftype == 7) {
             _reportname = "/purchase/DailyPurBillDet";
             _whereclausule = " p.docentry=d.docentry and docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}";
@@ -172,6 +198,7 @@ public class repPurchases implements Serializable {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
         }
+
         if (this.ftype == 8) {
             _reportname = "/purchase/PurchaseCost";
             _whereclausule = " p.docentry=d.docentry and docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}";
@@ -184,6 +211,7 @@ public class repPurchases implements Serializable {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
         }
+
         if (this.ftype == 9) {
             _reportname = "/purchase/PurchLocForg";
             _whereclausule = "  docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}";
@@ -196,6 +224,7 @@ public class repPurchases implements Serializable {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
         }
+
         if (this.ftype == 10) {
             _reportname = "/purchase/purchDebtCentr";
             _whereclausule = "  p.docentry=d.docentry and docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}";
@@ -208,6 +237,7 @@ public class repPurchases implements Serializable {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
         }
+
         if (this.ftype == 11) {
 
             _reportname = "/purchase/purchBook";
@@ -222,6 +252,7 @@ public class repPurchases implements Serializable {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
         }
+
         System.out.println(_whereclausule);
         System.out.println(_reportname);
         System.out.println(_reportTitle);
@@ -235,13 +266,22 @@ public class repPurchases implements Serializable {
         reportParameters.put("PMONTH", getNameMonth(cal1));
         reportParameters.put("PYEAR", cal1.get(Calendar.YEAR));
         reportParameters.put("reportName", _reportTitle);
+
         if (_type == 0) {
             getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "PDF"));
+        } else {
+            if (_type == 1) {
+                getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "FILE"));
+                getBean().setFileName(_reportTitle);
+            } else {
+                if (_type == 2) {
+                    this.bean = new ReportsBean();
+                    getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "EXCEL"));
+                    getBean().setFileName(_reportTitle);
+                }
+            }
         }
-        if (_type == 1) {
-            getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "FILE"));
-            getBean().setFileName(_reportTitle);
-        }
+
         getBean().setParameters(reportParameters);
         getBean().setReportName(_reportname);
         getBean().execute();
@@ -273,10 +313,66 @@ public class repPurchases implements Serializable {
 
 //</editor-fold>
     
+//<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
+    public void selectSocioName() {
+        String[] newName = fname2.split("-");
+        selectSocioCod(newName[0]);
+    }
+
+    public void selectSocioCod(String code) {
+        List socio = new Vector();
+        List _result = null;
+        BusinesspartnerInTO in = new BusinesspartnerInTO();
+        in.setCardcode(fname == null ? code : fname);
+
+        try {
+            _result = CatalogEJB.get_businesspartner(in);
+
+        } catch (Exception e) {
+            //faceMessage(e.getMessage() + " -- " + e.getCause());
+            fname = null;
+            fname2 = null;
+        }
+        if (_result.isEmpty()) {
+            fname = null;
+            fname2 = null;
+        } else {
+            for (Object obj : _result) {
+                BusinesspartnerTO articulo = (BusinesspartnerTO) obj;
+                socio.add(articulo);
+            }
+            if (socio.size() == 1) {
+                try {
+                    System.out.println("articulo unico, llenar campos en pantalla");
+                    BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
+                    fname = art.getCardcode();
+                    fname2 = art.getCardname();
+
+                } catch (Exception ex) {
+                    Logger.getLogger(repsales.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+//</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="G&S">
-    /**
-     * @return the fcode
-     */
+    public String getFname2() {
+        return fname2;
+    }
+
+    public void setFname2(String fname2) {
+        this.fname2 = fname2;
+    }
+
+    public static AdminEJBClient getAdminEJBService() {
+        return AdminEJBService;
+    }
+
+    public static void setAdminEJBService(AdminEJBClient AdminEJBService) {
+        repPurchases.AdminEJBService = AdminEJBService;
+    }
+
     public String getFcode() {
         return fcode;
     }
@@ -359,5 +455,4 @@ public class repPurchases implements Serializable {
     }
 
 //</editor-fold>
-    
 }//cierre de clase
