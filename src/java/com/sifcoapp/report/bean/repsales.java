@@ -147,6 +147,14 @@ public class repsales implements Serializable {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
         }
+        
+        if (this.ftype == 7) {
+            _reportname = "/sales/Deliverysales";
+            _reportTitle = "Reporte Notas de Remisión";
+
+            _whereclausule = " docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}";
+        }
+        
         System.out.println(_whereclausule);
         System.out.println(_reportname);
         System.out.println(_reportTitle);
