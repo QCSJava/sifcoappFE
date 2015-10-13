@@ -162,7 +162,9 @@ public class DeliveryBean implements Serializable {
     //
     private ExternalContext ec;// = FacesContext.getCurrentInstance().getExternalContext();
     private CreditNotesBean cn;// = (DeliveryBean) ec.getApplicationMap().get("salesBean");
-
+    private boolean renderedContex;
+    private boolean ifCancelacion;
+    private int idAnterior;
     //
     private String url;
 
@@ -851,8 +853,14 @@ public class DeliveryBean implements Serializable {
         this.creditNote = false;
         this.required1 = true;
         this.rendered = true;
+        this.renderedContex = false;
+        this.ifCancelacion = false;
         setRef();
         RequestContext.getCurrentInstance().update("frmDelivery");
+        try {
+            reload();
+        } catch (IOException ex) {
+        }
 
     }
 
@@ -868,7 +876,7 @@ public class DeliveryBean implements Serializable {
             this.creditNote = true;
             this.required1 = true;
             this.rendered = false;
-
+            this.renderedContex = true;
             RequestContext.getCurrentInstance().update("frmprt");
             showHideDialog("dlgPtr", 1);
 
@@ -885,6 +893,7 @@ public class DeliveryBean implements Serializable {
             this.creditNote = true;
             this.required1 = true;
             this.rendered = false;
+            this.renderedContex = true;
             try {
                 //RequestContext.getCurrentInstance().update("frmDelivery");
                 reload();
@@ -908,7 +917,12 @@ public class DeliveryBean implements Serializable {
         this.required1 = false; //forma de pago y almacen no requeridos en busqueda
         this.rendered = false;
         this.tipoDoc = 0;
+        this.renderedContex = false;
         RequestContext.getCurrentInstance().update("frmDelivery");
+        try {
+            reload();
+        } catch (IOException ex) {
+        }
     }
     //</editor-fold>
 
@@ -982,6 +996,13 @@ public class DeliveryBean implements Serializable {
 
         newDelivery.setDoctotal(gTotalPadre);
         newDelivery.setDeliveryDetails(listaPadre);
+        
+        if (ifCancelacion) {
+            //algo
+            //setear id anterior
+            newDelivery.setReceiptnum(this.getIdAnterior());
+            newDelivery.setSeries(4);
+        }
 
         try {
             ResultOutTO _res;
@@ -1637,11 +1658,43 @@ public class DeliveryBean implements Serializable {
     
 //<editor-fold defaultstate="collapsed" desc="Contex Eliminar">
     public void DeleteDelivery(){
-        faceMessage("Eliminar nota de remision");
+        if (newDelivery.getSeries() == 4) {
+            faceMessage("No se puede anular");
+        }else{
+            faceMessage("Anular Remision");
+            estateGuardar();
+            this.ifCancelacion = true;
+            this.idAnterior = docNum;
+            docNum = 0;
+            RequestContext.getCurrentInstance().update("frmDelivery");
+        }
     }
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G & S">
+
+    public int getIdAnterior() {
+        return idAnterior;
+    }
+
+    public void setIdAnterior(int idAnterior) {
+        this.idAnterior = idAnterior;
+    }
+    public boolean isIfCancelacion() {
+        return ifCancelacion;
+    }
+
+    public void setIfCancelacion(boolean ifCancelacion) {
+        this.ifCancelacion = ifCancelacion;
+    }
+    public boolean isRenderedContex() {
+        return renderedContex;
+    }
+
+    public void setRenderedContex(boolean renderedContex) {
+        this.renderedContex = renderedContex;
+    }
+    
     public ParameterEJBClient getParameterEJBClient() {
         return ParameterEJBClient;
     }

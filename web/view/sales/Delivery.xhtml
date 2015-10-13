@@ -47,7 +47,7 @@
 
                     <!-- Div Principal outcome="ClientCreditNotes" -->
                     <div  class="ui-grid ui-grid-responsive" id="divPrincipal">
-                        <p:contextMenu id="DeleteDeli" >
+                        <p:contextMenu id="DeleteDeli" rendered="#{deliveryBean.renderedContex}">
                             <p:menuitem value="Anular" actionListener="#{deliveryBean.DeleteDelivery}"  icon="ui-icon-close"/>
                         </p:contextMenu>
 
