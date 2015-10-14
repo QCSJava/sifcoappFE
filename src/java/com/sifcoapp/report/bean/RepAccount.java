@@ -185,7 +185,7 @@ public class RepAccount implements Serializable {
                 //_whereclausule = " h.transid=d.transid and c.acctcode=d.account and h.refdate>=$P{pdocdate} and h.refdate<=$P{PDOCDATE2}";
                 reportParameters.put("startdate", this.getFdatefrom());
                 reportParameters.put("enddate", this.getFdateto());
-                reportParameters.put("account", this.getAccount());
+                reportParameters.put("account", "^"+this.getAccount());
             }
             if (this.ftype == 5) {
                 _reportname = "/account/RepAuxDaily";

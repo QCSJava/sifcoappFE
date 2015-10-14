@@ -244,6 +244,7 @@ public class ColecturiaBean implements Serializable {
                 try {
                     System.out.println("articulo unico, llenar campos en pantalla");
                     BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
+                  
                     ctlAcc = art.getDebpayacct();
                     codSocio = art.getCardcode();
                     nameSocio = art.getCardname();
