@@ -133,28 +133,28 @@ CASE WHEN acctcode = '4' THEN coalesce(sal_debe,0.00)- coalesce(sal_haber,0.00) 
 		<band height="80" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="0" width="472" height="20" uuid="680b1f1c-2ec6-4176-9809-626ab0f4c45c"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="12" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{corpName}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="20" width="472" height="20" uuid="0930e0da-a2b3-4526-aef1-273f7e575b79"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportName}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="40" width="472" height="20" uuid="2d4e08fa-90d6-4063-96f2-066a00bb7e91"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{category}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="60" width="472" height="20" uuid="d526fc26-fa2f-4128-94e1-a3cd507279cd"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PFECHAREPORTE}]]></textFieldExpression>
@@ -237,13 +237,6 @@ CASE WHEN acctcode = '4' THEN coalesce(sal_debe,0.00)- coalesce(sal_haber,0.00) 
 	</detail>
 	<pageFooter>
 		<band height="39" splitType="Stretch">
-			<textField>
-				<reportElement x="329" y="0" width="143" height="39" uuid="549c9227-dadb-4a8c-a440-137dae16354c"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"+" " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="0" y="24" width="329" height="15" uuid="ad876f16-1f5a-4a5d-b8ee-7a885f2640de"/>
 				<textElement>
@@ -252,11 +245,25 @@ CASE WHEN acctcode = '4' THEN coalesce(sal_debe,0.00)- coalesce(sal_haber,0.00) 
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="329" height="24" uuid="536df358-a476-42d6-9b1e-6dbc9f6b8b57"/>
+				<reportElement x="0" y="0" width="472" height="24" uuid="536df358-a476-42d6-9b1e-6dbc9f6b8b57"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{JASPER_REPORT}.getName()]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="400" y="24" width="72" height="15" uuid="6364b814-7020-4e36-b679-6962be2e4eee"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="329" y="24" width="71" height="15" uuid="3c97479e-19b5-4ba8-abce-4c9a06779b40"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

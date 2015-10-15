@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BDaily.jrxml" language="groovy" pageWidth="612" pageHeight="792" columnWidth="512" leftMargin="50" rightMargin="50" topMargin="35" bottomMargin="35" whenResourceMissingType="Empty" isIgnorePagination="true" uuid="707d1793-2a3b-4cd8-8300-b30249552bc1">
 	<property name="ireport.zoom" value="1.5000000000000018"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="112"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Negrita">
 		<conditionalStyle>
@@ -37,12 +37,10 @@
 	<field name="acctcode" class="java.lang.String"/>
 	<field name="acctname" class="java.lang.String"/>
 	<field name="refdate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha de contabilizaciÃ³n
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Fecha de contabilizaciÃ³n]]></fieldDescription>
 	</field>
 	<field name="transid" class="java.lang.Integer">
-		<fieldDescription><![CDATA[NÃºmero de operaciÃ³n
-]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de operaciÃ³n]]></fieldDescription>
 	</field>
 	<field name="objtype" class="java.lang.String"/>
 	<field name="comment" class="java.lang.String"/>
@@ -178,7 +176,9 @@
 				<textFieldExpression><![CDATA["       "+$F{acctname}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement style="Negrita" x="269" y="0" width="69" height="16" uuid="ab4f8cd8-7594-4ecb-8cee-a7109ff6fdae"/>
+				<reportElement style="Negrita" x="269" y="0" width="69" height="16" uuid="ab4f8cd8-7594-4ecb-8cee-a7109ff6fdae">
+					<printWhenExpression><![CDATA[$F{ttype}==1]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
@@ -189,17 +189,19 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{debe}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{groupmask} == 3 || $F{groupmask} == 2 || $F{groupmask} == 5? ($F{debe}.doubleValue())*-1:$F{debe}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement style="Negrita" x="394" y="0" width="56" height="16" uuid="ca062d0e-4f32-4b2a-ac0c-3328fb9156b7"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{haber}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{groupmask} == 3 || $F{groupmask} == 2 || $F{groupmask} == 5? ($F{haber}.doubleValue())*-1:$F{haber}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement style="Negrita" x="450" y="0" width="62" height="16" uuid="e9c1e149-cba1-4aa3-a829-bc84e3539981"/>
+				<reportElement style="Negrita" x="450" y="0" width="62" height="16" uuid="e9c1e149-cba1-4aa3-a829-bc84e3539981">
+					<printWhenExpression><![CDATA[$F{ttype}==1]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
@@ -216,7 +218,7 @@
 				<textFieldExpression><![CDATA[$F{refdate}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement style="Negrita" x="69" y="0" width="200" height="16" uuid="d9954db9-042c-4c3b-bfad-619303caf513">
+				<reportElement style="Negrita" x="69" y="0" width="269" height="16" uuid="d9954db9-042c-4c3b-bfad-619303caf513">
 					<printWhenExpression><![CDATA[$F{transid}.intValue()!=0]]></printWhenExpression>
 				</reportElement>
 				<box leftPadding="25"/>
@@ -237,18 +239,25 @@
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="394" height="23" uuid="cd9695f6-7a9e-4020-a735-e2a3d644b856"/>
+				<reportElement x="0" y="0" width="512" height="23" uuid="cd9695f6-7a9e-4020-a735-e2a3d644b856"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{JASPER_REPORT}.getName()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="394" y="0" width="118" height="39" uuid="eb96299e-298f-49b6-ae8f-a1b5c73f51ca"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font fontName="Arial" size="8"/>
+				<reportElement x="393" y="23" width="57" height="16" uuid="de5bbc4a-73f2-4a6a-830b-c0df64088d87"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"+" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="450" y="23" width="62" height="16" uuid="d69abb4a-1baa-4ef4-a60c-87b7edac805b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

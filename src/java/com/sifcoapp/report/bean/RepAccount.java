@@ -56,7 +56,7 @@ public class RepAccount implements Serializable {
 
     //
     private AccountingEJBClient AccountingEJBClient;
-    private String account;//codigocuenta
+    private String account="";//codigocuenta
     private String shortname;//codigocuenta usado para el nombre pero lleva el mismo codigo
 
     //
@@ -101,7 +101,7 @@ public class RepAccount implements Serializable {
     
 //<editor-fold defaultstate="collapsed" desc="PRINT">
     public void print(int _type) throws Exception {
-        if ((this.ftype == 7 || this.ftype == 8) && (this.account == null || this.account.isEmpty())) {
+        if ((this.ftype == 7) && (this.account == null || this.account.isEmpty() || this.account.equals(""))) {
             faceMessage("Seleccione una cuenta");
         } else {
             if (AdminEJBService == null) {
@@ -185,7 +185,11 @@ public class RepAccount implements Serializable {
                 //_whereclausule = " h.transid=d.transid and c.acctcode=d.account and h.refdate>=$P{pdocdate} and h.refdate<=$P{PDOCDATE2}";
                 reportParameters.put("startdate", this.getFdatefrom());
                 reportParameters.put("enddate", this.getFdateto());
-                reportParameters.put("account", "^"+this.getAccount());
+                
+                if (this.getAccount() == null || this.getAccount().equals("")) {
+                    reportParameters.put("account","");
+                }else
+                    reportParameters.put("account", "^"+this.getAccount());
             }
             if (this.ftype == 5) {
                 _reportname = "/account/RepAuxDaily";

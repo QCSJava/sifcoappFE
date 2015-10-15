@@ -290,7 +290,7 @@ public class ColecturiaBean implements Serializable {
                     }
                     totalFac = Double.parseDouble(formatNumber(totalFac));
                     totalFacValorAct = totalFac;
-                    newCol.setCtlaccount(ctlAcc);
+                    newCol.setCtlaccount(concept.getCtlaccount());
                     newCol.setLinenum(concept.getLinenum());
                     newCol.setDscription(concept.getDscription());
                     newCol.setAcctcode(concept.getAcctcode());
@@ -314,7 +314,7 @@ public class ColecturiaBean implements Serializable {
                 //}
 
             } else {
-                newCol.setCtlaccount(ctlAcc);
+                newCol.setCtlaccount(concept.getCtlaccount());
                 newCol.setLinenum(concept.getLinenum());
                 newCol.setDscription(concept.getDscription());
                 newCol.setAcctcode(concept.getAcctcode());
@@ -1036,7 +1036,7 @@ public class ColecturiaBean implements Serializable {
                     }
                     totalFac = Double.parseDouble(formatNumber(totalFac));
 
-                    newCol.setCtlaccount(ctlAcc);
+                    newCol.setCtlaccount(concept.getCtlaccount());
                     newCol.setLinenum(concept.getLinenum());
                     newCol.setDscription(concept.getDscription());
                     newCol.setAcctcode(concept.getAcctcode());
@@ -1059,7 +1059,7 @@ public class ColecturiaBean implements Serializable {
                 }
 
             } else {
-                newCol.setCtlaccount(ctlAcc);
+                newCol.setCtlaccount(concept.getCtlaccount());
                 newCol.setLinenum(concept.getLinenum());
                 newCol.setDscription(concept.getDscription());
                 newCol.setAcctcode(concept.getAcctcode());

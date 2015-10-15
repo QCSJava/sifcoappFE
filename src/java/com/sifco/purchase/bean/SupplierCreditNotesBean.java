@@ -172,6 +172,8 @@ public class SupplierCreditNotesBean implements Serializable {
     //btn copiar
     private boolean fromCopy;
     private boolean actBtn;
+    private boolean isBill;
+    private int docEntryBill;
 
     //__________________________________________________________________________
     //Lista de precio
@@ -1044,19 +1046,24 @@ public class SupplierCreditNotesBean implements Serializable {
 
         newSupplier.setDoctotal(gTotalPadre);
         newSupplier.setsupplierDetails(listaPadre);
+        
+        if (isBill) {
+            newSupplier.setReceiptnum(docEntryBill);
+        }
 
         try {
             ResultOutTO _res;
             _res = PurchaseEJBClient.inv_Supplier_mtto(newSupplier, Common.MTTOINSERT); //1 insert
 
             if (_res.getCodigoError() == 0) {//se realizo correctamente
+                if (isBill) {
+                    this.isBill = false;
+                }
                 docEntry = _res.getDocentry();
                 docNum = docEntry; //
                 newSupplier = PurchaseEJBClient.getSupplierByKey(docEntry);
                 faceMessage(_res.getMensaje());
-
                 estateActualizar();
-
             } else {
                 faceMessage(_res.getMensaje());
             }
@@ -1316,6 +1323,10 @@ public class SupplierCreditNotesBean implements Serializable {
         PurchaseInTO searchBill = new PurchaseInTO();
         searchBill.setCardcode(codSocio);
         searchBill.setCardname(socioNeg);
+        searchBill.setCanceled("N");
+        searchBill.setNumatcard(refe);
+        searchBill.setDocdate(fechaConta);
+        searchBill.setTaxdate(fechaDoc);
 
         try {
             listaBusquedaBill = PurchaseEJBClient.getPurchase(searchBill);
@@ -1369,6 +1380,8 @@ public class SupplierCreditNotesBean implements Serializable {
         showHideDialog("dlgListBill3", 2);
         this.fromCopy = false;
         PurchaseTO var = (PurchaseTO) selectBill;
+        this.isBill = true;
+        this.docEntryBill = selectBill.getDocentry();
 
         try {
             newBill = PurchaseEJBClient.getPurchaseByKey(var.getDocentry());
@@ -1707,6 +1720,23 @@ public class SupplierCreditNotesBean implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G & S">
+
+    public boolean isIsBill() {
+        return isBill;
+    }
+
+    public void setIsBill(boolean isBill) {
+        this.isBill = isBill;
+    }
+
+    public int getDocEntryBill() {
+        return docEntryBill;
+    }
+
+    public void setDocEntryBill(int docEntryBill) {
+        this.docEntryBill = docEntryBill;
+    }
+    
     public boolean isRendered() {
         return rendered;
     }

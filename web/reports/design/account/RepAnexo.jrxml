@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RepAnexo.jrxml" language="groovy" pageWidth="612" pageHeight="792" columnWidth="472" leftMargin="85" rightMargin="55" topMargin="35" bottomMargin="35" uuid="707d1793-2a3b-4cd8-8300-b30249552bc1">
-	<property name="ireport.zoom" value="1.3310000000000006"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.4641000000000013"/>
+	<property name="ireport.x" value="46"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="reportName" class="java.lang.String"/>
 	<parameter name="corpName" class="java.lang.String">
@@ -23,23 +23,32 @@
 
   UNION all
 
-   SELECT t0.account,t1.acctname,t0.duedate,t0.transid,t0.objtype,t0.linememo,0.0 as currtotal, debit,credit
-  FROM cat_jdt1_journalentrylines t0 join cat_acc0_account t1 on t0.account=t1.acctcode  where t0.account=$P{account} and t0.duedate >=$P{startdate} and duedate <= $P{enddate} order by duedate asc]]>
+   SELECT t0.account,t1.acctname,t0.duedate,t0.transid,coalesce(t2.descrip2,'AC'),t0.linememo,0.0 as currtotal, debit,credit
+  FROM cat_jdt1_journalentrylines t0 join cat_acc0_account t1 on t0.account=t1.acctcode
+left join cat_obj0_objectype t2 on t0.transtype = t2.objtype
+ where t0.account=$P{account} and t0.duedate >=$P{startdate} and duedate <= $P{enddate} order by duedate asc]]>
 	</queryString>
 	<field name="account" class="java.lang.String">
-		<fieldDescription><![CDATA[CÃ³digo de cuenta]]></fieldDescription>
+		<fieldDescription><![CDATA[CÃ³digo de cuenta
+]]></fieldDescription>
 	</field>
-	<field name="acctname" class="java.lang.String"/>
+	<field name="acctname" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre de cuenta
+]]></fieldDescription>
+	</field>
 	<field name="duedate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha de vencimiento]]></fieldDescription>
+		<fieldDescription><![CDATA[Fecha de vencimiento
+]]></fieldDescription>
 	</field>
 	<field name="transid" class="java.lang.Integer">
-		<fieldDescription><![CDATA[NÃºmero de operaciÃ³n]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de operaciÃ³n
+]]></fieldDescription>
 	</field>
 	<field name="objtype" class="java.lang.String"/>
 	<field name="comment" class="java.lang.String"/>
 	<field name="currtotal" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Saldo actual]]></fieldDescription>
+		<fieldDescription><![CDATA[Saldo actual
+]]></fieldDescription>
 	</field>
 	<field name="debe" class="java.math.BigDecimal"/>
 	<field name="haber" class="java.math.BigDecimal"/>
@@ -194,7 +203,7 @@
 				<reportElement x="65" y="0" width="219" height="16" uuid="8192ae88-93f7-4b36-9e1a-f684316307bb">
 					<printWhenExpression><![CDATA[$F{debe}.doubleValue()!=0.0||$F{haber}.doubleValue()!=0.0]]></printWhenExpression>
 				</reportElement>
-				<textFieldExpression><![CDATA[$F{objtype}+"   "+$F{comment}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{transid}+"-"+$F{objtype}+"   "+$F{comment}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="348" y="0" width="64" height="16" uuid="246310f7-8d3b-4b4c-a5b8-1fdf7073dd15">
@@ -222,18 +231,25 @@
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="348" height="19" uuid="cd9695f6-7a9e-4020-a735-e2a3d644b856"/>
+				<reportElement x="0" y="0" width="472" height="19" uuid="cd9695f6-7a9e-4020-a735-e2a3d644b856"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{JASPER_REPORT}.getName()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="348" y="0" width="124" height="39" uuid="540da336-1684-4220-998d-2b65d19fb34f"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font fontName="Arial" size="8"/>
+				<reportElement x="348" y="19" width="64" height="20" uuid="6c5ba0fc-323b-492b-bdef-4d987059c8e9"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"+" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="412" y="19" width="60" height="20" uuid="19f8c8a0-0b5b-4730-aad5-252dcd9e7497"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
