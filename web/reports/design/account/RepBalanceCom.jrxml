@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RepBalance.jrxml" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bf1aa711-5e8a-4e30-aa8c-c9df46e92dc9">
-	<property name="ireport.zoom" value="1.2100000000000013"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RepBalanceCom.jrxml" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bf1aa711-5e8a-4e30-aa8c-c9df46e92dc9">
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="PWHERE" class="java.lang.String"/>
@@ -61,18 +61,8 @@ where acctcode='1']]>
 		<groupExpression><![CDATA[$F{grprep}]]></groupExpression>
 		<groupFooter>
 			<band height="15">
-				<staticText>
-					<reportElement x="0" y="1" width="300" height="14" uuid="98dd42bc-4816-40b1-8695-83c7de88bfb4"/>
-					<textElement textAlignment="Right" verticalAlignment="Top">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[TOTAL ACTIVO     ]]></text>
-				</staticText>
-				<line>
-					<reportElement x="0" y="0" width="752" height="1" uuid="9a9c0dd0-2d01-4e1c-acf2-7e772b435f32"/>
-				</line>
 				<subreport>
-					<reportElement x="300" y="1" width="89" height="12" uuid="8170a4e8-ee05-4407-9d39-82acd064f6a6"/>
+					<reportElement x="300" y="2" width="89" height="12" uuid="8170a4e8-ee05-4407-9d39-82acd064f6a6"/>
 					<subreportParameter name="SUBREPORT_DIR"/>
 					<subreportParameter name="startdate">
 						<subreportParameterExpression><![CDATA[$P{pdocdate}]]></subreportParameterExpression>
@@ -81,10 +71,10 @@ where acctcode='1']]>
 						<subreportParameterExpression><![CDATA[$P{PWHEREACTIVOS}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					<subreportExpression><![CDATA["RepBalance_sr2.jasper"]]></subreportExpression>
+					<subreportExpression><![CDATA["RepBalanceCom_sr2.jasper"]]></subreportExpression>
 				</subreport>
 				<subreport>
-					<reportElement x="689" y="1" width="63" height="12" uuid="d2d4c07b-f378-432e-a276-f47fa1dd22bf"/>
+					<reportElement x="689" y="2" width="63" height="12" uuid="d2d4c07b-f378-432e-a276-f47fa1dd22bf"/>
 					<subreportParameter name="startdate">
 						<subreportParameterExpression><![CDATA[$P{pdocdate}]]></subreportParameterExpression>
 					</subreportParameter>
@@ -92,27 +82,37 @@ where acctcode='1']]>
 						<subreportParameterExpression><![CDATA[$P{PWHEREPASIVOS}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					<subreportExpression><![CDATA["RepBalance_sr2.jasper"]]></subreportExpression>
+					<subreportExpression><![CDATA["RepBalanceCom_sr2.jasper"]]></subreportExpression>
 				</subreport>
+				<staticText>
+					<reportElement x="0" y="1" width="300" height="14" uuid="b0e2dd02-ea25-49ef-aea8-d0ce23281ee1"/>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[TOTAL ACTIVO     ]]></text>
+				</staticText>
 				<line>
-					<reportElement x="310" y="12" width="53" height="1" uuid="536e6301-55f0-41b7-8dee-72b655dbe8dc"/>
+					<reportElement x="310" y="12" width="53" height="1" uuid="69b7b72a-9fc0-44db-9edd-92e7bda59a09"/>
 				</line>
 				<line>
-					<reportElement x="310" y="14" width="53" height="1" uuid="70fd0088-8481-487d-92cb-bca24183409d"/>
+					<reportElement x="310" y="14" width="53" height="1" uuid="a80b58e9-201c-4724-ac3f-c1754b075cc2"/>
 				</line>
 				<line>
-					<reportElement x="699" y="12" width="53" height="1" uuid="2f519613-7e04-4c96-a091-f6e7ffb6f4d5"/>
+					<reportElement x="699" y="12" width="53" height="1" uuid="88ac7266-8cdb-4d2f-9fc3-4edbd849a578"/>
 				</line>
 				<line>
-					<reportElement x="699" y="14" width="53" height="1" uuid="1c503c9f-d541-431e-9811-c577308f54a1"/>
+					<reportElement x="699" y="14" width="53" height="1" uuid="29621f18-e350-4d58-a867-d77e15a76a20"/>
 				</line>
 				<staticText>
-					<reportElement x="389" y="1" width="300" height="14" uuid="87561ad0-749a-4f83-8159-ced73ba0c51b"/>
+					<reportElement x="389" y="1" width="300" height="14" uuid="5f534333-e672-497e-906e-5e1eb753b831"/>
 					<textElement textAlignment="Right" verticalAlignment="Top">
 						<font size="8"/>
 					</textElement>
 					<text><![CDATA[TOTAL PASIVO Y CAPITAL     ]]></text>
 				</staticText>
+				<line>
+					<reportElement x="0" y="0" width="752" height="1" uuid="a327cf7b-081e-486e-a8b4-ad95d5274d0b"/>
+				</line>
 			</band>
 		</groupFooter>
 	</group>
@@ -122,34 +122,34 @@ where acctcode='1']]>
 	<title>
 		<band height="83" splitType="Stretch">
 			<textField>
-				<reportElement x="29" y="0" width="752" height="20" uuid="fa1c259f-9f2a-437b-95da-f1cef8212b42"/>
+				<reportElement x="0" y="0" width="752" height="20" uuid="4daa6935-dbef-4ab1-ab2a-353faa9411be"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{corpName}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="60" width="752" height="20" uuid="591d24f4-ce8f-44b7-b359-434734875559"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[MONEDA EN DOLARES]]></text>
+			</staticText>
 			<textField>
-				<reportElement x="29" y="20" width="752" height="20" uuid="328affda-9ad8-4720-a5ad-9abe1d6720f7"/>
+				<reportElement x="0" y="40" width="752" height="20" uuid="a57724a6-b072-4005-8ab4-b0d70ec8e85b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PFECHAREPORTE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="752" height="20" uuid="fef68a3d-a30f-493e-b955-82863a6cffd2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportName}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="29" y="40" width="752" height="20" uuid="4000d2e0-1e69-4f1a-a11c-2dae9c1bd8bb"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$P{PFECHAREPORTE}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="29" y="60" width="752" height="20" uuid="a2d79bbb-8b4f-4442-9294-91c430a0a53a"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[MONEDA EN DOLARES]]></text>
-			</staticText>
 			<line>
-				<reportElement x="0" y="80" width="752" height="1" uuid="e483e66d-efd0-4717-83eb-8ed8234ba554"/>
+				<reportElement x="0" y="80" width="752" height="1" uuid="4a020324-0bec-4209-ba4b-187a9da7bd12"/>
 			</line>
 			<line>
-				<reportElement x="0" y="82" width="752" height="1" uuid="8566b245-04e6-4bfb-94a7-d492afc9627f"/>
+				<reportElement x="0" y="82" width="752" height="1" uuid="f8dac553-cd1d-4f7e-b3bd-f1c64fb31512"/>
 			</line>
 		</band>
 	</title>
@@ -169,7 +169,7 @@ where acctcode='1']]>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<returnValue subreportVariable="sumendtotal" toVariable="sumendtotal"/>
-				<subreportExpression><![CDATA["RepBalance_sr1.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA["RepBalanceCom_sr1.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
 				<reportElement x="389" y="0" width="363" height="23" uuid="03d5e05d-3114-4d58-9710-61497f8cb88a"/>
@@ -185,82 +185,82 @@ where acctcode='1']]>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<returnValue subreportVariable="sumendtotal" toVariable="sumendtotal_pasivo"/>
-				<subreportExpression><![CDATA["RepBalance_sr1.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA["RepBalanceCom_sr1.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
 	<summary>
 		<band height="70" splitType="Stretch">
 			<textField>
-				<reportElement x="1" y="30" width="180" height="20" uuid="34f7b96c-0e77-413f-9082-6fcf8a0c95bf"/>
+				<reportElement x="1" y="30" width="180" height="20" uuid="a95620c6-250b-4828-ae81-0fba47e6a727"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PREPORTSIGN1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="191" y="30" width="180" height="20" uuid="6a2a894d-3af2-4a26-9bf9-1c5206cebcd3"/>
+				<reportElement x="191" y="30" width="180" height="20" uuid="a2755dd4-6a02-4fd0-b941-cfefd429b817"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PREPORTSIGN2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="381" y="30" width="180" height="20" uuid="3a466d5f-0445-408d-b5b1-3105348d568e"/>
+				<reportElement x="381" y="30" width="180" height="20" uuid="a013ff07-ff2d-406d-9263-c7402b2cb07b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PREPORTSIGN3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="571" y="30" width="181" height="20" uuid="c7d0b577-44e7-4ae1-80e4-2a01754ec65a"/>
+				<reportElement x="571" y="30" width="181" height="20" uuid="5724837c-57a0-40ac-b1fd-ad453f109cff"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PREPORTSIGN4}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="1" y="50" width="180" height="20" uuid="9595f2e9-5ab9-49b8-8bef-dfa73269f58c"/>
+				<reportElement x="1" y="50" width="180" height="20" uuid="8ecbb659-a639-460f-acde-4f10e914809f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PREPORTSIGNTITLE1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="191" y="50" width="180" height="20" uuid="79d1f3e5-0ca4-4859-ace7-73750a05b55c"/>
+				<reportElement x="191" y="50" width="180" height="20" uuid="ea63e5a8-ab13-42f4-8789-10d6116a0e43"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PREPORTSIGNTITLE2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="381" y="50" width="180" height="20" uuid="3179ca21-8b94-4f74-8832-4f732d2463ec"/>
+				<reportElement x="381" y="50" width="180" height="20" uuid="b81d2969-f2b5-4355-be13-e73eb49be247"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PREPORTSIGNTITLE3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="571" y="50" width="181" height="20" uuid="54cbd476-0e81-48e2-9f43-a35ab6a46624"/>
+				<reportElement x="571" y="50" width="181" height="20" uuid="f843e279-4a23-44cc-9e8e-0ca1a3ba220a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PREPORTSIGNTITLE4}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="1" y="30" width="180" height="1" uuid="fe9583af-0bb2-4bde-a03a-c5ded2a00244"/>
+				<reportElement x="1" y="30" width="180" height="1" uuid="71a46824-37be-469e-89ca-72ec8a989c93"/>
 			</line>
 			<line>
-				<reportElement x="191" y="30" width="180" height="1" uuid="5d6fe3f2-91e2-464d-ab99-e6ebdf523f80"/>
+				<reportElement x="191" y="30" width="180" height="1" uuid="c095e1e8-3c0d-42f7-873d-0358cb2eef90"/>
 			</line>
 			<line>
-				<reportElement x="381" y="30" width="180" height="1" uuid="53b6898e-f1a5-420a-b1a9-5073f0ec7c03"/>
+				<reportElement x="381" y="30" width="180" height="1" uuid="bfb348d9-a11f-43b2-bb71-ffc31254d00e"/>
 			</line>
 			<line>
-				<reportElement x="571" y="30" width="181" height="1" uuid="55298c4a-4a32-4288-931a-f7ff79178785"/>
+				<reportElement x="571" y="30" width="181" height="1" uuid="df01a287-204c-4940-a5ee-4a2c40a8f270"/>
 			</line>
 			<staticText>
-				<reportElement x="0" y="0" width="752" height="30" uuid="cdcecf8c-f056-4345-84dd-fc2d138c9668"/>
+				<reportElement x="0" y="0" width="752" height="30" uuid="aa10859d-668f-4b90-9984-7e9fc82b9002"/>
 				<text><![CDATA[]]></text>
 			</staticText>
 		</band>

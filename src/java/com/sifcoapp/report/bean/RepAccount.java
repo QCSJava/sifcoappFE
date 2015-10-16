@@ -144,7 +144,7 @@ public class RepAccount implements Serializable {
             }
 
             if (this.ftype == 2) {
-                _reportname = "/account/RepBalance";
+                _reportname = "/account/RepBalanceCom";
                 _reportTitle = "Balance de Comprobación";
 
                 _whereclausule = " 1=1";
@@ -191,6 +191,8 @@ public class RepAccount implements Serializable {
                 }else
                     reportParameters.put("account", "^"+this.getAccount());
             }
+            
+            /*
             if (this.ftype == 5) {
                 _reportname = "/account/RepAuxDaily";
                 _reportTitle = "Diario Auxiliar";
@@ -198,7 +200,7 @@ public class RepAccount implements Serializable {
                 _whereclausule = " levels <=$P{PLEVELS}";
                 reportParameters.put("PLEVELS", this.getReportLevel());
 
-            }
+            }*/
 
             if (this.ftype == 6) {
                 _reportname = "/account/StatementReserva";
@@ -264,7 +266,7 @@ public class RepAccount implements Serializable {
             
             reportParameters.put("reportName", _reportTitle);
             reportParameters.put("corpName", "ACOETMISAB DE R.L.");
-            if (this.ftype != 3 || this.ftype != 8 || this.ftype != 7 || this.ftype != 6) {
+            if (this.ftype == 1 || this.ftype == 2) {
                 reportParameters.put("PWHERE", _whereclausule);
             }
 
@@ -279,8 +281,17 @@ public class RepAccount implements Serializable {
             mes2 = Al.get(Calendar.MONTH);
             mes2 = mes2 + 1;
             anio2 = Al.get(Calendar.YEAR);
+            
+            if (this.ftype == 1 || this.ftype == 2) {
+                try {
+                    String[] mesesString = {"ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"};
+                    reportParameters.put("PFECHAREPORTE","AL " + dia2 + " DE " +  mesesString[mes2-1] + " DE " + anio2);
+                } catch (Exception e) {
+                }
+            }else{
+                reportParameters.put("PFECHAREPORTE", "Del " + dia1 + "/" + mes1 + "/" + anio1 + " Al " + dia2 + "/" + mes2 + "/" + anio2);
+            }
 
-            reportParameters.put("PFECHAREPORTE", "Del " + dia1 + "/" + mes1 + "/" + anio1 + " Al " + dia2 + "/" + mes2 + "/" + anio2);
             
             if (_type == 0) {
                 this.bean = new ReportsBean();

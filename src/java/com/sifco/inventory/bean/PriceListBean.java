@@ -20,8 +20,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.validation.constraints.Digits;
@@ -29,7 +29,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 
 @ManagedBean(name = "priceListBean")
-@ApplicationScoped
+@SessionScoped
 public class PriceListBean implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="Declaracion de variables">

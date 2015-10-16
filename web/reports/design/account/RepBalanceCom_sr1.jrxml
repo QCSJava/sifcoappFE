@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RepBalance_sr1" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9feb4b49-fb16-4a2c-8af6-491e2ce9865d">
-	<property name="ireport.zoom" value="2.0490403660952126"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RepBalanceCom_sr1" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9feb4b49-fb16-4a2c-8af6-491e2ce9865d">
+	<property name="ireport.zoom" value="1.6934217901613318"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="PWHERECUENTAS" class="java.lang.String"/>
@@ -15,7 +15,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[select acctcode, acctname,sal_inicio,fathernum,coalesce(sal_inicio,0.00) as endtotal,repeat(' ',15-levels*2)||sal_inicio endtotals,levels,grpline,groupmask
- from sp_get_update_genera_balance($P{startdate})
+ from sp_get_update_balance($P{startdate},$P{startdate})
 where $P!{PWHERECUENTAS} and levels<=$P{PLEVELS} and sal_inicio > 0.0 order by groupmask,grpline]]>
 	</queryString>
 	<field name="acctcode" class="java.lang.String"/>
@@ -44,8 +44,8 @@ where $P!{PWHERECUENTAS} and levels<=$P{PLEVELS} and sal_inicio > 0.0 order by g
 	</background>
 	<detail>
 		<band height="15" splitType="Stretch">
-			<textField pattern="">
-				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="180" height="15" uuid="fbc9988c-ab00-4d56-80d5-5d9097c143fe">
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement stretchType="RelativeToTallestObject" x="55" y="0" width="160" height="15" uuid="97e83c83-45a2-4053-bb61-473bec89bfbf">
 					<printWhenExpression><![CDATA[$F{levels}>1]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -54,7 +54,7 @@ where $P!{PWHERECUENTAS} and levels<=$P{PLEVELS} and sal_inicio > 0.0 order by g
 				<textFieldExpression><![CDATA[$F{acctname}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="215" y="0" width="60" height="15" uuid="65435ef4-188e-40d0-ae6c-23a40e65fab1">
+				<reportElement x="215" y="0" width="60" height="15" uuid="3ef7b6aa-5eac-479d-be15-1bd99bb2435e">
 					<printWhenExpression><![CDATA[$F{levels}>2]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
@@ -63,7 +63,7 @@ where $P!{PWHERECUENTAS} and levels<=$P{PLEVELS} and sal_inicio > 0.0 order by g
 				<textFieldExpression><![CDATA[$F{endtotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="300" y="0" width="60" height="15" isRemoveLineWhenBlank="true" uuid="7c28273e-e264-48b7-a039-2df23bbba691">
+				<reportElement x="300" y="0" width="60" height="15" isRemoveLineWhenBlank="true" uuid="60b23c53-a2ca-4451-bde5-7b7748b23b71">
 					<printWhenExpression><![CDATA[$F{levels}==2]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
@@ -71,14 +71,21 @@ where $P!{PWHERECUENTAS} and levels<=$P{PLEVELS} and sal_inicio > 0.0 order by g
 				</textElement>
 				<textFieldExpression><![CDATA[$F{endtotal}]]></textFieldExpression>
 			</textField>
-			<textField pattern="">
-				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="180" height="15" uuid="62b995bd-55a1-4b76-8bc2-892aba2c95df">
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement stretchType="RelativeToTallestObject" x="55" y="0" width="160" height="15" uuid="90b25d61-3a4f-43c2-889a-c0f6829ab77f">
 					<printWhenExpression><![CDATA[$F{levels}==1]]></printWhenExpression>
 				</reportElement>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{acctname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="55" height="15" uuid="410d3985-7877-44fc-8534-d1dea3522007"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acctcode}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
