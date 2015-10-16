@@ -120,7 +120,11 @@ public class RepAccount implements Serializable {
             String Rubro = this.getRubro();
 
             if (this.ftype == 1) {
-                _reportname = "/account/RepBalance";
+                if (_type == 1) {
+                    _reportname = "/account/RepBalanceEX";
+                }else{
+                    _reportname = "/account/RepBalance";
+                }
                 _reportTitle = "Balance General";
                 
                 _whereclausule = " 1=1";
@@ -144,7 +148,11 @@ public class RepAccount implements Serializable {
             }
 
             if (this.ftype == 2) {
-                _reportname = "/account/RepBalanceCom";
+                if (_type == 1) {
+                    _reportname = "/account/RepBalanceComEX";
+                }else{
+                    _reportname = "/account/RepBalanceCom";
+                }
                 _reportTitle = "Balance de Comprobación";
 
                 _whereclausule = " 1=1";
@@ -203,7 +211,12 @@ public class RepAccount implements Serializable {
             }*/
 
             if (this.ftype == 6) {
-                _reportname = "/account/StatementReserva";
+                if (_type == 1) {
+                    _reportname = "/account/StatementReservaEX";
+                }else{
+                    _reportname = "/account/StatementReserva";
+                }
+                
                 _reportTitle = "ESTADO DE RESULTADOS CON RESERVA";
                 
                 reportParameters.put("numCategory", this.getRubro());

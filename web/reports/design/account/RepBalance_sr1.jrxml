@@ -54,7 +54,7 @@ where $P!{PWHERECUENTAS} and levels<=$P{PLEVELS} and sal_inicio > 0.0 order by g
 				<textFieldExpression><![CDATA[$F{acctname}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="215" y="0" width="60" height="15" uuid="65435ef4-188e-40d0-ae6c-23a40e65fab1">
+				<reportElement x="180" y="0" width="95" height="15" uuid="65435ef4-188e-40d0-ae6c-23a40e65fab1">
 					<printWhenExpression><![CDATA[$F{levels}>2]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
@@ -63,7 +63,7 @@ where $P!{PWHERECUENTAS} and levels<=$P{PLEVELS} and sal_inicio > 0.0 order by g
 				<textFieldExpression><![CDATA[$F{endtotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="300" y="0" width="60" height="15" isRemoveLineWhenBlank="true" uuid="7c28273e-e264-48b7-a039-2df23bbba691">
+				<reportElement x="275" y="0" width="85" height="15" isRemoveLineWhenBlank="true" uuid="7c28273e-e264-48b7-a039-2df23bbba691">
 					<printWhenExpression><![CDATA[$F{levels}==2]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
