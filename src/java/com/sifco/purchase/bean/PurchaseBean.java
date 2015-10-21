@@ -6,13 +6,10 @@
 package com.sifco.purchase.bean;
 
 import com.sifco.login.bean.Util;
-import com.sifco.businesspartner.bean.BusinessPartner;
-import com.sifcoapp.assignment.bean.AccassignmentBean;
 import com.sifcoapp.client.AccountingEJBClient;
 import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.client.CatalogEJBClient;
 import com.sifcoapp.client.PurchaseEJBClient;
-import com.sifcoapp.objects.accounting.to.AccountTO;
 import com.sifcoapp.objects.admin.to.ArticlesInTO;
 import com.sifcoapp.objects.admin.to.ArticlesTO;
 import com.sifcoapp.objects.admin.to.BranchArticlesTO;
@@ -39,8 +36,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -52,7 +49,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name = "purchaseBean")
-@ApplicationScoped
+@SessionScoped
 public class PurchaseBean implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="Declaración de variables para formulario" >

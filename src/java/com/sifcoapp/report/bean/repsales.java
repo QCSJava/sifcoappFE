@@ -82,8 +82,12 @@ public class repsales implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(repPurchases.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (this.ftype == 1) {
-            _reportname = "/sales/dailySalesControl";
+        if (this.ftype == 1 || this.ftype == 8) {
+            if (this.ftype == 1) {
+                _reportname = "/sales/dailySalesControl";
+            }else
+                _reportname = "/sales/dailySalesControlCost";
+            
             _reportTitle = "Control Diario de Ventas";
 
             _whereclausule = " docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}";

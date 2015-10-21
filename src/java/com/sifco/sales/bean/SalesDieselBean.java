@@ -30,8 +30,8 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
@@ -40,7 +40,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name = "salesDieselBean")
-@ApplicationScoped
+@SessionScoped
 public class SalesDieselBean implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="Declaración de variables para formulario" >
@@ -787,7 +787,7 @@ public class SalesDieselBean implements Serializable {
         newBill.setDocdate(fechaConta);
         newBill.setTaxdate(fechaConta);
         newBill.setSeries(Integer.parseInt(ParameterEJBClient.getParameterbykey(2).getValue1()));
-        newBill.setPeymethod(ParameterEJBClient.getParameterbykey(5).getValue1());
+        //newBill.setPeymethod(ParameterEJBClient.getParameterbykey(5).getValue1());
         newBill.setTowhscode(ParameterEJBClient.getParameterbykey(4).getValue1());
         //newBill.setComments(coment);
         newBill.setCtlaccount(ctlAcc);
@@ -967,9 +967,10 @@ public class SalesDieselBean implements Serializable {
 
                     if (selectSocio.getGroupcode().equals("1")) {
                         formaPago2 = ParameterEJBClient.getParameterbykey(5).getValue1();
+                        newBill.setPeymethod(formaPago2);
                     } else {
                         formaPago2 = ParameterEJBClient.getParameterbykey(5).getValue2();
-                        //setNewPrecio(thisArt.getPrice(Integer.parseInt(ParameterEJBClient.getParameterbykey(5).getValue2())));
+                        newBill.setPeymethod(formaPago2);
                     }
 
                     CatalogTO cat = AdminEJBService.findCatalogByKey(formaPago2, 8);
