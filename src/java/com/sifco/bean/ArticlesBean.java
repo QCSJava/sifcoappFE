@@ -715,7 +715,7 @@ public class ArticlesBean implements Serializable {
         parameters.setAssetItem(asset ? "Y" : "N");
 
         //general sheet
-        parameters.setWtliable(writable ? "N" : "Y");
+        parameters.setWtliable(writable ? "Y" : "N");
         parameters.setSww(sww);
         parameters.setValidFor(validfor ? "Y" : "N");
 
@@ -732,7 +732,7 @@ public class ArticlesBean implements Serializable {
         //sales sheet
         parameters.setSalUnitMsr(salesMeasureUnit);
         if (salpackun != null) {
-            parameters.setSalPackUn(salpackun);
+            parameters.setNumInSale(salpackun);
         }
         //inventory Sheet
         parameters.setInvntryUom(invtryuom);
@@ -804,7 +804,7 @@ public class ArticlesBean implements Serializable {
         parameters.setAssetItem(asset ? "Y" : "N");
 
         //general sheet
-        parameters.setWtliable(writable ? "N" : "Y");
+        parameters.setWtliable(writable ? "Y" : "N");
         parameters.setSww(sww);
         parameters.setValidFor(validfor ? "Y" : "N");
 
@@ -812,7 +812,7 @@ public class ArticlesBean implements Serializable {
         parameters.setCardCode(cardcode);
         parameters.setBuyUnitMsr(buyunitmsr);
         if (numinbuy != null) {
-            parameters.setNumInBuy(numinbuy);
+            parameters.setNumInSale(numinbuy);
         }
         parameters.setSuppCatNum(suppcatnum);
         //TODO: agregar catalogo fabricante

@@ -73,7 +73,7 @@ public class SalesDieselBean implements Serializable {
     private String socioNeg;        //Socio de Negocio
     private String codSocio;        //Codigo de Socio
     private int equipo;             //Equipo
-    private int refe=0;            //Referencia
+    private int refe = 0;            //Referencia
 
     private Date fechaConta = new Date();   //Fecha Contabilizacion
 
@@ -302,8 +302,6 @@ public class SalesDieselBean implements Serializable {
     public void setRefe(int refe) {
         this.refe = refe;
     }
-
-    
 
     public Date getFechaConta() {
         return fechaConta;
@@ -562,7 +560,7 @@ public class SalesDieselBean implements Serializable {
         }
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocio(SelectEvent event) {
         List socio = new Vector();
@@ -783,7 +781,7 @@ public class SalesDieselBean implements Serializable {
         newBill.setCardname(socioNeg);
         newBill.setCardcode(codSocio);
         newBill.setRef2("" + equipo);
-        newBill.setNumatcard(refe+"");
+        newBill.setNumatcard(refe + "");
         newBill.setDocdate(fechaConta);
         newBill.setTaxdate(fechaConta);
         newBill.setSeries(Integer.parseInt(ParameterEJBClient.getParameterbykey(2).getValue1()));
@@ -847,10 +845,10 @@ public class SalesDieselBean implements Serializable {
         newBill.setCardcode(codSocio);
         newBill.setRef2("" + equipo);
 
-        if (refe==0) {
-            newBill.setNumatcard(0+"");
+        if (refe == 0) {
+            newBill.setNumatcard(0 + "");
         } else {
-            newBill.setNumatcard(refe+"");
+            newBill.setNumatcard(refe + "");
         }
 
         try {
@@ -896,10 +894,10 @@ public class SalesDieselBean implements Serializable {
             searchBill.setRef2("" + equipo);
         }
 
-        if (refe==0) {
+        if (refe == 0) {
             searchBill.setNumatcard(vacio);
         } else {
-            searchBill.setNumatcard(refe+"");
+            searchBill.setNumatcard(refe + "");
         }
 
         searchBill.setDocdate(fechaConta);
@@ -955,6 +953,7 @@ public class SalesDieselBean implements Serializable {
                 ArticlesTO thisArt = new ArticlesTO();
                 CatalogTO thisCat = new CatalogTO();
                 String codDiesel, formaPago2;
+                boolean band = false;
 
                 //temporal
                 try {
@@ -986,42 +985,64 @@ public class SalesDieselBean implements Serializable {
 
                     newDetalle.setPrice(newPrecio);
                     newDetalle.setPricebefdi(newPrecio);
-
+                    
                     newDetalle.setLinetotal(newPrecio * newCantidad);
                     newDetalle.setUnitmsr(newUnidad);
                     newDetalle.setLinenum(1);//UUID.randomUUID().hashCode());
 
-                    if (thisArt.getWtliable().equals("Y")) {
-                        newDetalle.setTaxstatus("Y");
-                        //faceMessage("se calcularan impuestos");
+                    if (newPrecio > 0.0) {
+                        band = true;
+                        if (thisArt.getWtliable().equals("Y")) {
+                            newDetalle.setTaxstatus("Y");
+                            //faceMessage("se calcularan impuestos");
 
-                        if (thisArt.getVatgourpsa().equals("FOV")) {
-                            //faceMessage("articulo aplica: iva, fov, cotrans");
-                            thisCat = (CatalogTO) thisArt.getVatgourpsaList().get(0);
-                            Double impIVA = (Integer.parseInt(thisCat.getCatvalue()) + 0.0) / 100; //%de IVA
-                            Double impFOV = Double.parseDouble(thisCat.getCatvalue2());
-                            Double impCOT = Double.parseDouble(thisCat.getCatvalue3());
+                            if (thisArt.getVatgourpsa().equals("FOV")) {
+                                //faceMessage("articulo aplica: iva, fov, cotrans");
+                                thisCat = (CatalogTO) thisArt.getVatgourpsaList().get(0);
+                                Double impIVA = (Integer.parseInt(thisCat.getCatvalue()) + 0.0) / 100; //%de IVA
+                                Double impFOV = Double.parseDouble(thisCat.getCatvalue2());
+                                Double impCOT = Double.parseDouble(thisCat.getCatvalue3());
 
-                            newDetalle.setVatgroup(impIVA + "|" + impFOV + "|" + impCOT); //valor de los ipuestos
+                                newDetalle.setVatgroup(impIVA + "|" + impFOV + "|" + impCOT); //valor de los ipuestos
 
-                            Double impArt = ((newPrecio * newCantidad) * impIVA) + (newCantidad * impFOV) + (newCantidad * impCOT);
-                            //Double descuentos = 0.0;
+                                Double impArt = ((newPrecio * newCantidad) * impIVA) + (newCantidad * impFOV) + (newCantidad * impCOT);
+                                //Double descuentos = 0.0;
 
-                            newDetalle.setPriceafvat((newPrecio) + (newPrecio * impIVA) + (impFOV) + (impCOT)); //precio bruto  
-                            //newDetalle.setLinetotal(newDetalle.getPriceafvat() - descuentos);//total - descuentos
-                            newDetalle.setVatsum(impArt);//suma total de impuestos aplicados
-                            newDetalle.setGrssprofit(newDetalle.getLinetotal() - (thisArt.getAvgPrice() * newDetalle.getQuantity()));//precio venta - costo
-                            newDetalle.setTaxcode(thisArt.getVatgourpsa());//FOV
-                            newDetalle.setVatappld(newDetalle.getVatsum());//igual a vatsum
-                            newDetalle.setStockpricestockprice(thisArt.getAvgPrice());//
-                            newDetalle.setGtotal(newDetalle.getPriceafvat() * newDetalle.getQuantity());
-                            newDetalle.setAcctcode("cuenta");//pendiente---------------------------------------------------------
+                                newDetalle.setPriceafvat((newPrecio) + (newPrecio * impIVA) + (impFOV) + (impCOT)); //precio bruto  
+                                //newDetalle.setLinetotal(newDetalle.getPriceafvat() - descuentos);//total - descuentos
+                                newDetalle.setVatsum(impArt);//suma total de impuestos aplicados
+                                newDetalle.setGrssprofit(newDetalle.getLinetotal() - (thisArt.getAvgPrice() * newDetalle.getQuantity()));//precio venta - costo
+                                newDetalle.setTaxcode(thisArt.getVatgourpsa());//FOV
+                                newDetalle.setVatappld(newDetalle.getVatsum());//igual a vatsum
+                                newDetalle.setStockpricestockprice(thisArt.getAvgPrice());//
+                                newDetalle.setGtotal(newDetalle.getPriceafvat() * newDetalle.getQuantity());
+                                newDetalle.setAcctcode("cuenta");//pendiente---------------------------------------------------------
 
+                            } else {
+                                //faceMessage("articulo aplica a X impuesto de descripcion1");
+                                thisCat = (CatalogTO) thisArt.getVatgourpsaList().get(0);
+                                Double impIVA = (Integer.parseInt(thisCat.getCatvalue()) + 0.0) / 100; //%de IVA
+                                Double impArt = (newPrecio * newCantidad) * impIVA; //(precio unitario * cantidad) * 0.13%
+                                Double impCOT = 0.0;
+                                Double impFOV = 0.0;
+                                //Double descuentos = 0.0;
+                                newDetalle.setVatgroup(impIVA + "|" + impFOV + "|" + impCOT);
+                                newDetalle.setPriceafvat((newPrecio) + (newPrecio * impIVA)); //total + impuesto de iva
+                                //newDetalle.setLinetotal(newDetalle.getPriceafvat() - descuentos);//total - descuentos
+                                newDetalle.setVatsum(impArt);//suma total de impuestos aplicados
+                                newDetalle.setGrssprofit(newDetalle.getLinetotal() - (thisArt.getAvgPrice() * newDetalle.getQuantity()));//precio venta - costo
+                                newDetalle.setTaxcode(thisArt.getVatgourpsa());//IVA u otro tipo
+                                newDetalle.setVatappld(newDetalle.getVatsum());//igual a vatsum
+                                newDetalle.setStockpricestockprice(thisArt.getAvgPrice());//
+                                newDetalle.setGtotal(newDetalle.getPriceafvat() * newDetalle.getQuantity());
+                                newDetalle.setAcctcode("cuenta");//pendiente---------------------------------------------------------
+
+                            }
                         } else {
-                            //faceMessage("articulo aplica a X impuesto de descripcion1");
-                            thisCat = (CatalogTO) thisArt.getVatgourpsaList().get(0);
-                            Double impIVA = (Integer.parseInt(thisCat.getCatvalue()) + 0.0) / 100; //%de IVA
-                            Double impArt = (newPrecio * newCantidad) * impIVA; //(precio unitario * cantidad) * 0.13%
+                            newDetalle.setTaxstatus("N");
+                            faceMessage("Articulo exento de impuestos");
+                            Double impIVA = 0.0; //%de IVA
+                            Double impArt = 0.0; //(precio unitario * cantidad) * 0.13%
                             Double impCOT = 0.0;
                             Double impFOV = 0.0;
                             //Double descuentos = 0.0;
@@ -1038,28 +1059,14 @@ public class SalesDieselBean implements Serializable {
 
                         }
                     } else {
-                        newDetalle.setTaxstatus("N");
-                        faceMessage("Articulo exento de impuestos");
-                        Double impIVA = 0.0; //%de IVA
-                        Double impArt = 0.0; //(precio unitario * cantidad) * 0.13%
-                        Double impCOT = 0.0;
-                        Double impFOV = 0.0;
-                        //Double descuentos = 0.0;
-                        newDetalle.setVatgroup(impIVA + "|" + impFOV + "|" + impCOT);
-                        newDetalle.setPriceafvat((newPrecio) + (newPrecio * impIVA)); //total + impuesto de iva
-                        //newDetalle.setLinetotal(newDetalle.getPriceafvat() - descuentos);//total - descuentos
-                        newDetalle.setVatsum(impArt);//suma total de impuestos aplicados
-                        newDetalle.setGrssprofit(newDetalle.getLinetotal() - (thisArt.getAvgPrice() * newDetalle.getQuantity()));//precio venta - costo
-                        newDetalle.setTaxcode(thisArt.getVatgourpsa());//IVA u otro tipo
-                        newDetalle.setVatappld(newDetalle.getVatsum());//igual a vatsum
-                        newDetalle.setStockpricestockprice(thisArt.getAvgPrice());//
-                        newDetalle.setGtotal(newDetalle.getPriceafvat() * newDetalle.getQuantity());
-                        newDetalle.setAcctcode("cuenta");//pendiente---------------------------------------------------------
-
+                        faceMessage("Este producto no tiene asignada una lista de precio");
                     }
+
                 } catch (Exception e) {
                 }
-                calcularTotalBill(newDetalle); //calculos por cada articulo agregado
+                if (band) {
+                    calcularTotalBill(newDetalle); //calculos por cada articulo agregado
+                }
             }
         } catch (Exception e) {
         }
@@ -1200,6 +1207,7 @@ public class SalesDieselBean implements Serializable {
         }
         return true;
     }
+
     //evento al seleccionar un elemento del dialogo facturas
     public void selectDialogBill() {
         if (SalesEJBService == null) {
@@ -1317,7 +1325,7 @@ public class SalesDieselBean implements Serializable {
             return true;
         }
         try {
-            if (socioNeg != null || codSocio != null || refe!=0) {
+            if (socioNeg != null || codSocio != null || refe != 0) {
                 return true;
             }
         } catch (Exception e) {
@@ -1371,6 +1379,10 @@ public class SalesDieselBean implements Serializable {
         }
         if (this.newCantidad == null || this.newCantidad <= 0) {
             faceMessage("Ingrese una cantidad de diesel correcta");
+            return false;
+        }
+        if (newPrecio==null || newPrecio<=0.0) {
+            faceMessage("No se puede facturar sin precio del producto");
             return false;
         }
 
