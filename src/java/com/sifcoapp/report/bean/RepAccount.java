@@ -56,13 +56,13 @@ public class RepAccount implements Serializable {
 
     //
     private AccountingEJBClient AccountingEJBClient;
-    private String account="";//codigocuenta
+    private String account = "";//codigocuenta
     private String shortname;//codigocuenta usado para el nombre pero lleva el mismo codigo
 
     //
     private static ParameterEJBClient ParameterEJBClient;
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="LOAD">
     @PostConstruct
     public void initForm() {
@@ -83,7 +83,7 @@ public class RepAccount implements Serializable {
         if (AccountingEJBClient == null) {
             AccountingEJBClient = new AccountingEJBClient();
         }
-        
+
         if (ParameterEJBClient == null) {
             ParameterEJBClient = new ParameterEJBClient();
         }
@@ -122,16 +122,16 @@ public class RepAccount implements Serializable {
             if (this.ftype == 1) {
                 if (_type == 1) {
                     _reportname = "/account/RepBalanceEX";
-                }else{
+                } else {
                     _reportname = "/account/RepBalance";
                 }
-                _reportTitle = "Balance General";
-                
+                _reportTitle = "Balance Situacion Financiera";
+
                 _whereclausule = " 1=1";
                 reportParameters.put("PWHEREACTIVOS", " groupmask in ('1')");
                 reportParameters.put("PWHEREPASIVOS", " groupmask in ('2','3')");
                 reportParameters.put("PMAXLEVEL", this.getReportLevel());
-                reportParameters.put("pdocdate",this.getFdateto());
+                reportParameters.put("pdocdate", this.getFdateto());
 
                 reportParameters.put("PREPORTSIGN1", ParameterEJBClient.getParameterbykey(19).getValue1());
                 reportParameters.put("PREPORTSIGNTITLE1", ParameterEJBClient.getParameterbykey(19).getValue2());
@@ -150,13 +150,13 @@ public class RepAccount implements Serializable {
             if (this.ftype == 2) {
                 if (_type == 1) {
                     _reportname = "/account/RepBalanceComEX";
-                }else{
+                } else {
                     _reportname = "/account/RepBalanceCom";
                 }
                 _reportTitle = "Balance de Comprobación";
 
                 _whereclausule = " 1=1";
-                reportParameters.put("pdocdate",this.getFdateto());
+                reportParameters.put("pdocdate", sumarFecha(this.getFdateto(), 1));
                 reportParameters.put("PWHEREACTIVOS", " groupmask in ('1','4')");
                 reportParameters.put("PWHEREPASIVOS", " groupmask in ('2','3','5')");
                 reportParameters.put("PMAXLEVEL", this.getReportLevel());
@@ -193,57 +193,57 @@ public class RepAccount implements Serializable {
                 //_whereclausule = " h.transid=d.transid and c.acctcode=d.account and h.refdate>=$P{pdocdate} and h.refdate<=$P{PDOCDATE2}";
                 reportParameters.put("startdate", this.getFdatefrom());
                 reportParameters.put("enddate", this.getFdateto());
-                
+
                 if (this.getAccount() == null || this.getAccount().equals("")) {
-                    reportParameters.put("account","");
-                }else
-                    reportParameters.put("account", "^"+this.getAccount());
+                    reportParameters.put("account", "");
+                } else {
+                    reportParameters.put("account", "^" + this.getAccount());
+                }
             }
-            
+
             /*
-            if (this.ftype == 5) {
-                _reportname = "/account/RepAuxDaily";
-                _reportTitle = "Diario Auxiliar";
+             if (this.ftype == 5) {
+             _reportname = "/account/RepAuxDaily";
+             _reportTitle = "Diario Auxiliar";
 
-                _whereclausule = " levels <=$P{PLEVELS}";
-                reportParameters.put("PLEVELS", this.getReportLevel());
+             _whereclausule = " levels <=$P{PLEVELS}";
+             reportParameters.put("PLEVELS", this.getReportLevel());
 
-            }*/
-
+             }*/
             if (this.ftype == 6) {
                 if (_type == 1) {
                     _reportname = "/account/StatementReservaEX";
-                }else{
+                } else {
                     _reportname = "/account/StatementReserva";
                 }
-                
-                _reportTitle = "ESTADO DE RESULTADOS CON RESERVA";
-                
+
+                _reportTitle = "ESTADO DE RESULTADOS INTEGRAL";
+
                 reportParameters.put("numCategory", this.getRubro());
                 reportParameters.put("startdate", this.getFdatefrom());
                 reportParameters.put("enddate", this.getFdateto());
                 reportParameters.put("levels", this.getReportLevel());
-                
+
                 //% de reservas
                 reportParameters.put("R1", Integer.parseInt(ParameterEJBClient.getParameterbykey(17).getValue1()));
                 reportParameters.put("R2", Integer.parseInt(ParameterEJBClient.getParameterbykey(17).getValue2()));
                 reportParameters.put("R3", Integer.parseInt(ParameterEJBClient.getParameterbykey(17).getValue3()));
-                
+
                 //firma1
                 reportParameters.put("F1_NAME", ParameterEJBClient.getParameterbykey(19).getValue1());
-                reportParameters.put("F1_TITLE",ParameterEJBClient.getParameterbykey(19).getValue2());
-                
+                reportParameters.put("F1_TITLE", ParameterEJBClient.getParameterbykey(19).getValue2());
+
                 //firma2
                 reportParameters.put("F2_NAME", ParameterEJBClient.getParameterbykey(20).getValue1());
-                reportParameters.put("F2_TITLE",ParameterEJBClient.getParameterbykey(20).getValue2());
-                
+                reportParameters.put("F2_TITLE", ParameterEJBClient.getParameterbykey(20).getValue2());
+
                 //firma3
                 reportParameters.put("F3_NAME", ParameterEJBClient.getParameterbykey(21).getValue1());
-                reportParameters.put("F3_TITLE",ParameterEJBClient.getParameterbykey(21).getValue2());
-                
+                reportParameters.put("F3_TITLE", ParameterEJBClient.getParameterbykey(21).getValue2());
+
                 //firma4
                 reportParameters.put("F4_NAME", ParameterEJBClient.getParameterbykey(22).getValue1());
-                reportParameters.put("F4_TITLE",ParameterEJBClient.getParameterbykey(22).getValue2());
+                reportParameters.put("F4_TITLE", ParameterEJBClient.getParameterbykey(22).getValue2());
 
             }
 
@@ -259,7 +259,7 @@ public class RepAccount implements Serializable {
 
             if (this.ftype == 8) {
                 _reportname = "/account/CBDjournal";
-                _reportTitle = "DIARIO MAYOR";
+                _reportTitle = "Libro Diario Consolidado";
 
                 reportParameters.put("startdate", this.getFdatefrom());
                 reportParameters.put("enddate", this.getFdateto());
@@ -267,16 +267,16 @@ public class RepAccount implements Serializable {
                 reportParameters.put("level", this.getReportLevel());
 
             }
-            
+
             if (this.ftype == 9) {
                 _reportname = "/account/BDjournal";
                 _reportTitle = "DIARIO MAYOR";
-                
+
                 reportParameters.put("startdate", this.getFdatefrom());
                 reportParameters.put("enddate", this.getFdateto());
                 reportParameters.put("account", this.getAccount());
             }
-            
+
             reportParameters.put("reportName", _reportTitle);
             reportParameters.put("corpName", "ACOETMISAB DE R.L.");
             if (this.ftype == 1 || this.ftype == 2) {
@@ -284,28 +284,46 @@ public class RepAccount implements Serializable {
             }
 
             int dia1, mes1, anio1, dia2, mes2, anio2;
-
+            String diaS1,Smes1,Sdia2,Smes2;
+            
             dia1 = Del.get(Calendar.DAY_OF_MONTH);
+            if (dia1<10) {
+                diaS1 = "0"+dia1;
+            }else
+                diaS1 = dia1+"";
             mes1 = Del.get(Calendar.MONTH);
             mes1 = mes1 + 1;
+            if (mes1<10) {
+                Smes1 = "0"+mes1;
+            }else
+                Smes1 = mes1+"";
             anio1 = Del.get(Calendar.YEAR);
 
             dia2 = Al.get(Calendar.DAY_OF_MONTH);
+             if (dia2<10) {
+                Sdia2 = "0"+dia2;
+            }else
+                Sdia2 = dia2+"";
             mes2 = Al.get(Calendar.MONTH);
             mes2 = mes2 + 1;
+            if (mes2<10) {
+                Smes2 = "0"+mes2;
+            }else
+                Smes2 = mes2+"";
             anio2 = Al.get(Calendar.YEAR);
             
+            
+
             if (this.ftype == 1 || this.ftype == 2) {
                 try {
-                    String[] mesesString = {"ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"};
-                    reportParameters.put("PFECHAREPORTE","AL " + dia2 + " DE " +  mesesString[mes2-1] + " DE " + anio2);
+                    String[] mesesString = {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
+                    reportParameters.put("PFECHAREPORTE", "AL " + Sdia2 + " DE " + mesesString[mes2 - 1] + " DE " + anio2);
                 } catch (Exception e) {
                 }
-            }else{
-                reportParameters.put("PFECHAREPORTE", "Del " + dia1 + "/" + mes1 + "/" + anio1 + " Al " + dia2 + "/" + mes2 + "/" + anio2);
+            } else {
+                reportParameters.put("PFECHAREPORTE", "Del " + diaS1 + "/" + Smes1 + "/" + anio1 + " Al " + Sdia2 + "/" + Smes2 + "/" + anio2);
             }
 
-            
             if (_type == 0) {
                 this.bean = new ReportsBean();
                 getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "PDF"));
@@ -332,6 +350,15 @@ public class RepAccount implements Serializable {
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="Funciones varias">
+    
+    public Date sumarFecha(Date fecha, int dias) {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha); // Configuramos la fecha que se recibe
+        calendar.add(Calendar.DAY_OF_YEAR, dias);  // numero de días a añadir, o restar en caso de días<0
+        return calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
+    }
+
     public void faceMessage(String var) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(var));
     }
@@ -375,32 +402,32 @@ public class RepAccount implements Serializable {
             }
         }
         /*
-        try {
-            _result = AccountingEJBClient.getAccountByFilter(codigo, nombre);
-        } catch (Exception e) {
-            faceMessage(e.getMessage() + " -- " + e.getCause());
-            account = null;
-            shortname = null;
-        }
-        if (_result.isEmpty()) {
-            this.account = null;
-            this.shortname = null;
-        } else {
-            for (Object obj : _result) {
-                AccountTO articulo = (AccountTO) obj;
-                account2.add(articulo);
-            }
-            if (account2.size() == 1) {
-                AccountTO art = (AccountTO) account2.get(0);
-                account = art.getAcctcode();
-                shortname = art.getAcctname();
-            } else {
-                faceMessage("Error: codigo repetido");
-            }
-        }*/
+         try {
+         _result = AccountingEJBClient.getAccountByFilter(codigo, nombre);
+         } catch (Exception e) {
+         faceMessage(e.getMessage() + " -- " + e.getCause());
+         account = null;
+         shortname = null;
+         }
+         if (_result.isEmpty()) {
+         this.account = null;
+         this.shortname = null;
+         } else {
+         for (Object obj : _result) {
+         AccountTO articulo = (AccountTO) obj;
+         account2.add(articulo);
+         }
+         if (account2.size() == 1) {
+         AccountTO art = (AccountTO) account2.get(0);
+         account = art.getAcctcode();
+         shortname = art.getAcctname();
+         } else {
+         faceMessage("Error: codigo repetido");
+         }
+         }*/
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="Autocompletado">
     public List<String> completeText(String query) {
         List _result = null;
@@ -410,7 +437,7 @@ public class RepAccount implements Serializable {
         String filterByCode = null;
         try {
 
-            _result = AccountingEJBClient.getAccountByFilter(filterByCode, query,null);
+            _result = AccountingEJBClient.getAccountByFilter(filterByCode, query, null);
         } catch (Exception ex) {
             Logger.getLogger(RepAccount.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -432,7 +459,7 @@ public class RepAccount implements Serializable {
 
         String filterByName = null;
         try {
-            _result = AccountingEJBClient.getAccountByFilter(query, filterByName,null);
+            _result = AccountingEJBClient.getAccountByFilter(query, filterByName, null);
         } catch (Exception ex) {
             Logger.getLogger(RepAccount.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -448,7 +475,6 @@ public class RepAccount implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G & S">
-
     public static ParameterEJBClient getParameterEJBClient() {
         return ParameterEJBClient;
     }
@@ -456,7 +482,7 @@ public class RepAccount implements Serializable {
     public static void setParameterEJBClient(ParameterEJBClient ParameterEJBClient) {
         RepAccount.ParameterEJBClient = ParameterEJBClient;
     }
-    
+
     public AccountingEJBClient getAccountingEJBClient() {
         return AccountingEJBClient;
     }

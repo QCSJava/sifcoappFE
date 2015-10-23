@@ -1485,8 +1485,9 @@ public class DeliveryBean implements Serializable {
         } catch (Exception e) {
             setRefe(0);
         }
-
+        this.listaPadre.clear();
         for (Object detalle : var.getDeliveryDetails()) {
+            this.listaPadre.add(detalle);
             DeliveryDetailTO det = (DeliveryDetailTO) detalle;
             this.listaDetalles.add(det);
         }
@@ -1514,11 +1515,11 @@ public class DeliveryBean implements Serializable {
             faceMessage("Ingrese al menos un Articulo");
             return false;
         }
-        
+        /*
         if (this.alm.equals(ParameterEJBClient.getParameterbykey(6).getValue1())) {
             faceMessage("Almacen no valido");
             return false;
-        }
+        }*/
 
         return true;
     }

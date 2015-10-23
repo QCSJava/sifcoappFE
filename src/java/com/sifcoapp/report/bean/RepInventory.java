@@ -5,22 +5,29 @@
  */
 package com.sifcoapp.report.bean;
 
+import com.sifco.inventory.bean.GoodsReceiptBean;
 import com.sifcoapp.client.AdminEJBClient;
+import com.sifcoapp.objects.admin.to.ArticlesInTO;
+import com.sifcoapp.objects.admin.to.ArticlesTO;
 import com.sifcoapp.objects.admin.to.CatalogTO;
 import com.sifcoapp.objects.admin.to.EnterpriseTO;
 import com.sifcoapp.report.common.AbstractReportBean;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.event.ActionEvent;
 import javax.validation.constraints.Digits;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -43,12 +50,22 @@ public class RepInventory implements Serializable {
     @Digits(integer = 14, fraction = 2, message = "Cantidad inadecuada")
     private double stock;
     private static AdminEJBClient AdminEJBService;
+    
+    //
+    private String newCod;
+    private String newNomArt;
+    private boolean check;
+    private String almacen;
+    
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="INIT">
     @PostConstruct
     public void initForm() {
         this.setFtype(1);
+        if (AdminEJBService==null) {
+            AdminEJBService = new AdminEJBClient();
+        }
 
     }
 //</editor-fold>
@@ -99,7 +116,7 @@ public class RepInventory implements Serializable {
 
             }
 
-            if (this.getStock() > 0) {
+            if (this.getStock() > 0.0) {
                 _whereclausule += " and onhand>=" + this.getStock();
 
                 _reportFilters += "\nPor existencia >=" + this.getStock();
@@ -110,8 +127,8 @@ public class RepInventory implements Serializable {
         }
         
         if (this.ftype == 2) {
-            _reportname = "/inventory/InvPhysical";
-            _reportTitle = "Inventario Físico";
+            _reportname = "/inventory/InvKardex";
+            _reportTitle = "KARDEX";
 
             _whereclausule = " art.itemcode=psl.itemcode and psl.pricelist=1";
             if (this.getItemgroup() != null && !this.getItemgroup().equals("-1") && this.getItemgroup().length() > 0) {
@@ -163,58 +180,7 @@ public class RepInventory implements Serializable {
             }
         } 
         
-        if (this.ftype == 4) {
-            _reportname = "/inventory/InvBarCode";
-            _reportTitle = "Barcode";
-
-            _whereclausule = " art.itemcode=psl.itemcode and psl.pricelist=1";
-            if (this.getItemgroup() != null && !this.getItemgroup().equals("-1") && this.getItemgroup().length() > 0) {
-                _whereclausule += " and itmsgrpcod='" + this.getItemgroup() + "'";
-
-                CatalogTO cat1 = new CatalogTO();
-                cat1 = AdminEJBService.findCatalogByKey(this.getItemgroup(), 3);
-
-                _reportFilters = "Grupo: " + cat1.getCatvalue();
-                reportParameters.put("PFILTERS", _reportFilters);
-
-            }
-            if (this.getItemtype() != null && !this.getItemtype().equals("-1") && this.getItemtype().length() > 0) {
-                _whereclausule += " and itemtype='" + this.getItemtype() + "'";
-
-                CatalogTO cat1 = new CatalogTO();
-                cat1 = AdminEJBService.findCatalogByKey(this.getItemtype(), 2);
-
-                _reportFilters += "\nClase: " + cat1.getCatvalue();
-                reportParameters.put("PFILTERS", _reportFilters);
-
-            }
-        }
         
-        if (this.ftype == 5) {
-            _reportname = "/sales/SalesBySeller";
-            _whereclausule = " h.docentry=d.docentry and docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2} and h.usersign=u.usersign";
-            _whereclausuleSR = "h.docentry=d.docentry and docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}";
-            _reportTitle = "Ventas por Vendedor - Detallado";
-            if (this.getFcode() != null && this.getFcode().length() > 0) {
-                _whereclausule += " and docnum=" + this.getFcode();
-            }
-            if (this.getFname() != null && this.getFname().length() > 0) {
-                _whereclausule += " and cardcode='" + this.getFname() + "'";
-            }
-        }
-        
-        if (this.ftype == 6) {
-            _reportname = "/sales/SalesBySellRes";
-            _whereclausule = " docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2} and h.usersign=u.usersign";
-            _whereclausuleSR = " docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}";
-            _reportTitle = "Ventas por Vendedor - Resumido";
-            if (this.getFcode() != null && this.getFcode().length() > 0) {
-                _whereclausule += " and docnum=" + this.getFcode();
-            }
-            if (this.getFname() != null && this.getFname().length() > 0) {
-                _whereclausule += " and cardcode='" + this.getFname() + "'";
-            }
-        }
 
         reportParameters.put("corpName", resp.getCrintHeadr());
         reportParameters.put("pdocdate", this.getFdatefrom());
@@ -266,13 +232,117 @@ public class RepInventory implements Serializable {
     public RepInventory() {
     }
 //</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del autocomplete" > 
+    public void findArticle(SelectEvent event) {
+        List articulos = new Vector();
+        String var = null;
+
+        if (event.getObject().toString() != var) {
+            List _result = null;
+
+            ArticlesInTO in = new ArticlesInTO();
+            in.setItemCode(newCod);
+            in.setItemName(newNomArt);
+
+            try {
+                _result = AdminEJBService.getArticles(in);
+
+            } catch (Exception e) {
+                //faceMessage(e.getMessage() + " -- " + e.getCause());
+                newCod = null;
+                newNomArt = null;
+            }
+            if (_result.isEmpty()) {
+                this.newCod = null;
+                this.newNomArt = null;
+
+            } else {
+                Iterator<ArticlesTO> iterator = _result.iterator();
+                while (iterator.hasNext()) {
+                    ArticlesTO articulo = (ArticlesTO) iterator.next();
+                    articulos.add(articulo);
+                }
+                if (articulos.size() == 1) {
+                    try {
+                        System.out.println("articulo unico, llenar campos en pantalla");
+                        ArticlesTO art = (ArticlesTO) articulos.get(0);
+                        newNomArt = art.getItemName();
+                        newCod = art.getItemCode();
+                    } catch (Exception ex) {
+                        Logger.getLogger(GoodsReceiptBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    for (Object artt : articulos) {
+                        ArticlesTO art = (ArticlesTO) artt;
+                        if (newNomArt.equals(art.getItemName())) {
+                            newNomArt = art.getItemName();
+                            newCod = art.getItemCode(); 
+                        }
+                    }//cierre for
+                }
+            }
+        }
+
+    }
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="btn nuevo">
+    public void botonNuevo(ActionEvent actionEvent) {
+        this.almacen=null;
+        this.check = false;
+        this.fcode=null;
+        this.fname = null;
+        this.itemgroup=null;
+        this.itemtype=null;
+        this.newCod=null;
+        this.newNomArt=null;
+        this.stock=0.0;
+    }
+//</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G & S">
-    
 
-    /**
-     * @return the fcode
-     */
+    public static AdminEJBClient getAdminEJBService() {
+        return AdminEJBService;
+    }
+
+    public static void setAdminEJBService(AdminEJBClient AdminEJBService) {
+        RepInventory.AdminEJBService = AdminEJBService;
+    }
+
+    public String getNewCod() {
+        return newCod;
+    }
+
+    public void setNewCod(String newCod) {
+        this.newCod = newCod;
+    }
+
+    public String getNewNomArt() {
+        return newNomArt;
+    }
+
+    public void setNewNomArt(String newNomArt) {
+        this.newNomArt = newNomArt;
+    }
+
+    public boolean isCheck() {
+        return check;
+    }
+
+    public void setCheck(boolean check) {
+        this.check = check;
+    }
+
+    public String getAlmacen() {
+        return almacen;
+    }
+
+    public void setAlmacen(String almacen) {
+        this.almacen = almacen;
+    }
+    
     public String getFcode() {
         return fcode;
     }

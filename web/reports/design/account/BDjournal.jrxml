@@ -174,14 +174,14 @@ order by groupmask,grpline, refdate]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{groupmask} == 3 || $F{groupmask} == 2 || $F{groupmask} == 5? ($F{debe}.doubleValue())*-1:$F{debe}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{groupmask} == 3 || $F{groupmask} == 2 || $F{groupmask} == 5?($F{debe}.doubleValue()==0?0.0:$F{debe}.doubleValue()*-1):$F{debe}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement style="Negrita" mode="Opaque" x="389" y="0" width="57" height="16" uuid="ca062d0e-4f32-4b2a-ac0c-3328fb9156b7"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{groupmask} == 3 || $F{groupmask} == 2 || $F{groupmask} == 5? ($F{haber}.doubleValue())*-1:$F{haber}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{groupmask} == 3 || $F{groupmask} == 2 || $F{groupmask} == 5? ($F{haber}.doubleValue()==0?0.0:$F{haber}.doubleValue()*-1):$F{haber}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement style="Negrita" mode="Opaque" x="446" y="0" width="56" height="16" uuid="b256e97b-595a-43d0-b6bc-750afc93008a"/>

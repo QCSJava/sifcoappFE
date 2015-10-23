@@ -33,7 +33,7 @@
 
                             </p:commandButton>    
 
-                                <p:commandButton rendered="false" tabindex="-1" type="button" title="Print" icon="ui-icon-print" />
+                            <p:commandButton rendered="false" tabindex="-1" type="button" title="Print" icon="ui-icon-print" />
                         </f:facet>
                     </p:toolbar>
 
@@ -282,7 +282,17 @@
                         </p:contextMenu>
 
                         <p:dataTable  id="accTable" var="Rec"  scrollable="true" scrollHeight="100%" value="#{businessPartner.listaAccAddTable}"
-                                      selectionMode="single" selection="#{businessPartner.selectAcc}" rowIndexVar="rowIndex" emptyMessage="Agregar cuentas" rowKey="#{Rec.acctype}">
+                                      selectionMode="single" selection="#{businessPartner.selectAcc}" rowIndexVar="rowIndex" emptyMessage="Agregar cuentas" rowKey="#{Rec.acctype}"
+                                      paginatorTemplate="{Exporters}"
+                                      paginator="true"
+                                      >
+                            <f:facet name="{Exporters}">
+                                <h:commandLink>
+                                    <p:spacer height="0" width="95%"/>
+                                    <p:graphicImage  name="/demo/images/excel.png" width="24"/>
+                                    <p:dataExporter type="xls" target="accTable" fileName="Cuentas Asociadas - Proveedores" />
+                                </h:commandLink>
+                            </f:facet>
 
                             <p:column headerText="#" style="width: 2%">
                                 <h:outputText value="#{rowIndex + 1}" />
@@ -375,7 +385,7 @@
                                       paginator="true"
                                       paginatorTemplate="{Exporters}"
                                       >
-                            
+
                             <f:facet name="{Exporters}" >
                                 <p:spacer height="0" width="95%"/>
                                 <h:commandLink >

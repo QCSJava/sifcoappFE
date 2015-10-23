@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StatementReservaEX" language="groovy" pageWidth="612" pageHeight="792" columnWidth="472" leftMargin="85" rightMargin="55" topMargin="35" bottomMargin="35" whenResourceMissingType="Empty" uuid="e0fe8475-8e69-4dc8-b4e4-04149205e35c">
-	<property name="ireport.zoom" value="1.500000000000009"/>
-	<property name="ireport.x" value="53"/>
+	<property name="ireport.zoom" value="1.1269722013523735"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="numCategory" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -38,7 +38,7 @@ CASE WHEN acctcode = '4' THEN sal_inicio else 0.0 END AS T2_1,
 CASE WHEN acctcode = '4' THEN coalesce(sal_debe,0.00)- coalesce(sal_haber,0.00) else 0.0 END AS T2_2
 
 	from sp_get_update_balance($P{startdate},$P{enddate})
-	where levels <$P{levels} and groupmask in (4,5)
+	where levels <=$P{levels} and groupmask in (4,5) and acttype =$P{numCategory}
 	ORDER BY groupmask DESC, grpline ASC;]]>
 	</queryString>
 	<field name="acctcode" class="java.lang.String"/>
