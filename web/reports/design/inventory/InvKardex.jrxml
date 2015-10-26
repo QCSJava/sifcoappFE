@@ -46,7 +46,7 @@
 	'I' "tipo"
 
 from cat_art0_articles t3
-join cat_art1_brancharticles t4 on t3.itemcode = t4.itemcode $P!{movimiento} /* @variable*/ (
+join cat_art1_brancharticles t4 on t3.itemcode = t4.itemcode left join /* @variable*/ (
 
 select
 	t0.itemcode "codigo",
@@ -196,7 +196,7 @@ order by "codigo", "fecha contabilización", "Documento3"]]>
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Almacen: "+$F{almacen}]]></textFieldExpression>
+					<textFieldExpression><![CDATA["ALMACEN: "+$F{almacen}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>

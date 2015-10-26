@@ -88,7 +88,7 @@ public class DailyClosingBean implements Serializable{
                 AccountTO in = new AccountTO();
                 in.setUsersing((int)session.getAttribute("usersign"));
                 in.setObjtype(tipoCierre+"");
-                this.saldoTrans = AccountingEJBClient.devolver_saldo(in);
+                //this.saldoTrans = AccountingEJBClient.devolver_saldo(in);
             } catch (Exception e) {
             }
         }else
@@ -165,7 +165,7 @@ public class DailyClosingBean implements Serializable{
                 in.setAcctcode(newCodCuenta);
                 in.setFormatcode(comment);
                 in.setCurrtotal(saldoTrans);
-                res = AccountingEJBClient.traslado_caja(in);
+                //res = AccountingEJBClient.traslado_caja(in);
                 if (res.getCodigoError() == 0) {
                     faceMessage(res.getMensaje());
                     this.enableBtn = true;

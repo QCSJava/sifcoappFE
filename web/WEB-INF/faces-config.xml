@@ -207,6 +207,11 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     <managed-bean>
+        <managed-bean-name>dailyClosingColectBean</managed-bean-name>
+        <managed-bean-class>com.sifcoapp.bank.bean.DailyClosingColectBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
         <managed-bean-name>periodEndBean</managed-bean-name>
         <managed-bean-class>com.sifcoapp.bank.bean.PeriodEndBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>

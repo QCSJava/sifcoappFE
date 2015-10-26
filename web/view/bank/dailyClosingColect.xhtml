@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Cierre Diario Colecturia</title>
+        <!--<style type="text/css">
+            .ui-panel .ui-panel-titlebar {
+                padding: 0;
+            }
+        </style>-->
+
+    </h:head>
+
+    <body>
+        <ui:composition template="./../../template.xhtml">
+            <ui:define name="content">
+
+                <h:form id="frmDaily">
+
+                    <p:toolbar id="toolbarBill">
+                        <f:facet name="left">
+                            <p:focus context="toolbarBill"/>
+                            Cierre Diario Colecturia
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                                <p:commandButton tabindex="-1" title="Nuevo" icon="fa fa-refresh" actionListener="#{dailyClosingColectBean.onDateSelect()}" 
+                                             update="frmDaily" process="@this"
+                                             />
+                        </f:facet>
+                    </p:toolbar>
+
+                    <p:spacer height="20" width="0"></p:spacer>
+
+                    <div  class="ui-grid ui-grid-responsive" id="divPrincipal">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Fecha de Contabilizacion"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:calendar id="f1" showOn="button" size="15"  pattern="dd/MM/yyyy" value="#{dailyClosingColectBean.fecha}" >
+                                    <p:ajax event="dateSelect" listener="#{dailyClosingColectBean.onDateSelect}" />
+                                </p:calendar>
+                            </div>
+                        </div>
+                        <p:spacer width="0" height="10"/>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-10">
+                                <p:dataTable id="tableDetailBill" var="Art" value="#{dailyClosingColectBean.listaDetalles}" rowKey="#{Art.linenum}" 
+                                             rowIndexVar="rowIndex" scrollable="true" scrollHeight="250"
+                                             emptyMessage="No hay registros">
+
+                                    <p:column headerText="#" style="width: 3%; font-size: #{commonBean.sizeFont1}">
+                                        <h:outputText value="#{rowIndex+1}" />
+                                    </p:column>
+                                    <p:column headerText="Linea Concepto" style="width: 45px; font-size: #{commonBean.sizeFont1}">
+                                        <h:outputText value="#{Art.linenum}" />
+                                    </p:column>
+
+                                    <p:column headerText="Nombre Comcepto" style="width: 25%; font-size: #{commonBean.sizeFont1}">
+                                        <h:outputText value="#{Art.dscription}" />
+                                    </p:column>
+
+                                    <p:column headerText="Monto" style="width: 8%; font-size:#{commonBean.sizeFont1}">
+                                        <p:outputLabel value="#{Art.paidsum}" style="float:right">
+                                            <f:convertNumber type="currency" currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                        </p:outputLabel>
+                                    </p:column>
+
+                                    <p:column headerText="Cuenta de Caja" style="width: 10%; font-size: #{commonBean.sizeFont1}">
+                                        <p:outputLabel value="#{Art.acctcode}" style="float:right"/>
+                                    </p:column>
+                                    <p:column headerText="Cuenta de bancos" style="width: 10%; font-size: #{commonBean.sizeFont1}">
+                                        <p:outputLabel  value="#{Art.ctlaccount}" style="float:right"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </div>
+
+                        <p:spacer width="0" height="10"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2">
+                                <p:outputLabel value="Comentarios"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <p:inputTextarea maxlength="49" value="#{dailyClosingColectBean.comment}" cols="20"/>
+                            </div>
+                        </div>
+                        <p:spacer width="0" height="10"/>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-1">
+                                <p:commandButton action="#{dailyClosingColectBean.btnPrincipal()}" id="btnPrincipal" value="Guardar"/>
+                                <p:defaultCommand target="btnPrincipal" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                </h:form>
+
+                <h:form>
+                    <p:dialog header="Confirmacion" widgetVar="dlgC2" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea guardar los cambios?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="#{dailyClosingColectBean.confirmDialog}" ajax="false" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  onclick="PF('dlgC2').hide();" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </body>
+
+</ui:composition>

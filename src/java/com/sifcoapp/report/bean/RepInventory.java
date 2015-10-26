@@ -135,10 +135,11 @@ public class RepInventory implements Serializable {
             _reportname = "/inventory/InvKardex";
             _reportTitle = "KARDEX";
             
-            if (check) {
+            /*if (check) {
                 reportParameters.put("movimiento"," join ");
             }else
                 reportParameters.put("movimiento"," left join ");
+            */
             
             if (!almacen.equals("-1")) {
                 reportParameters.put("WithAlm"," and t0.loccode = '"+this.almacen+"'");
