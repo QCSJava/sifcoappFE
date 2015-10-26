@@ -6,21 +6,24 @@
 package com.sifcoapp.bank.bean;
 
 import com.sifco.login.bean.Util;
+import com.sifcoapp.client.AccountingEJBClient;
 import com.sifcoapp.client.BankEJBClient;
+import com.sifcoapp.objects.accounting.to.AccountTO;
 import com.sifcoapp.objects.bank.to.ColecturiaConceptTO;
-import com.sifcoapp.objects.bank.to.ColecturiaTO;
 import com.sifcoapp.objects.catalogos.Common;
 import com.sifcoapp.objects.common.to.ResultOutTO;
+import com.sifcoapp.report.bean.RepAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
@@ -28,7 +31,7 @@ import javax.validation.constraints.Digits;
 import org.primefaces.context.RequestContext;
 
 @ManagedBean(name = "conceptBean")
-@ApplicationScoped
+@SessionScoped
 public class ConceptBean implements Serializable {
 
     public ConceptBean() {
@@ -94,6 +97,10 @@ public class ConceptBean implements Serializable {
     private String valueBoton;
     private int varEstados;
     private boolean lineNumState;
+    
+    private AccountingEJBClient AccountingEJBClient;
+    private String account = "";//codigocuenta
+    private String shortname;//codigocuenta usado para el nombre pero lleva el mismo codigo
 
 //</editor-fold>
     
@@ -341,11 +348,60 @@ public class ConceptBean implements Serializable {
 
 //</editor-fold>
     
+//<editor-fold defaultstate="collapsed" desc="Autocompletado">
+    public List<String> completeText(String query) {
+        List _result = null;
+        account = null;
+        shortname = null;
+
+        String filterByCode = null;
+        try {
+
+            _result = AccountingEJBClient.getAccountByFilter(filterByCode, query, null);
+        } catch (Exception ex) {
+            Logger.getLogger(RepAccount.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        List<String> results = new ArrayList<>();
+
+        Iterator<AccountTO> iterator = _result.iterator();
+        while (iterator.hasNext()) {
+            AccountTO cuentas = (AccountTO) iterator.next();
+            results.add(cuentas.getAcctcode());
+        }
+        return results;
+    }
+
+    public List<String> completeCode(String query) {
+        List _result = null;
+        account = null;
+        shortname = null;
+
+        String filterByName = null;
+        try {
+            _result = AccountingEJBClient.getAccountByFilter(query, filterByName, null);
+        } catch (Exception ex) {
+            Logger.getLogger(RepAccount.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        List<String> results = new ArrayList<>();
+
+        Iterator<AccountTO> iterator = _result.iterator();
+        while (iterator.hasNext()) {
+            AccountTO cuentas = (AccountTO) iterator.next();
+            results.add(cuentas.getAcctcode());
+        }
+        return results;
+    }
+//</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Load de pantalla">
     @PostConstruct
     public void initForm() {
         if (BankEJBClient == null) {
             BankEJBClient = new BankEJBClient();
+        }
+        if (AccountingEJBClient==null) {
+            AccountingEJBClient = new AccountingEJBClient();
         }
 
         llenarDataTable();

@@ -13,6 +13,21 @@
 	</parameter>
 	<parameter name="PWHERE" class="java.lang.String"/>
 	<parameter name="PFECHAREPORTE" class="java.lang.String"/>
+	<parameter name="movimiento" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="WithAlm" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="WithArt" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="WithArt2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="WithAlm2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select  t3.itemcode  "codigo",
 	t3.itemname "Descripcion",
@@ -30,7 +45,8 @@
 	q1.total "total1",
 	'I' "tipo"
 
-from cat_art0_articles t3 left join /* @variable*/ (
+from cat_art0_articles t3
+join cat_art1_brancharticles t4 on t3.itemcode = t4.itemcode $P!{movimiento} /* @variable*/ (
 
 select
 	t0.itemcode "codigo",
@@ -43,14 +59,14 @@ select
 	sum(case when t2.inqty > 0 then t0.doctotal else t0.doctotal * -1 end) "total"
 from 	adm_inl0_inventorylog t0 left join cat_obj0_objectype t1 on t0.transtype = to_number(t1.objtype,'99')
 	join adm_wjl0_warehousejournal t2 on t0.messageid = t2.messageid
-where 	t0.docdate < '15/10/2015'  /* @variable*/
-	--and t0.loccode = 'REP-001' --'DIE-001' /* @variable*/
-	--and t0.itemcode = 'INV0000295' /* @variable*/
+where 	t0.docdate < $P{pdocdate}  /* @variable*/
+	$P!{WithAlm}--and t0.loccode = 'REP-001' --'DIE-001' /* @variable*/
+	$P!{WithArt}--and t0.itemcode = 'INV0000295' /* @variable*/
 group by t0.itemcode, t0.dscription, t0.loccode
 ) q1 on t3.itemcode = q1.codigo
 where  	1 = 1
-	--and t3.itemcode = 'INV0000295' /* @variable*/
-
+	$P!{WithArt2}--and t3.itemcode = 'INV0000295' /* @variable*/
+	$P!{WithAlm2}--and t4.whscode = 'REM-001'
 union all
 
 select
@@ -72,9 +88,9 @@ select
 
 from 	adm_inl0_inventorylog t0 left join cat_obj0_objectype t1 on t0.transtype = to_number(t1.objtype,'99')
 	join adm_wjl0_warehousejournal t2 on t0.messageid = t2.messageid
-where 	1=1 and t0.docdate >= '15/10/2015' and t0.docdate <= '22/10/2015'  /* @variable*/
-	--and t0.loccode = 'REP-001' --'DIE-001' /* @variable*/
-	--and t0.itemcode = 'INV0000295' /* @variable*/
+where 	1=1 and t0.docdate >= $P{PDOCDATE2} and t0.docdate <= $P{pdocdate}  /* @variable*/
+	$P!{WithAlm}--and t0.loccode = 'REP-001' --'DIE-001' /* @variable*/
+	$P!{WithArt}--and t0.itemcode = 'INV0000295' /* @variable*/
 order by "codigo", "fecha contabilización", "Documento3"]]>
 	</queryString>
 	<field name="codigo" class="java.lang.String"/>
@@ -166,7 +182,7 @@ order by "codigo", "fecha contabilización", "Documento3"]]>
 		<groupHeader>
 			<band height="15">
 				<textField>
-					<reportElement x="0" y="0" width="317" height="14" uuid="f6f3afd2-dde4-467e-98f6-a698c18b47a6"/>
+					<reportElement x="100" y="1" width="317" height="14" uuid="f6f3afd2-dde4-467e-98f6-a698c18b47a6"/>
 					<textElement verticalAlignment="Top">
 						<font size="9" isBold="true"/>
 					</textElement>
@@ -175,6 +191,13 @@ order by "codigo", "fecha contabilización", "Documento3"]]>
 				<line>
 					<reportElement x="0" y="14" width="752" height="1" uuid="31b4dde1-c445-4bd9-9961-2ace6c78196e"/>
 				</line>
+				<textField>
+					<reportElement x="0" y="1" width="100" height="13" uuid="d15d3525-71ec-451e-a558-e1e829550b79"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Almacen: "+$F{almacen}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>

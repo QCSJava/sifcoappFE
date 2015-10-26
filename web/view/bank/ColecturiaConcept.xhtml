@@ -84,7 +84,7 @@
                             </div>
                             <div class="ui-grid-col-2">
                                 <p:autoComplete scrollHeight="250" id="cuenta1" forceSelection="true" minQueryLength="2" value="#{conceptBean.acctCode1}" 
-                                                completeMethod="#{purchaseQuotationBean.completeCode}" effect="fade" size="15" label="Codigo Cuenta">
+                                                completeMethod="#{conceptBean.completeCode}" effect="fade" size="15" label="Codigo Cuenta">
                                 </p:autoComplete>
                             </div>
 
@@ -118,7 +118,7 @@
                             </div>
                             <div class="ui-grid-col-2">
                                 <p:autoComplete scrollHeight="250" id="cuenta2" forceSelection="true" minQueryLength="2" value="#{conceptBean.acctCode2}" 
-                                                completeMethod="#{purchaseQuotationBean.completeCode}" effect="fade" size="15" label="Codigo Cuenta">
+                                                completeMethod="#{conceptBean.completeCode}" effect="fade" size="15" label="Codigo Cuenta">
                                 </p:autoComplete>
                             </div>
 
@@ -152,7 +152,7 @@
                             </div>
                             <div class="ui-grid-col-2">
                                 <p:autoComplete scrollHeight="250" id="cuenta3" forceSelection="true" minQueryLength="2" value="#{conceptBean.acctCode3}" 
-                                                completeMethod="#{purchaseQuotationBean.completeCode}" effect="fade" size="15" label="Codigo Cuenta">
+                                                completeMethod="#{conceptBean.completeCode}" effect="fade" size="15" label="Codigo Cuenta">
                                 </p:autoComplete>
                             </div>
 
@@ -169,11 +169,11 @@
                         <div class="ui-grid-row">
 
                             <div class="ui-grid-col-1">
-                                <p:outputLabel value="Cuenta Asociada"/>
+                                <p:outputLabel value="Cuenta Banco"/>
                             </div>
                             <div class="ui-grid-col-2">
                                 <p:autoComplete scrollHeight="250" id="asociada" forceSelection="true" minQueryLength="2" value="#{conceptBean.ctlAccount}"
-                                                completeMethod="#{purchaseQuotationBean.completeCode}" effect="fade" size="15" label="Codigo Cuenta Asociada">
+                                                completeMethod="#{conceptBean.completeCode}" effect="fade" size="15" label="Codigo Cuenta Banco">
                                 </p:autoComplete>
                             </div>
 
@@ -292,7 +292,7 @@
                                         <h:outputText value="#{concept.vatsum}" />
                                     </p:column>
 
-                                    <p:column headerText="Cuenta Asociada" style="width: 15%; font-size: #{commonBean.sizeFont1}">
+                                    <p:column headerText="Cuenta Banco" style="width: 15%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{concept.ctlaccount}" />
                                     </p:column>
 

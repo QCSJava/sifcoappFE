@@ -13,7 +13,9 @@ import com.sifcoapp.objects.admin.to.CatalogTO;
 import com.sifcoapp.objects.admin.to.EnterpriseTO;
 import com.sifcoapp.report.common.AbstractReportBean;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -40,8 +42,8 @@ public class RepInventory implements Serializable {
 //<editor-fold defaultstate="collapsed" desc="VARIABLES">
     private String fcode;
     private String fname;
-    private Date fdatefrom;
-    private Date fdateto;
+    private Date fdatefrom = new Date();
+    private Date fdateto = new Date();
     @ManagedProperty(value = "#{reportsBean}")
     private ReportsBean bean;
     private String itemtype;
@@ -50,20 +52,19 @@ public class RepInventory implements Serializable {
     @Digits(integer = 14, fraction = 2, message = "Cantidad inadecuada")
     private double stock;
     private static AdminEJBClient AdminEJBService;
-    
+
     //
     private String newCod;
     private String newNomArt;
     private boolean check;
     private String almacen;
-    
-//</editor-fold>
 
+//</editor-fold>
 //<editor-fold defaultstate="collapsed" desc="INIT">
     @PostConstruct
     public void initForm() {
         this.setFtype(1);
-        if (AdminEJBService==null) {
+        if (AdminEJBService == null) {
             AdminEJBService = new AdminEJBClient();
         }
 
@@ -72,14 +73,18 @@ public class RepInventory implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="PRINT">
     public void print(int _type) throws Exception {
-        
+
         Map<String, Object> reportParameters = new HashMap<>();
         String _whereclausule = null;
         String _whereclausuleSR = null;
         String _reportname = null;
         String _reportTitle = null;
         String _reportFilters = "";
-        
+
+        Calendar Al = GregorianCalendar.getInstance(), Del = GregorianCalendar.getInstance();
+        Al.setTime(this.getFdateto());
+        Del.setTime(this.getFdatefrom());
+
         if (AdminEJBService == null) {
             AdminEJBService = new AdminEJBClient();
         }
@@ -89,7 +94,7 @@ public class RepInventory implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(repPurchases.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         if (this.ftype == 1) {
             _reportname = "/inventory/InvCostStock";
             _reportTitle = "Existencias y Costos";
@@ -125,34 +130,69 @@ public class RepInventory implements Serializable {
             }
 
         }
-        
+
         if (this.ftype == 2) {
             _reportname = "/inventory/InvKardex";
             _reportTitle = "KARDEX";
-
-            _whereclausule = " art.itemcode=psl.itemcode and psl.pricelist=1";
-            if (this.getItemgroup() != null && !this.getItemgroup().equals("-1") && this.getItemgroup().length() > 0) {
-                _whereclausule += " and itmsgrpcod='" + this.getItemgroup() + "'";
-
-                CatalogTO cat1 = new CatalogTO();
-                cat1 = AdminEJBService.findCatalogByKey(this.getItemgroup(), 3);
-
-                _reportFilters = "Grupo: " + cat1.getCatvalue();
-                reportParameters.put("PFILTERS", _reportFilters);
-
+            
+            if (check) {
+                reportParameters.put("movimiento"," join ");
+            }else
+                reportParameters.put("movimiento"," left join ");
+            
+            if (!almacen.equals("-1")) {
+                reportParameters.put("WithAlm"," and t0.loccode = '"+this.almacen+"'");
+                reportParameters.put("WithAlm2"," and t4.whscode = '"+this.almacen+"'");
+            }else{
+                reportParameters.put("WithAlm",""); //and t0.loccode = 'REP-001'");
+                reportParameters.put("WithAlm2",""); //and t4.whscode = 'REM-001'");
             }
-            if (this.getItemtype() != null && !this.getItemtype().equals("-1") && this.getItemtype().length() > 0) {
-                _whereclausule += " and itemtype='" + this.getItemtype() + "'";
-
-                CatalogTO cat1 = new CatalogTO();
-                cat1 = AdminEJBService.findCatalogByKey(this.getItemtype(), 2);
-
-                _reportFilters += "\nClase: " + cat1.getCatvalue();
-                reportParameters.put("PFILTERS", _reportFilters);
-
+            
+            if (newCod!= null && newCod.length() > 0 && check == false) {
+                reportParameters.put("WithArt"," and t0.itemcode = '"+this.newCod+"'");
+                reportParameters.put("WithArt2"," and t3.itemcode = '"+this.newCod+"'");
+            }else{
+                reportParameters.put("WithArt",""); //and t0.itemcode = 'INV0000295'");
+                reportParameters.put("WithArt2",""); //and t3.itemcode = 'INV0000295'");
             }
+ 
+            int dia1, mes1, anio1, dia2, mes2, anio2;
+            String diaS1, Smes1, Sdia2, Smes2;
+
+            dia1 = Del.get(Calendar.DAY_OF_MONTH);
+            if (dia1 < 10) {
+                diaS1 = "0" + dia1;
+            } else {
+                diaS1 = dia1 + "";
+            }
+            mes1 = Del.get(Calendar.MONTH);
+            mes1 = mes1 + 1;
+            if (mes1 < 10) {
+                Smes1 = "0" + mes1;
+            } else {
+                Smes1 = mes1 + "";
+            }
+            anio1 = Del.get(Calendar.YEAR);
+
+            dia2 = Al.get(Calendar.DAY_OF_MONTH);
+            if (dia2 < 10) {
+                Sdia2 = "0" + dia2;
+            } else {
+                Sdia2 = dia2 + "";
+            }
+            mes2 = Al.get(Calendar.MONTH);
+            mes2 = mes2 + 1;
+            if (mes2 < 10) {
+                Smes2 = "0" + mes2;
+            } else {
+                Smes2 = mes2 + "";
+            }
+            anio2 = Al.get(Calendar.YEAR);
+
+            reportParameters.put("PFECHAREPORTE", "Del " + diaS1 + "/" + Smes1 + "/" + anio1 + " Al " + Sdia2 + "/" + Smes2 + "/" + anio2);
+
         }
-        
+
         if (this.ftype == 3) {
             _reportname = "/inventory/InvPhysical";
             _reportTitle = "Inventario Físico";
@@ -178,17 +218,20 @@ public class RepInventory implements Serializable {
                 reportParameters.put("PFILTERS", _reportFilters);
 
             }
-        } 
-        
-        
+        }
 
         reportParameters.put("corpName", resp.getCrintHeadr());
-        reportParameters.put("pdocdate", this.getFdatefrom());
-        reportParameters.put("PDOCDATE2", this.getFdateto());
+        if (ftype == 2) {
+            reportParameters.put("pdocdate", this.getFdateto());
+            reportParameters.put("PDOCDATE2", this.getFdatefrom());
+        } else {
+            reportParameters.put("pdocdate", this.getFdatefrom());
+            reportParameters.put("PDOCDATE2", this.getFdateto());
+        }
         reportParameters.put("PWHERE", _whereclausule);
         reportParameters.put("PWHERESR", _whereclausuleSR);
         reportParameters.put("reportName", _reportTitle);
-        
+
         if (_type == 0) {
             getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "PDF"));
         } else {
@@ -203,7 +246,7 @@ public class RepInventory implements Serializable {
                 }
             }
         }
-        
+
         System.out.println(_whereclausule);
         System.out.println(_reportname);
         System.out.println(_reportTitle);
@@ -215,16 +258,16 @@ public class RepInventory implements Serializable {
 
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="funciones varias">
     public void doPrint() throws Exception {
         this.print(0);
     }
-    
+
     public void printFormat() throws Exception {
         this.print(1);
     }
-    
+
     public void printFormatExcel() throws Exception {
         this.print(2);
     }
@@ -232,7 +275,7 @@ public class RepInventory implements Serializable {
     public RepInventory() {
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del autocomplete" > 
     public void findArticle(SelectEvent event) {
         List articulos = new Vector();
@@ -277,7 +320,7 @@ public class RepInventory implements Serializable {
                         ArticlesTO art = (ArticlesTO) artt;
                         if (newNomArt.equals(art.getItemName())) {
                             newNomArt = art.getItemName();
-                            newCod = art.getItemCode(); 
+                            newCod = art.getItemCode();
                         }
                     }//cierre for
                 }
@@ -286,23 +329,22 @@ public class RepInventory implements Serializable {
 
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="btn nuevo">
     public void botonNuevo(ActionEvent actionEvent) {
-        this.almacen=null;
+        this.almacen = null;
         this.check = false;
-        this.fcode=null;
+        this.fcode = null;
         this.fname = null;
-        this.itemgroup=null;
-        this.itemtype=null;
-        this.newCod=null;
-        this.newNomArt=null;
-        this.stock=0.0;
+        this.itemgroup = null;
+        this.itemtype = null;
+        this.newCod = null;
+        this.newNomArt = null;
+        this.stock = 0.0;
     }
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G & S">
-
     public static AdminEJBClient getAdminEJBService() {
         return AdminEJBService;
     }
@@ -342,7 +384,7 @@ public class RepInventory implements Serializable {
     public void setAlmacen(String almacen) {
         this.almacen = almacen;
     }
-    
+
     public String getFcode() {
         return fcode;
     }
