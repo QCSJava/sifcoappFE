@@ -20,17 +20,17 @@
         <ui:composition template="./../../template.xhtml">
             <ui:define name="content">
 
-                <h:form id="frmDaily">
+                <h:form id="frmDaily1">
 
                     <p:toolbar id="toolbarBill">
                         <f:facet name="left">
                             <p:focus context="toolbarBill"/>
-                            Cierre Diario
+                            Cierre Diario de Ventas
                             <span class="ui-separator">
                                 <span class="ui-icon ui-icon-grip-dotted-vertical" />
                             </span>
                             <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document" actionListener="#{dailyClosingBean.botonNuevo}" 
-                                             update="frmDaily" process="@this"
+                                             update="frmDaily1" process="@this"
                                              />
                         </f:facet>
                     </p:toolbar>
@@ -38,21 +38,17 @@
                     <p:spacer height="20" width="0"></p:spacer>
 
                     <div  class="ui-grid ui-grid-responsive" id="divPrincipal">
-
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2">
-                                <p:outputLabel value="Tipo de Cierre"/>
+                                <p:outputLabel value="Fecha de Contabilizacion"/>
                             </div>
-                            <div class="ui-grid-col-1">
-                                <p:selectOneMenu value="#{dailyClosingBean.tipoCierre}" style="width:125px" >
-                                    <f:selectItem itemLabel="Tipo" itemValue="#{0}" noSelectionOption="true" itemDescription="Seleccione el tipo de cierre"/>
-                                    <f:selectItem itemLabel="Colecturia" itemValue="#{41}" />
-                                    <f:selectItem itemLabel="Venta" itemValue="#{10}" />
-                                    <p:ajax event="valueChange" listener="#{dailyClosingBean.tipeChange}" update="btnPrincipal, saldo"/>
-                                </p:selectOneMenu>
+                            <div class="ui-grid-col-2">
+                                <p:calendar id="f1" showOn="button" size="15"  pattern="dd/MM/yyyy" value="#{dailyClosingBean.fecha}" >
+                                    <p:ajax event="dateSelect" listener="#{dailyClosingBean.onDateSelect(dailyClosingBean.fecha)}" />
+                                </p:calendar>
                             </div>
                         </div>
-                        <p:spacer width="0" height="10px"/>
+                        <p:spacer width="0" height="10"/>
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2">
                                 <p:outputLabel value="Saldo a Transferir">
@@ -60,7 +56,7 @@
                                 </p:outputLabel>
                             </div>
                             <div class="ui-grid-col-1">
-                                <p:inputText id="saldo" value="#{dailyClosingBean.saldoTrans}" style="width:125px" readonly="true">
+                                <p:inputText id="saldo" value="#{dailyClosingBean.saldoTrans}" size="15" readonly="true">
                                     <f:convertNumber type="currency"  currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
                                 </p:inputText>
                             </div>
@@ -70,20 +66,12 @@
                             <div class="ui-grid-col-2">
                                 <p:outputLabel value="Cuenta contable Banco"/>
                             </div>
-                            <div class="ui-grid-col-5">
-                                <p:autoComplete scrollHeight="250" id="codCuenta" forceSelection="true" minQueryLength="2" value="#{dailyClosingBean.newCodCuenta}"
-                                                completeMethod="#{checkForPaymentBean.completeCode}" effect="fade" size="16" label="Codigo Cuenta"
-                                                >
-                                    <p:ajax event="itemSelect" listener="#{dailyClosingBean.findAccount}" update="codCuenta nameCuenta" />
-                                </p:autoComplete>
+                            <div class="ui-grid-col-8">
+                                <p:inputText size="15" value="#{dailyClosingBean.newCodCuenta}" readonly="true"/>
 
                                 <p:spacer width="10" height="0" />
 
-                                <p:autoComplete scrollHeight="250" id="nameCuenta" forceSelection="true" minQueryLength="2" value="#{dailyClosingBean.newNomCuenta}"
-                                                completeMethod="#{checkForPaymentBean.completeName}" effect="fade" size="37" label="Nombre Cuenta"
-                                                >
-                                    <p:ajax event="itemSelect" listener="#{dailyClosingBean.findAccount}" update="codCuenta nameCuenta" />
-                                </p:autoComplete>
+                                <p:inputText size="40" value="#{dailyClosingBean.newNomCuenta}" readonly="true"/>
                             </div>
 
                         </div>
@@ -99,7 +87,7 @@
                         <p:spacer width="0" height="10"/>
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-1">
-                                <p:commandButton action="#{dailyClosingBean.btnPrincipal()}" id="btnPrincipal" value="Guardar" disabled="#{dailyClosingBean.enableBtn}"/>
+                                <p:commandButton action="#{dailyClosingBean.btnPrincipal()}" id="btnPrincipal" value="Guardar" />
                                 <p:defaultCommand target="btnPrincipal" />
                             </div>
                         </div>

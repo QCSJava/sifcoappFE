@@ -6,7 +6,6 @@
 package com.sifco.bean;
 
 import com.sifco.login.bean.Util;
-import com.sifco.businesspartner.bean.BusinessPartner;
 import com.sifcoapp.assignment.bean.AccassignmentBean;
 import com.sifcoapp.client.AccountingEJBClient;
 import com.sifcoapp.objects.accounting.to.AccountTO;
@@ -33,7 +32,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name = "JournalEntry")
 @SessionScoped

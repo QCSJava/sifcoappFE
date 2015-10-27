@@ -470,9 +470,9 @@ public class ConciliationBean implements Serializable {
                     JournalEntryLinesTO _res = new JournalEntryLinesTO();
                     in.setAcctcode(this.newCodCuenta);
                     in.setRefdate(fechaCuentas);
-                    _res = AccountingEJBClient.getsaldo(in);
-                    saldoActual = "$ " + formatNum(_res.getTotalvat());
-                    saldoActualR = formatNum(_res.getTotalvat());
+                    //_res = AccountingEJBClient.getsaldo(in);
+                    //saldoActual = "$ " + formatNum(_res.getTotalvat());
+                    //saldoActualR = formatNum(_res.getTotalvat());
                     clearList();
                     dataAcc(fechaCuentas, newCodCuenta);
                 }

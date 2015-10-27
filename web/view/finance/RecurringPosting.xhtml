@@ -197,7 +197,7 @@
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2"> <h:outputText  value="Frecuencia"></h:outputText></div>
                             <div class="ui-grid-col-2">
-                                <p:selectOneMenu  id="almDest" value="#{RecurringPosting.frequency}" style="width: 100%"  valueChangeListener="#{RecurringPosting.stateChangeListener}" disabled="#{goodsIssuesBean.disable}">
+                                <p:selectOneMenu  id="almDest" value="#{RecurringPosting.frequency}" style="width: 100%"  valueChangeListener="#{RecurringPosting.stateChangeListener}">
                                     <f:selectItems value="#{RecurringPosting.classLst}" var="model" itemLabel="#{model.catvalue}" itemValue="#{model.catcode}"/>
                                     <p:ajax event="change" update="almDest2"/>
                                 </p:selectOneMenu>
