@@ -75,7 +75,7 @@
                             </div>
                             <div class="ui-grid-col-4">
                                 <p:spacer width="25" height="0"/>
-                                <p:inputText maxlength="20" id="articleCode" value="#{articles.itemcode}" readonly ="#{articles.disable}" size="25" /> 
+                                <p:inputText maxlength="20" id="articleCode" value="#{articles.itemcode}" readonly ="#{articles.disable}" size="15" /> 
                                 <p:commandButton tabindex="-1" title="Print" icon="fa fa-barcode" actionListener="#{articles.PrintBarCode}" ajax="false"/>
                             </div>
                             <div class="ui-grid-col-1">
@@ -91,7 +91,7 @@
 
                     <h:panelGrid columns="4" cellpadding="10">
                         <p:outputLabel  value="Descripcion: " for="description"/>
-                        <p:inputText maxlength="128" id="description" value="#{articles.itemname}" size="50"/>   
+                        <p:inputText maxlength="128" id="description" value="#{articles.itemname}" size="35"/>   
                         <p:outputLabel  value="Venta: " for="isSales"/>
                         <p:selectBooleanCheckbox value="#{articles.sellitem}" id="isSales"/>                            
                         <p:outputLabel  value="Clase: " for="articlesClass"/>
@@ -187,11 +187,11 @@
                                 </p:column>
 
                                 <p:column headerText="Maximo">
-                                    <h:inputText value="#{branchart.maxstock}" id="maximo"/>
+                                    <h:inputText size="13" value="#{branchart.maxstock}" id="maximo"/>
                                 </p:column>
 
                                 <p:column headerText="Minimo">
-                                    <h:inputText value="#{branchart.minstock}" id="minimo" />
+                                    <h:inputText size="13" value="#{branchart.minstock}" id="minimo" />
                                 </p:column>
 
                                 <p:column headerText="Asociado">

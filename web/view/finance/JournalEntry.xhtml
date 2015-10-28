@@ -46,7 +46,7 @@
                         </div>
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2">
-                                <p:inputText id="number" value="#{JournalEntry.number}" readonly="#{JournalEntry.disableX}"></p:inputText>
+                                <p:inputText size="15" id="number" value="#{JournalEntry.number}" readonly="#{JournalEntry.disableX}"></p:inputText>
                             </div>
                             <div class="ui-grid-col-2"><p:calendar id="FechaCont" value="#{JournalEntry.refdate}" showOn="button" size="15"  pattern="dd/MM/yyyy" locale="es"  disabled="#{JournalEntry.disableY}"/></div>
                             <div class="ui-grid-col-2"><p:calendar id="FechaVenc" value="#{JournalEntry.duedate}" showOn="button" size="15" pattern="dd/MM/yyyy" locale="es" disabled="#{JournalEntry.disableY}"/></div>
@@ -60,15 +60,15 @@
                         </div>
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2">
-                                <p:inputText value="#{JournalEntry.transtype}" id="origen" readonly="#{JournalEntry.disableX}"></p:inputText>
+                                <p:inputText size="15" value="#{JournalEntry.transtype}" id="origen" readonly="#{JournalEntry.disableX}"></p:inputText>
                             </div>
 
                             <div class="ui-grid-col-2">
-                                <p:inputText value="#{JournalEntry.baseref}" id="NumeroOrigen" readonly="#{JournalEntry.disableX}"></p:inputText>
+                                <p:inputText size="15" value="#{JournalEntry.baseref}" id="NumeroOrigen" readonly="#{JournalEntry.disableX}"></p:inputText>
                             </div>
 
                             <div class="ui-grid-col-2">
-                                <p:inputText value="#{JournalEntry.transid}" id="transaccion" readonly="#{JournalEntry.disableX}"></p:inputText>
+                                <p:inputText size="15" value="#{JournalEntry.transid}" id="transaccion" readonly="#{JournalEntry.disableX}"></p:inputText>
                             </div>
 
                             <div class="ui-grid-col-4">
@@ -91,8 +91,8 @@
                         </div>
 
                         <div class="ui-grid-row" >  
-                            <div class="ui-grid-col-1"></div>
-                            <div class="ui-grid-col-3"><h:outputText value="Codigo Cuenta"/></div>
+                            <div class="ui-grid-col-2"></div>
+                            <div class="ui-grid-col-2"><h:outputText value="Codigo Cuenta"/></div>
                             <div class="ui-grid-col-4"><h:outputText value="Nombre Cuenta" /></div>
                             <div class="ui-grid-col-2"><h:outputText value="Debe" /></div>
                             <div class="ui-grid-col-2"><h:outputText value="Haber" /> </div>
@@ -100,15 +100,15 @@
 
 
                         <div class="ui-grid-row">
-                            <div class="ui-grid-col-1"></div>
-                            <div class="ui-grid-col-3">
-                                <p:autoComplete tabindex="6"  id="Codigocuenta" size="35" forceSelection="true" minQueryLength="2" value="#{JournalEntry.account}"
+                            <div class="ui-grid-col-2"></div>
+                            <div class="ui-grid-col-2">
+                                <p:autoComplete tabindex="6"  id="Codigocuenta" size="18" forceSelection="true" minQueryLength="2" value="#{JournalEntry.account}"
                                                 completeMethod="#{JournalEntry.completeCode}" effect="fade" label="Codigo" >
                                     <p:ajax event="itemSelect" listener="#{JournalEntry.findAccount}" update="Codigocuenta nombrecuenta"/>
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-4">
-                                <p:autoComplete tabindex="7"  id="nombrecuenta"  size="50" forceSelection="true" minQueryLength="2" value="#{JournalEntry.shortname}"
+                                <p:autoComplete tabindex="7"  id="nombrecuenta"  size="27" forceSelection="true" minQueryLength="2" value="#{JournalEntry.shortname}"
                                                 completeMethod="#{JournalEntry.completeText}" effect="fade" label="Cuenta" >
                                     <p:ajax event="itemSelect" listener="#{JournalEntry.findAccount}" update="Codigocuenta nombrecuenta" />
                                 </p:autoComplete>
@@ -188,7 +188,7 @@
                         </div>
 
                         <div class="ui-grid ui-grid-responsive">
-                            <div class="ui-grid-col-12"><p:inputTextarea id="coment" rows="3" cols="80" value="#{JournalEntry.memo}" /></div>
+                            <div class="ui-grid-col-12"><p:inputTextarea maxlength="50" id="coment" rows="2" cols="25" value="#{JournalEntry.memo}" /></div>
                         </div>
 
                         <div class="ui-grid ui-grid-responsive">

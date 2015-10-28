@@ -42,8 +42,9 @@
                     <div class="ui-grid ui-grid-responsive">
                         <div class="ui-grid-row" style="padding-left: 20px">
                             <div class="ui-grid-col-2"><h:outputText  value="Código"></h:outputText></div>
-                            <div class="ui-grid-col-2" style="width: 150px"><p:inputText id="idpartner" value="#{businessPartner.cardcode}" disabled ="#{businessPartner.disable}"  /> </div>
+                            <div class="ui-grid-col-2"><p:inputText size="20" id="idpartner" value="#{businessPartner.cardcode}" disabled ="#{businessPartner.disable}"  /> </div>
                             <div class="ui-grid-col-2">
+                                <p:spacer height="0" width="5"/>
                                 <p:selectOneMenu id="idtipo"  style="width:110px" value="#{businessPartner.cardtype}" disabled ="#{businessPartner.disable}">
                                     <f:selectItem itemValue="C" itemLabel="Cliente" />
                                     <f:selectItem itemValue="P" itemLabel="Proveedor" />
@@ -248,22 +249,22 @@
                                 <p:inputText id="inNumero" size="5" value="#{businessPartner.inNumero}"/>
                             </div>
                             <div class="ui-grid-col-2">
-                                <p:autoComplete id="Codigocuenta" size="20" forceSelection="true" minQueryLength="2" value="#{businessPartner.codigoCuenta}"
+                                <p:autoComplete id="Codigocuenta" size="16" forceSelection="true" minQueryLength="2" value="#{businessPartner.codigoCuenta}"
                                                 completeMethod="#{businessPartner.completeCode}" effect="fade" label="Codigo" scrollHeight="250">
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-2">
-                                <p:autoComplete id="Codigocuenta2" size="20" forceSelection="true" minQueryLength="2" value="#{businessPartner.codigoCuenta2}"
+                                <p:autoComplete id="Codigocuenta2" size="16" forceSelection="true" minQueryLength="2" value="#{businessPartner.codigoCuenta2}"
                                                 completeMethod="#{businessPartner.completeCode}" effect="fade" label="Codigo" scrollHeight="250">
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-2">
-                                <p:autoComplete id="Codigocuenta3" size="20" forceSelection="true" minQueryLength="2" value="#{businessPartner.codigoCuenta3}"
+                                <p:autoComplete id="Codigocuenta3" size="16" forceSelection="true" minQueryLength="2" value="#{businessPartner.codigoCuenta3}"
                                                 completeMethod="#{businessPartner.completeCode}" effect="fade" label="Codigo" scrollHeight="250">
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-2">
-                                <p:autoComplete id="Codigocuenta4" size="20" forceSelection="true" minQueryLength="2" value="#{businessPartner.codigoCuenta4}"
+                                <p:autoComplete id="Codigocuenta4" size="16" forceSelection="true" minQueryLength="2" value="#{businessPartner.codigoCuenta4}"
                                                 completeMethod="#{businessPartner.completeCode}" effect="fade" label="Codigo" scrollHeight="250">
                                 </p:autoComplete>
                             </div>

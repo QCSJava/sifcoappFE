@@ -45,10 +45,10 @@
                         </div>
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2">
-                                <p:inputText id="rcurcode" value="#{RecurringPosting.rcurcode}" maxlength="8" readonly="#{RecurringPosting.disableX}"></p:inputText>
+                                <p:inputText size="15" id="rcurcode" value="#{RecurringPosting.rcurcode}" maxlength="8" readonly="#{RecurringPosting.disableX}"></p:inputText>
                             </div>
-                            <div class="ui-grid-col-2"><p:inputText id="instance" value="#{RecurringPosting.instance}" readonly="true"></p:inputText></div>
-                            <div class="ui-grid-col-5"><p:inputText  style="width: 105%" id="rcurdesc" value="#{RecurringPosting.memo}"></p:inputText></div>
+                            <div class="ui-grid-col-2"><p:inputText size="15" id="instance" value="#{RecurringPosting.instance}" readonly="true"></p:inputText></div>
+                            <div class="ui-grid-col-5"><p:inputText size="35"  id="rcurdesc" value="#{RecurringPosting.memo}"></p:inputText></div>
 
                         </div>
                         <p:spacer height="7" width="0"></p:spacer>
@@ -60,16 +60,16 @@
                         </div>
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2">
-                                <p:inputText value="#{RecurringPosting.ref1}" id="ref1" ></p:inputText>
+                                <p:inputText size="15" value="#{RecurringPosting.ref1}" id="ref1" ></p:inputText>
                             </div>
                             <div class="ui-grid-col-2">
-                                <p:inputText value="#{RecurringPosting.ref2}" id="ref2" ></p:inputText>
+                                <p:inputText size="15" value="#{RecurringPosting.ref2}" id="ref2" ></p:inputText>
                             </div>
                             <div class="ui-grid-col-2">
-                                <p:inputText value="#{RecurringPosting.ref3}" id="ref3" ></p:inputText>
+                                <p:inputText size="15" value="#{RecurringPosting.ref3}" id="ref3" ></p:inputText>
                             </div>
                             <div class="ui-grid-col-3">
-                                <p:inputTextarea id="coment" rows="3" cols="40" value="#{RecurringPosting.rcurdesc}" />
+                                <p:inputTextarea maxlength="50" id="coment" rows="2" cols="25" value="#{RecurringPosting.rcurdesc}" />
                             </div>
                             <div class="ui-grid-col-2">
 
@@ -98,8 +98,8 @@
                         </div>
 
                         <div class="ui-grid-row" >  
-                            <div class="ui-grid-col-1"></div>
-                            <div class="ui-grid-col-3"><h:outputText value="Codigo Cuenta"/></div>
+                            <div class="ui-grid-col-2"></div>
+                            <div class="ui-grid-col-2"><h:outputText value="Codigo Cuenta"/></div>
                             <div class="ui-grid-col-4"><h:outputText value="Nombre Cuenta" /></div>
                             <div class="ui-grid-col-2"><h:outputText value="Debe" /></div>
                             <div class="ui-grid-col-2"><h:outputText value="Haber" /> </div>
@@ -107,15 +107,15 @@
 
 
                         <div class="ui-grid-row">
-                            <div class="ui-grid-col-1"></div>
-                            <div class="ui-grid-col-3">
-                                <p:autoComplete tabindex="6"  id="Codigocuenta" size="35" forceSelection="true" minQueryLength="2" value="#{RecurringPosting.account}"
+                            <div class="ui-grid-col-2"></div>
+                            <div class="ui-grid-col-2">
+                                <p:autoComplete tabindex="6"  id="Codigocuenta" size="18" forceSelection="true" minQueryLength="2" value="#{RecurringPosting.account}"
                                                 completeMethod="#{RecurringPosting.completeCode}" effect="fade" label="Codigo" >
                                     <p:ajax event="itemSelect" listener="#{RecurringPosting.findAccount}" update="Codigocuenta nombrecuenta"/>
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-4">
-                                <p:autoComplete tabindex="7"  id="nombrecuenta"  size="50" forceSelection="true" minQueryLength="2" value="#{RecurringPosting.shortname}"
+                                <p:autoComplete tabindex="7"  id="nombrecuenta"  size="30" forceSelection="true" minQueryLength="2" value="#{RecurringPosting.shortname}"
                                                 completeMethod="#{RecurringPosting.completeText}" effect="fade" label="Cuenta" >
                                     <p:ajax event="itemSelect" listener="#{RecurringPosting.findAccount}" update="Codigocuenta nombrecuenta" />
                                 </p:autoComplete>
@@ -197,13 +197,13 @@
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2"> <h:outputText  value="Frecuencia"></h:outputText></div>
                             <div class="ui-grid-col-2">
-                                <p:selectOneMenu  id="almDest" value="#{RecurringPosting.frequency}" style="width: 100%"  valueChangeListener="#{RecurringPosting.stateChangeListener}">
+                                <p:selectOneMenu  id="almDest" value="#{RecurringPosting.frequency}" style="width: 85%"  valueChangeListener="#{RecurringPosting.stateChangeListener}">
                                     <f:selectItems value="#{RecurringPosting.classLst}" var="model" itemLabel="#{model.catvalue}" itemValue="#{model.catcode}"/>
                                     <p:ajax event="change" update="almDest2"/>
                                 </p:selectOneMenu>
                             </div>
                             <div class="ui-grid-col-2">
-                                <p:selectOneMenu id="almDest2" value="#{RecurringPosting.remind}" style="width: 100%"   disabled="#{RecurringPosting.disable3}">
+                                <p:selectOneMenu id="almDest2" value="#{RecurringPosting.remind}" style="width: 85%"   disabled="#{RecurringPosting.disable3}">
                                     <f:selectItems value="#{RecurringPosting.generalLst}" var="model2" itemLabel="#{model2.catvalue}" itemValue="#{model2.catcode}"/>
                                 </p:selectOneMenu>
                             </div>

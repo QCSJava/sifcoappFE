@@ -156,14 +156,14 @@
 
                             <div class="ui-grid-col-2">
                                 <p:autoComplete tabindex="12" scrollHeight="250" widgetVar="getFocus" required="true" id="newCod" forceSelection="true" minQueryLength="2" value="#{purchaseQuotationBean.newCod}" disabled="#{purchaseQuotationBean.disabledComun}"
-                                                completeMethod="#{goodsReceiptBean.completeCode}" effect="fade" size="25" label="Codigo">
+                                                completeMethod="#{goodsReceiptBean.completeCode}" effect="fade" size="20" label="Codigo">
                                     <p:ajax event="itemSelect" listener="#{purchaseQuotationBean.findArticle}" update="newCod newNomArt newUnidad newExistencia newPrecio" />
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-3">
                                 <p:spacer width="15" height="0"/>
                                 <p:autoComplete tabindex="13" scrollHeight="250" required="true" id="newNomArt" forceSelection="true" minQueryLength="2" value="#{purchaseQuotationBean.newNomArt}" disabled="#{purchaseQuotationBean.disabledComun}"
-                                                completeMethod="#{goodsReceiptBean.completeText}" effect="fade" size="35" label="Nombre Articulo">
+                                                completeMethod="#{goodsReceiptBean.completeText}" effect="fade" size="27" label="Nombre Articulo">
                                     <p:ajax event="itemSelect" listener="#{purchaseQuotationBean.findArticle}" update="newCod newNomArt newUnidad newExistencia newPrecio" />
                                 </p:autoComplete>
                             </div>

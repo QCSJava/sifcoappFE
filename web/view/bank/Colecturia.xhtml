@@ -96,7 +96,7 @@
                                 </p:autoComplete>
                                 <p:spacer width="10" height="0" />
                                 <p:autoComplete tabindex="4" scrollHeight="250" required="false" id="nameSocio" forceSelection="true" minQueryLength="2" value="#{colecturiaBean.nameSocio}"
-                                                completeMethod="#{colecturiaBean.compSocioName}" effect="fade" size="37" label="Socio de Negocio" 
+                                                completeMethod="#{colecturiaBean.compSocioName}" effect="fade" size="27" label="Socio de Negocio" 
                                                 disabled="#{colecturiaBean.common || colecturiaBean.ifCancelacion? true:false}">
                                     <p:ajax event="itemSelect" listener="#{colecturiaBean.selectSocioName}" update="nameSocio codSocio tableDetailColet"/>
                                 </p:autoComplete>

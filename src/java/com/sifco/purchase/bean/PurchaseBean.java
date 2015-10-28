@@ -592,7 +592,7 @@ public class PurchaseBean implements Serializable {
     //calcula el total visual en pantalla
     public void calcularTotal() {
         try {
-            faceMessage("...");
+            //faceMessage("...");
             if (newPrecio > 0 && newCantidad > 0 && newPrecio != null && newCantidad != null) {
                 if (newDesc > 0) {
                     Double np = newPrecio - (newPrecio * (newDesc/100));

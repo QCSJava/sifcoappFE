@@ -61,7 +61,7 @@
                                 </p:autoComplete>
                                 <p:spacer width="10" height="0" />
                                 <p:autoComplete id="nameSocio" forceSelection="true" minQueryLength="2" value="#{checkForPaymentBean.nameSocio}"
-                                                completeMethod="#{checkForPaymentBean.compSocioName}" effect="fade" size="37" label="Socio de Negocio" 
+                                                completeMethod="#{checkForPaymentBean.compSocioName}" effect="fade" size="30" label="Socio de Negocio" 
                                                 disabled="#{checkForPaymentBean.common}">
                                     <p:ajax event="itemSelect" listener="#{checkForPaymentBean.selectSocioName}" update="nameSocio codSocio favorDe"/>
                                 </p:autoComplete>
@@ -71,7 +71,7 @@
                                 <p:outputLabel value="ID interno"/>
                             </div>
                             <div class="ui-grid-col-2"> 
-                                <p:inputText value="#{checkForPaymentBean.idInterno}" disabled="#{checkForPaymentBean.idCheck}"/>
+                                <p:inputText size="15" value="#{checkForPaymentBean.idInterno}" disabled="#{checkForPaymentBean.idCheck}"/>
                             </div>
                         </div>
                         <p:spacer height="3" width="0"/>
@@ -81,7 +81,7 @@
                                 <p:outputLabel value="Referencia"/>
                             </div>
                             <div class="ui-grid-col-2"> 
-                                <p:inputText value="#{checkForPaymentBean.referencia}" disabled="true"/>
+                                <p:inputText size="15" value="#{checkForPaymentBean.referencia}" disabled="true"/>
                             </div>
                         </div>
 
@@ -108,7 +108,7 @@
                                 <p:spacer width="10" height="0" />
 
                                 <p:autoComplete scrollHeight="250" id="nameCuenta" forceSelection="true" minQueryLength="2" value="#{checkForPaymentBean.newNomCuenta}"
-                                                completeMethod="#{checkForPaymentBean.completeName}" effect="fade" size="37" label="Nombre Cuenta"
+                                                completeMethod="#{checkForPaymentBean.completeName}" effect="fade" size="30" label="Nombre Cuenta"
                                                 disabled="#{checkForPaymentBean.common}">
                                     <p:ajax event="itemSelect" listener="#{checkForPaymentBean.findAccount}" update="codCuenta nameCuenta" />
                                 </p:autoComplete>
@@ -121,7 +121,7 @@
                             <div class="ui-grid-col-8">
                                 <p:outputLabel value="Comentarios" for="inComent" />
                                 <p:spacer width="100%" height="0"/>
-                                <p:inputTextarea id="inComent" rows="5" cols="70" value="#{checkForPaymentBean.comentario}" maxlength="250"/>
+                                <p:inputTextarea id="inComent" rows="3" cols="55" value="#{checkForPaymentBean.comentario}" maxlength="250"/>
                             </div>
 
                         </div>
@@ -130,8 +130,8 @@
                             <div class="ui-grid-col-8"></div>
                             <div class="ui-grid-col-4">
                                 <p:outputLabel value="Importe vencido $:"/>
-                                <p:spacer width="10" height="0" />
-                                <p:inputText size="28" value="#{checkForPaymentBean.impVencido}" disabled="#{checkForPaymentBean.common}">
+                                <p:spacer width="88" height="0" />
+                                <p:inputText size="15" value="#{checkForPaymentBean.impVencido}" disabled="#{checkForPaymentBean.common}">
                                     <p:ajax event="blur" update="impLetras total" listener="#{checkForPaymentBean.numToLetras}"/>
                                 </p:inputText>
                             </div>
@@ -147,7 +147,7 @@
                             <div class="ui-grid-col-3"></div>
                             <div class="ui-grid-col-2"><p:outputLabel value="En favor de" /></div>
                             <div class="ui-grid-col-4">
-                                <p:inputText id="favorDe" size="50" value="#{checkForPaymentBean.favorDe}"/>
+                                <p:inputText id="favorDe" size="40" value="#{checkForPaymentBean.favorDe}"/>
                             </div>
                         </div>
                         <p:spacer width="0" height="3" />
@@ -161,7 +161,7 @@
                             <div class="ui-grid-col-3"></div>
                             <div class="ui-grid-col-2"><p:outputLabel value="Importe en letra" /></div>
                             <div class="ui-grid-col-4">
-                                <p:inputText id="impLetras" size="50" value="#{checkForPaymentBean.impLetra}" readonly="true" disabled="#{checkForPaymentBean.common}"/>
+                                <p:inputText id="impLetras" size="40" value="#{checkForPaymentBean.impLetra}" readonly="true" disabled="#{checkForPaymentBean.common}"/>
                             </div>
                         </div>
 

@@ -169,28 +169,28 @@
 
                             <div class="ui-grid-col-2">
                                 <p:autoComplete tabindex="12" scrollHeight="250" widgetVar="getFocus" required="true" id="newCod" forceSelection="true" minQueryLength="2" value="#{purchaseBean.newCod}" disabled="#{purchaseBean.disabledComun}"
-                                                completeMethod="#{goodsReceiptBean.completeCode}" effect="fade" size="25" label="Codigo">
+                                                completeMethod="#{goodsReceiptBean.completeCode}" effect="fade" size="18" label="Codigo">
                                     <p:ajax event="itemSelect" listener="#{purchaseBean.findArticle}" update="newCod newNomArt newUnidad newExistencia newPrecio newDesc" />
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-3">
                                 <p:autoComplete tabindex="13" scrollHeight="250" required="true" id="newNomArt" forceSelection="true" minQueryLength="2" value="#{purchaseBean.newNomArt}" disabled="#{purchaseBean.disabledComun}"
-                                                completeMethod="#{goodsReceiptBean.completeText}" effect="fade" size="35" label="Nombre Articulo">
+                                                completeMethod="#{goodsReceiptBean.completeText}" effect="fade" size="27" label="Nombre Articulo">
                                     <p:ajax event="itemSelect" listener="#{purchaseBean.findArticle}" update="newCod newNomArt newUnidad newExistencia newPrecio newDesc" />
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-1">
-                                <p:inputText tabindex="14" required="true" id="newCantidad" value="#{purchaseBean.newCantidad}" label="Cantidad" size="10" disabled="#{purchaseBean.disabledComun}">
+                                <p:inputText tabindex="14" required="true" id="newCantidad" value="#{purchaseBean.newCantidad}" label="Cantidad" size="9" disabled="#{purchaseBean.disabledComun}">
                                     <p:ajax event="blur" update="newTotal" listener="#{purchaseBean.calcularTotal}"/>
                                 </p:inputText>
                             </div>
                             <div class="ui-grid-col-1">
-                                <p:inputText tabindex="15" required="true" id="newPrecio" value="#{purchaseBean.newPrecio}" label="Precio" size="10" disabled="#{purchaseBean.disabledComun}">
+                                <p:inputText tabindex="15" required="true" id="newPrecio" value="#{purchaseBean.newPrecio}" label="Precio" size="9" disabled="#{purchaseBean.disabledComun}">
                                     <p:ajax event="keyup" update="newTotal" listener="#{purchaseBean.calcularTotal}"/>
                                 </p:inputText>
                             </div>
                             <div class="ui-grid-col-1">
-                                <p:inputText tabindex="16" required="true" id="newDesc" value="#{purchaseBean.newDesc}" label="Descuento" size="10" disabled="#{purchaseBean.disabledComun}">
+                                <p:inputText tabindex="16" required="true" id="newDesc" value="#{purchaseBean.newDesc}" label="Descuento" size="9" disabled="#{purchaseBean.disabledComun}">
                                     <p:ajax event="keyup" update="newTotal" listener="#{purchaseBean.calcularTotal}"/>
                                 </p:inputText>
                             </div>

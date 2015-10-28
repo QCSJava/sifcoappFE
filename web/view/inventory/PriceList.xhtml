@@ -47,7 +47,7 @@
                                 <p:outputLabel value="Nombre Lista Nueva" for="newList"/>
                             </div>
                             <div class="ui-grid-col-2">
-                                <p:inputText id="newList" value="#{priceListBean.newList}"/>
+                                <p:inputText size="15" id="newList" value="#{priceListBean.newList}"/>
                             </div>
                         </div>
                         <p:spacer height="#{salesBean.spacer}" width="0"/>
@@ -56,8 +56,8 @@
                                 <p:outputLabel value="Nombre Lista Base" for="newBase"/>
                             </div>
                             <div class="ui-grid-col-2">
-                                <p:selectOneMenu id="newBase" style="width: 94%" value="#{priceListBean.newBase}">
-                                    <f:selectItem itemLabel="Seleccione lista Base"/>
+                                <p:selectOneMenu id="newBase" style="width: 75%" value="#{priceListBean.newBase}">
+                                    <f:selectItem itemLabel="Lista Base"/>
                                     <f:selectItems value="#{priceListBean.listPriceList}" var="list" itemLabel="#{list.listname}" itemValue="#{list.listnum}"/>
                                 </p:selectOneMenu>
                             </div>
@@ -68,7 +68,7 @@
                                 <p:outputLabel value="Factor Lista Nueva" for="newFactor"/>
                             </div>
                             <div class="ui-grid-col-2">
-                                <p:inputText id="newFactor" value="#{priceListBean.newFactor}"/>
+                                <p:inputText size="15" id="newFactor" value="#{priceListBean.newFactor}"/>
                             </div>
 
                             <div class="ui-grid-col-2">
