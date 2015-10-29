@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InvKardex" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b58339f0-f3b3-4170-86d9-4313d82f5b97">
 	<property name="ireport.zoom" value="1.3310000000000044"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="107"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="reportName" class="java.lang.String"/>
 	<parameter name="corpName" class="java.lang.String">
@@ -43,6 +43,7 @@
 	q1.precios "precios",
 	q1.total "total",
 	q1.total "total1",
+	0.00 as "openStock",
 	'I' "tipo"
 
 from cat_art0_articles t3
@@ -84,6 +85,7 @@ select
 	t0.price "precios",
 	t0.doctotal "total",
 	case when t2.inqty > 0 then t0.doctotal else t0.doctotal * -1 end "total1",
+	t2.openstock "openStock",
 	case when t2.inqty > 0 then 'E' else 'S' end "tipo"
 
 from 	adm_inl0_inventorylog t0 left join cat_obj0_objectype t1 on t0.transtype = to_number(t1.objtype,'99')
@@ -107,6 +109,7 @@ order by "codigo", "fecha contabilización", "Documento3"]]>
 	<field name="precios" class="java.math.BigDecimal"/>
 	<field name="total" class="java.math.BigDecimal"/>
 	<field name="total1" class="java.math.BigDecimal"/>
+	<field name="openStock" class="java.math.BigDecimal"/>
 	<field name="tipo" class="java.lang.String"/>
 	<variable name="total_1" class="java.math.BigDecimal" resetType="Group" resetGroup="ArtCode" calculation="Sum">
 		<variableExpression><![CDATA[$F{total}]]></variableExpression>
@@ -177,6 +180,9 @@ order by "codigo", "fecha contabilización", "Documento3"]]>
 	<variable name="total1_2" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{total1}]]></variableExpression>
 	</variable>
+	<variable name="openStock_1" class="java.math.BigDecimal" resetType="Group" resetGroup="ArtCode" calculation="Sum">
+		<variableExpression><![CDATA[$F{tipo}.equals("S")?$F{openStock}:0.0]]></variableExpression>
+	</variable>
 	<group name="ArtCode">
 		<groupExpression><![CDATA[$F{codigo}]]></groupExpression>
 		<groupHeader>
@@ -245,20 +251,12 @@ order by "codigo", "fecha contabilización", "Documento3"]]>
 					<textFieldExpression><![CDATA[$V{salida_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement x="527" y="0" width="52" height="14" uuid="c022bfa7-112f-48fa-af99-90c90f0b3326"/>
+					<reportElement x="579" y="0" width="54" height="14" uuid="c022bfa7-112f-48fa-af99-90c90f0b3326"/>
 					<box rightPadding="7"/>
 					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{precios_2}]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement x="579" y="0" width="54" height="14" uuid="85688b9c-addf-49a0-b510-022ec66b2e55"/>
-					<box rightPadding="7"/>
-					<textElement textAlignment="Right">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{total_3}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="0" y="14" width="752" height="1" uuid="83935e19-cf4e-4b0c-90eb-791e8401c12b"/>
@@ -286,6 +284,14 @@ order by "codigo", "fecha contabilización", "Documento3"]]>
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{total_4}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="527" y="0" width="52" height="14" uuid="695ddb77-062c-4963-9371-31847912bfba"/>
+					<box rightPadding="7"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{openStock_1}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -552,17 +558,7 @@ order by "codigo", "fecha contabilización", "Documento3"]]>
 				<textFieldExpression><![CDATA[$F{salida}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="579" y="0" width="54" height="14" uuid="ff9de08e-3e4a-4814-85c3-4d9b325f9a98">
-					<printWhenExpression><![CDATA[$F{tipo}.equals("S")]]></printWhenExpression>
-				</reportElement>
-				<box rightPadding="7"/>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="527" y="0" width="52" height="14" uuid="822aee83-a3ba-4d4a-9901-486df1ee75d3">
+				<reportElement x="579" y="0" width="54" height="14" uuid="822aee83-a3ba-4d4a-9901-486df1ee75d3">
 					<printWhenExpression><![CDATA[$F{tipo}.equals("S")]]></printWhenExpression>
 				</reportElement>
 				<box rightPadding="7"/>
@@ -598,6 +594,16 @@ order by "codigo", "fecha contabilización", "Documento3"]]>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{total1_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="527" y="0" width="52" height="14" uuid="93fd17d0-93a5-4c94-ad4c-74e7c4c63fbe">
+					<printWhenExpression><![CDATA[$F{tipo}.equals("S")]]></printWhenExpression>
+				</reportElement>
+				<box rightPadding="7"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{openStock}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -699,20 +705,12 @@ order by "codigo", "fecha contabilización", "Documento3"]]>
 				<textFieldExpression><![CDATA[$V{salida_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="527" y="1" width="52" height="14" uuid="6fa7597d-24dd-48f0-b5f1-1b3a7094c8b0"/>
+				<reportElement x="579" y="1" width="54" height="14" uuid="6fa7597d-24dd-48f0-b5f1-1b3a7094c8b0"/>
 				<box rightPadding="7"/>
 				<textElement textAlignment="Right">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{precios_6}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="579" y="1" width="55" height="14" uuid="89725c2a-2567-491a-9cb1-6aa902a06778"/>
-				<box rightPadding="7"/>
-				<textElement textAlignment="Right">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{total_7}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="633" y="1" width="60" height="14" uuid="32ddb77e-09cc-4398-b6bd-f5c7d0059cf9"/>
@@ -736,6 +734,14 @@ order by "codigo", "fecha contabilización", "Documento3"]]>
 			<line>
 				<reportElement x="0" y="14" width="752" height="1" uuid="836701c0-87f3-4ad7-ad2a-f22bf84404b9"/>
 			</line>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="527" y="1" width="52" height="13" uuid="2a2ebb17-3782-4d15-b505-628135da3d40"/>
+				<box rightPadding="7"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{openStock_1}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

@@ -367,7 +367,7 @@ public class ColecturiaBean implements Serializable {
 
             }
         }
-        t2 = Double.parseDouble(formatNumber(t2)) + totalFac;
+        t2 = t2 + totalFac;
         doTotalAct();
         //RequestContext.getCurrentInstance().update("frmColect");
     }

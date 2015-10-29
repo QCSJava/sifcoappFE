@@ -58,14 +58,16 @@
                         </div>
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2">
-                                <p:calendar required="true" id="f1" showOn="button" size="15"  pattern="dd/MM/yyyy" value="#{conciliationBean.fechaCuentas}"/>
+                                <p:calendar required="true" id="f1" showOn="button" size="15"  pattern="dd/MM/yyyy" value="#{conciliationBean.fechaCuentas}">
+                                     <p:ajax event="dateSelect"  update="f1" />
+                                </p:calendar>
                             </div>
                             <div class="ui-grid-col-8">
                                 <p:spacer/>
                             </div>
                             <div class="ui-grid-col-2">
-                                <p:inputText id="saldoFinal" value="#{conciliationBean.saldoFinal}" >
-                                    <p:ajax event="blur" process="saldoActual saldoFinal f1" listener="#{conciliationBean.eventSaldo()}"/>
+                                <p:inputText size="15" id="saldoFinal" value="#{conciliationBean.saldoFinal}" >
+                                    <p:ajax event="blur" listener="#{conciliationBean.eventSaldo()}"/>
                                 </p:inputText>
                             </div>
                         </div>
@@ -89,14 +91,14 @@
                             <div class="ui-grid-col-2">
                                 <p:autoComplete scrollHeight="250" id="newCodCuenta" forceSelection="true" minQueryLength="2" value="#{conciliationBean.newCodCuenta}" 
                                                 completeMethod="#{goodsReceiptBean.completeCode2}" effect="fade" size="20" label="Codigo Cuenta">
-                                    <p:ajax event="itemSelect" listener="#{conciliationBean.findAccount}" update="newCodCuenta newNomCuenta" />
+                                    <p:ajax event="itemSelect" listener="#{conciliationBean.findAccount}" update="  newCodCuenta newNomCuenta" />
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-4">
                                 <p:spacer width="15" height="0"/>
                                 <p:autoComplete scrollHeight="250" id="newNomCuenta" forceSelection="true" minQueryLength="2" value="#{conciliationBean.newNomCuenta}" 
                                                 completeMethod="#{goodsReceiptBean.completeName}" effect="fade" size="27" label="Nombre Cuenta">
-                                    <p:ajax event="itemSelect" listener="#{conciliationBean.findAccount}" update="newCodCuenta newNomCuenta" />
+                                    <p:ajax event="itemSelect" listener="#{conciliationBean.findAccount}" update="  newCodCuenta newNomCuenta" />
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-4">
@@ -110,7 +112,7 @@
                         <p:spacer width="0" height="15"/>
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-12">
-                                <p:dataTable id="checkboxDT" var="det1" value="#{conciliationBean.lstAccTable1}" selection="#{conciliationBean.select1}" 
+                                <p:dataTable id="checkboxDT" widgetVar="table" var="det1" value="#{conciliationBean.lstAccTable1}" selection="#{conciliationBean.select1}" 
                                              rowKey="#{det1.hashCode()}" style="margin-bottom:0" scrollable="true" scrollHeight="230" rowIndexVar="index1"
                                              >
                                     <p:ajax event="rowSelectCheckbox" listener="#{conciliationBean.onRowSelect1}" process="checkboxDT" update="checkboxDT"/>
@@ -131,18 +133,18 @@
                                     <p:column headerText="Concepto" style="width:15%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{det1.linememo}" />
                                     </p:column>
-                                    <p:column headerText="A nombre de" style="width:15%; font-size: #{commonBean.sizeFont1}">
+                                    <p:column headerText="A nombre de" style="width:10%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{det1.bplname}" />
                                     </p:column>
                                     <p:column headerText="Núm. cheque" style="width:8%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{det1.batchnum}" />
                                     </p:column>
-                                    <p:column headerText="Cargos" style="width:6%; font-size: #{commonBean.sizeFont1}">
+                                    <p:column headerText="Cargos" style="width:8%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{det1.debit}" style="float:right">
                                             <f:convertNumber type="currency"  currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
                                         </h:outputText>
                                     </p:column>
-                                    <p:column headerText="Abonos" style="width:6%; font-size: #{commonBean.sizeFont1}">
+                                    <p:column headerText="Abonos" style="width:8%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText value="#{det1.credit}" style="float:right">
                                             <f:convertNumber type="currency"  currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
                                         </h:outputText>
@@ -218,7 +220,7 @@
                             </div>
                             <div class="ui-grid-col-2">
                                 <p:selectOneMenu  id="cargoAbono" value="#{conciliationBean.cargoAbono}" style="width:125px" label="Cargo - Abono">
-                                    <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                    <f:selectItem itemLabel="Seleccione" itemValue="-1" />
                                     <f:selectItem itemLabel="Cargo" itemValue="C" />
                                     <f:selectItem itemLabel="Abono" itemValue="A" />
                                 </p:selectOneMenu>

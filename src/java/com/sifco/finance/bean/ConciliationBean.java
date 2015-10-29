@@ -5,14 +5,12 @@
  */
 package com.sifco.finance.bean;
 
-import com.sifco.businesspartner.bean.BusinessPartner;
 import com.sifcoapp.client.AccountingEJBClient;
 import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.client.BankreconciliationEJBClient;
 import com.sifcoapp.objects.ExternalReconciliation.to.ExternalReconciliationTO;
 import com.sifcoapp.objects.ExternalReconciliation.to.bankreconciliationauxTO;
 import com.sifcoapp.objects.accounting.to.AccountTO;
-import com.sifcoapp.objects.accounting.to.EntryTO;
 import com.sifcoapp.objects.accounting.to.JournalEntryLinesTO;
 import com.sifcoapp.objects.admin.to.EnterpriseTO;
 import com.sifcoapp.objects.catalogos.Common;
@@ -25,7 +23,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -59,7 +56,7 @@ public class ConciliationBean implements Serializable {
     private String newCodCuenta = "";
     private String newNomCuenta;
     private Double saldoFinal;
-    private String saldoActual;
+    private Double saldoActual;
     private Double saldoActualR;
 
     //Notas de credito y debito
@@ -71,9 +68,13 @@ public class ConciliationBean implements Serializable {
     private Double valor;
 
     //pie pagina1
+    @Digits(integer = 14, fraction = 2, message = "Valor Inadecuado, Ingrese valores positivos y maximo 2 decimales")
     private Double cargo1;
+    
+    @Digits(integer = 14, fraction = 2, message = "Valor Inadecuado, Ingrese valores positivos y maximo 2 decimales")
     private Double abono1;
-    private String diferencia1;
+    
+    private Double diferencia1;
 
     //pie de pagina2
     private Double cargo;
@@ -100,14 +101,48 @@ public class ConciliationBean implements Serializable {
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="G & S">
-    public String getSaldoActual() {
+
+    public Double getSaldoActual() {
         return saldoActual;
     }
 
-    public void setSaldoActual(String saldoActual) {
+    public void setSaldoActual(Double saldoActual) {
         this.saldoActual = saldoActual;
     }
 
+    public Double getSaldoActualR() {
+        return saldoActualR;
+    }
+
+    public void setSaldoActualR(Double saldoActualR) {
+        this.saldoActualR = saldoActualR;
+    }
+
+    public Double getRes() {
+        return res;
+    }
+
+    public void setRes(Double res) {
+        this.res = res;
+    }
+
+    public ReportsBean getBean() {
+        return bean;
+    }
+
+    public void setBean(ReportsBean bean) {
+        this.bean = bean;
+    }
+
+    public static AdminEJBClient getAdminEJBService() {
+        return AdminEJBService;
+    }
+
+    public static void setAdminEJBService(AdminEJBClient AdminEJBService) {
+        ConciliationBean.AdminEJBService = AdminEJBService;
+    }
+    
+    
     public Double getCargo1() {
         return cargo1;
     }
@@ -124,13 +159,15 @@ public class ConciliationBean implements Serializable {
         this.abono1 = abono1;
     }
 
-    public String getDiferencia1() {
+    public Double getDiferencia1() {
         return diferencia1;
     }
 
-    public void setDiferencia1(String diferencia1) {
+    public void setDiferencia1(Double diferencia1) {
         this.diferencia1 = diferencia1;
     }
+
+    
 
     public List getLstAccPadre1() {
         return lstAccPadre1;
@@ -310,9 +347,36 @@ public class ConciliationBean implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Btn Agregar">
+    public boolean validAdd(){
+        if (newCodCuenta == null || newCodCuenta.equals("")) {
+            faceMessage("Ingrese una cuenta");
+            return false;
+        }
+        if (fechaCuentas == null) {
+            faceMessage("Ingrese fecha.");
+            return false;
+        }
+        if (cargoAbono.equals("-1")) {
+            faceMessage("Seleccione Cargo/Abono");
+            return false;
+        }
+        if (valor == null || valor <=0) {
+            faceMessage("Valor inadecuado");
+            return false;
+        }
+        if (identificador == null || identificador.equals("")) {
+            faceMessage("Ingrese indicador");
+            return false;
+        }
+        if (concepto == null || concepto.equals("")) {
+            faceMessage("Ingrese concepto");
+            return false;
+        }
+        return true;
+    }
     public void btnAdd() {
         //faceMessage("Agregar");
-        if ((!newCodCuenta.equals("") || !newCodCuenta.isEmpty()) && fechaCuentas != null) {
+        if (validAdd()) {
 
             bankreconciliationauxTO newBank = new bankreconciliationauxTO();
             ResultOutTO _res = null;
@@ -344,10 +408,7 @@ public class ConciliationBean implements Serializable {
             } catch (Exception e) {
                 faceMessage(e.getMessage() + " " + e.getCause());
             }
-        } else {
-            faceMessage("Seleccione Fecha y Cuenta para agregar");
         }
-
     }
 //</editor-fold>
 
@@ -412,7 +473,7 @@ public class ConciliationBean implements Serializable {
     public void btnNuevo() {
         this.newCodCuenta = "";
         this.newNomCuenta = "";
-        this.saldoActual = "";
+        this.saldoActual = 0.0;
         this.fechaCuentas = new Date();
         cleanDet();
         clearList();
@@ -465,14 +526,9 @@ public class ConciliationBean implements Serializable {
                 if (newCodCuenta != null || newNomCuenta != null) {
                     newCodCuenta = art.getAcctcode();
                     newNomCuenta = art.getAcctname();
-                    //saldoActual = "$ " + formatNum(art.getCurrtotal());
-                    EntryTO in = new EntryTO();
-                    JournalEntryLinesTO _res = new JournalEntryLinesTO();
-                    in.setAcctcode(this.newCodCuenta);
-                    in.setRefdate(fechaCuentas);
-                    //_res = AccountingEJBClient.getsaldo(in);
-                    //saldoActual = "$ " + formatNum(_res.getTotalvat());
-                    //saldoActualR = formatNum(_res.getTotalvat());
+                    
+                    saldoActual = BankreconciliationEJBClient.getsaldo(newCodCuenta, fechaCuentas);
+                    
                     clearList();
                     dataAcc(fechaCuentas, newCodCuenta);
                 }
@@ -518,9 +574,8 @@ public class ConciliationBean implements Serializable {
             lstAccTable2.add(bank);
         }
 
-        cargo1 = formatNum(cargo1);
-        abono1 = formatNum(abono1);
-        diferencia1 = "$ " + formatNum(cargo1 - abono1);
+        
+        diferencia1 = cargo1 - abono1;
         diferencia = cargo - abono;
         RequestContext.getCurrentInstance().update("frmConci");
 
@@ -568,7 +623,7 @@ public class ConciliationBean implements Serializable {
 
         this.cargo1 = t1 - s1;
         this.abono1 = t2 - s2;
-        diferencia1 = "$ " + formatNum(cargo1 - abono1);
+        diferencia1 = cargo1 - abono1;
 
         //RequestContext.getCurrentInstance().update("det");
     }
@@ -588,7 +643,7 @@ public class ConciliationBean implements Serializable {
 
         this.cargo1 = t1;// - s1;
         this.abono1 = t2;// - s2;
-        diferencia1 = "$ " + formatNum(cargo1 - abono1);
+        diferencia1 = cargo1 - abono1;
 
         //RequestContext.getCurrentInstance().update("det");
     }
@@ -652,6 +707,12 @@ public class ConciliationBean implements Serializable {
         this.concepto = null;
         this.cargoAbono = null;
         this.valor = null;
+        this.diferencia = null;
+        this.diferencia1 = null;
+        this.abono = null;
+        this.abono1 = null;
+        this.cargo = null;
+        this.cargo1 = null;
     }
 
     private void clearList() {
@@ -693,7 +754,7 @@ public class ConciliationBean implements Serializable {
                 //java.sql.Date sqlDate = new java.sql.Date(getFechaCuentas().getTime());
                 reportParameters.put("fechaHasta", getFechaCuentas());
                 reportParameters.put("saldoEsrito", this.saldoFinal);
-                reportParameters.put("saldoMetodo", this.saldoActualR);
+                reportParameters.put("saldoMetodo", this.saldoActual);
 
                 //where t1.extrmatch isnull and t1.account != $P{codAcc} and t1.refdate > $P{fechaHasta}
                 // t1.extrmatch isnull and t1.account = $P{codAcc} and t1.refdate <= $P{fechaHasta}
@@ -725,7 +786,7 @@ public class ConciliationBean implements Serializable {
     //</editor-fold>
 
     public void eventSaldo() {
-        faceMessage("entro " + this.saldoActual + " " + saldoActualR + " " + saldoFinal + " " + fechaCuentas);
+        //faceMessage("entro " + this.saldoActual + " " + saldoActualR + " " + saldoFinal + " " + fechaCuentas);
     }
 
 }//cierre de clase
