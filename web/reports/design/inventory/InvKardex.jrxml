@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InvKardex" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b58339f0-f3b3-4170-86d9-4313d82f5b97">
 	<property name="ireport.zoom" value="1.3310000000000044"/>
-	<property name="ireport.x" value="107"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="reportName" class="java.lang.String"/>
 	<parameter name="corpName" class="java.lang.String">
@@ -31,8 +31,8 @@
 	<queryString>
 		<![CDATA[select  t3.itemcode  "codigo",
 	t3.itemname "Descripcion",
-	'15/10/2015' "fecha sistema",
-	'15/10/2015' "fecha contabilización",
+	$P{PDOCDATE2} "fecha sistema",
+	$P{PDOCDATE2} "fecha contabilización",
 	'Saldo Inicial' "Documento",
 	'Saldo Inicial' as "Documento2",
 	0 "Documento3",
@@ -93,7 +93,7 @@ from 	adm_inl0_inventorylog t0 left join cat_obj0_objectype t1 on t0.transtype =
 where 	1=1 and t0.docdate >= $P{PDOCDATE2} and t0.docdate <= $P{pdocdate}  /* @variable*/
 	$P!{WithAlm}--and t0.loccode = 'REP-001' --'DIE-001' /* @variable*/
 	$P!{WithArt}--and t0.itemcode = 'INV0000295' /* @variable*/
-order by "codigo", "fecha contabilización", "Documento3"]]>
+order by "fecha contabilización", "Documento3"]]>
 	</queryString>
 	<field name="codigo" class="java.lang.String"/>
 	<field name="Descripcion" class="java.lang.String"/>

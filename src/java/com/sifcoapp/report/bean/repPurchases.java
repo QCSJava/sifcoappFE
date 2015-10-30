@@ -12,10 +12,12 @@ import com.sifcoapp.objects.catalog.to.BusinesspartnerInTO;
 import com.sifcoapp.objects.catalog.to.BusinesspartnerTO;
 import com.sifcoapp.report.common.AbstractReportBean;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -45,6 +47,59 @@ public class repPurchases implements Serializable {
     private static AdminEJBClient AdminEJBService = null;
     private int ftype;
     private static CatalogEJBClient CatalogEJB;
+
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="Autocomplete Socio" > 
+    public List<String> compSocioCode(String query) {
+        List _result = null;
+
+        BusinesspartnerInTO in = new BusinesspartnerInTO();
+        in.setCardcode(query);
+        in.setCardtype("P");
+
+        try {
+            _result = CatalogEJB.get_businesspartner(in);
+
+        } catch (Exception e) {
+            //faceMessage("Error en autocompletado");
+        }
+
+        List<String> results = new ArrayList<>();
+
+        Iterator<BusinesspartnerTO> iterator = _result.iterator();
+
+        while (iterator.hasNext()) {
+            BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
+            results.add(articulo.getCardcode());
+        }
+        return results;
+    }
+
+    public List<String> compSocioName(String query) {
+        List _result = null;
+
+        BusinesspartnerInTO in = new BusinesspartnerInTO();
+        in.setCardname(query);
+        in.setCardtype("P");
+
+        try {
+            _result = CatalogEJB.get_businesspartner(in);
+
+        } catch (Exception e) {
+            //faceMessage("Error en autocompletado");
+        }
+
+        List<String> results = new ArrayList<>();
+
+        Iterator<BusinesspartnerTO> iterator = _result.iterator();
+
+        while (iterator.hasNext()) {
+            BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
+            results.add(articulo.getCardcode() + "-" + articulo.getCardname());
+        }
+        return results;
+    }
 
 //</editor-fold>
     
@@ -251,6 +306,12 @@ public class repPurchases implements Serializable {
             if (this.getFname() != null && this.getFname().length() > 0) {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
+        }
+        
+        if (this.ftype == 12) {
+            _reportname = "/purchase/PurchasePending";
+            _reportTitle = "Deuda por Proveedor";
+            reportParameters.put("codigo",fname);
         }
 
         System.out.println(_whereclausule);

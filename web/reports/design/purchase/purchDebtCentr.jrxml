@@ -47,7 +47,7 @@ where cardtype='C']]>
 				<textField pattern="¤ #,##0.0000" isBlankWhenNull="true">
 					<reportElement x="278" y="3" width="70" height="20" uuid="4cb02197-cff6-46ba-a168-928d79e6d53d"/>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$V{grpBalance}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{grpBalance}.abs()]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="0" y="3" width="100" height="20" uuid="6494806b-23fd-4a23-ac43-9db5456d6ca5"/>

@@ -32,13 +32,13 @@
                             <div class="ui-grid-col-2"><p:outputLabel value="Por Codigo Cliente"></p:outputLabel></div>
                             <div class="ui-grid-col-5">
                                 <p:autoComplete scrollHeight="250" required="false" id="fname" forceSelection="true" minQueryLength="2" value="#{rpurchase.fname}"
-                                                completeMethod="#{rsales.compSocioCode}" effect="fade" size="15" label="Codigo de Socio" 
+                                                completeMethod="#{rpurchase.compSocioCode}" effect="fade" size="15" label="Codigo de Socio" 
                                                 >
                                     <p:ajax event="itemSelect" listener="#{rpurchase.selectSocioCod(null)}" update="fname fname2 "/>
                                 </p:autoComplete>
                                 <p:spacer width="10" height="0" />
                                 <p:autoComplete scrollHeight="250" required="false" id="fname2" forceSelection="true" minQueryLength="2" value="#{rpurchase.fname2}"
-                                                completeMethod="#{rsales.compSocioName}" effect="fade" size="37" label="Socio de Negocio" 
+                                                completeMethod="#{rpurchase.compSocioName}" effect="fade" size="27" label="Socio de Negocio" 
                                                 >
                                     <p:ajax event="itemSelect" listener="#{rpurchase.selectSocioName}" update="fname fname2 "/>
                                 </p:autoComplete>
@@ -74,6 +74,7 @@
                                     <div class="ui-grid-col-1"><f:selectItem itemLabel="Informe detallado de facturas de compras" itemValue="7" /></div>
                                     <div class="ui-grid-col-1"><f:selectItem itemLabel="Costo de Compras" itemValue="8" /></div>
                                     <div class="ui-grid-col-1"><f:selectItem itemLabel="Compras Locales y Exteriores" itemValue="9" /></div>
+                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Deuda por proveedor" itemValue="12" /></div>
                                     <div class="ui-grid-col-1"><f:selectItem itemLabel="Concentraci&oacute;n de Deudas" itemValue="10" /></div>
                                     <div class="ui-grid-col-1"><f:selectItem itemLabel="Libro de Compras" itemValue="11" /></div>
 

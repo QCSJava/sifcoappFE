@@ -50,9 +50,9 @@ public class RemisionPrint extends HttpServlet {
 
         try {
             SalesEJBService = new SalesEJBClient();
-            //AdminEJBService = new AdminEJBClient();
-            _R = AdminEJBService.findCatalogByKey(var.getPeymethod(), 8);
+            AdminEJBService = new AdminEJBClient();
             var = SalesEJBService.getDeliveryByKey(Integer.parseInt(request2.getParameter("foo")));
+            _R = AdminEJBService.findCatalogByKey(var.getPeymethod(), 8);
             total = formatNumber(var.getDoctotal());
 
         } catch (Exception ex) {
