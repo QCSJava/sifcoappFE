@@ -30,7 +30,7 @@
                                 <p:outputLabel  value="Grupo: " for="articlesGroup"/>
                             </div>
                             <div class="ui-grid-col-2">
-                                <p:selectOneMenu id="articlesGroup"  style="width:150px" value="#{rinventory.itemgroup}">
+                                <p:selectOneMenu id="articlesGroup"  style="width:155px" value="#{rinventory.itemgroup}">
                                     <f:selectItem itemLabel="Seleccione el Grupo" itemValue="-1" />
                                     <f:selectItems value="#{articles.articleGroupLst}" var="model" itemLabel="#{model.catvalue}" itemValue="#{model.catcode}"/>
                                 </p:selectOneMenu>
@@ -41,7 +41,7 @@
                                 <p:outputLabel  value="Clase: " for="articlesClass"/>
                             </div>
                             <div class="ui-grid-col-2">
-                                <p:selectOneMenu id="articlesClass"  style="width:150px" value="#{rinventory.itemtype}">
+                                <p:selectOneMenu id="articlesClass"  style="width:155px" value="#{rinventory.itemtype}">
                                     <f:selectItem itemLabel="Seleccione la clase" itemValue="-1" />
                                     <f:selectItems value="#{articles.articleClassLst}" var="model" itemLabel="#{model.catvalue}" itemValue="#{model.catcode}"/>
                                 </p:selectOneMenu>
@@ -71,7 +71,7 @@
                                 <p:outputLabel  value="Almacen:"/> 
                             </div>
                             <div class="ui-grid-col-2">
-                                <p:selectOneMenu id="almDest" value="#{rinventory.almacen}" style="width:150px" valueChangeListener="#{goodsReceiptBean.stateChangeListener}" disabled="#{goodsReceiptBean.disable}">
+                                <p:selectOneMenu id="almDest" value="#{rinventory.almacen}" style="width:155px" valueChangeListener="#{goodsReceiptBean.stateChangeListener}" disabled="#{goodsReceiptBean.disable}">
                                     <f:selectItem itemLabel="Almacen" itemValue="-1" />
                                     <f:selectItems value="#{goodsReceiptBean.listaAlmacenes}" var="model" itemLabel="#{model.whscode}" itemValue="#{model.whscode}"/>
                                 </p:selectOneMenu>
@@ -88,7 +88,7 @@
                                 </p:autoComplete>
                                 <p:spacer height="0" width="10"/>
                                 <p:autoComplete scrollHeight="250" id="nameDetalle" forceSelection="true" minQueryLength="2" value="#{rinventory.newNomArt}"
-                                                completeMethod="#{goodsReceiptBean.completeText}" effect="fade" size="35" label="Nombre Articulo">
+                                                completeMethod="#{goodsReceiptBean.completeText}" effect="fade" size="27" label="Nombre Articulo">
                                     <p:ajax event="itemSelect" listener="#{rinventory.findArticle}" update="CodigoDetalle nameDetalle"/>
                                 </p:autoComplete>
                             </div>

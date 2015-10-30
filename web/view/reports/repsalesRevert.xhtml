@@ -42,7 +42,7 @@
                                 </p:autoComplete>
                                 <p:spacer width="10" height="0" />
                                 <p:autoComplete scrollHeight="250" required="false" id="fname2" forceSelection="true" minQueryLength="2" value="#{rsalesRev.fname2}"
-                                                completeMethod="#{rsales.compSocioName}" effect="fade" size="37" label="Socio de Negocio" 
+                                                completeMethod="#{rsales.compSocioName}" effect="fade" size="27" label="Socio de Negocio" 
                                                 >
                                     <p:ajax event="itemSelect" listener="#{rsalesRev.selectSocioName}" update="fname fname2 "/>
                                 </p:autoComplete>
@@ -52,14 +52,14 @@
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2"><p:outputLabel  value="Fecha Inicio:" for="FechaInicio" ></p:outputLabel></div>
                             <div class="ui-grid-col-2">
-                                <p:calendar required="true" id="FechaInicio" value="#{rsalesRev.fdatefrom}" showOn="button" size="10"  pattern="dd/MM/yyyy" />
+                                <p:calendar required="true" id="FechaInicio" value="#{rsalesRev.fdatefrom}" showOn="button" size="15"  pattern="dd/MM/yyyy" />
                             </div>
                         </div>
                         <div class="ui-grid-row">
 
                             <div class="ui-grid-col-2"><p:outputLabel  value="Fecha Fin:" for="FechaFin" ></p:outputLabel></div>
                             <div class="ui-grid-col-2">
-                                <p:calendar required="true" id="FechaFin" value="#{rsalesRev.fdateto}" showOn="button" size="10"  pattern="dd/MM/yyyy" />
+                                <p:calendar required="true" id="FechaFin" value="#{rsalesRev.fdateto}" showOn="button" size="15"  pattern="dd/MM/yyyy" />
                             </div>
                         </div>
                         <p:spacer height="10" width="0"/>
