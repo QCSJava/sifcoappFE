@@ -9,7 +9,6 @@ package com.sifcoapp.report.common;
  *
  * @author ri00642
  */
-import com.sifcoapp.objects.admin.dao.AdminDAO;
 import com.sifcoapp.clientutility.ClientUtility;
 import java.io.File;
 import java.io.IOException;
@@ -101,7 +100,7 @@ public abstract class AbstractReportBean implements Serializable {
         HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
         //ReportConfigUtil.compileReport(context, getCompileDir(), getCompileFileName());
         File reportFile = new File(ReportConfigUtil.getJasperFilePath(request, getCompileDir(), getCompileFileName() + ".jasper"));
-        AdminDAO adminDAO = new AdminDAO();
+        //AdminDAO adminDAO = new AdminDAO();
         //System.err.println("Ip cliente: " + response.getRemoteAddr());
         Connection conn = null;
         try {

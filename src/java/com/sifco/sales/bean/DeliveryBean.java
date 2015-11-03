@@ -1625,7 +1625,7 @@ public class DeliveryBean implements Serializable {
         setUrl(getApplicationUri());
         if (newDelivery.getDocentry() > 0) {
             String foo = newDelivery.getDocentry() + "";
-            String bar = "xyz";
+            String bar = (String) session.getAttribute("userfullname");
             return "/PrintDeliveryView?faces-redirect=true"
                     + "&foo=" + URLEncoder.encode(foo, "UTF-8")
                     + "&bar=" + URLEncoder.encode(bar, "UTF-8");

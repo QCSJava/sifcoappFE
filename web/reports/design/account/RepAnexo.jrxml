@@ -198,6 +198,9 @@ left join cat_obj0_objectype t2 on t0.transtype = t2.objtype
 				<reportElement x="65" y="0" width="219" height="16" uuid="8192ae88-93f7-4b36-9e1a-f684316307bb">
 					<printWhenExpression><![CDATA[$F{debe}.doubleValue()!=0.0||$F{haber}.doubleValue()!=0.0]]></printWhenExpression>
 				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{transid}+"-"+$F{objtype}+"   "+$F{comment}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">

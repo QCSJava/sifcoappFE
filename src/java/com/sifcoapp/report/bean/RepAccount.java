@@ -51,7 +51,7 @@ public class RepAccount implements Serializable {
     private static AdminEJBClient AdminEJBService;
     private Integer reportLevel;
     private String rubro;
-    private List<CatalogTO> lstRubros;
+    public List<CatalogTO> lstRubros;
     private static final String CATALOGORUB = "Rubros_PC";
 
     //
@@ -178,7 +178,7 @@ public class RepAccount implements Serializable {
                 _reportname = "/account/StatementCategory";
                 _reportTitle = "ESTADO DE RESULTADOS POR RUBRO";
 
-                reportParameters.put("category", "TODOS LOS RUBROS");
+                reportParameters.put("category", RubroName(this.getRubro()));
                 reportParameters.put("numCategory", this.getRubro());
                 reportParameters.put("startdate", this.getFdatefrom());
                 reportParameters.put("enddate", this.getFdateto());
@@ -218,7 +218,8 @@ public class RepAccount implements Serializable {
                 }
 
                 _reportTitle = "ESTADO DE RESULTADOS INTEGRAL";
-
+                
+                reportParameters.put("category", RubroName(this.getRubro()));
                 reportParameters.put("numCategory", this.getRubro());
                 reportParameters.put("startdate", this.getFdatefrom());
                 reportParameters.put("enddate", this.getFdateto());
@@ -378,6 +379,14 @@ public class RepAccount implements Serializable {
     public RepAccount() {
     }
 
+    public String RubroName(String rubro){
+        for (CatalogTO lstRubro : lstRubros) {
+            if (lstRubro.getCatcode().equals(rubro)) {
+                return lstRubro.getCatvalue();
+            }
+        }
+        return "TODOS LOS RUBROS";
+    }
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del autocomplete" > 
@@ -515,6 +524,7 @@ public class RepAccount implements Serializable {
         this.lstRubros = lstRubros;
     }
 
+    
     public static AdminEJBClient getAdminEJBService() {
         return AdminEJBService;
     }

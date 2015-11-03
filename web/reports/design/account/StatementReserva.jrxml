@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StatementReserva" language="groovy" pageWidth="612" pageHeight="792" columnWidth="472" leftMargin="85" rightMargin="55" topMargin="35" bottomMargin="35" whenResourceMissingType="Empty" uuid="e0fe8475-8e69-4dc8-b4e4-04149205e35c">
-	<property name="ireport.zoom" value="1.1269722013523724"/>
+	<property name="ireport.zoom" value="1.6500000000000097"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="numCategory" class="java.lang.String">
@@ -29,6 +29,7 @@
 	<parameter name="F2_TITLE" class="java.lang.String"/>
 	<parameter name="F3_TITLE" class="java.lang.String"/>
 	<parameter name="F4_TITLE" class="java.lang.String"/>
+	<parameter name="category" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select acctcode, acctname, coalesce(sal_inicio,0.00) AS sal_anterior, coalesce(sal_debe,0.00)- coalesce(sal_haber,0.00) AS sal_final,levels,
 CASE WHEN acctcode = '4101' THEN 4.5 else groupmask END AS groupmask,
@@ -37,8 +38,8 @@ CASE WHEN acctcode = '5' THEN coalesce(sal_debe,0.00)- coalesce(sal_haber,0.00) 
 CASE WHEN acctcode = '4' THEN sal_inicio else 0.0 END AS T2_1,
 CASE WHEN acctcode = '4' THEN coalesce(sal_debe,0.00)- coalesce(sal_haber,0.00) else 0.0 END AS T2_2
 
-	from sp_get_update_balance($P{startdate},$P{enddate})
-	where levels <=$P{levels} and groupmask in (4,5) and acttype =$P{numCategory}
+	from sp_get_update_balance2($P{startdate},$P{enddate},$P{numCategory})
+	where levels <=$P{levels} and groupmask in (4,5)
 	ORDER BY groupmask DESC, grpline ASC;]]>
 	</queryString>
 	<field name="acctcode" class="java.lang.String"/>
@@ -241,19 +242,19 @@ CASE WHEN acctcode = '4' THEN coalesce(sal_debe,0.00)- coalesce(sal_haber,0.00) 
 				<textFieldExpression><![CDATA[$P{reportName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="40" width="472" height="20" uuid="4fa5f90d-0622-4aa2-ac60-24a8f37ca73f"/>
+				<reportElement x="0" y="60" width="472" height="20" uuid="4fa5f90d-0622-4aa2-ac60-24a8f37ca73f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PFECHAREPORTE}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="0" y="60" width="472" height="20" uuid="0646ea01-977b-4ff3-a145-5c5163cd27ea"/>
+			<textField>
+				<reportElement x="0" y="40" width="472" height="20" uuid="703020a5-6915-4aab-ac9f-c9a853330deb"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif"/>
+					<font fontName="SansSerif" size="12"/>
 				</textElement>
-				<text><![CDATA[MONEDA EN DOLARES]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$P{category}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>

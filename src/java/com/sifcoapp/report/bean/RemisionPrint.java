@@ -13,6 +13,7 @@ import com.sifcoapp.objects.sales.to.DeliveryTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
@@ -43,17 +44,38 @@ public class RemisionPrint extends HttpServlet {
 
         //hora de impresion
         Calendar calendario = new GregorianCalendar();
-        int hora, minutos;
-        hora = calendario.get(Calendar.HOUR);
-        minutos = calendario.get(Calendar.MINUTE);
+        int h, m;
+        String hora,minutos;
+        h = calendario.get(Calendar.HOUR);
+        m = calendario.get(Calendar.MINUTE);
+        
+        if (h < 10) {
+            hora = "0"+h;
+        }else
+            hora = ""+h;
+        
+        if (m < 10) {
+            minutos = "0"+m;
+        }else
+            minutos = ""+m;
+        
         CatalogTO _R = new CatalogTO();
+        CatalogTO _R2 = new CatalogTO();
+
+        String formaPago = "", tipoDoc = "", Usuario = "", fecha = "";
+        Usuario = request2.getParameter("bar").toUpperCase();
 
         try {
             SalesEJBService = new SalesEJBClient();
             AdminEJBService = new AdminEJBClient();
             var = SalesEJBService.getDeliveryByKey(Integer.parseInt(request2.getParameter("foo")));
             _R = AdminEJBService.findCatalogByKey(var.getPeymethod(), 8);
+            formaPago = _R.getCatvalue().toUpperCase();
+            AdminEJBService = new AdminEJBClient();
+            _R2 = AdminEJBService.findCatalogByKey(var.getSeries()+"", 9);
+            tipoDoc = _R2.getCatvalue().toUpperCase();
             total = formatNumber(var.getDoctotal());
+            fecha = setFecha(var.getDocdate());
 
         } catch (Exception ex) {
             Logger.getLogger(RemisionPrint.class.getName()).log(Level.SEVERE, null, ex);
@@ -75,7 +97,7 @@ public class RemisionPrint extends HttpServlet {
                     + "\n"
                     + "    </head>\n"
                     + "\n"
-                    + "    <body style=\"font-size: 12px; font-family: sans-serif; line-height: 0px\">\n"
+                    + "    <body style=\"font-size: 11px; font-family: sans-serif; line-height: 0px\">\n"
                     + "        <!-- tamanio de remision 590X794px-->\n"
                     + "        <div style=\"width: 535px; height: 700px\">\n"
                     + "\n"
@@ -87,13 +109,13 @@ public class RemisionPrint extends HttpServlet {
                     + "                    <td style=\"height: 140px\">\n"
                     + "                        <table style=\"width: 100%; height: 100%\" border=\"0\">\n"
                     + "                            <tr style=\"height: 60px\">\n"
-                    + "                                <td style=\"width: 250px\"/>\n"
+                    + "                                <td style=\"width: 275px\"/>\n"
                     + "                                <td />\n"
                     + "                            </tr>\n"
                     + "                            <tr>\n"
                     + "                                <td/>\n"
                     + "                                <td style=\"vertical-align: top\">\n"
-                    + "                                    555\n"
+                    + "                                   " + var.getNumatcard() + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                        </table>\n"
@@ -111,37 +133,35 @@ public class RemisionPrint extends HttpServlet {
                     + "                            <!-- Encabezado 56px -->\n"
                     + "\n"
                     + "                            <tr style=\"height: 17px\">\n"
-                    + "                                <td style=\"width: 16%\">\n"
+                    + "                                <td style=\"width: 22%\">\n"
                     + "                                </td>\n"
-                    + "                                <td style=\"width: 56%\">\n"
+                    + "                                <td style=\"width: 50%\">\n"
                     + "\n"
                     + "                                </td>\n"
                     + "                                <td >\n"
-                    + "                                    " + var.getDocdate() + " HORA: " + hora + ":" + minutos + "\n"
+                    + "                                    " + fecha + " HORA: " + hora + ":" + minutos + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                        </table>\n"
                     + "\n"
                     + "                        <table style=\"width:100%\" border=\"0\">\n"
                     + "                            <tr style=\"height: 17px\">\n"
-                    + "                                <td style=\"width: 60px\">\n"
+                    + "                                <td style=\"width: 80px\">\n"
                     + "                                </td>\n"
                     + "                                <td >\n"
-                    + "                                    " + var.getCardname() + "\n"
+                    + "                                    " + var.getCardname().toUpperCase() + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                            <tr style=\"height: 17px\">\n"
                     + "                                <td style=\"width: 60px\">\n"
                     + "                                </td>\n"
                     + "                                <td >\n"
-                    + "                                    " + "" + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                            <tr style=\"height: 19px\">\n"
                     + "                                <td style=\"width: 60px\">\n"
                     + "                                </td>\n"
                     + "                                <td >\n"
-                    + "                                    \n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                        </table>\n"
@@ -151,13 +171,10 @@ public class RemisionPrint extends HttpServlet {
                     + "                                <td style=\"width: 20%\">\n"
                     + "                                </td>\n"
                     + "                                <td style=\"width: 30%\" valign=\"bot\">\n"
-                    + "                                    " + "" + "\n"
                     + "                                </td>\n"
                     + "                                <td style=\"width: 28%\" valign=\"bot\">\n"
-                    + "                                    " + "" + "\n"
                     + "                                </td>\n"
                     + "                                <td style=\"width: 22%\" valign=\"bot\">\n"
-                    + "                                    " + "" + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                        </table>\n"
@@ -167,7 +184,6 @@ public class RemisionPrint extends HttpServlet {
                     + "                                <td style=\"width: 60px\">\n"
                     + "                                </td>\n"
                     + "                                <td valign=\"bot\">\n"
-                    + "                                    " + "" + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                        </table>\n"
@@ -178,27 +194,27 @@ public class RemisionPrint extends HttpServlet {
                     + "\n"
                     + "                                </td>\n"
                     + "                                <td style=\"width: 20%\" valign=\"bot\">\n"
-                    + "                                    \n"
+                    + "                                    " + formaPago + "\n"
                     + "                                </td>\n"
-                    + "                                <td style=\"width: 30%\">\n"
+                    + "                                <td style=\"width: 22%\">\n"
                     + "\n"
                     + "                                </td>\n"
-                    + "                                <td style=\"width: 20%\" valign=\"bot\">\n"
-                    + "                                    \n"
+                    + "                                <td valign=\"bot\">\n"
+                    + "                                    " + tipoDoc + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                            <tr style=\"height: 17px\">\n"
-                    + "                                <td style=\"width: 30%\">\n"
+                    + "                                <td >\n"
                     + "\n"
                     + "                                </td>\n"
-                    + "                                <td style=\"width: 20%\" valign=\"bot\">\n"
-                    + "                                    \n"
-                    + "                                </td>\n"
-                    + "                                <td style=\"width: 30%\">\n"
+                    + "                                <td >\n"
                     + "\n"
                     + "                                </td>\n"
-                    + "                                <td style=\"width: 20%\" valign=\"bot\">\n"
-                    + "                                    \n"
+                    + "                                <td >\n"
+                    + "\n"
+                    + "                                </td>\n"
+                    + "                                <td >\n"
+                    + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "\n"
@@ -210,7 +226,7 @@ public class RemisionPrint extends HttpServlet {
                     + "                        </table>\n"
                     + "\n"
                     + "                        <!-- DETALLES -->\n"
-                    + "                        <table border=\"0\" style=\"table-layout: fixed; overflow-y: scroll\">\n"
+                    + "                        <table border=\"0\" style=\"width:100%\">\n"
                     + "                            <!-- Detalles de factura 148px -->\n");
 
             int tam = var.getDeliveryDetails().size();
@@ -228,9 +244,9 @@ public class RemisionPrint extends HttpServlet {
                     out.println(
                             "                            <tr style=\"height: 18px; width: 100%\" >\n"
                             + "\n"
-                            + "                                <td style=\"width: 65px\">" + var2.getQuantity() + "</td>\n"
-                            + "                                <td style=\"width: 250px\">" + detalle + "</td>\n"
-                            + "                                <td style=\"width: 70px\">$" + formatNumber(var2.getPrice()) + "</td>\n"
+                            + "                                <td style=\"width: 70px\">" + var2.getQuantity() + "</td>\n"
+                            + "                                <td style=\"width: 265px\">" + detalle + "</td>\n"
+                            + "                                <td style=\"width: 60px\">$" + formatNumber(var2.getPrice()) + "</td>\n"
                             + "                                <td >$" + formatNumber(var2.getLinetotal()) + "</td>\n"
                             + "\n"
                             + "                            </tr>\n");
@@ -240,21 +256,21 @@ public class RemisionPrint extends HttpServlet {
                     out.println(
                             "<tr style=\"height: 18px; width: 100%\" >\n"
                             + "\n"
-                            + "                                <td style=\"width: 65px\">" + vacio + "</td>\n"
-                            + "                                <td style=\"width: 250px\">" + vacio + "</td>\n"
                             + "                                <td style=\"width: 70px\">" + vacio + "</td>\n"
+                            + "                                <td style=\"width: 265px\">" + vacio + "</td>\n"
+                            + "                                <td style=\"width: 60px\">" + vacio + "</td>\n"
                             + "                                <td >" + vacio + "</td>\n"
                             + "\n"
                             + "                            </tr>\n");
                 }
             }
 
-            out.println("                            <!-- TOTAL -->\n"
+            out.println("                           <!-- TOTAL -->\n"
                     + "                            <tr style=\"height: 60px\">\n"
                     + "                                <td ></td>\n"
                     + "                                <td ></td>\n"
                     + "                                <td ></td>\n"
-                    + "                                <td >$" + formatNumber(var.getDoctotal()) + "</td>\n"
+                    + "                                <td >$"+total+"</td>\n"
                     + "                            </tr>\n"
                     + "                </tr>\n"
                     + "            </table>\n"
@@ -265,14 +281,26 @@ public class RemisionPrint extends HttpServlet {
                     + "    </tr>\n"
                     + "    <tr>\n"
                     + "        <td style=\"height: 104px\">\n"
-                    + "\n"
+                    + "        </td>\n"
+                    + "        <td style=\"height: 104px\">\n"
+                    + "            <table border=\"0\" style=\"width: 100%; height: 100%\">\n"
+                    + "                <tr style=\"height: 20px\">\n"
+                    + "                    <td style=\"width: 75px\"/>\n"
+                    + "                    <td style=\"vertical-align: top\"/>\n"
+                    + "                </tr>\n"
+                    + "                <tr>\n"
+                    + "                    <td/>\n"
+                    + "                    <td style=\"vertical-align: top\">\n"
+                    + "                        "+Usuario+"\n"
+                    + "                    </td>\n"
+                    + "                </tr>\n"
+                    + "            </table>\n"
                     + "        </td>\n"
                     + "    </tr>\n"
                     + "</table>\n"
                     + "</div>\n"
                     + "</body>\n"
-                    + "</html>"
-            );
+                    + "</html>");
         }
     }
 
@@ -317,15 +345,34 @@ public class RemisionPrint extends HttpServlet {
 
     //<editor-fold defaultstate="collapsed" desc="Formato Numeros NO USADA">
     public Double formatNumber(Double doctotal) {
-        /*
-         NumberFormat nf = NumberFormat.getInstance();
-         nf.setMaximumFractionDigits(2);
-         String st = nf.format(num);
-         Double dou = Double.valueOf(st);
-         return dou;*/
         return Math.floor(100 * doctotal) / 100;
     }
 
 //</editor-fold>
+
+    private String setFecha(Date docdate) {
+        
+        Calendar Del = GregorianCalendar.getInstance();
+        Del.setTime(docdate);
+        int dia1, mes1, anio1;
+            String diaS1,Smes1;
+            
+            dia1 = Del.get(Calendar.DAY_OF_MONTH);
+            if (dia1<10) {
+                diaS1 = "0"+dia1;
+            }else
+                diaS1 = dia1+"";
+            mes1 = Del.get(Calendar.MONTH);
+            mes1 = mes1 + 1;
+            if (mes1<10) {
+                Smes1 = "0"+mes1;
+            }else
+                Smes1 = mes1+"";
+            anio1 = Del.get(Calendar.YEAR);
+            
+        String _R = diaS1+"/"+Smes1+"/"+anio1;
+        return _R;
+        
+    }
 }//cierre de clase
 

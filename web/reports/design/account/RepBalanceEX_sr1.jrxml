@@ -16,7 +16,7 @@
 	<queryString>
 		<![CDATA[select acctcode, acctname,sal_inicio,fathernum,coalesce(sal_inicio,0.00) as endtotal,repeat(' ',15-levels*2)||sal_inicio endtotals,levels,grpline,groupmask
  from sp_get_update_genera_balance($P{startdate})
-where $P!{PWHERECUENTAS} and levels<=$P{PLEVELS} and sal_inicio > 0.0 order by groupmask,grpline]]>
+where $P!{PWHERECUENTAS} and levels<=$P{PLEVELS} and sal_inicio <> 0.0 order by groupmask,grpline]]>
 	</queryString>
 	<field name="acctcode" class="java.lang.String"/>
 	<field name="acctname" class="java.lang.String"/>

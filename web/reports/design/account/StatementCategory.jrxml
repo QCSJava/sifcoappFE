@@ -25,8 +25,8 @@ CASE WHEN acctcode = '5' THEN sal_inicio else 0.0 END AS T1_1,
 CASE WHEN acctcode = '5' THEN coalesce(sal_debe,0.00)- coalesce(sal_haber,0.00) else 0.0 END AS T1_2,
 CASE WHEN acctcode = '4' THEN sal_inicio else 0.0 END AS T2_1,
 CASE WHEN acctcode = '4' THEN coalesce(sal_debe,0.00)- coalesce(sal_haber,0.00) else 0.0 END AS T2_2
-	from sp_get_update_balance($P{startdate},$P{enddate})
-	where groupmask in (4,5) and levels <= $P{levels} and acttype = $P{numCategory}]]>
+	from sp_get_update_balance2($P{startdate},$P{enddate},$P{numCategory})
+	where groupmask in (4,5) and levels <= $P{levels}]]>
 	</queryString>
 	<field name="acctcode" class="java.lang.String"/>
 	<field name="acctname" class="java.lang.String"/>

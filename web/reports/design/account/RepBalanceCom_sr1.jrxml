@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RepBalanceCom_sr1" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9feb4b49-fb16-4a2c-8af6-491e2ce9865d">
 	<property name="ireport.zoom" value="1.6934217901613322"/>
-	<property name="ireport.x" value="35"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="PWHERECUENTAS" class="java.lang.String"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
@@ -16,15 +16,14 @@
 	<queryString>
 		<![CDATA[select acctcode, acctname,sal_inicio,fathernum,coalesce(sal_inicio,0.00) as endtotal,repeat(' ',15-levels*2)||sal_inicio endtotals,levels,grpline,groupmask
  from sp_get_update_balance($P{startdate},$P{startdate})
-where $P!{PWHERECUENTAS} and levels<=$P{PLEVELS} and sal_inicio > 0.0 order by groupmask,grpline]]>
+where $P!{PWHERECUENTAS} and levels<=$P{PLEVELS} and sal_inicio <> 0.0 order by groupmask,grpline]]>
 	</queryString>
 	<field name="acctcode" class="java.lang.String"/>
 	<field name="acctname" class="java.lang.String"/>
 	<field name="sal_inicio" class="java.math.BigDecimal"/>
 	<field name="fathernum" class="java.lang.String"/>
 	<field name="endtotal" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Saldo inicial
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Saldo inicial]]></fieldDescription>
 	</field>
 	<field name="endtotals" class="java.lang.String"/>
 	<field name="levels" class="java.lang.Integer"/>

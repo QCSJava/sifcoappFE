@@ -28,7 +28,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT t0.acctcode, t0.acctname,$P{startdate} as refdate, coalesce(t0.sal_inicio,0.0) as inicial, t0.sal_debe as debe, t0.sal_haber as haber,coalesce(t0.sal_inicio,0.0)+ t0.sal_debe - t0.sal_haber saldo, t0.groupmask, grpline, 1 ttype
-  FROM sp_get_update_balance($P{startdate},$P{enddate}) t0  where t0.acctcode~ '^' and levels <=$P{level}
+  FROM sp_get_update_balance($P{startdate},$P{enddate}) t0  where t0.acctcode~ '^' and levels <=$P{level} and (coalesce(t0.sal_inicio,0.0) <> 0.0 and  coalesce(t0.sal_debe,0.0) <> 0.0 and coalesce(t0.sal_haber,0.0) <> 0.0)
 
 order by groupmask,grpline, refdate]]>
 	</queryString>

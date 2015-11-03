@@ -37,8 +37,8 @@ CASE WHEN acctcode = '5' THEN coalesce(sal_debe,0.00)- coalesce(sal_haber,0.00) 
 CASE WHEN acctcode = '4' THEN sal_inicio else 0.0 END AS T2_1,
 CASE WHEN acctcode = '4' THEN coalesce(sal_debe,0.00)- coalesce(sal_haber,0.00) else 0.0 END AS T2_2
 
-	from sp_get_update_balance($P{startdate},$P{enddate})
-	where levels <=$P{levels} and groupmask in (4,5) and acttype =$P{numCategory}
+	from sp_get_update_balance($P{startdate},$P{enddate},$P{numCategory})
+	where levels <=$P{levels} and groupmask in (4,5)
 	ORDER BY groupmask DESC, grpline ASC;]]>
 	</queryString>
 	<field name="acctcode" class="java.lang.String"/>
