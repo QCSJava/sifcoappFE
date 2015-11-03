@@ -41,7 +41,8 @@ public class CheckPrint extends HttpServlet {
 
         BankEJBClient BankEJBClient = new BankEJBClient();
         AccountingEJBClient AccountingEJBClient = new AccountingEJBClient();
-        String pkCheck = request.getParameter("foo");
+        String pkCheck  = request.getParameter("foo");
+        String user     = request.getParameter("bar");
         JournalEntryTO det = new JournalEntryTO();
         ArrayList<JournalEntryLinesTO> listaDetalles = new ArrayList<>();
         CheckForPaymentTO cheque = new CheckForPaymentTO();
@@ -60,16 +61,15 @@ public class CheckPrint extends HttpServlet {
         //FECHA DEL CHEQUE FORMATEADA
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(cheque.getPmntdate());
-        
+
         int anio_ = calendar.get(Calendar.YEAR);
-        int mes_ = calendar.get(Calendar.MONTH)+1;
+        int mes_ = calendar.get(Calendar.MONTH) + 1;
         int dia_ = calendar.get(Calendar.DAY_OF_MONTH);
-        
+
         String nameMes = getMes(mes_);
         String var = anio_ + "";
         var = var.substring(2);
         String espacio = " ";
-        
 
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -95,7 +95,7 @@ public class CheckPrint extends HttpServlet {
                     + "            <table style=\"width:100%\" border=\"0\">\n"
                     + "\n"
                     + "                <!-- espacio superior-->\n"
-                    + "                <tr style=\"height: 45px\"></tr>\n"
+                    + "                <tr style=\"height: 79px\"></tr>\n"
                     + "\n"
                     + "                <tr>\n"
                     + "                    <!-- margen izquierdo-->\n"
@@ -121,7 +121,7 @@ public class CheckPrint extends HttpServlet {
                     + "\n"
                     + "                                            </td>\n"
                     + "                                            <td>\n"
-                    + "                                                " + cheque.getChecknum() + "\n"
+                    + "                                                " + cheque.getDpstacct()+ "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
                     + "                                    </table>\n"
@@ -130,21 +130,21 @@ public class CheckPrint extends HttpServlet {
                     + "                                            <td style=\"width: 15%\">\n"
                     + "\n"
                     + "                                            </td>\n"
-                    + "                                            <td style=\"width: 30%; text-align: center\">\n"
+                    + "                                            <td style=\"width: 29%; text-align: center\">\n"
                     + "                                                " + dia_ + "" + espacio + "" + nameMes + "\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"width: 6%\">\n"
                     + "\n"
                     + "                                            </td>\n"
-                    + "                                            <td style=\"width: 11%\">\n"
-                    + "                                               " + var + "\n"
+                    + "                                            <td style=\"width: 12%\">\n"
+                    + "                                                " + var + "\n"
                     + "                                            </td>\n"
                     + "                                            <td >\n"
                     + "                                                " + cheque.getChecksum() + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
                     + "                                    </table>\n"
-                    + "                                    <table border=\"0\" style=\"width: 85%; margin-left: 100px\">\n"
+                    + "                                    <table border=\"0\" style=\"width: 85%; margin-left: 80px\">\n"
                     + "                                        <tr style=\"height: 18px\">\n"
                     + "                                            <td style=\"width: 10%\"></td>\n"
                     + "                                            <td >\n"
@@ -167,21 +167,22 @@ public class CheckPrint extends HttpServlet {
                     + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
-                    + "                                        <tr style=\"height: 40px; vertical-align: bottom\">\n"
-                    + "                                            <td>\n"
+                    + "                                    </table >\n"
+                    + "                                    <table border=\"0\" style=\"width: 85%; margin-left: 80px\">\n"
+                    + "                                        <tr style=\"height: 70px; vertical-align: bottom\">\n"
+                    + "                                            <td style=\"width: 50%\">\n"
                     + "                                                " + cheque.getBankname().toUpperCase() + "\n"
                     + "                                            </td>\n"
-                    + "                                        </tr>\n"
-                    + "                                        <tr style=\"height: 20px\">\n"
+                    + "                                            <td style=\"width: 10%\" />\n"
                     + "                                            <td>\n"
-                    + "\n"
+                    + "                                                " + cheque.getSignature().toUpperCase() + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
                     + "                                    </table>\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "\n"
-                    + "                            <tr style=\"height: 30px\">\n"
+                    + "                            <tr style=\"height: 70px\">\n"
                     + "                                <td>\n"
                     + "\n"
                     + "                                </td>\n"
@@ -197,10 +198,10 @@ public class CheckPrint extends HttpServlet {
                     + "                                                " + listaDetalles.get(0).getAcctname().toUpperCase() + "\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"text-align: center\">\n"
-                    + "                                               $ " + listaDetalles.get(0).getDebit() + "\n"
+                    + "                                                $ " + listaDetalles.get(0).getDebit() + "\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"text-align: center\">\n"
-                    + "                                               $ " + listaDetalles.get(0).getCredit() + "\n"
+                    + "                                                $ " + listaDetalles.get(0).getCredit() + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
                     + "                                        <tr style=\"height: 20px\">\n"
@@ -217,13 +218,16 @@ public class CheckPrint extends HttpServlet {
                     + "                                                $ " + listaDetalles.get(1).getCredit() + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
-                    + "                                        <tr style=\"height: 335px\"/>\n"
+                    + "                                        <tr style=\"height: 400px\"/>\n"
                     + "                                    </table>\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
-                    + "                            <tr style=\"height: 36px\">\n"
+                    + "                            <tr style=\"height: 75px\">\n"
                     + "                                <td>\n"
                     + "                                    <table style=\"width: 100%\" border=\"0\">\n"
+                    + "                                        <tr style=\"height: 55px\">\n"
+                    + "\n"
+                    + "                                        </tr>\n"
                     + "                                        <tr>\n"
                     + "                                            <td style=\"width: 14%\">\n"
                     + "\n"
@@ -236,6 +240,20 @@ public class CheckPrint extends HttpServlet {
                     + "                                            <td style=\"text-align: center\">\n"
                     + "                                                $ " + listaDetalles.get(0).getDebit() + "\n"
                     + "                                            </td>\n"
+                    + "                                        </tr>\n"
+                    + "                                    </table>\n"
+                    + "                                </td>\n"
+                    + "                            </tr>\n"
+                    + "                            <tr style=\"height: 35px\">\n"
+                    + "                                <td>\n"
+                    + "                                    <table border=\"0\" style=\"width: 100%\">\n"
+                    + "                                        <tr>\n"
+                    + "                                            <td style=\"width: 25%\"></td>\n"
+                    + "                                            <td style=\"width: 25%\">\n"
+                    + "                                               "+user.toUpperCase()+"\n"
+                    + "                                            </td>\n"
+                    + "                                            <td style=\"width: 25%\"></td>\n"
+                    + "                                            <td></td>\n"
                     + "                                        </tr>\n"
                     + "                                    </table>\n"
                     + "                                </td>\n"
@@ -296,35 +314,48 @@ public class CheckPrint extends HttpServlet {
     private String getMes(int month) {
         String monthString;
         switch (month) {
-            case 1:  monthString = "ENERO";
-                     break;
-            case 2:  monthString = "FEBRERO";
-                     break;
-            case 3:  monthString = "MARZO";
-                     break;
-            case 4:  monthString = "ABRIL";
-                     break;
-            case 5:  monthString = "MAYO";
-                     break;
-            case 6:  monthString = "JUNIO";
-                     break;
-            case 7:  monthString = "JULIO";
-                     break;
-            case 8:  monthString = "AGOSTO";
-                     break;
-            case 9:  monthString = "SEPTIEMBRE";
-                     break;
-            case 10: monthString = "OCTUBRE";
-                     break;
-            case 11: monthString = "NOVIEMBRE";
-                     break;
-            case 12: monthString = "DICIEMBRE";
-                     break;
-            default: monthString = "MES INVALIDO";
-                     break;
+            case 1:
+                monthString = "ENERO";
+                break;
+            case 2:
+                monthString = "FEBRERO";
+                break;
+            case 3:
+                monthString = "MARZO";
+                break;
+            case 4:
+                monthString = "ABRIL";
+                break;
+            case 5:
+                monthString = "MAYO";
+                break;
+            case 6:
+                monthString = "JUNIO";
+                break;
+            case 7:
+                monthString = "JULIO";
+                break;
+            case 8:
+                monthString = "AGOSTO";
+                break;
+            case 9:
+                monthString = "SEPTIEMBRE";
+                break;
+            case 10:
+                monthString = "OCTUBRE";
+                break;
+            case 11:
+                monthString = "NOVIEMBRE";
+                break;
+            case 12:
+                monthString = "DICIEMBRE";
+                break;
+            default:
+                monthString = "MES INVALIDO";
+                break;
         }
         return monthString;
-    
+
     }
 
 }

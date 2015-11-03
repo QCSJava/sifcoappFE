@@ -36,8 +36,8 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -48,7 +48,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name = "checkForPaymentBean")
-@ApplicationScoped
+@SessionScoped
 public class CheckForPaymentBean implements Serializable {
 
     public CheckForPaymentBean() {
@@ -88,7 +88,7 @@ public class CheckForPaymentBean implements Serializable {
     private Date fechaVen = new Date();        //fecha de vencimiento
     private String banco;           //Banco
     private String cuenta;          //cuenta aspciada al banco
-    private int NoCheque;           //numero de cheque
+    private String NoCheque;           //numero de cheque
 
     //__________________________________________________________________________
     //funciones de numeros a letras
@@ -126,6 +126,7 @@ public class CheckForPaymentBean implements Serializable {
     private String url;
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -216,6 +217,7 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Autocompletado de CUENTA ">
     public List<String> completeName(String query) {
         List _result = null;
@@ -520,8 +522,9 @@ public class CheckForPaymentBean implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(CheckForPaymentBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+        newCheck.setBanknum(banco);
         newCheck.setUsersign((int) session.getAttribute("usersign"));
-        newCheck.setChecknum(NoCheque);
+        newCheck.setDpstacct(NoCheque);
         newCheck.setAcctnum(cuenta);
         newCheck.setCheckdate(fechaVen);
         newCheck.setSignature(firma);
@@ -570,8 +573,9 @@ public class CheckForPaymentBean implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(CheckForPaymentBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+        newCheck.setBanknum(banco);
         newCheck.setUsersign((int) session.getAttribute("usersign"));
-        newCheck.setChecknum(NoCheque);
+        newCheck.setDpstacct(NoCheque);
         newCheck.setAcctnum(cuenta);
         newCheck.setCheckdate(fechaVen);
         newCheck.setSignature(firma);
@@ -612,12 +616,17 @@ public class CheckForPaymentBean implements Serializable {
         CheckForPaymentInTO searchCheck = new CheckForPaymentInTO();
         String vacio = null;
         searchCheck.setCheckkey(idInterno);
-        searchCheck.setChecknum(NoCheque);
+        
+        if (NoCheque == null || NoCheque.equals("")) {
+            searchCheck.setDpstacct(vacio);
+        }else
+            searchCheck.setDpstacct(NoCheque);
+        
 
         if (banco.equals("-1")) {
-            searchCheck.setBankname(vacio);
+            searchCheck.setBanknum(vacio);
         } else {
-            searchCheck.setBankname(banco);
+            searchCheck.setBanknum(banco);
         }
 
         if (cuenta == null) {
@@ -707,6 +716,7 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Botones toolbar " > 
     public void botonNuevo(ActionEvent actionEvent) {
         if (varEstados != 2 && validarClear()) {
@@ -753,6 +763,7 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     public void confirmDialog(ActionEvent actionEvent) {
         showHideDialog("dlgC2", 2);
@@ -777,7 +788,7 @@ public class CheckForPaymentBean implements Serializable {
 
     public boolean validarClear() {
         try {
-            if (!banco.equals("-1") || impVencido != null || codSocio != null || newCodCuenta != null || !referencia.equals("") || !comentario.equals("") || NoCheque > 0 || !firma.equals("")) {
+            if (!banco.equals("-1") || impVencido != null || codSocio != null || newCodCuenta != null || !referencia.equals("") || !comentario.equals("") || !firma.equals("")) {
                 return true;
             }
         } catch (Exception e) {
@@ -851,8 +862,8 @@ public class CheckForPaymentBean implements Serializable {
         AccountTO art = new AccountTO();
 
         this.setIdInterno(var.getCheckkey());
-        this.setNoCheque(var.getChecknum());
-        this.setBanco(var.getBankname());
+        this.setNoCheque(var.getDpstacct());
+        this.setBanco(var.getBanknum());
         this.setCuenta(var.getAcctnum());
         this.setFechaVen(var.getCheckdate());
         this.setFirma(var.getSignature());
@@ -913,7 +924,7 @@ public class CheckForPaymentBean implements Serializable {
             faceMessage("Seleccione un Banco");
             return false;
         }
-        if (NoCheque <= 0) {
+        if (NoCheque == null || NoCheque.equals("")) {
             faceMessage("Ingrese un numero de cheque");
             return false;
         }
@@ -935,7 +946,7 @@ public class CheckForPaymentBean implements Serializable {
         impLetra = null;
         banco = null;
         cuenta = null;
-        NoCheque = 0;
+        NoCheque = null;
 
         if (tipo == 1) {
             Date d = new Date();
@@ -1228,15 +1239,17 @@ public class CheckForPaymentBean implements Serializable {
         this.banco = banco;
     }
 
-    public int getNoCheque() {
+    public String getNoCheque() {
         return NoCheque;
     }
 
-    public void setNoCheque(int NoCheque) {
+    public void setNoCheque(String NoCheque) {
         this.NoCheque = NoCheque;
     }
 
+
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="IMPRIMIR FORMA 2">
     public String printInvoice() throws UnsupportedEncodingException {
         //faceMessage(getApplicationUri());
@@ -1245,7 +1258,7 @@ public class CheckForPaymentBean implements Serializable {
         //String nombre = session.getAttribute("username").toString().toUpperCase();
         if (newCheck.getCheckkey() > 0) {
             String foo = newCheck.getCheckkey() + "";
-            String bar = "xyz";
+            String bar = (String) session.getAttribute("userfullname");
             return "/PrintCheckView?faces-redirect=true"
                     + "&foo=" + URLEncoder.encode(foo, "UTF-8")
                     + "&bar=" + URLEncoder.encode(bar, "UTF-8");
