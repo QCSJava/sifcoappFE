@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PurchaseLedger" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="762" leftMargin="15" rightMargin="15" topMargin="20" bottomMargin="20" uuid="395318c6-6159-4c8b-92a7-d32f206b6aeb">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="corpName" class="java.lang.String">
+		<defaultValueExpression><![CDATA["ACOETMISAB DE R.L."]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportName" class="java.lang.String"/>
+	<parameter name="pdocdate" class="java.util.Date"/>
+	<parameter name="PDOCDATE2" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select p.docnum,p.doctype,p.docstatus,p.docdate,p.numatcard,
+p.cardcode,p.cardname,p.vatsum,p.doctotal,p.peymethod,p.usersign,(select catvalue from cat_tab1_catalogos where catcode='1'
+and tablecode=(select tablecode from cat_tab0_tables where tablename='TypesInvoices')) doctypename,
+SUM(d.stockpricestockprice * d.quantity) as costo
+from pur_pur0_purchase p join pur_pur1_purchasedetail d ON p.docentry = d.docentry
+
+GROUP BY p.docentry
+	ORDER BY p.docdate ASC, p.docentry ASC]]>
+	</queryString>
+	<field name="docnum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[NÃºmero de documento]]></fieldDescription>
+	</field>
+	<field name="doctype" class="java.lang.String"/>
+	<field name="docstatus" class="java.lang.String">
+		<fieldDescription><![CDATA[Status de documento
+]]></fieldDescription>
+	</field>
+	<field name="docdate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha doc.
+]]></fieldDescription>
+	</field>
+	<field name="numatcard" class="java.lang.String">
+		<fieldDescription><![CDATA[NÃºmero de referencia del SN
+]]></fieldDescription>
+	</field>
+	<field name="cardcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Proveedor por defecto
+]]></fieldDescription>
+	</field>
+	<field name="cardname" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre SN
+]]></fieldDescription>
+	</field>
+	<field name="vatsum" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Impuesto total
+]]></fieldDescription>
+	</field>
+	<field name="doctotal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Total del documento
+]]></fieldDescription>
+	</field>
+	<field name="peymethod" class="java.lang.String">
+		<fieldDescription><![CDATA[Forma de pago
+]]></fieldDescription>
+	</field>
+	<field name="usersign" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Firma de usuario]]></fieldDescription>
+	</field>
+	<field name="doctypename" class="java.lang.String"/>
+	<field name="costo" class="java.math.BigDecimal"/>
+	<variable name="num" class="java.lang.Integer" resetType="Column" calculation="Count">
+		<variableExpression><![CDATA[1++]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="20" width="752" height="20" uuid="7e7f2945-2cf2-4f3a-8d4a-50bdd35c21e0"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="752" height="20" uuid="68f38748-6d9e-420b-8e44-42fd685fe42f"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{corpName}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="323" y="40" width="55" height="20" uuid="52bbad5c-a00b-40ab-b8f3-52c9250e2db2"/>
+				<textFieldExpression><![CDATA[$P{pdocdate}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="397" y="40" width="65" height="20" uuid="f5bb8caa-9bb2-4129-b5e9-800bc830b21d"/>
+				<textFieldExpression><![CDATA[$P{PDOCDATE2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="294" y="40" width="30" height="20" uuid="981a3a4c-3dce-4773-85ca-164039005f7c"/>
+				<box rightPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Del:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="378" y="40" width="19" height="20" uuid="7d9352f8-7cce-4e1e-b47a-6a95595c7243"/>
+				<box rightPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Al:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement x="25" y="0" width="59" height="26" uuid="ec1f272c-1db9-4212-963c-21deb738cf8d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha Emisión
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="84" y="0" width="58" height="26" uuid="75e38ee8-5482-4b4a-a47e-23a283af7bc2"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Número Documento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="25" height="26" uuid="285264e4-3ad7-48ec-9d90-86547059e996"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="26" width="762" height="1" uuid="895139c6-c576-4d03-99f8-944afbcac308"/>
+			</line>
+			<staticText>
+				<reportElement x="142" y="0" width="50" height="26" uuid="1ccb07a2-d896-4393-85cf-0dd119bf12f2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[N.R.C.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="192" y="0" width="100" height="26" uuid="6aaa3225-1f9f-4f9d-a8ef-d873052c086e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Proveedor/DUI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="292" y="0" width="45" height="26" uuid="17052c95-56b7-4a61-bf67-2b21cb30d41b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[N.R.C.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="0" width="45" height="26" uuid="f28436e7-87e2-44dc-946a-4e6aab9441a4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[N.R.C.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="382" y="1" width="45" height="26" uuid="d5ee6d96-affd-460a-903b-3d6176b6e024"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[N.R.C.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="427" y="0" width="45" height="26" uuid="5517747d-245e-403b-a88c-5d67b18a87bd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[N.R.C.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="472" y="1" width="45" height="26" uuid="006aeea5-55d5-44ab-b810-f18d12283a8a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[N.R.C.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="517" y="0" width="45" height="26" uuid="30b449c4-e15d-4ecf-bbbb-374dffb432ec"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[N.R.C.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="562" y="0" width="45" height="26" uuid="cab53bbc-82eb-4bdc-8378-21d7c2c6f064"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[N.R.C.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="607" y="0" width="45" height="26" uuid="ac1959e1-9134-4237-88ae-f5d2bfaf7d8e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[N.R.C.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="652" y="0" width="45" height="26" uuid="4817a51d-9241-4d11-b035-20290d37618e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[N.R.C.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="697" y="0" width="45" height="26" uuid="b97ea3eb-1f26-4148-86f2-d77ca9506afb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[N.R.C.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="39" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="25" y="0" width="59" height="20" uuid="b1972808-c548-4295-a20a-e6cd27f57f76"/>
+				<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="84" y="0" width="58" height="20" uuid="c7fcbc1c-7312-4bdc-b97d-64041982f84f"/>
+				<textFieldExpression><![CDATA[$F{numatcard}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="25" height="20" uuid="ad7d0fc5-70f3-46bd-8733-88128a237fbd"/>
+				<textFieldExpression><![CDATA[$V{num}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
