@@ -31,18 +31,18 @@
 	<queryString>
 		<![CDATA[select  t3.itemcode  "codigo",
 	t3.itemname "Descripcion",
-	$P{PDOCDATE2} "fecha sistema",
-	$P{PDOCDATE2} "fecha contabilización",
+	$P{pdocdate} "fecha sistema",
+	$P{pdocdate} "fecha contabilización",
 	'Saldo Inicial' "Documento",
 	'Saldo Inicial' as "Documento2",
 	0 "Documento3",
-	q1.almacen "almacen",
-	q1.cantidad "cantidad",
-	q1.entrada "entrada",
-	q1.salida "salida",
-	q1.precios "precios",
-	q1.total "total",
-	q1.total "total1",
+	t4.whscode "almacen",
+	coalesce(q1.cantidad,0.0) "cantidad",
+	coalesce(q1.entrada,0.0) "entrada",
+	coalesce(q1.salida,0.0) "salida",
+	coalesce(q1.precios,0.0) "precios",
+	coalesce(q1.total,0.0) "total",
+	coalesce(q1.total,0.0) "total1",
 	0.00 as "openStock",
 	'I' "tipo"
 
@@ -64,7 +64,7 @@ where 	t0.docdate < $P{pdocdate}  /* @variable*/
 	$P!{WithAlm}--and t0.loccode = 'REP-001' --'DIE-001' /* @variable*/
 	$P!{WithArt}--and t0.itemcode = 'INV0000295' /* @variable*/
 group by t0.itemcode, t0.dscription, t0.loccode
-) q1 on t3.itemcode = q1.codigo
+) q1 on t3.itemcode = q1.codigo and t4.whscode = q1.almacen
 where  	1 = 1
 	$P!{WithArt2}--and t3.itemcode = 'INV0000295' /* @variable*/
 	$P!{WithAlm2}--and t4.whscode = 'REM-001'
@@ -90,10 +90,10 @@ select
 
 from 	adm_inl0_inventorylog t0 left join cat_obj0_objectype t1 on t0.transtype = to_number(t1.objtype,'99')
 	join adm_wjl0_warehousejournal t2 on t0.messageid = t2.messageid
-where 	1=1 and t0.docdate >= $P{PDOCDATE2} and t0.docdate <= $P{pdocdate}  /* @variable*/
+where 	1=1 and t0.docdate >= $P{pdocdate}  and t0.docdate <= $P{PDOCDATE2}  /* @variable*/
 	$P!{WithAlm}--and t0.loccode = 'REP-001' --'DIE-001' /* @variable*/
 	$P!{WithArt}--and t0.itemcode = 'INV0000295' /* @variable*/
-order by "fecha contabilización", "Documento3"]]>
+order by "codigo", "almacen", "fecha contabilización", "Documento3"]]>
 	</queryString>
 	<field name="codigo" class="java.lang.String"/>
 	<field name="Descripcion" class="java.lang.String"/>
@@ -184,7 +184,7 @@ order by "fecha contabilización", "Documento3"]]>
 		<variableExpression><![CDATA[$F{tipo}.equals("S")?$F{openStock}:0.0]]></variableExpression>
 	</variable>
 	<group name="ArtCode">
-		<groupExpression><![CDATA[$F{codigo}]]></groupExpression>
+		<groupExpression><![CDATA[$F{almacen}+$F{codigo}]]></groupExpression>
 		<groupHeader>
 			<band height="15">
 				<textField>

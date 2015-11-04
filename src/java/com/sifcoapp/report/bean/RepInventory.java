@@ -60,6 +60,7 @@ public class RepInventory implements Serializable {
     private String almacen;
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="INIT">
     @PostConstruct
     public void initForm() {
@@ -134,29 +135,28 @@ public class RepInventory implements Serializable {
         if (this.ftype == 2) {
             _reportname = "/inventory/InvKardex";
             _reportTitle = "KARDEX";
-            
+
             /*if (check) {
-                reportParameters.put("movimiento"," join ");
-            }else
-                reportParameters.put("movimiento"," left join ");
-            */
-            
+             reportParameters.put("movimiento"," join ");
+             }else
+             reportParameters.put("movimiento"," left join ");
+             */
             if (!almacen.equals("-1")) {
-                reportParameters.put("WithAlm"," and t0.loccode = '"+this.almacen+"'");
-                reportParameters.put("WithAlm2"," and t4.whscode = '"+this.almacen+"'");
-            }else{
-                reportParameters.put("WithAlm",""); //and t0.loccode = 'REP-001'");
-                reportParameters.put("WithAlm2",""); //and t4.whscode = 'REM-001'");
+                reportParameters.put("WithAlm", " and t0.loccode = '" + this.almacen + "'");
+                reportParameters.put("WithAlm2", " and t4.whscode = '" + this.almacen + "'");
+            } else {
+                reportParameters.put("WithAlm", ""); //and t0.loccode = 'REP-001'");
+                reportParameters.put("WithAlm2", ""); //and t4.whscode = 'REM-001'");
             }
-            
-            if (newCod!= null && newCod.length() > 0 && check == false) {
-                reportParameters.put("WithArt"," and t0.itemcode = '"+this.newCod+"'");
-                reportParameters.put("WithArt2"," and t3.itemcode = '"+this.newCod+"'");
-            }else{
-                reportParameters.put("WithArt",""); //and t0.itemcode = 'INV0000295'");
-                reportParameters.put("WithArt2",""); //and t3.itemcode = 'INV0000295'");
+
+            if (newCod != null && newCod.length() > 0 && check == false) {
+                reportParameters.put("WithArt", " and t0.itemcode = '" + this.newCod + "'");
+                reportParameters.put("WithArt2", " and t3.itemcode = '" + this.newCod + "'");
+            } else {
+                reportParameters.put("WithArt", ""); //and t0.itemcode = 'INV0000295'");
+                reportParameters.put("WithArt2", ""); //and t3.itemcode = 'INV0000295'");
             }
- 
+
             int dia1, mes1, anio1, dia2, mes2, anio2;
             String diaS1, Smes1, Sdia2, Smes2;
 
@@ -222,13 +222,8 @@ public class RepInventory implements Serializable {
         }
 
         reportParameters.put("corpName", resp.getCrintHeadr());
-        if (ftype == 2) {
-            reportParameters.put("pdocdate", this.getFdateto());
-            reportParameters.put("PDOCDATE2", this.getFdatefrom());
-        } else {
-            reportParameters.put("pdocdate", this.getFdatefrom());
-            reportParameters.put("PDOCDATE2", this.getFdateto());
-        }
+        reportParameters.put("pdocdate", this.getFdatefrom());       
+        reportParameters.put("PDOCDATE2", this.getFdateto());
         reportParameters.put("PWHERE", _whereclausule);
         reportParameters.put("PWHERESR", _whereclausuleSR);
         reportParameters.put("reportName", _reportTitle);
@@ -247,11 +242,6 @@ public class RepInventory implements Serializable {
                 }
             }
         }
-
-        System.out.println(_whereclausule);
-        System.out.println(_reportname);
-        System.out.println(_reportTitle);
-        System.out.println(resp.getCrintHeadr());
 
         getBean().setParameters(reportParameters);
         getBean().setReportName(_reportname);
