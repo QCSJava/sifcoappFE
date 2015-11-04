@@ -187,7 +187,12 @@ public class RepAccount implements Serializable {
             }
 
             if (this.ftype == 4) {
-                _reportname = "/account/BDaily";
+                if (_type == 1) {
+                    _reportname = "/account/BDailyEX";
+                } else {
+                    _reportname = "/account/BDaily";
+                }
+                
                 _reportTitle = "Libro Diario";
 
                 //_whereclausule = " h.transid=d.transid and c.acctcode=d.account and h.refdate>=$P{pdocdate} and h.refdate<=$P{PDOCDATE2}";

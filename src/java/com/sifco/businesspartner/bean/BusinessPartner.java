@@ -96,6 +96,7 @@ public class BusinessPartner implements Serializable {
     private String paymblock;
     private boolean wtliable;
     private String ninum;
+    
     private String wtcode;
     private String vatregnum;
     private String industry;

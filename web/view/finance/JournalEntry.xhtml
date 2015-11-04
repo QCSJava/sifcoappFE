@@ -29,7 +29,7 @@
                                              update="formJournal">
 
                             </p:commandButton>
-                            <p:commandButton tabindex="-1" type="button" title="Print" icon="ui-icon-print" />
+                            <p:commandButton tabindex="-1" title="Print" icon="ui-icon-print" actionListener="#{JournalEntry.print()}" ajax="false"/>
                         </f:facet>
                     </p:toolbar>
 
@@ -188,7 +188,7 @@
                         </div>
 
                         <div class="ui-grid ui-grid-responsive">
-                            <div class="ui-grid-col-12"><p:inputTextarea maxlength="50" id="coment" rows="2" cols="25" value="#{JournalEntry.memo}" /></div>
+                            <div class="ui-grid-col-12"><p:inputTextarea maxlength="100" id="coment" rows="2" cols="50" value="#{JournalEntry.memo}" /></div>
                         </div>
 
                         <div class="ui-grid ui-grid-responsive">

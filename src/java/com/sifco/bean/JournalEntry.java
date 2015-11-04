@@ -14,11 +14,14 @@ import com.sifcoapp.objects.accounting.to.JournalEntryLinesTO;
 import com.sifcoapp.objects.accounting.to.JournalEntryTO;
 import com.sifcoapp.objects.catalogos.Common;
 import com.sifcoapp.objects.common.to.ResultOutTO;
+import com.sifcoapp.report.bean.ReportsBean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.Vector;
@@ -27,6 +30,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -42,6 +46,9 @@ public class JournalEntry implements Serializable {
 //<editor-fold defaultstate="collapsed" desc="declaracion de variables">
     //beans
     private AccountingEJBClient AccountingEJBClient;
+    
+    @ManagedProperty(value = "#{reportsBean}")
+    private ReportsBean bean;
     // tipo TO
     private JournalEntryLinesTO selectDetail = new JournalEntryLinesTO();
     private JournalEntryTO newJournal = new JournalEntryTO();
@@ -83,6 +90,23 @@ public class JournalEntry implements Serializable {
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="Getters and setters">
+
+    public AccountingEJBClient getAccountingEJBClient() {
+        return AccountingEJBClient;
+    }
+
+    public void setAccountingEJBClient(AccountingEJBClient AccountingEJBClient) {
+        this.AccountingEJBClient = AccountingEJBClient;
+    }
+
+    public ReportsBean getBean() {
+        return bean;
+    }
+
+    public void setBean(ReportsBean bean) {
+        this.bean = bean;
+    }
+    
     public JournalEntry() {
     }
 
@@ -748,7 +772,7 @@ public class JournalEntry implements Serializable {
 
             if (_res.getCodigoError() == 0) {//se realizo correctamente
                 transid = _res.getDocentry();
-                newJournal.setTransid(transid);
+                newJournal = AccountingEJBClient.getJournalEntryByKey(transid);
                 faceMessage(_res.getMensaje());
 
                 estateActualizar();
@@ -940,6 +964,29 @@ public class JournalEntry implements Serializable {
             return false;
         }
         return true;
+    }
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="print">
+    public void print(){
+        if (this.newJournal.getTransid() > 0 && this.varEstados == 2) {
+            faceMessage("Imprimir " + this.transid);
+            String _reportname = null;
+            Map<String, Object> reportParameters = new HashMap<>();
+            
+            
+            _reportname = "/bank/JournalEntryPrint";
+            reportParameters.put("pdocnum", this.newJournal.getTransid());
+            reportParameters.put("reportName", " ");
+            reportParameters.put("corpName", "ACOETMISAB DE R.L.");
+            
+            getBean().setParameters(reportParameters);
+            getBean().setReportName(_reportname);
+            getBean().execute();
+            
+            
+        }else
+            faceMessage("No se puede imprimir");
     }
 //</editor-fold>
 

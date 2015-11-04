@@ -153,7 +153,7 @@
                                     </p:column>
 
                                     <p:column headerText="Valor"  style="width: 8%; font-size: #{commonBean.sizeFont1}">
-                                        <p:inputText id="valor1" tabindex="9" value="#{det.paidsum}" size="10" disabled="#{colecturiaBean.common || colecturiaBean.ifCancelacion? true:false}" readonly="#{det.linenum == colecturiaBean.lineNum? true:false}"
+                                        <p:inputText id="valor1" tabindex="9" value="#{det.paidsum}" size="10" disabled="#{colecturiaBean.common || colecturiaBean.ifCancelacion? true:false}" readonly="#{det.linenum == 17? true:det.linenum == 21? true:det.linenum == 23?true:false}"
                                                      >
                                             
                                         </p:inputText>
@@ -181,13 +181,13 @@
                             <div class="ui-grid-col-2">
                                 <p:outputLabel value="Observaciones"/>
                                 <p:spacer width="10" height="0"/>
-                                <p:inputTextarea id="p4" tabindex="10" rows="3" cols="50" value="#{colecturiaBean.observaciones}"/> 
+                                <p:inputTextarea id="p4" tabindex="10" rows="3" cols="50" value="#{colecturiaBean.observaciones}" maxlength="254"/> 
                             </div>
                         </div>
                         <p:spacer width="0" height="15" />
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-1">
-                                <p:commandButton id="botonPrincipal" value="#{colecturiaBean.botonEstado}" actionListener="#{colecturiaBean.botonPrincipal}" process="@all"/>
+                                <p:commandButton tabindex="11" id="botonPrincipal" value="#{colecturiaBean.botonEstado}" actionListener="#{colecturiaBean.botonPrincipal}" process="@all"/>
                                 <p:defaultCommand target="botonPrincipal" />
                             </div>
                         </div>
