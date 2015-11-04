@@ -1225,6 +1225,12 @@ public class BusinessPartner implements Serializable {
         }
         newBusiness.setBalance(balance);
         //GENERAL
+        if (!nit.equals("")) {
+            newBusiness.setNit(nit);
+        }
+        if (!addid.equals("")) {
+            newBusiness.setAddid(addid);
+        }
         if (!phone1.equals("")) {
             newBusiness.setPhone1(phone1);
         }
@@ -1329,7 +1335,10 @@ public class BusinessPartner implements Serializable {
             search.setGroupcode(Integer.parseInt(groupcode));
         }
 
-        search.setNit(nit);
+        if (nit.equals("")) {
+            search.setNit(vacio);
+        }else
+            search.setNit(nit);
 
         try {
             listaBusqueda = CatalogEJB.get_businesspartner(search);

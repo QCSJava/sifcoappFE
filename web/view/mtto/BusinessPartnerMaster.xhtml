@@ -84,7 +84,7 @@
                                     <div class="ui-grid-col-2"><p:outputLabel  value="Teléfono 2"/></div>
                                     <div class="ui-grid-col-4"><p:inputText id="idtel2" value="#{businessPartner.phone2}"  /></div>
                                     <div class="ui-grid-col-2"><p:outputLabel  value="NIT"/></div>
-                                    <div class="ui-grid-col-4"><p:inputText id="idnrc" value="#{businessPartner.nit}"  /></div>
+                                    <div class="ui-grid-col-4"><p:inputText id="idnit" value="#{businessPartner.nit}"  /></div>
                                 </div>
                                 <div class="ui-grid-row" style="padding-bottom: 2px">
                                     <div class="ui-grid-col-2"><p:outputLabel  value="Teléfono móvil"/></div>
@@ -210,7 +210,7 @@
                         <div class="ui-grid-row">
                             <p:commandButton tabindex="0" id="botonPrincipal" value="#{businessPartner.botonEstado}" actionListener="#{businessPartner.botonPrincipal}" 
                                              process="@this    idpartner idnombre idtipo idgrupo idrfc padre:idtel1 padre:idtel2 padre:idcel padre:idfax padre:idemail padre:idweb 
-                                             padre:idcontacto padre:isActive padre:idcontacto padre:idnrc padre:idcomen padre:iddui  
+                                             padre:idcontacto padre:isActive padre:idcontacto padre:idnit padre:idcomen padre:iddui
                                              padre:idlimite padre:taxRetention padre:idproveedores padre:SNagroup padre:idramo padre:idpago 
                                              padre:idprecio  :frmDialog:Codigocuenta :frmDialog:Codigocuenta2 :frmDialog:Codigocuenta3 :frmDialog:Codigocuenta4
                                              "  update=":frmDialog:dialogo01">
