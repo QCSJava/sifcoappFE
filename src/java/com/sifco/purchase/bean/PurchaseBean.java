@@ -48,7 +48,7 @@ import javax.validation.constraints.Digits;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
-@ManagedBean(name = "purchaseBean")
+ @ManagedBean(name = "purchaseBean")
 @SessionScoped
 public class PurchaseBean implements Serializable {
 
@@ -655,6 +655,9 @@ public class PurchaseBean implements Serializable {
 
                 aux = Integer.parseInt(cat1.getCatvalue()) + 0.0;//impuesto debe ser un valor entero
                 Double imp = aux / 100;
+                
+                impFOV = Double.parseDouble(cat1.getCatvalue2());
+                impCOT = Double.parseDouble(cat1.getCatvalue3());
 
                 newDetalle.setTaxcode(cat1.getCatcode());
                 newDetalle.setVatgroup(imp + "|" + impFOV + "|" + impCOT);

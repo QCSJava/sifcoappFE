@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PurchaseLedger" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="395318c6-6159-4c8b-92a7-d32f206b6aeb">
-	<property name="ireport.zoom" value="1.1000000000000016"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.7715610000000037"/>
+	<property name="ireport.x" value="75"/>
+	<property name="ireport.y" value="83"/>
 	<parameter name="corpName" class="java.lang.String">
 		<defaultValueExpression><![CDATA["ACOETMISAB DE R.L."]]></defaultValueExpression>
 	</parameter>
@@ -11,14 +11,21 @@
 	<parameter name="PDOCDATE2" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="nameF1" class="java.lang.String"/>
+	<parameter name="titleF1" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select p.docnum,p.doctype,p.docstatus,p.docdate,p.numatcard,
-p.cardcode,p.cardname,p.vatsum,p.doctotal,p.peymethod,p.usersign,(select catvalue from cat_tab1_catalogos where catcode='1'
+p.cardcode,p.cardname,p.vatsum,p.doctotal,p.peymethod,p.usersign,
+
+coalesce(CASE WHEN d.taxcode = 'FOV' THEN sum(d.quantity) * (CAST(split_part(min(d.vatgroup), '|',2) as float) + CAST(split_part(min(d.vatgroup), '|',3)as float)) END ,0.0) as exento,
+(select catvalue from cat_tab1_catalogos where catcode='1'
 and tablecode=(select tablecode from cat_tab0_tables where tablename='TypesInvoices')) doctypename,
+
 SUM(d.stockpricestockprice * d.quantity) as costo, b.cardname, b.addid
+
 from pur_pur0_purchase p join pur_pur1_purchasedetail d ON p.docentry = d.docentry inner join cat_bpa0_businesspartner b on p.cardcode = b.cardcode
 where p.docdate>=$P{pdocdate} and p.docdate<=$P{PDOCDATE2}
-GROUP BY p.docentry, b.cardname, b.addid
+GROUP BY p.docentry, b.cardname, b.addid, d.taxcode
 	ORDER BY p.docdate ASC, p.docentry ASC]]>
 	</queryString>
 	<field name="docnum" class="java.lang.Integer">
@@ -26,45 +33,37 @@ GROUP BY p.docentry, b.cardname, b.addid
 	</field>
 	<field name="doctype" class="java.lang.String"/>
 	<field name="docstatus" class="java.lang.String">
-		<fieldDescription><![CDATA[Status de documento
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Status de documento]]></fieldDescription>
 	</field>
 	<field name="docdate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha doc.
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Fecha doc.]]></fieldDescription>
 	</field>
 	<field name="numatcard" class="java.lang.String">
-		<fieldDescription><![CDATA[NÃºmero de referencia del SN
-]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de referencia del SN]]></fieldDescription>
 	</field>
 	<field name="cardcode" class="java.lang.String">
-		<fieldDescription><![CDATA[Proveedor por defecto
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Proveedor por defecto]]></fieldDescription>
 	</field>
 	<field name="cardname" class="java.lang.String">
-		<fieldDescription><![CDATA[Nombre SN
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Nombre SN]]></fieldDescription>
 	</field>
 	<field name="vatsum" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Impuesto total
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Impuesto total]]></fieldDescription>
 	</field>
 	<field name="doctotal" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Total del documento
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Total del documento]]></fieldDescription>
 	</field>
 	<field name="peymethod" class="java.lang.String">
-		<fieldDescription><![CDATA[Forma de pago
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Forma de pago]]></fieldDescription>
 	</field>
 	<field name="usersign" class="java.lang.Integer">
 		<fieldDescription><![CDATA[Firma de usuario]]></fieldDescription>
 	</field>
+	<field name="exento" class="java.lang.Double"/>
 	<field name="doctypename" class="java.lang.String"/>
 	<field name="costo" class="java.math.BigDecimal"/>
 	<field name="addid" class="java.lang.String">
-		<fieldDescription><![CDATA[NÃºmero de ID adicional
-]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de ID adicional]]></fieldDescription>
 	</field>
 	<variable name="num" class="java.lang.Integer" resetType="Column" calculation="Count">
 		<variableExpression><![CDATA[1++]]></variableExpression>
@@ -77,6 +76,9 @@ GROUP BY p.docentry, b.cardname, b.addid
 	</variable>
 	<variable name="doctotal_1" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{doctotal}]]></variableExpression>
+	</variable>
+	<variable name="exento_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{exento}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -201,7 +203,7 @@ GROUP BY p.docentry, b.cardname, b.addid
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Internas]]></text>
+				<text><![CDATA[Fovial y Cotrans]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="344" y="12" width="58" height="26" uuid="f28436e7-87e2-44dc-946a-4e6aab9441a4"/>
@@ -310,14 +312,6 @@ GROUP BY p.docentry, b.cardname, b.addid
 				<textFieldExpression><![CDATA[$V{num}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="302" y="0" width="42" height="15" uuid="1686d699-38ac-440d-8be6-791e77e63f25"/>
-				<box rightPadding="5"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[0.00]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="344" y="0" width="58" height="15" uuid="59d4e20a-b40a-4ec6-a31c-b592fe829c36"/>
 				<box rightPadding="5"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -387,7 +381,7 @@ GROUP BY p.docentry, b.cardname, b.addid
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{vatsum}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{vatsum}.doubleValue()-$F{exento}.doubleValue()]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="168" y="0" width="134" height="15" uuid="762803a4-18f2-4a3c-a0f4-0f6dc010aea4"/>
@@ -403,6 +397,14 @@ GROUP BY p.docentry, b.cardname, b.addid
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{addid}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="302" y="0" width="42" height="15" uuid="d8ccd21a-d65a-4e67-8a0c-df53fb451203"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exento}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -440,25 +442,6 @@ GROUP BY p.docentry, b.cardname, b.addid
 	</pageFooter>
 	<lastPageFooter>
 		<band height="95">
-			<line>
-				<reportElement x="0" y="24" width="118" height="1" uuid="3ca92895-8416-44d9-ab41-c3e58b7e1adc"/>
-			</line>
-			<staticText>
-				<reportElement x="0" y="25" width="118" height="15" uuid="b47ad431-27bc-4172-9a46-162f2f68772b"/>
-				<box rightPadding="5"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[NOÉ SORIANO VILLALOVOS]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="40" width="118" height="15" uuid="2d85c005-3fdb-4be8-a43b-c55393591ac2"/>
-				<box rightPadding="5"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[CONTADOR]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="662" y="83" width="45" height="12" uuid="edebdf79-7b97-41ee-af9d-658aeceaefdc"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
@@ -487,6 +470,23 @@ GROUP BY p.docentry, b.cardname, b.addid
 				</textElement>
 				<textFieldExpression><![CDATA[$P{JASPER_REPORT}.getName()]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="120" height="12" uuid="a0541a95-c1d0-4f43-b8cd-d2274998800f"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titleF1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="28" width="120" height="12" uuid="5fae08c1-e8b1-4ebe-ab2b-c4a007ab7115"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nameF1}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="27" width="120" height="1" uuid="d0101d15-92f8-4562-b5fe-84e34d638ec9"/>
+			</line>
 		</band>
 	</lastPageFooter>
 	<summary>
@@ -566,14 +566,14 @@ GROUP BY p.docentry, b.cardname, b.addid
 				</textElement>
 				<text><![CDATA[0.00]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="302" y="1" width="42" height="15" uuid="df0d11c1-ad08-4563-aa6a-2f19a3f8ed2d"/>
+			<textField pattern="#,##0.00">
+				<reportElement x="302" y="0" width="42" height="16" uuid="e3893a04-250b-448d-823d-b951138f14b6"/>
 				<box rightPadding="5"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[0.00]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$V{exento_1}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

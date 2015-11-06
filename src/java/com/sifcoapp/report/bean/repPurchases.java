@@ -7,6 +7,7 @@ package com.sifcoapp.report.bean;
 
 import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.client.CatalogEJBClient;
+import com.sifcoapp.client.ParameterEJBClient;
 import com.sifcoapp.objects.admin.to.EnterpriseTO;
 import com.sifcoapp.objects.catalog.to.BusinesspartnerInTO;
 import com.sifcoapp.objects.catalog.to.BusinesspartnerTO;
@@ -47,7 +48,7 @@ public class repPurchases implements Serializable {
     private static AdminEJBClient AdminEJBService = null;
     private int ftype;
     private static CatalogEJBClient CatalogEJB;
-
+    private static ParameterEJBClient ParameterEJBClient;
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="Autocomplete Socio" > 
@@ -119,6 +120,9 @@ public class repPurchases implements Serializable {
         }
         if (CatalogEJB == null) {
             CatalogEJB = new CatalogEJBClient();
+        }
+        if (ParameterEJBClient == null) {
+            ParameterEJBClient = new ParameterEJBClient();
         }
     }
 
@@ -295,17 +299,12 @@ public class repPurchases implements Serializable {
 
         if (this.ftype == 11) {
 
-            _reportname = "/purchase/purchBook";
+            _reportname = "/purchase/PurchaseLedger";
 
-            _whereclausule = "  extract(month from docdate)= " + (cal1.get(Calendar.MONTH) + 1) + " and extract(year from docdate)=" + cal1.get(Calendar.YEAR);
-
-            _reportTitle = "LIBRO DE COMPRAS (ART. 141 Y 86 R.C.T.)";
-            if (this.getFcode() != null && this.getFcode().length() > 0) {
-                _whereclausule += " and docnum=" + this.getFcode();
-            }
-            if (this.getFname() != null && this.getFname().length() > 0) {
-                _whereclausule += " and cardcode='" + this.getFname() + "'";
-            }
+            
+            _reportTitle = "LIBRO DE COMPRAS"; //(ART. 141 Y 86 R.C.T.)";
+            reportParameters.put("nameF1", ParameterEJBClient.getParameterbykey(22).getValue1());
+            reportParameters.put("titleF1", ParameterEJBClient.getParameterbykey(22).getValue2());
         }
         
         if (this.ftype == 12) {
