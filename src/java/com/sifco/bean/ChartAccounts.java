@@ -13,13 +13,17 @@ import com.sifcoapp.objects.accounting.to.JournalEntryLinesTO;
 import com.sifcoapp.objects.admin.to.CatalogTO;
 import com.sifcoapp.objects.catalogos.Common;
 import com.sifcoapp.objects.common.to.ResultOutTO;
+import com.sifcoapp.report.bean.ReportsBean;
+import com.sifcoapp.report.common.AbstractReportBean;
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +32,7 @@ import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 import org.primefaces.context.RequestContext;
@@ -93,11 +98,23 @@ public class ChartAccounts implements Serializable {
     private List<CatalogTO> lstRubros;
     private static final String CATALOGORUB = "Rubros_PC";
     private String rubro;
+    
+    //report
+    @ManagedProperty(value = "#{reportsBean}")
+    private ReportsBean bean;
 
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="Get and Set" >
 
+    public ReportsBean getBean() {
+        return bean;
+    }
+
+    public void setBean(ReportsBean bean) {
+        this.bean = bean;
+    }
+    
     public static AdminEJBClient getAdminEJBService() {
         return AdminEJBService;
     }
@@ -933,6 +950,29 @@ public class ChartAccounts implements Serializable {
      cell.setCellStyle(cellStyle);
      }
      }*/
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="imprimir">
+    public void print(){
+        String _reportTitle,_reportname;
+        Map<String, Object> reportParameters = new HashMap<>();
+        
+        _reportname = "/account/AccountingCatalog";
+        _reportTitle = "CATALOGO CONTABLE";
+        
+        reportParameters.put("reportName", _reportTitle);
+        reportParameters.put("corpName", "ACOETMISAB DE R.L.");
+        
+        
+        this.bean = new ReportsBean();
+        getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "EXCEL"));
+        getBean().setFileName(_reportTitle);
+        
+        getBean().setParameters(reportParameters);
+        getBean().setReportName(_reportname);
+        getBean().execute();
+    
+    }
 //</editor-fold>
     
 }//cierre de clase
