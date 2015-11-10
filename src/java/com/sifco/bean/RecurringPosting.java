@@ -6,7 +6,6 @@
 package com.sifco.bean;
 
 import com.sifco.login.bean.Util;
-import com.sifco.businesspartner.bean.BusinessPartner;
 import com.sifcoapp.assignment.bean.AccassignmentBean;
 import com.sifcoapp.client.AccountingEJBClient;
 import com.sifcoapp.client.AdminEJBClient;
@@ -31,8 +30,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
@@ -41,7 +40,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name = "RecurringPosting")
-@ApplicationScoped
+@SessionScoped
 public class RecurringPosting implements Serializable {
 
     HttpSession session = Util.getSession();
@@ -102,6 +101,8 @@ public class RecurringPosting implements Serializable {
 
     private String fecha = "true";
     private int RowKey;
+
+    private boolean upd = false;
     //para el footer de la pagina
 
 //</editor-fold>
@@ -587,34 +588,63 @@ public class RecurringPosting implements Serializable {
     }
 //</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="updRow y actualizar saldos">
+    public void updRow() {
+        //faceMessage("select row " + selectDetail.getLineid());
+
+        this.upd = true;
+        this.account = selectDetail.getAcctcode();
+        this.shortname = selectDetail.getAcctdesc();
+        this.debit = selectDetail.getDebit();
+        this.credit = selectDetail.getCredit();
+
+    }
+    
+    public void updMontos(){
+        loctotal = 0.0;
+        systotal = 0.0;
+        for (RecurringPostingsDetailTO obj : getListaDetalles()) {
+            if (obj.getDebit() != null) {
+                loctotal = loctotal + obj.getDebit();
+            }
+            if (obj.getCredit() != null) {
+                systotal = systotal + obj.getCredit();
+            } 
+        }
+    }
+    
+//</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="Agregar detalles al dataTable" > 
     public void accionAgregar(ActionEvent actionEvent) {
         try {
             if (validarNull()) {
-                RecurringPostingsDetailTO nuevoDetalle = new RecurringPostingsDetailTO();
-                if (debit != null) {
-                    loctotal = loctotal + debit;
-                }
-                if (credit != null) {
-                    systotal = systotal + credit;
-                }
-                nuevoDetalle.setAcctcode(account);
-                nuevoDetalle.setAcctdesc(shortname);
-                nuevoDetalle.setDebit(debit);
-                nuevoDetalle.setCredit(credit);
-                nuevoDetalle.setLineid(UUID.randomUUID().hashCode());
-                // nuevoDetalle.setLinenum(getListaDetalles().size() + 1);
+                if (upd) {
+                   // faceMessage("update ...");
+                    this.upd = false;
+                    for (RecurringPostingsDetailTO obj : getListaDetalles()) {
+                        if (obj.getLineid() == selectDetail.getLineid()) {
+                            obj.setDebit(this.debit);
+                            obj.setCredit(this.credit);
+                        }
+                    }
+                    updMontos();
+                } else {
+                    RecurringPostingsDetailTO nuevoDetalle = new RecurringPostingsDetailTO();
+                    
+                    nuevoDetalle.setAcctcode(account);
+                    nuevoDetalle.setAcctdesc(shortname);
+                    nuevoDetalle.setDebit(debit);
+                    nuevoDetalle.setCredit(credit);
+                    nuevoDetalle.setLineid(UUID.randomUUID().hashCode());
 
-                if (listaDetalles == null) {
-                    listaDetalles = new ArrayList<RecurringPostingsDetailTO>();
+                    if (listaDetalles == null) {
+                        listaDetalles = new ArrayList<>();
+                    }
+                    
+                    getListaDetalles().add(nuevoDetalle);
+                    updMontos();
                 }
-                if (listaPadre == null) {
-                    listaPadre = new Vector();
-                }
-
-                listaPadre.add(nuevoDetalle);
-                getListaDetalles().add(nuevoDetalle);
-                //cleanDetalle();
             }
         } catch (Exception e) {
         }
@@ -878,23 +908,23 @@ public class RecurringPosting implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="validaciones">
     public boolean validarNull() {
+        if (debit != null && debit > 0 && credit != null && credit > 0) {
+            faceMessage("Digite una cantidad en DEBE ó HABER, no ambas");
+            return false;
+        }
         if (account.isEmpty()) {
             faceMessage("Digite un código de cuenta");
             return false;
-        } else {
-            if (shortname.isEmpty()) {
-                faceMessage("Digite un nombre de cuenta");
-                return false;
-            } else {
-                if (debit == null && credit == null) {
-                    faceMessage("Digite una cantidad");
-                    return false;
-                } else {
-                    return true;
-                }
-            }
         }
-
+        if (shortname.isEmpty()) {
+            faceMessage("Digite un nombre de cuenta");
+            return false;
+        }
+        if (debit == null && credit == null) {
+            faceMessage("Digite una cantidad");
+            return false;
+        }
+        return true;
     }
 
     public boolean validarClear() {
@@ -939,12 +969,13 @@ public class RecurringPosting implements Serializable {
         } else {
             newRecurring.setLimitrtrns("N");
         }
-        Iterator<RecurringPostingsDetailTO> iterator2 = listaPadre.iterator();
-        while (iterator2.hasNext()) {
-            RecurringPostingsDetailTO articleDetalle = (RecurringPostingsDetailTO) iterator2.next();
-            articleDetalle.setRcurcode(rcurcode);
-            articleDetalle.setLineid(line + 1);
+        
+        listaPadre = new Vector();
+        for (RecurringPostingsDetailTO obj : getListaDetalles()) {
+            obj.setRcurcode(rcurcode);
+            obj.setLineid(line + 1);
             line = line + 1;
+            listaPadre.add(obj);
         }
 
         newRecurring.setRecurringPostingsDetail(listaPadre);
@@ -1004,14 +1035,14 @@ public class RecurringPosting implements Serializable {
         } else {
             newRecurring.setLimitrtrns("N");
         }
+        
+        listaPadre = new Vector();
         listaPadre.clear();
-        Iterator<RecurringPostingsDetailTO> iterator2 = listaDetalles.iterator();
-        while (iterator2.hasNext()) {
-            RecurringPostingsDetailTO articleDetalle = (RecurringPostingsDetailTO) iterator2.next();
-            articleDetalle.setRcurcode(rcurcode);
-            articleDetalle.setLineid(line + 1);
+        for (RecurringPostingsDetailTO obj : getListaDetalles()) {
+            obj.setRcurcode(rcurcode);
+            obj.setLineid(line + 1);
             line = line + 1;
-            listaPadre.add(articleDetalle);
+            listaPadre.add(obj);
         }
         newRecurring.setRecurringPostingsDetail(null);
         newRecurring.setRecurringPostingsDetail(listaPadre);

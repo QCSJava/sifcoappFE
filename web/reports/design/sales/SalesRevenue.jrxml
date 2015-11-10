@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SalesRevenue" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="07a1cfe7-b154-40d4-b13d-e50f7d4a3f4d">
-	<property name="ireport.zoom" value="1.6105100000000165"/>
-	<property name="ireport.x" value="398"/>
+	<property name="ireport.zoom" value="1.771561000000022"/>
+	<property name="ireport.x" value="529"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="corpName" class="java.lang.String">
 		<defaultValueExpression><![CDATA["ACOETMISAB DE R.L."]]></defaultValueExpression>
@@ -14,27 +14,34 @@
 	<parameter name="codDiesel" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="year" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[select to_char(to_timestamp (coalesce(q1.mes,q2.mes)::text, 'MM'), 'TMMonth')  mes, q1.ventas, q1.costos, q1.utilidad,
+		<![CDATA[select to_char(to_timestamp (coalesce(q1.mes,q2.mes)::text, 'MM'), 'TMMonth')  mes, coalesce(q1.contado,0.0) as contado, coalesce(q1.credito,0.0) as credito, coalesce(q1.ventas,0.0) as ventas, q1.costos, q1.utilidad,
 coalesce(q2.compras, 0.0) compras , (coalesce(q2.compras,0.0)- coalesce(q1.ventas,0.0)) as gestion,
 case when  (coalesce(q2.compras,0.0)- coalesce(q1.ventas,0.0)) < 0 THEN 'INCREMENTO COMPRAS' ELSE 'INCREMENTO VENTAS' END AS Interpretacion
 from (
 
-select extract(month from docdate) mes,  sum(t0.doctotal) as ventas, sum(t1.openstock) costos, sum(t0.doctotal-t1.openstock) utilidad
+select extract(month from T0.docdate) mes, sum (case when T2.peymethod in ('1','3') THEN t0.doctotal END ) AS Contado, sum (case when peymethod in ('2') then t0.doctotal end) as credito,   sum(t0.doctotal) as ventas, sum(t1.openstock) costos, sum(t0.doctotal-t1.openstock) utilidad
 from adm_inl0_inventorylog t0 join adm_wjl0_warehousejournal t1 on t0.messageid = t1.messageid
-where t0.transtype in (10) and (extract(year from docdate) = '2015') and ( t0.itemcode  <> $P{codDiesel})
-group by  extract(month from docdate)
+join sal_sal0_sales t2 on to_number(t0.base_ref,'99999') = t2.docentry
+where t0.transtype in (10) and (extract(year from T0.docdate) = $P{year}) and ( t0.itemcode  <> $P{codDiesel})
+group by  extract(month from T0.docdate)
 ) q1
 full outer join
 (
 select extract(month from docdate) mes,  sum(t0.doctotal) as compras
 from adm_inl0_inventorylog t0 join adm_wjl0_warehousejournal t1 on t0.messageid = t1.messageid
-where t0.transtype in (12) and (extract(year from docdate) ='2015') and (t0.itemcode  <> $P{codDiesel})
+where t0.transtype in (12) and (extract(year from docdate) =$P{year}) and (t0.itemcode  <> $P{codDiesel})
 group by  extract(month from docdate)
 ) q2
-on q1.mes = q2.mes]]>
+on q1.mes = q2.mes
+]]>
 	</queryString>
 	<field name="mes" class="java.lang.String"/>
+	<field name="contado" class="java.math.BigDecimal"/>
+	<field name="credito" class="java.math.BigDecimal"/>
 	<field name="ventas" class="java.math.BigDecimal"/>
 	<field name="costos" class="java.math.BigDecimal"/>
 	<field name="utilidad" class="java.math.BigDecimal"/>
@@ -55,6 +62,12 @@ on q1.mes = q2.mes]]>
 	</variable>
 	<variable name="gestion_1" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{gestion}]]></variableExpression>
+	</variable>
+	<variable name="contado_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{contado}]]></variableExpression>
+	</variable>
+	<variable name="credito_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{credito}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -214,13 +227,6 @@ on q1.mes = q2.mes]]>
 				</textElement>
 				<text><![CDATA[COSTO DE VENTAS]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="0" y="13" width="83" height="44" uuid="9eef195d-db1d-43b3-b50d-3c917571df5c"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[MESES EN ANALISIS AÑO 2015]]></text>
-			</staticText>
 			<line>
 				<reportElement x="93" y="33" width="1" height="24" uuid="4b403acf-109e-4f25-9908-61ada2810bea"/>
 			</line>
@@ -260,6 +266,14 @@ on q1.mes = q2.mes]]>
 			<line>
 				<reportElement x="751" y="33" width="1" height="25" uuid="1cbbc532-02db-4166-9d4c-f1b34867d2b1"/>
 			</line>
+			<textField pattern="$  #,##0.00;$  (#,##0.00)" isBlankWhenNull="true">
+				<reportElement x="1" y="13" width="82" height="44" uuid="36cd96d7-d70d-4e9d-974f-d981c1a62e4e"/>
+				<box leftPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MESES EN ANALISIS AÑO "+$P{year}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
@@ -377,6 +391,52 @@ on q1.mes = q2.mes]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{compras}]]></textFieldExpression>
 			</textField>
+			<textField pattern="$  #,##0.00;$  (#,##0.00)" isBlankWhenNull="true">
+				<reportElement x="94" y="1" width="68" height="15" uuid="ba912b1b-c560-4c14-a4bf-c0637a92cbdf"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$  #,##0.00;$  (#,##0.00)" isBlankWhenNull="true">
+				<reportElement x="181" y="1" width="69" height="15" uuid="ea1028ca-f111-4269-8f20-72c346c20364"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{credito}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="162" y="1" width="12" height="15" uuid="d6260d62-1af3-4395-b8e9-a10f34071089"/>
+				<box rightPadding="0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ventas}>0? ($F{contado}.doubleValue()/$F{ventas}.doubleValue())*100:0.0]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="251" y="1" width="10" height="15" uuid="7083ee54-dbb4-42a4-b088-0b485aa76ba0"/>
+				<box rightPadding="0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ventas}>0? ($F{credito}.doubleValue()/$F{ventas}.doubleValue())*100:0.0]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="174" y="1" width="6" height="15" uuid="465f877b-4083-4a4f-955f-66fb3d000971"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="261" y="1" width="6" height="15" uuid="bc90f147-a0ed-48af-a16c-58f63db1b69c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<pageFooter>
@@ -542,12 +602,66 @@ on q1.mes = q2.mes]]>
 				<textFieldExpression><![CDATA[$V{gestion_1}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="503" y="35" width="249" height="20" uuid="325b0b8a-9473-49b4-870b-8c7c55a94993"/>
+				<reportElement x="578" y="35" width="174" height="20" uuid="325b0b8a-9473-49b4-870b-8c7c55a94993"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[REPUESTOS]]></text>
 			</staticText>
+			<textField pattern="$  #,##0.00;$  (#,##0.00)">
+				<reportElement x="181" y="9" width="69" height="15" uuid="1f92c522-f37c-4646-8cf1-a65798648b64"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{credito_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$  #,##0.00;$  (#,##0.00)">
+				<reportElement x="94" y="9" width="68" height="15" uuid="bba83067-32a4-45a3-8795-8a91c0a1ee24"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{contado_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="162" y="9" width="12" height="15" uuid="ecf25674-6e69-47bc-be8b-dacaf0f360d7"/>
+				<box rightPadding="0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{ventas_1}>0? ($V{contado_1}.doubleValue()/$V{ventas_1}.doubleValue())*100:0.0]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="174" y="9" width="6" height="15" uuid="6d2fb86c-6cb8-41c1-ac0e-e21de695c0ed"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="261" y="9" width="6" height="15" uuid="5e5877bf-b886-4929-8963-febaf97e0aad"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="251" y="9" width="10" height="15" uuid="a199db30-60cb-4c7c-8a76-f21a1cdae1dc"/>
+				<box rightPadding="0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{ventas_1}>0? ($V{credito_1}.doubleValue()/$V{ventas_1}.doubleValue())*100:0.0]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="668" y="9" width="84" height="15" uuid="1be01324-246c-41d6-8e2a-5d03161c1513"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{gestion_1}>0? "INCREMENTO VENTAS":"INCREMENTO COMPRAS"]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

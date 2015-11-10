@@ -26,15 +26,14 @@
                     <p:toolbar id="toolbarBill">
                         <f:facet name="left">
                             <p:focus context="toolbarBill"/>
-                            Plan Contable
+                            Plan Contable 
                             <span class="ui-separator">
                                 <span class="ui-icon ui-icon-grip-dotted-vertical" />
                             </span>
                             <p:commandButton tabindex="-1" title="Nuevo" icon="fa fa-refresh" actionListener="#{chartAccounts.updTreeAcc()}" 
                                              update="principal"         
-                                             >
-
-                            </p:commandButton>
+                                             />
+                            <p:commandButton tabindex="-1" ajax="false" action="#{salesBean.printInvoice()}" icon="fa fa-print" />
                         </f:facet>
                     </p:toolbar>
 

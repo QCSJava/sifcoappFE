@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FuelIncome" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2a937787-901e-48cb-bd8c-cef9efa341d0">
-	<property name="ireport.zoom" value="1.948717100000011"/>
-	<property name="ireport.x" value="624"/>
+	<property name="ireport.zoom" value="1.7715610000000113"/>
+	<property name="ireport.x" value="529"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="corpName" class="java.lang.String">
 		<defaultValueExpression><![CDATA["ACOETMISAB DE R.L."]]></defaultValueExpression>
@@ -14,6 +14,9 @@
 	<parameter name="codDiesel" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="year" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select to_char(to_timestamp (coalesce(q1.mes,q2.mes)::text, 'MM'), 'TMMonth')  mes, q1.ventas, q1.costos, q1.utilidad,
 coalesce(q2.compras, 0.0) compras , (coalesce(q2.compras,0.0)- coalesce(q1.ventas,0.0)) as gestion,
@@ -22,14 +25,14 @@ from (
 
 select extract(month from docdate) mes,  sum(t0.doctotal) as ventas, sum(t1.openstock) costos, sum(t0.doctotal-t1.openstock) utilidad
 from adm_inl0_inventorylog t0 join adm_wjl0_warehousejournal t1 on t0.messageid = t1.messageid
-where t0.transtype in (10) and (extract(year from docdate) = '2015') and ( t0.itemcode  = $P{codDiesel})
+where t0.transtype in (10) and (extract(year from docdate) = $P{year}) and ( t0.itemcode  = $P{codDiesel})
 group by  extract(month from docdate)
 ) q1
 full outer join
 (
 select extract(month from docdate) mes,  sum(t0.doctotal) as compras
 from adm_inl0_inventorylog t0 join adm_wjl0_warehousejournal t1 on t0.messageid = t1.messageid
-where t0.transtype in (12) and (extract(year from docdate) ='2015') and (t0.itemcode  = $P{codDiesel})
+where t0.transtype in (12) and (extract(year from docdate) = $P{year}) and (t0.itemcode  = $P{codDiesel})
 group by  extract(month from docdate)
 ) q2
 on q1.mes = q2.mes]]>
@@ -186,13 +189,6 @@ on q1.mes = q2.mes]]>
 				</textElement>
 				<text><![CDATA[COSTO DE VENTAS]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="0" y="13" width="97" height="44" uuid="e842c4da-0ea8-4f05-afee-336c2fa6d5c4"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[MESES EN ANALISIS AÑO 2015]]></text>
-			</staticText>
 			<line>
 				<reportElement x="108" y="33" width="1" height="24" uuid="65f28a99-f80f-4a58-b500-8d16841907a3"/>
 			</line>
@@ -220,6 +216,14 @@ on q1.mes = q2.mes]]>
 			<line>
 				<reportElement x="751" y="33" width="1" height="26" uuid="73453883-ee95-4d4b-9db0-19cea9c6142c"/>
 			</line>
+			<textField pattern="$  #,##0.00;$  (#,##0.00)" isBlankWhenNull="true">
+				<reportElement x="0" y="13" width="96" height="44" uuid="40de7c0c-0fe5-4dbc-bd98-610fadcf3e01"/>
+				<box leftPadding="3" rightPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MESES EN ANALISIS AÑO "+$P{year}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
@@ -483,6 +487,14 @@ on q1.mes = q2.mes]]>
 				</textElement>
 				<text><![CDATA[DIESEL]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="585" y="11" width="166" height="15" uuid="c4228b48-a89e-42f9-9255-755c3280025d"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{gestion_1}>0? "INCREMENTO VENTAS":"INCREMENTO COMPRAS"]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

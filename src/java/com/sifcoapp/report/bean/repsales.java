@@ -8,6 +8,7 @@ package com.sifcoapp.report.bean;
 import com.sifcoapp.bank.bean.CheckForPaymentBean;
 import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.client.CatalogEJBClient;
+import com.sifcoapp.client.ParameterEJBClient;
 import com.sifcoapp.objects.admin.to.EnterpriseTO;
 import com.sifcoapp.objects.catalog.to.BusinesspartnerInTO;
 import com.sifcoapp.objects.catalog.to.BusinesspartnerTO;
@@ -47,7 +48,8 @@ public class repsales implements Serializable {
     private static AdminEJBClient AdminEJBService = null;
     private static CatalogEJBClient CatalogEJB;
     private int ftype;
-
+    ParameterEJBClient ParameterEJBClient;
+    
     @PostConstruct
     public void initForm() {
         this.setFtype(1);
@@ -63,6 +65,9 @@ public class repsales implements Serializable {
         }
         if (CatalogEJB == null) {
             CatalogEJB = new CatalogEJBClient();
+        }
+        if (ParameterEJBClient == null) {
+            ParameterEJBClient = new ParameterEJBClient();
         }
     }
 
@@ -159,6 +164,24 @@ public class repsales implements Serializable {
             _whereclausule = " docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}";
         }
         
+        if (this.ftype == 9 || this.ftype == 10) {
+            if (this.ftype == 9) {
+                _reportname = "/sales/FuelIncome";
+                _reportTitle = "INGRESO POR VENTA DE COMBUSTIBLE";
+            }else{
+                _reportname = "/sales/SalesRevenue";
+                _reportTitle = "INGRESO POR VENTA DE REPUESTOS";
+            }
+            
+            Calendar fecha = Calendar.getInstance();
+            fecha.setTime(this.getFdatefrom());
+            int year = fecha.get(Calendar.YEAR);
+            //codigo diesel y year 
+            reportParameters.put("codDiesel", ParameterEJBClient.getParameterbykey(3).getValue1());
+            reportParameters.put("year", year);
+            
+        }
+        
         System.out.println(_whereclausule);
         System.out.println(_reportname);
         System.out.println(_reportTitle);
@@ -169,6 +192,7 @@ public class repsales implements Serializable {
         reportParameters.put("PWHERE", _whereclausule);
         reportParameters.put("PWHERESR", _whereclausuleSR);
         reportParameters.put("reportName", _reportTitle);
+        
         if (_type == 0) {
             getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "PDF"));
         } else {

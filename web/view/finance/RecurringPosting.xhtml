@@ -121,12 +121,10 @@
                                 </p:autoComplete>
                             </div>
                             <div class="ui-grid-col-2"><p:inputText id="debe" tabindex="8" style="width: 70%" disabled="#{RecurringPosting.disable2}" value="#{RecurringPosting.debit}" >
-                                    <p:ajax event="keyup" update="haber" listener="#{RecurringPosting.DisableInput}" process="@this debe haber"/> 
                                 </p:inputText></div>
 
                             <div class="ui-grid-col-2">
                                 <p:inputText id="haber" tabindex="9" style="width: 70%" value="#{RecurringPosting.credit}" disabled="#{RecurringPosting.disable}">
-                                    <p:ajax event="keyup" update="debe" listener="#{RecurringPosting.DisableInput}" process="@this debe haber"/>
                                 </p:inputText>
                             </div>
 
@@ -147,7 +145,9 @@
                                 <p:dataTable id="table" var="Art" value="#{RecurringPosting.listaDetalles}" rowKey="#{Art.lineid}" rendered="true"
                                              rowIndexVar="rowIndex" selectionMode="single" scrollable="true" scrollHeight="250" selection="#{RecurringPosting.selectDetail}"
                                              disabledSelection="#{RecurringPosting.disableComun}" emptyMessage="No hay registros">
-                                    <p:ajax event="rowSelect"  process="@this" update="table"/>
+                                    <p:ajax event="rowSelect"  process="@this" 
+                                            update="table formRecurring:Codigocuenta formRecurring:nombrecuenta formRecurring:debe formRecurring:haber" 
+                                            listener="#{RecurringPosting.updRow}"/>
                                     <p:columnGroup type="header">
                                         <p:row>
                                             <p:column headerText="#" style="width: 5%" />
@@ -371,7 +371,7 @@
                 </h:form>
 
                 <h:form>
-                    <p:dialog header="Confirmacion" widgetVar="dlg9" width="230" modal="false" resizable="false">
+                    <p:dialog header="Confirmacion" widgetVar="dlg9" width="230" modal="true" resizable="false">
                         <p:panel>
                             <div class="ui-grid ui-grid-responsive">
                                 <div class="ui-grid-row">
@@ -423,7 +423,7 @@
                 </h:form>
 
                 <h:form>
-                    <p:dialog header="Confirmacion" widgetVar="dlg11" width="230" modal="false" resizable="false">
+                    <p:dialog header="Confirmacion" widgetVar="dlg11" width="230" modal="true" resizable="false">
                         <p:panel>
                             <div class="ui-grid ui-grid-responsive">
                                 <div class="ui-grid-row">
