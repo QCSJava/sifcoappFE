@@ -138,8 +138,8 @@
                                 </p:contextMenu>    
 
                                 <p:dataTable  id="table" var="Art" value="#{JournalEntry.listaDetalles}" rowKey="#{Art.line_id}" rendered="true"
-                                             rowIndexVar="rowIndex" selectionMode="single" scrollable="true" scrollHeight="250" selection="#{JournalEntry.selectDetail}"
-                                             disabledSelection="#{JournalEntry.disableComun}" emptyMessage="No hay registros">
+                                              rowIndexVar="rowIndex" selectionMode="single" scrollable="true" scrollHeight="250" selection="#{JournalEntry.selectDetail}"
+                                              disabledSelection="#{JournalEntry.disableComun}" emptyMessage="No hay registros">
                                     <p:ajax event="rowSelect"  process="@this" update="table"/>
                                     <p:columnGroup type="header">
                                         <p:row>
@@ -206,37 +206,43 @@
                             <div class="ui-grid-col-5"></div>
                         </div>
 
-                        <p:dialog closeOnEscape="true" header="Datos encontrados" widgetVar="dlg2" modal="true"  width="1000" height="250" >
-                            <p:dataTable resizableColumns="true" liveResize="true" id="tableDialog" var="Rec" value="#{JournalEntry.listaBusquedaTable}"  scrollable="true" scrollHeight="90%"
-                                         selection="#{JournalEntry.selectJournal}" rowKey="#{Rec.transid}" selectionMode="single" rowIndexVar="rowIndex" >
+                        <p:dialog closeOnEscape="true" header="Datos encontrados" widgetVar="dlg2" modal="true"  width="1000" height="400" >
+                            <p:dataTable id="tableDialog" var="Rec" value="#{JournalEntry.listaBusquedaTable}"  scrollable="true" scrollHeight="90%"
+                                         selection="#{JournalEntry.selectJournal}" rowKey="#{Rec.transid}" selectionMode="single" rowIndexVar="rowIndex" 
+                                         paginator="true" rows="15"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="10,15,20"
+                                         resizableColumns="true" liveResize="false"
+                                         resizeMode="expand"
+                                         >
 
                                 <p:ajax event="rowDblselect"  process="@this" listener="#{JournalEntry.selectDialog}"/>
 
                                 <p:column headerText="#" style="width: 10px">
                                     <h:outputText value="#{rowIndex + 1}" />
                                 </p:column>
-                                <p:column headerText="Número" style="width: 30px" sortBy="#{Rec.number}">
+                                <p:column headerText="Número" style="width: 30px" sortBy="#{Rec.number}" filterBy="#{Rec.number}">
                                     <h:outputText value="#{Rec.number}" />
                                 </p:column>
 
-                                <p:column headerText="Origen" sortBy="#{Rec.transtype}">
+                                <p:column headerText="Origen" sortBy="#{Rec.transtype}" filterBy="#{Rec.transtype}">
                                     <h:outputText value="#{Rec.transtype}" />
                                 </p:column>
 
-                                <p:column headerText="Número Origen" sortBy="#{Rec.baseref}" >
+                                <p:column headerText="Número Origen" sortBy="#{Rec.baseref}" filterBy="#{Rec.baseref}">
                                     <h:outputText value="#{Rec.baseref}" />
                                 </p:column>
 
-                                <p:column headerText="Número Transacción" sortBy="#{Rec.transid}" >
+                                <p:column headerText="Número Transacción" sortBy="#{Rec.transid}" filterBy="#{Rec.transid}">
                                     <h:outputText value="#{Rec.transid}" />
                                 </p:column>
-                                
-                                <p:column headerText="Monto Total" sortBy="#{Rec.transid}" >
+
+                                <p:column headerText="Monto Total" sortBy="#{Rec.transid}" filterBy="#{Rec.transid}">
                                     <h:outputText value="#{Rec.loctotal}" >
                                         <f:convertNumber type="currency"  currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
                                     </h:outputText>
                                 </p:column>
-                                
+
                                 <p:column headerText="Fecha Contabilizacion" sortBy="#{Rec.refdate}" >
                                     <h:outputText value="#{Rec.refdate}">
                                         <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -252,7 +258,7 @@
                                         <f:convertDateTime pattern="dd/MM/yyyy" />
                                     </h:outputText>
                                 </p:column>
-                                
+
                             </p:dataTable>
                         </p:dialog> 
 
@@ -284,7 +290,7 @@
                         </p:panel> 
                     </p:dialog>
                 </h:form>
-                
+
                 <h:form>
                     <p:dialog header="Confirmacion" widgetVar="dlg10" width="230" modal="true" resizable="false">
                         <p:panel>
