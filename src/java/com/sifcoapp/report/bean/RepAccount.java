@@ -401,12 +401,12 @@ public class RepAccount implements Serializable {
         String[] newName = null;
         String codigo = null, nombre = null;
 
-        if (shortname != null) {
+        if (shortname != null && !shortname.equals("")) {
             newName = shortname.split("-");
             account = newName[0];
             shortname = newName[1];
         } else {
-            if (account != null) {
+            if (account != null && !account.equals("")) {
                 newName = account.split("-");
                 account = newName[0];
                 shortname = newName[1];

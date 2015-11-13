@@ -70,6 +70,12 @@ public class CheckPrint extends HttpServlet {
         String var = anio_ + "";
         var = var.substring(2);
         String espacio = " ";
+        String numCheque = "";
+        if (cheque.getAcctnum() == null || cheque.getAcctnum().equals("")) {
+            numCheque = "";
+        }else
+            numCheque = cheque.getAcctnum();
+        
 
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -113,7 +119,7 @@ public class CheckPrint extends HttpServlet {
                     + "\n"
                     + "                                            </td>\n"
                     + "                                            <td>\n"
-                    + "                                                " + cheque.getAcctnum() + "\n"
+                    + "                                                " + numCheque + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
                     + "                                        <tr style=\"height: 35px\">\n"

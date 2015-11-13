@@ -1357,14 +1357,15 @@ public class SupplierCreditNotesBean implements Serializable {
         fromCopy = true;
         faceMessage("Copiar desde: Factura de Proveedores");
 
-        if (validarClear()) {
-            toolbarBoton = 1;
-            showHideDialog("dlgC1", 1);
-        } else {
-            doSearchBill();
-            RequestContext.getCurrentInstance().update("dlgCfromB2");
+        doSearchBill();
+        RequestContext.getCurrentInstance().update("dlgCfromB2");
+        if (listaBusquedaTableBill.size()>0) {
             showHideDialog("dlgListBill3", 1);
+        }else{
+            faceMessage("No se encontraron registros para el socio: " + this.codSocio + " - " + this.socioNeg);
         }
+        
+        
 
     }
 //</editor-fold>

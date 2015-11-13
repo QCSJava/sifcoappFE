@@ -488,7 +488,7 @@ public class PurchaseBean implements Serializable {
         List articulos = new Vector();
 
         if (event.getObject().toString() != null) {
-            List _result = null;
+            List _result = new ArrayList();
 
             ArticlesInTO in = new ArticlesInTO();
             in.setItemCode(newCod);
@@ -656,9 +656,11 @@ public class PurchaseBean implements Serializable {
                 aux = Integer.parseInt(cat1.getCatvalue()) + 0.0;//impuesto debe ser un valor entero
                 Double imp = aux / 100;
                 
-                impFOV = Double.parseDouble(cat1.getCatvalue2());
-                impCOT = Double.parseDouble(cat1.getCatvalue3());
-
+                if (newImpuesto.equals("FOV")) {
+                    impFOV = Double.parseDouble(cat1.getCatvalue2());
+                    impCOT = Double.parseDouble(cat1.getCatvalue3());
+                }
+                
                 newDetalle.setTaxcode(cat1.getCatcode());
                 newDetalle.setVatgroup(imp + "|" + impFOV + "|" + impCOT);
 

@@ -555,12 +555,12 @@ public class GoodsReceiptBean implements Serializable {
         String[] newName = null;
         String codigo = null, nombre = null;
 
-        if (newNomCuenta != null) {
+        if (newNomCuenta != null && !newNomCuenta.equals("")) {
             newName = newNomCuenta.split("-");
             codigo = newName[0];
             nombre = newName[1];
         } else {
-            if (newCodCuenta != null) {
+            if (newCodCuenta != null && !newCodCuenta.equals("")) {
                 newName = newCodCuenta.split("-");
                 codigo = newName[0];
                 nombre = newName[1];

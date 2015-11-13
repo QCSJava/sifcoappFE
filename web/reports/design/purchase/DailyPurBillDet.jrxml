@@ -31,32 +31,25 @@ order by docnum,d.linenum]]>
 	</field>
 	<field name="doctype" class="java.lang.String"/>
 	<field name="docstatus" class="java.lang.String">
-		<fieldDescription><![CDATA[Status de documento
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Status de documento]]></fieldDescription>
 	</field>
 	<field name="docdate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha doc.
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Fecha doc.]]></fieldDescription>
 	</field>
 	<field name="cardcode" class="java.lang.String">
-		<fieldDescription><![CDATA[Proveedor por defecto
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Proveedor por defecto]]></fieldDescription>
 	</field>
 	<field name="cardname" class="java.lang.String">
-		<fieldDescription><![CDATA[Nombre SN
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Nombre SN]]></fieldDescription>
 	</field>
 	<field name="vatsum" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Impuesto total
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Impuesto total]]></fieldDescription>
 	</field>
 	<field name="doctotal" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Total del documento
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Total del documento]]></fieldDescription>
 	</field>
 	<field name="peymethod" class="java.lang.String">
-		<fieldDescription><![CDATA[Forma de pago
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Forma de pago]]></fieldDescription>
 	</field>
 	<field name="usersign" class="java.lang.Integer">
 		<fieldDescription><![CDATA[Firma de usuario]]></fieldDescription>
@@ -64,28 +57,22 @@ order by docnum,d.linenum]]>
 	<field name="doctypename" class="java.lang.String"/>
 	<field name="doctypepay" class="java.lang.String"/>
 	<field name="itemcode" class="java.lang.String">
-		<fieldDescription><![CDATA[NÃºmero de artÃ­culo
-]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de artÃ­culo]]></fieldDescription>
 	</field>
 	<field name="dscription" class="java.lang.String">
-		<fieldDescription><![CDATA[DescripciÃ³n del artÃ­culo
-]]></fieldDescription>
+		<fieldDescription><![CDATA[DescripciÃ³n del artÃ­culo]]></fieldDescription>
 	</field>
 	<field name="quantity" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Cantidad en doc.
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Cantidad en doc.]]></fieldDescription>
 	</field>
 	<field name="price" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Precio
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Precio]]></fieldDescription>
 	</field>
 	<field name="gtotal" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Total bruto
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Total bruto]]></fieldDescription>
 	</field>
 	<field name="linetotal" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Total lÃ­neas
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Total lÃ­neas]]></fieldDescription>
 	</field>
 	<field name="dvatsum" class="java.math.BigDecimal"/>
 	<variable name="PAGE_TOTAL" class="java.lang.Integer" resetType="Page" calculation="DistinctCount">
@@ -144,11 +131,12 @@ order by docnum,d.linenum]]>
 		<groupFooter>
 			<band height="16">
 				<textField isBlankWhenNull="true">
-					<reportElement x="9" y="0" width="228" height="16" uuid="0ceca8da-a09a-4369-8820-afc38f97c75d"/>
+					<reportElement x="69" y="0" width="180" height="16" uuid="0ceca8da-a09a-4369-8820-afc38f97c75d"/>
+					<box leftPadding="5"/>
 					<textElement>
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Sub-Total " + $F{doctypename}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{doctypename}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.0000" isBlankWhenNull="true">
 					<reportElement x="249" y="0" width="56" height="16" uuid="a9a354c9-8b70-4e3c-9a95-bf547a8ed5e8"/>
@@ -171,6 +159,11 @@ order by docnum,d.linenum]]>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{grpLinetotal}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement x="9" y="0" width="60" height="16" uuid="c8880bf4-421d-44d4-bab7-69f8682c89aa"/>
+					<textElement textAlignment="Right"/>
+					<text><![CDATA[Sub-Total]]></text>
+				</staticText>
 			</band>
 		</groupFooter>
 	</group>

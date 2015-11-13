@@ -431,12 +431,12 @@ public class JournalEntry implements Serializable {
         String[] newName = null;
         String codigo = null, nombre = null;
 
-        if (shortname != null) {
+        if (shortname != null && !shortname.equals("")) {
             newName = shortname.split("-");
             codigo = newName[0];
             nombre = newName[1];
         } else {
-            if (account != null) {
+            if (account != null && !account.equals("")) {
                 newName = account.split("-");
                 codigo = newName[0];
                 nombre = newName[1];

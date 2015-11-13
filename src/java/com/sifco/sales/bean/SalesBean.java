@@ -466,6 +466,7 @@ public class SalesBean implements Serializable {
                 newNomArt = null;
             }
             if (_result.isEmpty()) {
+                faceMessage("Articulo no encontrado");
                 this.newCod = null;
                 this.newNomArt = null;
 
