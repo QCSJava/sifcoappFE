@@ -48,7 +48,7 @@ public class CheckPrint extends HttpServlet {
         CheckForPaymentTO cheque = new CheckForPaymentTO();
         try {
             cheque = BankEJBClient.get_cfp0_checkforpaymentByKey(Integer.parseInt(pkCheck));
-            det = AccountingEJBClient.getJournalEntryByKey(Integer.parseInt(cheque.getTransref()));
+            det = AccountingEJBClient.getJournalEntryByKey(cheque.getTransnum());
         } catch (Exception ex) {
             Logger.getLogger(CheckPrint.class.getName()).log(Level.SEVERE, null, ex);
         }

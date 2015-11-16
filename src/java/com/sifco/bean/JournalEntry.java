@@ -8,10 +8,12 @@ package com.sifco.bean;
 import com.sifco.login.bean.Util;
 import com.sifcoapp.assignment.bean.AccassignmentBean;
 import com.sifcoapp.client.AccountingEJBClient;
+import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.objects.accounting.to.AccountTO;
 import com.sifcoapp.objects.accounting.to.JournalEntryInTO;
 import com.sifcoapp.objects.accounting.to.JournalEntryLinesTO;
 import com.sifcoapp.objects.accounting.to.JournalEntryTO;
+import com.sifcoapp.objects.admin.to.EnterpriseTO;
 import com.sifcoapp.objects.catalogos.Common;
 import com.sifcoapp.objects.common.to.ResultOutTO;
 import com.sifcoapp.report.bean.ReportsBean;
@@ -46,7 +48,7 @@ public class JournalEntry implements Serializable {
 //<editor-fold defaultstate="collapsed" desc="declaracion de variables">
     //beans
     private AccountingEJBClient AccountingEJBClient;
-    
+    private static AdminEJBClient AdminEJBService;
     @ManagedProperty(value = "#{reportsBean}")
     private ReportsBean bean;
     // tipo TO
@@ -88,9 +90,7 @@ public class JournalEntry implements Serializable {
     private String debcred;//indicador de credito/debito C/D
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Getters and setters">
-
     public AccountingEJBClient getAccountingEJBClient() {
         return AccountingEJBClient;
     }
@@ -106,7 +106,7 @@ public class JournalEntry implements Serializable {
     public void setBean(ReportsBean bean) {
         this.bean = bean;
     }
-    
+
     public JournalEntry() {
     }
 
@@ -367,12 +367,14 @@ public class JournalEntry implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="init de la ventana">
     @PostConstruct
     public void initForm() {
         if (AccountingEJBClient == null) {
             AccountingEJBClient = new AccountingEJBClient();
+        }
+        if (AdminEJBService == null) {
+            AdminEJBService = new AdminEJBClient();
         }
         estateGuardar();
     }
@@ -387,7 +389,7 @@ public class JournalEntry implements Serializable {
         String filterByCode = null;
         try {
 
-            _result = AccountingEJBClient.getAccountByFilter(filterByCode, query,"Y");
+            _result = AccountingEJBClient.getAccountByFilter(filterByCode, query, "Y");
         } catch (Exception ex) {
             Logger.getLogger(AccassignmentBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -409,7 +411,7 @@ public class JournalEntry implements Serializable {
 
         String filterByName = null;
         try {
-            _result = AccountingEJBClient.getAccountByFilter(query, filterByName,"Y");
+            _result = AccountingEJBClient.getAccountByFilter(query, filterByName, "Y");
         } catch (Exception ex) {
             Logger.getLogger(AccassignmentBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -966,27 +968,36 @@ public class JournalEntry implements Serializable {
         return true;
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="print">
-    public void print(){
+    public void print() {
         if (this.newJournal.getTransid() > 0 && this.varEstados == 2) {
             faceMessage("Imprimir " + this.transid);
             String _reportname = null;
             Map<String, Object> reportParameters = new HashMap<>();
-            
-            
+            EnterpriseTO resp = new EnterpriseTO();
+
+            if (AdminEJBService == null) {
+                AdminEJBService = new AdminEJBClient();
+            }
+            try {
+                resp = AdminEJBService.getEnterpriseInfo();
+            } catch (Exception ex) {
+                //faceMessage("Informacion de empresa ERROR");
+            }
+
             _reportname = "/bank/JournalEntryPrint";
             reportParameters.put("pdocnum", this.newJournal.getTransid());
             reportParameters.put("reportName", " ");
-            reportParameters.put("corpName", "ACOETMISAB DE R.L.");
-            
+            reportParameters.put("corpName", resp.getCrintHeadr());
+
             getBean().setParameters(reportParameters);
             getBean().setReportName(_reportname);
             getBean().execute();
-            
-            
-        }else
+
+        } else {
             faceMessage("No se puede imprimir");
+        }
     }
 //</editor-fold>
 

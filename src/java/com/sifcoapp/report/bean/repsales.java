@@ -76,7 +76,7 @@ public class repsales implements Serializable {
     }
 
     public void print(int _type) {
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
+        Map<String, Object> reportParameters = new HashMap<>();
         String _whereclausule = null;
         String _whereclausuleSR = null;
         String _reportname = null;

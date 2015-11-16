@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ConsumerBook" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c1ef1c2c-5577-41e4-af4d-6d1e2626dae3">
-	<property name="ireport.zoom" value="1.464100000000001"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="2.3579476910000023"/>
+	<property name="ireport.x" value="6"/>
+	<property name="ireport.y" value="89"/>
 	<parameter name="corpName" class="java.lang.String">
 		<defaultValueExpression><![CDATA["ACOETMISAB DE R.L."]]></defaultValueExpression>
 	</parameter>
@@ -14,36 +14,50 @@
 	<parameter name="nameF1" class="java.lang.String"/>
 	<parameter name="titleF1" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select extract(day from  p.docdate)as dia,min(p.numatcard) as minDoc,max(p.numatcard) as maxDoc  ,p.series,
-sum(p.vatsum) as  impuesto, sum(p.doctotal) as totalVentas,
-
-coalesce(CASE WHEN d.taxcode = 'FOV' THEN sum(d.quantity) * (CAST(split_part(min(d.vatgroup), '|',2) as float)
-+ CAST(split_part(min(d.vatgroup), '|',3)as float)) END ,0.0) as exento,
-
-
-SUM(d.stockpricestockprice * d.quantity) as costo
-
-from sal_sal0_sales p join sal_sal1_salesdetail d ON p.docentry = d.docentry
-where p.series in (1,3) and p.docdate>=$P{pdocdate} and p.docdate<=$P{PDOCDATE2}
-GROUP BY p.series, extract(day from  p.docdate), d.taxcode
-	ORDER BY p.series, extract(day from  p.docdate)]]>
+		<![CDATA[select Q1.dia, Q1.minDoc, Q1.maxDoc, Q1.exento, (Q1.totalVentas - Q1.exento) as ventasLocales, Q1.totalVentas
+from (
+	select
+		extract(day from  p.docdate)as dia,
+		min(p.numatcard) as minDoc,
+		max(p.numatcard) as maxDoc,
+		p.series,
+		sum(p.vatsum) as  impuesto,
+		sum(p.doctotal) as totalVentas,
+		coalesce(
+		sum(
+			CASE WHEN d.taxcode = 'FOV' THEN d.quantity * (CAST(split_part(d.vatgroup, '|',2) as float)
+			+ CAST(split_part(d.vatgroup, '|',3)as float)) END
+		) ,0.0
+		) as exento,
+		SUM(d.price * d.quantity) as costo
+	from
+		sal_sal0_sales p join sal_sal1_salesdetail d ON p.docentry = d.docentry
+	where
+		p.series in (1,3)
+		and p.docdate>=$P{pdocdate} and p.docdate<=$P{PDOCDATE2}
+	GROUP BY
+		p.series, extract(day from  p.docdate)
+	ORDER BY
+		p.series asc, extract(day from  p.docdate) asc
+) Q1]]>
 	</queryString>
 	<field name="dia" class="java.lang.Double"/>
 	<field name="mindoc" class="java.lang.String"/>
 	<field name="maxdoc" class="java.lang.String"/>
-	<field name="series" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Serie
-]]></fieldDescription>
-	</field>
-	<field name="impuesto" class="java.math.BigDecimal"/>
-	<field name="totalventas" class="java.math.BigDecimal"/>
 	<field name="exento" class="java.lang.Double"/>
-	<field name="costo" class="java.math.BigDecimal"/>
+	<field name="ventaslocales" class="java.lang.Double"/>
+	<field name="totalventas" class="java.math.BigDecimal"/>
 	<variable name="num" class="java.lang.Integer" resetType="Column" calculation="Count">
 		<variableExpression><![CDATA[1++]]></variableExpression>
 	</variable>
-	<variable name="doctotal_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{doctotal}]]></variableExpression>
+	<variable name="totalventas_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{totalventas}]]></variableExpression>
+	</variable>
+	<variable name="exento_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{exento}]]></variableExpression>
+	</variable>
+	<variable name="ventaslocales_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{ventaslocales}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -191,7 +205,7 @@ GROUP BY p.series, extract(day from  p.docdate), d.taxcode
 				<text><![CDATA[Al No]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="60" y="1" width="40" height="26" uuid="0f891bf3-c33c-46ad-9dcd-ab7da2001ce5"/>
+				<reportElement x="62" y="1" width="40" height="26" uuid="0f891bf3-c33c-46ad-9dcd-ab7da2001ce5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -226,14 +240,6 @@ GROUP BY p.series, extract(day from  p.docdate), d.taxcode
 				<textFieldExpression><![CDATA[$V{num}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="194" y="0" width="59" height="12" uuid="a9967b21-074e-4be3-927f-630a471e19e8"/>
-				<box rightPadding="5"/>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[0.00]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="318" y="0" width="58" height="12" uuid="c0cebe5e-cf1b-4ddf-8c93-139c20eb1ed4"/>
 				<box rightPadding="5"/>
 				<textElement textAlignment="Right">
@@ -265,21 +271,45 @@ GROUP BY p.series, extract(day from  p.docdate), d.taxcode
 				</textElement>
 				<text><![CDATA[0.00]]></text>
 			</staticText>
-			<textField pattern="#,##0.00">
-				<reportElement x="253" y="0" width="65" height="12" uuid="badb0646-fc53-436b-995c-bce9f5a3aaf6"/>
-				<box rightPadding="5"/>
-				<textElement textAlignment="Right">
-					<font size="8"/>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="62" y="0" width="40" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="f3aeb6bc-5a95-4a8d-8856-b31453fc0dfc"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{mindoc}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="376" y="0" width="55" height="12" uuid="9b788ac3-b0ce-43a3-a87b-6453abad4147"/>
-				<box rightPadding="5"/>
-				<textElement textAlignment="Right">
-					<font size="8"/>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="102" y="0" width="38" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="94a160e0-d4df-48be-b47b-5ccd4da4d82c"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{maxdoc}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="194" y="0" width="59" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="1b684099-7948-4305-ba11-bfca1da4c10b"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="253" y="0" width="65" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="c5a0b876-7bd5-41e7-9cf6-90fc5126cff2"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ventaslocales}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="376" y="0" width="55" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="6e630b63-d93e-460c-bfb8-f286bb6230b4"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalventas}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -321,14 +351,6 @@ GROUP BY p.series, extract(day from  p.docdate), d.taxcode
 				<reportElement x="0" y="0" width="572" height="1" uuid="47659495-00d7-4ee2-a721-e12b09e66ad1"/>
 			</line>
 			<staticText>
-				<reportElement x="194" y="1" width="59" height="12" uuid="715f1435-42fa-457c-ae53-881b98ee10ff"/>
-				<box rightPadding="5"/>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[0.00]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="318" y="1" width="58" height="12" uuid="5920d975-a2eb-499b-9f18-7dce90acd24f"/>
 				<box rightPadding="5"/>
 				<textElement textAlignment="Right">
@@ -360,22 +382,6 @@ GROUP BY p.series, extract(day from  p.docdate), d.taxcode
 				</textElement>
 				<text><![CDATA[0.00]]></text>
 			</staticText>
-			<textField pattern="#,##0.00">
-				<reportElement x="253" y="1" width="65" height="12" uuid="918b6f89-83a8-4b4f-a7b1-58956a7978f0"/>
-				<box rightPadding="5"/>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{doctotal_1}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="376" y="1" width="55" height="12" uuid="13e0c289-256d-4d23-832c-45604d4d30e4"/>
-				<box rightPadding="5"/>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{doctotal_1}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="0" y="34" width="140" height="14" uuid="5c8490fa-bbf4-4063-9cc1-c9d67235a46c"/>
 				<box leftPadding="10"/>
@@ -385,7 +391,7 @@ GROUP BY p.series, extract(day from  p.docdate), d.taxcode
 				<reportElement x="140" y="34" width="54" height="14" uuid="5cc435f0-33ee-4454-8dc3-bf222a8df2a3"/>
 				<box rightPadding="10"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$V{doctotal_1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{ventaslocales_1}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="194" y="34" width="182" height="14" uuid="be863341-c7fc-4806-b79c-bfd8c5db8cee"/>
@@ -409,13 +415,13 @@ GROUP BY p.series, extract(day from  p.docdate), d.taxcode
 				<reportElement x="376" y="34" width="55" height="14" uuid="d046314c-da88-4ed8-bc22-ac59dc71c0bd"/>
 				<box rightPadding="5"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$V{doctotal_1}.doubleValue()/1.13]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{ventaslocales_1}.doubleValue()/1.13]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="376" y="48" width="55" height="14" uuid="b19a1638-ca12-4a23-bf46-cc0393a3249c"/>
 				<box rightPadding="5"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$V{doctotal_1}.doubleValue()-($V{doctotal_1}.doubleValue()/1.13)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{ventaslocales_1}.doubleValue()-($V{ventaslocales_1}.doubleValue()/1.13)]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="376" y="62" width="55" height="14" uuid="41a6d94a-73d9-4acb-9bd8-5d09141fab84"/>
@@ -423,7 +429,7 @@ GROUP BY p.series, extract(day from  p.docdate), d.taxcode
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{doctotal_1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{ventaslocales_1}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="431" y="48" width="47" height="15" uuid="02da5974-7387-4d01-86f8-4d3a32886cef"/>
@@ -447,6 +453,30 @@ GROUP BY p.series, extract(day from  p.docdate), d.taxcode
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{titleF1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="376" y="1" width="55" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="76b55a5a-4ddf-42f4-9395-515282052010"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalventas_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="194" y="1" width="59" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="e81dbb41-5aeb-42d0-87ad-dd9c3750ef12"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{exento_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="253" y="1" width="65" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="3dbba3de-7472-473a-a71a-fd317127707f"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{ventaslocales_1}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

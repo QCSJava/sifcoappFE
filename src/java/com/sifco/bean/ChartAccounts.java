@@ -11,6 +11,7 @@ import com.sifcoapp.objects.accounting.to.AccountTO;
 import com.sifcoapp.objects.accounting.to.JournalEntryLinesInTO;
 import com.sifcoapp.objects.accounting.to.JournalEntryLinesTO;
 import com.sifcoapp.objects.admin.to.CatalogTO;
+import com.sifcoapp.objects.admin.to.EnterpriseTO;
 import com.sifcoapp.objects.catalogos.Common;
 import com.sifcoapp.objects.common.to.ResultOutTO;
 import com.sifcoapp.report.bean.ReportsBean;
@@ -50,7 +51,7 @@ public class ChartAccounts implements Serializable {
 //<editor-fold defaultstate="collapsed" desc="Declaración de variables para formulario" >  
     private static AccountingEJBClient accEJBService;
     private static AdminEJBClient AdminEJBService;
-    
+
     private String acctcode;
     private String acctname;
     private Double currtotal;
@@ -93,20 +94,18 @@ public class ChartAccounts implements Serializable {
     //__________________________________________________________________________
     //btn
     private boolean btnEnable = true;
-    
+
     //
     private List<CatalogTO> lstRubros;
     private static final String CATALOGORUB = "Rubros_PC";
     private String rubro;
-    
+
     //report
     @ManagedProperty(value = "#{reportsBean}")
     private ReportsBean bean;
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Get and Set" >
-
     public ReportsBean getBean() {
         return bean;
     }
@@ -114,7 +113,7 @@ public class ChartAccounts implements Serializable {
     public void setBean(ReportsBean bean) {
         this.bean = bean;
     }
-    
+
     public static AdminEJBClient getAdminEJBService() {
         return AdminEJBService;
     }
@@ -130,7 +129,7 @@ public class ChartAccounts implements Serializable {
     public void setRubro(String rubro) {
         this.rubro = rubro;
     }
-    
+
     public List<CatalogTO> getLstRubros() {
         return lstRubros;
     }
@@ -138,7 +137,7 @@ public class ChartAccounts implements Serializable {
     public void setLstRubros(List<CatalogTO> lstRubros) {
         this.lstRubros = lstRubros;
     }
-    
+
     public String getNameToEx() {
         return nameToEx;
     }
@@ -550,7 +549,6 @@ public class ChartAccounts implements Serializable {
     }
 
 //</editor-fold> 
-    
 //<editor-fold defaultstate="collapsed" desc="Load de la pantalla">
     //load de la pantalla    
     @PostConstruct
@@ -558,11 +556,11 @@ public class ChartAccounts implements Serializable {
         if (accEJBService == null) {
             accEJBService = new AccountingEJBClient();
         }
-        
+
         if (AdminEJBService == null) {
             AdminEJBService = new AdminEJBClient();
         }
-        
+
         try {
             lstRubros = AdminEJBService.findCatalog(CATALOGORUB);
         } catch (Exception e) {
@@ -572,7 +570,6 @@ public class ChartAccounts implements Serializable {
     }
 
 //</editor-fold>
-    
     public void updTreeAcc() {
         try {
             facesMessage("Actualizando");
@@ -663,7 +660,6 @@ public class ChartAccounts implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Boton Principal">
     public void btnPrincipal() {
         showHideDialog("dlgC2", 1);
@@ -683,8 +679,8 @@ public class ChartAccounts implements Serializable {
                 Resp = accEJBService.cat_acc0_ACCOUNT_mtto(updAcc, Common.MTTOUPDATE);
                 llenarRoot();
                 /*this.acctname = null;
-                this.acctcode = null;
-                this.rubro = "0";*/
+                 this.acctcode = null;
+                 this.rubro = "0";*/
                 RequestContext.getCurrentInstance().update("principal");
                 facesMessage("Update Realizado");
             } catch (Exception ex) {
@@ -933,7 +929,6 @@ public class ChartAccounts implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Exporter">
     /*public void postProcessXLS(Object document) {
      HSSFWorkbook wb = (HSSFWorkbook) document;
@@ -951,28 +946,36 @@ public class ChartAccounts implements Serializable {
      }
      }*/
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="imprimir">
-    public void print(){
-        String _reportTitle,_reportname;
+    public void print() {
+        String _reportTitle, _reportname;
         Map<String, Object> reportParameters = new HashMap<>();
-        
+        EnterpriseTO resp = new EnterpriseTO();
+
+        if (AdminEJBService == null) {
+            AdminEJBService = new AdminEJBClient();
+        }
+        try {
+            resp = AdminEJBService.getEnterpriseInfo();
+        } catch (Exception ex) {
+            //faceMessage("Informacion de empresa ERROR");
+        }
+
         _reportname = "/account/AccountingCatalog";
         _reportTitle = "CATALOGO CONTABLE";
-        
+
         reportParameters.put("reportName", _reportTitle);
-        reportParameters.put("corpName", "ACOETMISAB DE R.L.");
-        
-        
+        reportParameters.put("corpName", resp.getCrintHeadr());
+
         this.bean = new ReportsBean();
         getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "EXCEL"));
         getBean().setFileName(_reportTitle);
-        
+
         getBean().setParameters(reportParameters);
         getBean().setReportName(_reportname);
         getBean().execute();
-    
+
     }
 //</editor-fold>
-    
+
 }//cierre de clase

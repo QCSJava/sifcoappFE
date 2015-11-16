@@ -10,6 +10,7 @@ import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.client.ParameterEJBClient;
 import com.sifcoapp.objects.accounting.to.AccountTO;
 import com.sifcoapp.objects.admin.to.CatalogTO;
+import com.sifcoapp.objects.admin.to.EnterpriseTO;
 import com.sifcoapp.report.common.AbstractReportBean;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -98,14 +99,20 @@ public class RepAccount implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="PRINT">
     public void print(int _type) throws Exception {
+        EnterpriseTO resp = new EnterpriseTO();
+
         if ((this.ftype == 7) && (this.account == null || this.account.isEmpty() || this.account.equals(""))) {
             faceMessage("Seleccione una cuenta");
         } else {
             if (AdminEJBService == null) {
                 AdminEJBService = new AdminEJBClient();
+            }
+            try {
+                resp = AdminEJBService.getEnterpriseInfo();
+            } catch (Exception ex) {
+                faceMessage("Informacion de empresa ERROR");
             }
 
             Map<String, Object> reportParameters = new HashMap<>();
@@ -192,7 +199,7 @@ public class RepAccount implements Serializable {
                 } else {
                     _reportname = "/account/BDaily";
                 }
-                
+
                 _reportTitle = "Libro Diario";
 
                 //_whereclausule = " h.transid=d.transid and c.acctcode=d.account and h.refdate>=$P{pdocdate} and h.refdate<=$P{PDOCDATE2}";
@@ -223,7 +230,7 @@ public class RepAccount implements Serializable {
                 }
 
                 _reportTitle = "ESTADO DE RESULTADOS INTEGRAL";
-                
+
                 reportParameters.put("category", RubroName(this.getRubro()));
                 reportParameters.put("numCategory", this.getRubro());
                 reportParameters.put("startdate", this.getFdatefrom());
@@ -284,41 +291,43 @@ public class RepAccount implements Serializable {
             }
 
             reportParameters.put("reportName", _reportTitle);
-            reportParameters.put("corpName", "ACOETMISAB DE R.L.");
+            reportParameters.put("corpName", resp.getCrintHeadr());
             if (this.ftype == 1 || this.ftype == 2) {
                 reportParameters.put("PWHERE", _whereclausule);
             }
 
             int dia1, mes1, anio1, dia2, mes2, anio2;
-            String diaS1,Smes1,Sdia2,Smes2;
-            
+            String diaS1, Smes1, Sdia2, Smes2;
+
             dia1 = Del.get(Calendar.DAY_OF_MONTH);
-            if (dia1<10) {
-                diaS1 = "0"+dia1;
-            }else
-                diaS1 = dia1+"";
+            if (dia1 < 10) {
+                diaS1 = "0" + dia1;
+            } else {
+                diaS1 = dia1 + "";
+            }
             mes1 = Del.get(Calendar.MONTH);
             mes1 = mes1 + 1;
-            if (mes1<10) {
-                Smes1 = "0"+mes1;
-            }else
-                Smes1 = mes1+"";
+            if (mes1 < 10) {
+                Smes1 = "0" + mes1;
+            } else {
+                Smes1 = mes1 + "";
+            }
             anio1 = Del.get(Calendar.YEAR);
 
             dia2 = Al.get(Calendar.DAY_OF_MONTH);
-             if (dia2<10) {
-                Sdia2 = "0"+dia2;
-            }else
-                Sdia2 = dia2+"";
+            if (dia2 < 10) {
+                Sdia2 = "0" + dia2;
+            } else {
+                Sdia2 = dia2 + "";
+            }
             mes2 = Al.get(Calendar.MONTH);
             mes2 = mes2 + 1;
-            if (mes2<10) {
-                Smes2 = "0"+mes2;
-            }else
-                Smes2 = mes2+"";
+            if (mes2 < 10) {
+                Smes2 = "0" + mes2;
+            } else {
+                Smes2 = mes2 + "";
+            }
             anio2 = Al.get(Calendar.YEAR);
-            
-            
 
             if (this.ftype == 1 || this.ftype == 2) {
                 try {
@@ -354,9 +363,7 @@ public class RepAccount implements Serializable {
     }//cierre de funcion
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones varias">
-    
     public Date sumarFecha(Date fecha, int dias) {
 
         Calendar calendar = Calendar.getInstance();
@@ -384,7 +391,7 @@ public class RepAccount implements Serializable {
     public RepAccount() {
     }
 
-    public String RubroName(String rubro){
+    public String RubroName(String rubro) {
         for (CatalogTO lstRubro : lstRubros) {
             if (lstRubro.getCatcode().equals(rubro)) {
                 return lstRubro.getCatvalue();
@@ -393,7 +400,7 @@ public class RepAccount implements Serializable {
         return "TODOS LOS RUBROS";
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del autocomplete" > 
     public void findAccount() {
         List account2 = new Vector();
@@ -529,7 +536,6 @@ public class RepAccount implements Serializable {
         this.lstRubros = lstRubros;
     }
 
-    
     public static AdminEJBClient getAdminEJBService() {
         return AdminEJBService;
     }
