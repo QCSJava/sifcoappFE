@@ -13,6 +13,7 @@ import com.sifcoapp.objects.sales.to.SalesTO;
 import com.sifcoapp.report.common.numerosAletras;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -313,8 +314,10 @@ public class SalesPrint extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private Double truncarDouble(Double doctotal) {
-        return Math.floor(100 * doctotal) / 100;
+    private String truncarDouble(Double doctotal) {
+        DecimalFormat df;
+        df = new DecimalFormat("#,###.##");
+        return df.format(Math.floor(100 * doctotal) / 100);
     }
 
 }

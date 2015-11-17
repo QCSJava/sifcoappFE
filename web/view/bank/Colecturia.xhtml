@@ -187,7 +187,8 @@
                         <p:spacer width="0" height="15" />
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-1">
-                                <p:commandButton tabindex="11" id="botonPrincipal" value="#{colecturiaBean.botonEstado}" actionListener="#{colecturiaBean.botonPrincipal}" process="@all"/>
+                                <p:commandButton tabindex="11" id="botonPrincipal" value="#{colecturiaBean.botonEstado}" actionListener="#{colecturiaBean.botonPrincipal}" process="@all"
+                                                 update="tableDetailColet"/>
                                 <p:defaultCommand target="botonPrincipal" />
                             </div>
                         </div>
