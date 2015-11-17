@@ -56,11 +56,11 @@
                         <p:spacer width="0" height="10"/>
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-6">
-                                <p:commandButton process="@this isActive" id="btnPrint" action="#{rsalesRev.doPrint()}" value="Ver" ajax="false"  />
+                                <p:commandButton process="@this isActive" id="btnPrint" action="#{repBanksBean.doPrint()}" value="Ver" ajax="false"  />
                                 <p:spacer height="0" width="15"/>
-                                <p:commandButton process="@this isActive" id="btnPrint2" action="#{rsalesRev.printFormat()}" value="Descargar PDF" ajax="false"  />
+                                <p:commandButton process="@this isActive" id="btnPrint2" action="#{repBanksBean.printFormat()}" value="Descargar PDF" ajax="false"  />
                                 <p:spacer height="0" width="15"/>
-                                <p:commandButton process="@this isActive" id="btnPrint3" action="#{rsalesRev.printFormatExcel()}" value="Descargar Excel" ajax="false"  />
+                                <p:commandButton process="@this isActive" id="btnPrint3" action="#{repBanksBean.printFormatExcel()}" value="Descargar Excel" ajax="false"  />
                             </div>
                         </div>
                     </div>

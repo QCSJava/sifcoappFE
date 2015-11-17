@@ -32,6 +32,7 @@ public class repBanksBean implements Serializable {
     private Date fdateto;
     private String user;
     private int ftype;
+    
     @ManagedProperty(value = "#{reportsBean}")
     private ReportsBean bean;
 //</editor-fold>
@@ -80,7 +81,8 @@ public class repBanksBean implements Serializable {
         String _reportname = null;
         String _reportTitle = null;
         EnterpriseTO resp = null;
-
+        this.bean = new ReportsBean();
+        
         try {
             resp = AdminEJBService.getEnterpriseInfo();
         } catch (Exception ex) {
@@ -90,8 +92,8 @@ public class repBanksBean implements Serializable {
         ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////
         if (this.ftype == 1) {
-            _reportname = "/sales/dailySalesRevert";
-            _reportTitle = "Notas de Crédito";
+            _reportname = "/bank/RevenueControl";
+            _reportTitle = "CONTROL DE INGRESOS";
         }
 
         ////////////////////////////////////////////////////////////////////////
@@ -111,7 +113,6 @@ public class repBanksBean implements Serializable {
                 getBean().setFileName(_reportTitle);
             } else {
                 if (_type == 2) {
-                    this.bean = new ReportsBean();
                     getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "EXCEL"));
                     getBean().setFileName(_reportTitle);
                 }

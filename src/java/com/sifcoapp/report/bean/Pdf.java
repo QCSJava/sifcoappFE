@@ -13,6 +13,7 @@ import com.sifcoapp.objects.sales.to.SalesTO;
 import com.sifcoapp.report.common.numerosAletras;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -133,7 +134,7 @@ public class Pdf extends HttpServlet {
                     + "                                    " + var.getCardcode() + "-" + var.getCardname().toUpperCase() + "\n"
                     + "                                </td>\n"
                     + "                                <td>\n"
-                    + "                                    " + var.getDocdate() +" HORA: "+hora+":"+minutos+"\n"
+                    + "                                    " + var.getDocdate() + " HORA: " + hora + ":" + minutos + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                            <tr style=\"height: 18px\">\n"
@@ -319,8 +320,10 @@ public class Pdf extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private Double truncarDouble(Double doctotal) {
-        return Math.floor(100 * doctotal) / 100;
+    private String truncarDouble(Double doctotal) {
+        DecimalFormat df;
+        df = new DecimalFormat("#,###.##");
+        return df.format(Math.floor(100 * doctotal) / 100);
     }
 
 }//cierre de clase

@@ -179,7 +179,6 @@ public class ColectPrint extends HttpServlet {
             hora = calendario.get(Calendar.HOUR);
             minutos = calendario.get(Calendar.MINUTE);
             segundos = calendario.get(Calendar.SECOND);
-
             out.println("                        </table>\n"
                     + "\n"
                     + "                    </td>\n"

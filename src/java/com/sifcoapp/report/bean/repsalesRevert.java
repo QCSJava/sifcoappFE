@@ -58,6 +58,7 @@ public class repsalesRevert implements Serializable {
         c1.set(c1.get(Calendar.YEAR), c1.get(Calendar.MONTH), 1);  //January 30th 2000
         sDate = c1.getTime();
         this.setFdatefrom(sDate);
+        
         if (AdminEJBService == null) {
             AdminEJBService = new AdminEJBClient();
         }

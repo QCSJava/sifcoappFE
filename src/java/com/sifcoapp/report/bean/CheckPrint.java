@@ -12,6 +12,7 @@ import com.sifcoapp.objects.accounting.to.JournalEntryTO;
 import com.sifcoapp.objects.bank.to.CheckForPaymentTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
@@ -146,7 +147,7 @@ public class CheckPrint extends HttpServlet {
                     + "                                                " + var + "\n"
                     + "                                            </td>\n"
                     + "                                            <td >\n"
-                    + "                                                " + cheque.getChecksum() + "\n"
+                    + "                                                " + truncarDouble(cheque.getChecksum()) + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
                     + "                                    </table>\n"
@@ -204,10 +205,10 @@ public class CheckPrint extends HttpServlet {
                     + "                                                " + listaDetalles.get(0).getAcctname().toUpperCase() + "\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"text-align: center\">\n"
-                    + "                                                $ " + listaDetalles.get(0).getDebit() + "\n"
+                    + "                                                $ " + truncarDouble(listaDetalles.get(0).getDebit()) + "\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"text-align: center\">\n"
-                    + "                                                $ " + listaDetalles.get(0).getCredit() + "\n"
+                    + "                                                $ " + truncarDouble(listaDetalles.get(0).getCredit()) + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
                     + "                                        <tr style=\"height: 20px\">\n"
@@ -218,10 +219,10 @@ public class CheckPrint extends HttpServlet {
                     + "                                                " + listaDetalles.get(1).getAcctname().toUpperCase() + "\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"text-align: center\">\n"
-                    + "                                                $ " + listaDetalles.get(1).getDebit() + "\n"
+                    + "                                                $ " + truncarDouble(listaDetalles.get(1).getDebit()) + "\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"text-align: center\">\n"
-                    + "                                                $ " + listaDetalles.get(1).getCredit() + "\n"
+                    + "                                                $ " + truncarDouble(listaDetalles.get(1).getCredit()) + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
                     + "                                        <tr style=\"height: 400px\"/>\n"
@@ -241,10 +242,10 @@ public class CheckPrint extends HttpServlet {
                     + "                                            <td style=\"width: 48%\">\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"text-align: center\">\n"
-                    + "                                                $ " + listaDetalles.get(0).getDebit() + "\n"
+                    + "                                                $ " + truncarDouble(listaDetalles.get(0).getDebit()) + "\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"text-align: center\">\n"
-                    + "                                                $ " + listaDetalles.get(0).getDebit() + "\n"
+                    + "                                                $ " + truncarDouble(listaDetalles.get(0).getDebit()) + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
                     + "                                    </table>\n"
@@ -363,5 +364,11 @@ public class CheckPrint extends HttpServlet {
         return monthString;
 
     }
+    
+    private String truncarDouble(Double doctotal) {
+        DecimalFormat df;
+        df = new DecimalFormat("#,###.##");
+        return df.format(Math.floor(100 * doctotal) / 100);
+    }
 
-}
+}//cierre de clase

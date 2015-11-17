@@ -12,6 +12,7 @@ import com.sifcoapp.objects.sales.to.DeliveryDetailTO;
 import com.sifcoapp.objects.sales.to.DeliveryTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -40,7 +41,7 @@ public class RemisionPrint extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request2, HttpServletResponse response2) throws ServletException, IOException {
         DeliveryTO var = new DeliveryTO();
-        Double total = 0.0;
+        String total = "";
 
         //hora de impresion
         Calendar calendario = new GregorianCalendar();
@@ -344,8 +345,10 @@ public class RemisionPrint extends HttpServlet {
     }// </editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Formato Numeros NO USADA">
-    public Double formatNumber(Double doctotal) {
-        return Math.floor(100 * doctotal) / 100;
+    public String formatNumber(Double doctotal) {
+        DecimalFormat df;
+        df = new DecimalFormat("#,###.##");
+        return df.format(Math.floor(100 * doctotal) / 100);
     }
 
 //</editor-fold>

@@ -1,19 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RevenueControl" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="25dfb083-d6d4-46eb-8f6e-6a457c88bb38">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RevenueControl" language="groovy" pageWidth="612" pageHeight="792" columnWidth="472" leftMargin="85" rightMargin="55" topMargin="35" bottomMargin="35" uuid="25dfb083-d6d4-46eb-8f6e-6a457c88bb38">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="82"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="reportName" class="java.lang.String"/>
+	<parameter name="corpName" class="java.lang.String">
+		<defaultValueExpression><![CDATA["ACOETMISAB DE R.L."]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select t1.docdate, t0.docentry, t0.linenum, t0.objtype, t0.dscription,t0.paidsum
+
+from ges_col1_colecturiadetail t0 join ges_col0_colecturia t1 on t0.docentry = t1.docentry]]>
+	</queryString>
+	<field name="docdate" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha doc.]]></fieldDescription>
+	</field>
+	<field name="docentry" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Entrada doc.emis.]]></fieldDescription>
+	</field>
+	<field name="linenum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[NÃºmero de lÃ­nea]]></fieldDescription>
+	</field>
+	<field name="objtype" class="java.lang.String"/>
+	<field name="dscription" class="java.lang.String">
+		<fieldDescription><![CDATA[DescripciÃ³n del artÃ­culo]]></fieldDescription>
+	</field>
+	<field name="paidsum" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Total pagado]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch"/>
+		<band height="60" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="20" width="472" height="20" uuid="96e5bdc3-cb4a-4c94-8f0b-39e833cc3c72"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="472" height="20" uuid="bcbba91f-6f47-4b79-a4fd-9afd4d35f7a1"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{corpName}]]></textFieldExpression>
+			</textField>
+		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch"/>
+		<band height="15" splitType="Stretch">
+			<staticText>
+				<reportElement x="353" y="0" width="55" height="15" uuid="c0015e7c-672d-4943-b8f9-b603e34cd2fb"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[usuario:]]></text>
+			</staticText>
+		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch"/>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement x="23" y="3" width="55" height="26" uuid="b1be7855-d6fc-4e9b-bb67-640ec10b3609"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="78" y="3" width="55" height="26" uuid="71ea8ea9-ae60-43d8-8ba9-4ac96a53db6a"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="133" y="3" width="55" height="26" uuid="e4e69371-1025-4a9b-854d-b55c84883dae"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Fact. Colect.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="188" y="3" width="50" height="26" uuid="4e505da2-bdfb-44d3-bc1e-4aa1bb2dbb7a"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Fact. Diesel]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="238" y="3" width="60" height="26" uuid="1401016a-1806-48c0-b26e-df790e687835"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Galones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="298" y="3" width="55" height="26" uuid="db279eed-3127-4ead-9db0-70d9dd374de1"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Venta DIESEL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="3" width="55" height="26" uuid="06d4b671-d15b-4d5a-9eeb-c7314d4da04d"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="472" height="1" uuid="1a0ce19d-87e8-491b-9a44-9fa14f817c35"/>
+			</line>
+			<line>
+				<reportElement x="0" y="2" width="472" height="1" uuid="ade32e41-fca2-405f-97c5-d538738f1aa3"/>
+			</line>
+			<line>
+				<reportElement x="0" y="28" width="472" height="1" uuid="51f3773b-02b1-479a-801b-c3d5af8fb590"/>
+			</line>
+			<line>
+				<reportElement x="0" y="30" width="472" height="1" uuid="46c3061c-fa96-429b-b5c5-e606dd000c40"/>
+			</line>
+		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch"/>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="23" y="0" width="55" height="15" uuid="b772a9c9-9d96-4f78-8ba9-b07668d76612"/>
+				<textFieldExpression><![CDATA[$F{docentry}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="78" y="0" width="55" height="15" uuid="fb40fd67-a8df-4e10-9248-beb73c41c21d"/>
+				<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
+			</textField>
+		</band>
 	</detail>
 	<columnFooter>
 		<band height="45" splitType="Stretch"/>
