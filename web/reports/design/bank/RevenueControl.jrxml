@@ -1,33 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RevenueControl" language="groovy" pageWidth="612" pageHeight="792" columnWidth="472" leftMargin="85" rightMargin="55" topMargin="35" bottomMargin="35" uuid="25dfb083-d6d4-46eb-8f6e-6a457c88bb38">
-	<property name="ireport.zoom" value="1.4641000000000006"/>
-	<property name="ireport.x" value="82"/>
+	<property name="ireport.zoom" value="1.3310000000000006"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="reportName" class="java.lang.String"/>
 	<parameter name="corpName" class="java.lang.String">
 		<defaultValueExpression><![CDATA["ACOETMISAB DE R.L."]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select t1.docdate, t0.docentry, t0.linenum, t0.objtype, t0.dscription,t0.paidsum
+		<![CDATA[select t1.docdate as fecha, t0.docentry as codigo, sum(t3.quantity) as galones, min(t2.numatcard) as f1,max(t2.numatcard) as f2, t1.cardcode, max(t1.doctotal) as total,
+sum(case when t0.linenum = 17 then t0.paidsum else 0.0 end) as ventaDiesel
 
-from ges_col1_colecturiadetail t0 join ges_col0_colecturia t1 on t0.docentry = t1.docentry]]>
+from ges_col1_colecturiadetail t0
+join ges_col0_colecturia t1 on t0.docentry = t1.docentry
+left join sal_sal0_sales t2 on t0.docentry = t2.receiptnum
+left join sal_sal1_salesdetail t3 on t3.docentry = t2.docentry
+join adm_usr0_user t4 on t1.usersign = t4.usersign
+
+where t1.docdate >= '01/01/2015' and t1.docdate <= '18/11/2015' and t4.nickname = 'administrador'
+group by t1.docdate, t0.docentry, t1.cardcode
+order by t0.docentry]]>
 	</queryString>
-	<field name="docdate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha doc.]]></fieldDescription>
+	<field name="fecha" class="java.sql.Date"/>
+	<field name="codigo" class="java.lang.Integer"/>
+	<field name="galones" class="java.math.BigDecimal"/>
+	<field name="f1" class="java.lang.String"/>
+	<field name="f2" class="java.lang.String"/>
+	<field name="cardcode" class="java.lang.String">
+		<fieldDescription><![CDATA[Proveedor por defecto]]></fieldDescription>
 	</field>
-	<field name="docentry" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Entrada doc.emis.]]></fieldDescription>
-	</field>
-	<field name="linenum" class="java.lang.Integer">
-		<fieldDescription><![CDATA[NÃºmero de lÃ­nea]]></fieldDescription>
-	</field>
-	<field name="objtype" class="java.lang.String"/>
-	<field name="dscription" class="java.lang.String">
-		<fieldDescription><![CDATA[DescripciÃ³n del artÃ­culo]]></fieldDescription>
-	</field>
-	<field name="paidsum" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Total pagado]]></fieldDescription>
-	</field>
+	<field name="total" class="java.math.BigDecimal"/>
+	<field name="ventadiesel" class="java.math.BigDecimal"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -61,7 +64,7 @@ from ges_col1_colecturiadetail t0 join ges_col0_colecturia t1 on t0.docentry = t
 	<columnHeader>
 		<band height="31" splitType="Stretch">
 			<staticText>
-				<reportElement x="23" y="3" width="55" height="26" uuid="b1be7855-d6fc-4e9b-bb67-640ec10b3609"/>
+				<reportElement x="0" y="3" width="55" height="26" uuid="b1be7855-d6fc-4e9b-bb67-640ec10b3609"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Codigo]]></text>
 			</staticText>
@@ -110,14 +113,38 @@ from ges_col1_colecturiadetail t0 join ges_col0_colecturia t1 on t0.docentry = t
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="15" splitType="Stretch">
+		<band height="35" splitType="Stretch">
 			<textField>
-				<reportElement x="23" y="0" width="55" height="15" uuid="b772a9c9-9d96-4f78-8ba9-b07668d76612"/>
-				<textFieldExpression><![CDATA[$F{docentry}]]></textFieldExpression>
+				<reportElement x="0" y="15" width="55" height="20" uuid="d9cf7d32-7da3-4941-b025-f435e41a3e3b"/>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="78" y="15" width="55" height="20" uuid="3d1b67c6-267f-4755-b384-86bacb6fe4a7"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="78" y="0" width="55" height="15" uuid="fb40fd67-a8df-4e10-9248-beb73c41c21d"/>
-				<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
+				<reportElement x="188" y="15" width="20" height="20" uuid="295bc3e0-72ab-4644-9e33-3b3cb6569db9"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{f1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="218" y="15" width="20" height="20" uuid="05249ed7-8462-439b-b83e-962e46b4694a"/>
+				<textFieldExpression><![CDATA[$F{f2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="208" y="15" width="10" height="20" uuid="89f36b4b-108f-4751-ac1b-619056b82187">
+					<printWhenExpression><![CDATA[$F{f2} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="238" y="15" width="60" height="20" uuid="413212b7-be52-4360-9bc5-aec93a0c001a"/>
+				<textFieldExpression><![CDATA[$F{galones}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="353" y="15" width="55" height="20" uuid="814dea9d-a76b-4854-9301-3647beb7ee3f"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

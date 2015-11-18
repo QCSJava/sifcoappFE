@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ConsumerBook" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c1ef1c2c-5577-41e4-af4d-6d1e2626dae3">
-	<property name="ireport.zoom" value="2.3579476910000023"/>
-	<property name="ireport.x" value="6"/>
-	<property name="ireport.y" value="89"/>
+	<property name="ireport.zoom" value="1.331000000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="corpName" class="java.lang.String">
 		<defaultValueExpression><![CDATA["ACOETMISAB DE R.L."]]></defaultValueExpression>
 	</parameter>
@@ -219,7 +219,7 @@ from (
 				<text><![CDATA[No]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="25" y="1" width="35" height="26" uuid="6991e531-f367-4eb3-9343-47ad85d68dc6"/>
+				<reportElement x="25" y="1" width="37" height="26" uuid="6991e531-f367-4eb3-9343-47ad85d68dc6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -273,6 +273,7 @@ from (
 			</staticText>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement mode="Transparent" x="62" y="0" width="40" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="f3aeb6bc-5a95-4a8d-8856-b31453fc0dfc"/>
+				<box leftPadding="10"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -281,6 +282,7 @@ from (
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement mode="Transparent" x="102" y="0" width="38" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="94a160e0-d4df-48be-b47b-5ccd4da4d82c"/>
+				<box leftPadding="10"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>

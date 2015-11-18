@@ -182,6 +182,20 @@ public class repsales implements Serializable {
             
         }
         
+        if (this.ftype == 11 || this.ftype == 12) {
+            if (this.ftype == 11) {
+                _reportname = "/sales/ConsumerBook";
+                _reportTitle = "LIBRO DE VENTAS AL CONSUMIDOR";
+            }else{
+                _reportname = "/sales/BookSales";
+                _reportTitle = "LIBRO DE VENTAS A CONTRIBUYENTES";
+            }
+            
+            reportParameters.put("nameF1", ParameterEJBClient.getParameterbykey(22).getValue1());
+            reportParameters.put("titleF1", ParameterEJBClient.getParameterbykey(22).getValue2());
+            
+        }
+        
         System.out.println(_whereclausule);
         System.out.println(_reportname);
         System.out.println(_reportTitle);
