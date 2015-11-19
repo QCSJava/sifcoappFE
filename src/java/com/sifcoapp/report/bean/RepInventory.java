@@ -134,7 +134,7 @@ public class RepInventory implements Serializable {
 
         if (this.ftype == 2) {
             _reportname = "/inventory/InvKardex";
-            _reportTitle = "KARDEX";
+            _reportTitle = "Tarjeta de Inventario";
 
             /*if (check) {
              reportParameters.put("movimiento"," join ");

@@ -155,7 +155,8 @@
                                     <p:column headerText="Valor"  style="width: 8%; font-size: #{commonBean.sizeFont1}">
                                         <p:inputText id="valor1" tabindex="9" value="#{det.paidsum}" size="10" disabled="#{colecturiaBean.common || colecturiaBean.ifCancelacion? true:false}" readonly="#{det.linenum == 17? true:det.linenum == 21? true:det.linenum == 23?true:false}"
                                                      >
-                                            
+                                            <f:convertNumber minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                        
                                         </p:inputText>
                                     </p:column>
 

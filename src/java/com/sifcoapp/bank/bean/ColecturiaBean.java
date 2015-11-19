@@ -357,7 +357,7 @@ public class ColecturiaBean implements Serializable {
         for (Object lst : lstTable) {
             ColecturiaDetailTO det = (ColecturiaDetailTO) lst;
             //faceMessage(det.getValue1());
-            if (det.getPaidsum() != null && this.lineNum != det.getLinenum()) {
+            if (det.getPaidsum() != null ){//&& this.lineNum != det.getLinenum()) {
                 try {
                     Double var = det.getPaidsum();
                     this.t2 = this.t2 + var;
@@ -367,7 +367,7 @@ public class ColecturiaBean implements Serializable {
 
             }
         }
-        t2 = t2 + totalFac;
+        //t2 = t2 + totalFac;
         doTotalAct();
         //RequestContext.getCurrentInstance().update("frmColect");
     }
@@ -884,7 +884,8 @@ public class ColecturiaBean implements Serializable {
         this.observaciones = var.getComments();
         this.setFechaDoc(var.getDocdate());
         this.setFechaPago(var.getTaxdate());
-
+        this.group = var.getPrinted();
+        
         this.documento = var.getSeries() + "";
         this.estado = var.getTranstype() + "";
 

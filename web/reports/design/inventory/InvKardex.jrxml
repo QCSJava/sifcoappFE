@@ -35,7 +35,7 @@
 	$P{pdocdate} "fecha contabilización",
 	'Saldo Inicial' "Documento",
 	'Saldo Inicial' as "Documento2",
-	0 "Documento3",
+	-2 "Documento3",
 	t4.whscode "almacen",
 	coalesce(q1.cantidad,0.0) "cantidad",
 	coalesce(q1.entrada,0.0) "entrada",
@@ -47,7 +47,7 @@
 	'I' "tipo"
 
 from cat_art0_articles t3
-join cat_art1_brancharticles t4 on t3.itemcode = t4.itemcode left join /* @variable*/ (
+join cat_art1_brancharticles t4 on t3.itemcode = t4.itemcode AND T3.invntitem = 'Y' left join /* @variable*/ (
 
 select
 	t0.itemcode "codigo",
@@ -90,7 +90,8 @@ select
 
 from 	adm_inl0_inventorylog t0 left join cat_obj0_objectype t1 on t0.transtype = to_number(t1.objtype,'99')
 	join adm_wjl0_warehousejournal t2 on t0.messageid = t2.messageid
-where 	1=1 and t0.docdate >= $P{pdocdate}  and t0.docdate <= $P{PDOCDATE2}  /* @variable*/
+	join cat_art0_articles t3  on t3.itemcode = t0.itemcode
+where 	1=1 and T3.invntitem = 'Y' and t0.docdate >= $P{pdocdate}  and t0.docdate <= $P{PDOCDATE2}
 	$P!{WithAlm}--and t0.loccode = 'REP-001' --'DIE-001' /* @variable*/
 	$P!{WithArt}--and t0.itemcode = 'INV0000295' /* @variable*/
 order by "codigo", "almacen", "fecha contabilización", "Documento3"]]>
