@@ -94,6 +94,8 @@ public class repBanksBean implements Serializable {
         if (this.ftype == 1) {
             _reportname = "/bank/RevenueControl";
             _reportTitle = "CONTROL DE INGRESOS";
+            
+            reportParameters.put("user", this.user);
         }
 
         ////////////////////////////////////////////////////////////////////////
