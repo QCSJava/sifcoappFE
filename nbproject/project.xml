@@ -44,7 +44,6 @@
                 </library>
                 <library dirs="200">
                     <file>${file.reference.groovy-all-2.0.1.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
             <web-module-additional-libraries/>

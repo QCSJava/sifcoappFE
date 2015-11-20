@@ -1511,8 +1511,8 @@ public class CreditNotesBean implements Serializable {
         setEquipo(Integer.parseInt(var.getRef2()));
         setRefe(var.getNumatcard());
 
-        setFechaConta(var.getDocduedate());
-        setFechaDoc(var.getDocdate());
+        setFechaConta(var.getDocdate());
+        setFechaDoc(var.getTaxdate());
         setTipoDoc(var.getSeries());
         setFormaPago(Integer.parseInt(var.getPeymethod()));
         setAlm(var.getTowhscode());

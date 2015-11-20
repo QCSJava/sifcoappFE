@@ -349,6 +349,13 @@ public class ColecturiaBean implements Serializable {
 
     }
 //</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="upd contex">
+    public void updTotal(){
+        //faceMessage("entro");
+        doTotal();
+    }
+//</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Total detalles">
     public void doTotal() {
@@ -368,6 +375,7 @@ public class ColecturiaBean implements Serializable {
             }
         }
         //t2 = t2 + totalFac;
+        //faceMessage(t2+"");
         doTotalAct();
         //RequestContext.getCurrentInstance().update("frmColect");
     }
