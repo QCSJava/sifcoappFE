@@ -129,15 +129,18 @@
                         <p:spacer width="0" height="20" />
 
                         <div class="ui-grid-row">
-                            
-                            
+
+
                             <div id="tabTable" class="ui-grid-col-12">
+                                <p:contextMenu id="Contex2" for="tableDetailColet">
+                                    <p:menuitem value="Actualizar" actionListener="#{colecturiaBean.updTotal}"  icon="fa fa-refresh" process="@all" update="tableDetailColet"/>
+                                </p:contextMenu>
                                 <p:dataTable id="tableDetailColet" var="det" value="#{colecturiaBean.lstTable}"  scrollable="true" scrollHeight="90%" style="height: 350px"
                                              rowKey="#{det.linenum}" selectionMode="single" selection="#{colecturiaBean.selectDet}"
                                              emptyMessage="Seleccione un Socio de Negocio" editable="true"
                                              disabledSelection="#{colecturiaBean.common}"
                                              sortBy="#{det.linenum}"
-                                             >
+                                             editMode="cell">
 
 
                                     <p:column headerText="ID pago" style="width: 3%; font-size: #{commonBean.sizeFont1}">
@@ -156,9 +159,9 @@
                                         <p:inputText id="valor1" tabindex="9" value="#{det.paidsum}" size="10" disabled="#{colecturiaBean.common || colecturiaBean.ifCancelacion? true:false}" readonly="#{det.linenum == 17? true:det.linenum == 21? true:det.linenum == 23?true:false}"
                                                      >
                                             <f:convertNumber minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
-                                        
+
                                         </p:inputText>
-                                    </p:column>
+                                    </p:column> 
 
                                     <p:column headerText="Saldo Nuevo"  style="width: 8%; font-size: #{commonBean.sizeFont1}">
                                         <h:outputText id="newS" style="float: right" value="$ #{det.docsubtype == 'N'? '' : det.value3}" />
