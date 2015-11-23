@@ -1369,7 +1369,7 @@ public class CreditNotesBean implements Serializable {
             newCredit.setRef1(newBill.getRef1());
 
             newCredit.setDocdate(newBill.getDocdate());
-            newCredit.setDocduedate(newBill.getDocduedate());
+            newCredit.setTaxdate(newBill.getTaxdate());
             newCredit.setSeries(newBill.getSeries());
             newCredit.setPeymethod(newBill.getPeymethod());
             newCredit.setTowhscode(newBill.getTowhscode());

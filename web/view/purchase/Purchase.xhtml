@@ -317,7 +317,7 @@
 
                                 <!-- BOTON PRINCIPAL -->
                                 <p:commandButton tabindex="-1" id="botonPrincipal" value="#{purchaseBean.botonEstado}" actionListener="#{purchaseBean.botonPrincipal}"
-                                                 process="@this inNo inEstado inSocio inCodSocio inEquipo inReferencia f1 f2 inTipoDoc inForPago inComent inAlm"
+                                                 process="@this inNo inEstado inSocio inCodSocio inEquipo inReferencia f1 f2 f3 inTipoDoc inForPago inComent inAlm"
                                                  update="frmPurchase">
                                 </p:commandButton>
                                 <p:defaultCommand target="botonPrincipal" />
@@ -429,7 +429,7 @@
                                 </p:column>
 
                                 <p:column headerText="Fecha Documento" sortBy="#{Rec.taxdate}" style="width: 9%">
-                                    <h:outputText value="#{Rec.docduedate}">
+                                    <h:outputText value="#{Rec.taxdate}">
                                         <f:convertDateTime pattern="dd/MM/yyyy" />
                                     </h:outputText>
                                 </p:column>

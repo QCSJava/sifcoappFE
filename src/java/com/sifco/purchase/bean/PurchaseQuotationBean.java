@@ -649,6 +649,11 @@ public class PurchaseQuotationBean implements Serializable {
 
                 aux = Integer.parseInt(cat1.getCatvalue()) + 0.0;//impuesto debe ser un valor entero
                 Double imp = aux / 100;
+                
+                if (newImpuesto.equals("FOV")) {
+                    impFOV = Double.parseDouble(cat1.getCatvalue2());
+                    impCOT = Double.parseDouble(cat1.getCatvalue3());
+                }
 
                 newDetalle.setTaxcode(cat1.getCatcode());
                 newDetalle.setVatgroup(imp + "|" + impFOV + "|" + impCOT);

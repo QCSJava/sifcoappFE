@@ -1401,7 +1401,7 @@ public class SupplierCreditNotesBean implements Serializable {
             newSupplier.setRef1(newBill.getRef1());
 
             newSupplier.setDocdate(newBill.getDocdate());
-            newSupplier.setDocduedate(newBill.getDocduedate());
+            newSupplier.setTaxdate(newBill.getTaxdate());
             newSupplier.setSeries(newBill.getSeries());
             newSupplier.setPeymethod(newBill.getPeymethod());
             newSupplier.setTowhscode(newBill.getTowhscode());
