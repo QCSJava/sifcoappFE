@@ -192,13 +192,75 @@
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-1">
                                 <p:commandButton tabindex="11" id="botonPrincipal" value="#{colecturiaBean.botonEstado}" actionListener="#{colecturiaBean.botonPrincipal}" process="@all"
-                                                 update="tableDetailColet"/>
+                                                 update="tableDetailColet">
+                                    <p:confirm icon="fa fa-exclamation-triangle" header="Confirmacion" message="Desea continuar?" />
+                                </p:commandButton>
                                 <p:defaultCommand target="botonPrincipal" />
                             </div>
                         </div>
                         <!--Cierre Div Principal -->    
                     </div>
 
+                </h:form>
+
+                <h:form>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="230">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </h:form>
+                
+                <h:form>
+                    <p:dialog closeOnEscape="true" header="Confirmacion" widgetVar="dlgC2" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Desea guardar los cambios?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton  id="btnConfirm" value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{colecturiaBean.confirmDialog}" />
+                                        <p:defaultCommand target="btnConfirm" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{colecturiaBean.cancelDialog}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+
+                <h:form>
+                    <p:dialog  closeOnEscape="true" header="Confirmacion" widgetVar="dlgC1" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="Se perderan los datos ingresados, Desea continuar?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{colecturiaBean.confirmDialog2}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No" process="@this" styleClass="ui-confirmdialog-no"  actionListener="#{colecturiaBean.cancelDialog2}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
                 </h:form>
 
                 <h:form id="colect">
@@ -248,58 +310,6 @@
                             </p:column>
 
                         </p:dataTable>
-                    </p:dialog>
-                </h:form>
-
-                <h:form>
-                    <p:dialog closeOnEscape="true" header="Confirmacion" widgetVar="dlgC1" width="230" modal="true" resizable="false">
-                        <p:panel>
-                            <div class="ui-grid ui-grid-responsive">
-                                <div class="ui-grid-row">
-                                    <div class="ui-grid-col-10">
-                                        <h:outputText value="Se perderan los datos ingresados, Desea continuar?" />
-                                    </div>
-                                </div>
-                                <p:spacer height="15"/>
-                                <div class="ui-grid-row">
-                                    <div class="ui-grid-col-1">
-                                        <p:commandButton value="Si" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{colecturiaBean.confirmDialog2}" />
-                                    </div>
-                                    <div class="ui-grid-col-4">
-
-                                    </div>
-                                    <div class="ui-grid-col-1">
-                                        <p:commandButton value="No" process="@this" styleClass="ui-confirmdialog-yes"  actionListener="#{colecturiaBean.cancelDialog2}" />
-                                    </div>
-                                </div>
-                            </div>
-                        </p:panel> 
-                    </p:dialog>
-                </h:form>
-
-                <h:form>
-                    <p:dialog closeOnEscape="true" header="Confirmacion" widgetVar="dlgC2" width="230" modal="true" resizable="false">
-                        <p:panel>
-                            <div class="ui-grid ui-grid-responsive">
-                                <div class="ui-grid-row">
-                                    <div class="ui-grid-col-10">
-                                        <h:outputText value="Desea guardar los cambios?" />
-                                    </div>
-                                </div>
-                                <p:spacer height="15"/>
-                                <div class="ui-grid-row">
-                                    <div class="ui-grid-col-1">
-                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{colecturiaBean.confirmDialog}" />
-                                    </div>
-                                    <div class="ui-grid-col-4">
-
-                                    </div>
-                                    <div class="ui-grid-col-1">
-                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{colecturiaBean.cancelDialog}" />
-                                    </div>
-                                </div>
-                            </div>
-                        </p:panel> 
                     </p:dialog>
                 </h:form>
 

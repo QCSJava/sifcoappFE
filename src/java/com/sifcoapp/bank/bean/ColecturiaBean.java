@@ -26,6 +26,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -374,10 +375,8 @@ public class ColecturiaBean implements Serializable {
 
             }
         }
-        //t2 = t2 + totalFac;
-        //faceMessage(t2+"");
+        t2 = formatNumber2(t2);
         doTotalAct();
-        //RequestContext.getCurrentInstance().update("frmColect");
     }
 
     public void doTotalAct() {
@@ -487,13 +486,15 @@ public class ColecturiaBean implements Serializable {
             case 1:
                 doTotal();
                 if (validarColect()) {
-                    showHideDialog("dlgC2", 1);
+                    doSave();
+                    //showHideDialog("dlgC2", 1);
                 }
                 break;
 
             case 2:
                 if (validarColect()) {
-                    showHideDialog("dlgC2", 1);
+                    doUpdate();
+                    //showHideDialog("dlgC2", 1);
                 }
                 break;
 
@@ -747,6 +748,12 @@ public class ColecturiaBean implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
+    public Double formatNumber2(Double doctotal) {
+        DecimalFormat df;
+        df = new DecimalFormat("#,###.##");
+        return (Math.floor(100 * doctotal) / 100);
+    }
+    
     public void reload() throws IOException {
         // ...
 
