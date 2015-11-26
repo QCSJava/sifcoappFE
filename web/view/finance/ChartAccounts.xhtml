@@ -40,7 +40,7 @@
                     <p:spacer height="10" width="0"></p:spacer>
                     <div class="ui-grid ui-grid-responsive" style="margin-left: 20px">
                         <div class="ui-grid-row">
-                            <div class="ui-grid-col-4">
+                            <div class="ui-grid-col-3">
                                 <div class="ui-grid-row">
                                     <div class="ui-grid-col-4"><p:outputLabel value="Cuenta de Mayor"></p:outputLabel></div>
                                     <div class="ui-grid-col-8">
@@ -93,27 +93,156 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="ui-grid-col-8">
 
-                                <p:treeTable id="treeAcc" value="#{chartAccounts.root}" var="doc" style="margin-top:0; height: 500px"  selectionMode="single"
-                                             selection="#{chartAccounts.selectedNode}" scrollable="true" scrollHeight="100%">
+                            <div class="ui-grid-col-9">
+                                <p:tabView id="tree2" orientation="right" style="height: 550px; width: 100%">
+                                    <p:ajax event="tabChange" listener="#{chartAccountsBean.eventTab}" process="tree2" update="tree2"/>
+
+                                    <p:tab id="a1" title="1 - ACTIVO">
+                                        <f:facet name="title" >
+                                            <div class="ui-grid-row">
+                                                <i class="fa fa-archive fa-5x" style="text-align: center; width: 100%"></i>
+                                            </div>
+                                            <div class="ui-grid-row">
+                                                <h:outputText value="1 - ACTIVO" style="text-align: center; width: 100%"/>
+                                            </div>
+                                        </f:facet>
+                                        <div class="ui-grid-row">
+                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                                         scrollable="true"
+                                                         scrollHeight="485">
+                                                <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
+                                                          filterBy="#{var.formatcode}" 
+                                                          style="font-size: #{commonBean.sizeFont1}; width: 80%">
+                                                    <p:spacer height="0" width="#{(var.levels * 15)}"/>
+                                                    <h:outputText value="#{var.formatcode}" />
+                                                </p:column>
+                                                <p:column headerText="Saldo" 
+                                                          style="font-size: #{commonBean.sizeFont1}; width: 20%">
+                                                    <h:outputText value="#{var.currtotal}" style="text-align: right" >
+                                                        <f:convertNumber type="currency"  
+                                                                         currencySymbol="$" 
+                                                                         minFractionDigits="#{commonBean.minFractionDigits1}" 
+                                                                         maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                                    </h:outputText>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>
+                                    </p:tab>
+
+                                    <p:tab id="a2" title="2 - PASIVO">
+                                        <f:facet name="title" >
+                                            <div class="ui-grid-row">
+                                                <i class="fa fa-archive fa-5x" style="text-align: center; width: 100%"></i>
+                                            </div>
+                                            <div class="ui-grid-row">
+                                                <h:outputText value="2 - PASIVO" style="text-align: center; width: 100%"/>
+                                            </div>
+                                        </f:facet>
+                                        <div class="ui-grid-row">
+                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                                         scrollable="true"
+                                                         scrollHeight="485">
+                                                <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
+                                                          filterBy="#{var.formatcode}" 
+                                                          style="font-size: #{commonBean.sizeFont1}">
+                                                    <p:spacer height="0" width="#{(var.levels * 7)}"/>
+                                                    <h:outputText value="#{var.formatcode}" />
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>
+                                    </p:tab>
+
+                                    <p:tab id="a3" title="3 - PATRIMONIO">
+                                        <f:facet name="title" >
+                                            <div class="ui-grid-row">
+                                                <i class="fa fa-archive fa-5x" style="text-align: center; width: 100%"></i>
+                                            </div>
+                                            <div class="ui-grid-row">
+                                                <h:outputText value="3 - PATRIMONIO" style="text-align: center; width: 100%"/>
+                                            </div>
+                                        </f:facet>
+                                        <div class="ui-grid-row">
+                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                                         scrollable="true"
+                                                         scrollHeight="485">
+                                                <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
+                                                          filterBy="#{var.formatcode}" 
+                                                          style="font-size: #{commonBean.sizeFont1}">
+                                                    <p:spacer height="0" width="#{(var.levels * 7)}"/>
+                                                    <h:outputText value="#{var.formatcode}" />
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>
+                                    </p:tab>
+
+                                    <p:tab id="a4" title="4 - CUENTAS DE RESULTADOS DEUDORAS">
+                                        <f:facet name="title" >
+                                            <div class="ui-grid-row">
+                                                <i class="fa fa-archive fa-5x" style="text-align: center; width: 100%"></i>
+                                            </div>
+                                            <div class="ui-grid-row">
+                                                <h:outputText value="4 - CUENTAS DE RESULTADOS DEUDORAS" style="text-align: center; width: 100%"/>
+                                            </div>
+                                        </f:facet>
+                                        <div class="ui-grid-row">
+                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                                         scrollable="true"
+                                                         scrollHeight="485">
+                                                <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
+                                                          filterBy="#{var.formatcode}" 
+                                                          style="font-size: #{commonBean.sizeFont1}">
+                                                    <p:spacer height="0" width="#{(var.levels * 7)}"/>
+                                                    <h:outputText value="#{var.formatcode}" />
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>
+                                    </p:tab>
+
+                                    <p:tab id="a5" title="5 - INGRESOS" >
+                                        <f:facet name="title" >
+                                            <div class="ui-grid-row">
+                                                <i class="fa fa-archive fa-5x" style="text-align: center; width: 100%"></i>
+                                            </div>
+                                            <div class="ui-grid-row">
+                                                <h:outputText value="5 - INGRESOS" style="text-align: center; width: 100%"/>
+                                            </div>
+                                        </f:facet>
+                                        <div class="ui-grid-row">
+                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                                         scrollable="true"
+                                                         scrollHeight="485">
+                                                <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
+                                                          filterBy="#{var.formatcode}" 
+                                                          style="font-size: #{commonBean.sizeFont1}">
+                                                    <p:spacer height="0" width="#{(var.levels * 7)}"/>
+                                                    <h:outputText value="#{var.formatcode}" />
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>
+                                    </p:tab>
+
+                                </p:tabView>
+                                <!--
+                                <p:treeTable id="treeAcc" value="#/{chartAccounts.root}" var="doc" style="margin-top:0; height: 500px"  selectionMode="single"
+                                             selection="#/{chartAccounts.selectedNode}" scrollable="true" scrollHeight="100%">
                                     
-                                    <p:ajax event="select" listener="#{chartAccounts.onNodeSelect}" update=":principal:cuentamayor :principal:nombreacc :principal:isActive 
+                                    <p:ajax event="select" listener="#/{chartAccounts.onNodeSelect}" update=":principal:cuentamayor :principal:nombreacc :principal:isActive 
                                             :principal:nivel :principal:saldo :principal:pk :principal:btnLines :principal:rubro" />
                                     
                                     <f:facet name="header">
                                         Plan de cuentas
                                     </f:facet>
                                     <p:column headerText="Cuenta" >
-                                        <h:outputText value="#{doc.acctcode} - #{doc.acctname}" style="width: 50%"/>
+                                        <h:outputText value="#/{doc.acctcode} - #/{doc.acctname}" style="width: 50%"/>
                                     </p:column>
                                     <p:column headerText="Saldo" style="width: 18%">
                                         <p:outputLabel value="$"/>
-                                        <p:outputLabel value="#{doc.currtotal}" >
-                                            <f:convertNumber minFractionDigits="#{commonBean.minFractionDigits2}" maxFractionDigits="#{commonBean.minFractionDigits2}"/>
+                                        <p:outputLabel value="#/{doc.currtotal}" >
+                                            <f:convertNumber minFractionDigits="#/{commonBean.minFractionDigits2}" maxFractionDigits="#{commonBean.minFractionDigits2}"/>
                                         </p:outputLabel>
                                     </p:column>
-                                </p:treeTable> 
+                                </p:treeTable> -->
                             </div>
                         </div>
                         <br></br>

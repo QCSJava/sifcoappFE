@@ -24,23 +24,33 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT t0.acctcode, t0.acctname,$P{startdate} as refdate,0 as transid, '  ' as objtype,' ' as comment, t0.sal_inicio as inicial, t0.sal_debe as debe, t0.sal_haber as haber, t0.groupmask, t0.grpline, 1 as ttype
-  FROM sp_get_update_balance($P{startdate},$P{enddate}) t0  where t0.acctcode ~$P{account}
+		<![CDATA[
+SELECT 	t0.acctcode, t0.acctname,$P{startdate} as refdate,0 as transid, '  ' as objtype,' ' as comment,
+	t0.sal_inicio as inicial, t0.sal_debe as debe, t0.sal_haber as haber, t0.groupmask, t0.grpline,
+ 	1 as ttype
+FROM 	sp_get_update_balance($P{startdate},$P{enddate}) t0
+WHERE	t0.acctcode ~$P{account}
 
-  UNION all
+UNION ALL
 
-   SELECT t0.account, t1.acctname,t0.refdate,t0.transid,t2.descrip2,t0.linememo,0.0 as currtotal, debit,credit, t1.groupmask, t1.grpline, 2 as ttype
-  FROM cat_jdt1_journalentrylines t0 right  join cat_acc0_account t1 on t0.account=t1.acctcode
-  left join cat_obj0_objectype t2 on t0.objtype = t2.objtype
-  where t0.account ~$P{account} and t0.refdate >=$P{startdate} and t0.refdate <= $P{enddate} order by groupmask, grpline, refdate asc, transid]]>
+SELECT 	t0.account, t1.acctname,t0.refdate,t0.transid,t2.descrip2,t0.linememo,0.0 as currtotal,
+	t0.debit as debe, t0.credit as haber,
+	t1.groupmask, t1.grpline, 2 as ttype
+FROM 	cat_jdt1_journalentrylines t0
+	RIGHT JOIN cat_acc0_account t1 ON t0.account=t1.acctcode
+	LEFT JOIN cat_obj0_objectype t2 ON t0.objtype = t2.objtype
+WHERE 	t0.account ~$P{account} AND t0.refdate >=$P{startdate} AND t0.refdate <= $P{enddate}
+ORDER BY 	groupmask, grpline, refdate asc, transid]]>
 	</queryString>
 	<field name="acctcode" class="java.lang.String"/>
 	<field name="acctname" class="java.lang.String"/>
 	<field name="refdate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha de contabilizaciÃ³n]]></fieldDescription>
+		<fieldDescription><![CDATA[Fecha de contabilizaciÃ³n
+]]></fieldDescription>
 	</field>
 	<field name="transid" class="java.lang.Integer">
-		<fieldDescription><![CDATA[NÃºmero de operaciÃ³n]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de operaciÃ³n
+]]></fieldDescription>
 	</field>
 	<field name="objtype" class="java.lang.String"/>
 	<field name="comment" class="java.lang.String"/>
@@ -193,14 +203,14 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{groupmask} == 3 || $F{groupmask} == 2 || $F{groupmask} == 5? ($F{debe}.doubleValue()==0?0.0:$F{debe}.doubleValue()*-1):$F{debe}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{groupmask} == 3 || $F{groupmask} == 2 || $F{groupmask} == 5)&&$F{ttype}==1? ($F{debe}.doubleValue()==0?0.0:$F{debe}.doubleValue()*-1):$F{debe}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement style="Negrita" x="394" y="0" width="56" height="16" uuid="ca062d0e-4f32-4b2a-ac0c-3328fb9156b7"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{groupmask} == 3 || $F{groupmask} == 2 || $F{groupmask} == 5? ($F{haber}.doubleValue()==0?0.0:$F{haber}.doubleValue()*-1):$F{haber}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{groupmask} == 3 || $F{groupmask} == 2 || $F{groupmask} == 5)&&$F{ttype}==1? ($F{haber}.doubleValue()==0?0.0:$F{haber}.doubleValue()*-1):$F{haber}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement style="Negrita" x="450" y="0" width="62" height="16" uuid="e9c1e149-cba1-4aa3-a829-bc84e3539981">

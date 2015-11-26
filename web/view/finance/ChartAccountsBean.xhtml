@@ -28,9 +28,9 @@
                             <span class="ui-separator">
                                 <span class="ui-icon ui-icon-grip-dotted-vertical" />
                             </span>
-                            
+
                         </f:facet>
-                        
+
                     </p:toolbar>
 
                     <p:spacer height="20" width="0"></p:spacer>
@@ -40,7 +40,7 @@
 
                         <div class="ui-grid-row">
 
-                            <div class="ui-grid-col-4">
+                            <div class="ui-grid-col-3">
                                 <p:outputLabel value="Agregar Cuenta" />
                                 <p:spacer width="100%" height="10"/>
 
@@ -53,7 +53,7 @@
                                 <p:spacer width="10" height="0" />
                                 <p:inputText id="inName" size="27" value="#{chartAccountsBean.accName}"/> 
                                 <p:spacer width="100%" height="10"/>
-                                
+
                                 <p:selectOneRadio id="Tipo" value="#{chartAccountsBean.opcion}">
                                     <f:selectItem itemLabel="Titulo" itemValue="N" />
                                     <f:selectItem itemLabel="Activa" itemValue="Y" />
@@ -61,7 +61,7 @@
                                 <p:spacer width="100%" height="10"/>
                                 <p:commandButton value="Agregar" style="width: 90px" process="@this, inCod inName Tipo" action="#{chartAccountsBean.addAcc}"
                                                  update="tree1"/>
-                                
+
                                 <p:spacer width="100%" height="10"/>
 
                                 <p:tree id="tree1" value="#{chartAccountsBean.root1}" var="node" selectionMode="single" selection="#{chartAccountsBean.selectedNode1}"
@@ -73,26 +73,142 @@
                                 </p:tree>
                                 <p:tooltip  id="toolTipFade" for="tree1" value="Arrastre hacia la derecha" />
                                 <p:spacer width="100%" height="302"/>
-                                
-                                <p:commandButton id="botonPrincipal" value="Guardar " process="@this, tree2" update="tree2" action="#{chartAccountsBean.btnPrincipal}"/>
+
+                                <p:commandButton id="botonPrincipal" value="Guardar " process="@this"  action="#{chartAccountsBean.btnPrincipal}"/>
                                 <p:defaultCommand target="botonPrincipal" />
                             </div>
 
-                            <p:contextMenu for="tree2">
-                                <p:menuitem value="Eliminar" update="tree2" actionListener="#{chartAccountsBean.deleteNode}" icon="ui-icon-close"/>
-                            </p:contextMenu>
+                            <div class="ui-grid-col-9">
+                                <p:tabView id="tree2" orientation="right" style="height: 550px; width: 100%">
+                                    <p:ajax event="tabChange" listener="#{chartAccountsBean.eventTab}" process="tree2" update="tree2"/>
 
-                            <div class="ui-grid-col-8">
+                                    <p:tab id="a1" title="1 - ACTIVO">
+                                        <f:facet name="title" >
+                                            <div class="ui-grid-row">
+                                                <i class="fa fa-archive fa-5x" style="text-align: center; width: 100%"></i>
+                                            </div>
+                                            <div class="ui-grid-row">
+                                                <h:outputText value="1 - ACTIVO" style="text-align: center; width: 100%"/>
+                                            </div>
+                                        </f:facet>
+                                        <div class="ui-grid-row">
+                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                                         scrollable="true"
+                                                         scrollHeight="485">
+                                                <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
+                                                          filterBy="#{var.formatcode}" 
+                                                          style="font-size: #{commonBean.sizeFont1}">
+                                                    <p:spacer height="0" width="#{(var.levels * 15)}"/>
+                                                    <h:outputText value="#{var.formatcode}" />
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>
+                                    </p:tab>
+
+                                    <p:tab id="a2" title="2 - PASIVO">
+                                        <f:facet name="title" >
+                                            <div class="ui-grid-row">
+                                                <i class="fa fa-archive fa-5x" style="text-align: center; width: 100%"></i>
+                                            </div>
+                                            <div class="ui-grid-row">
+                                                <h:outputText value="2 - PASIVO" style="text-align: center; width: 100%"/>
+                                            </div>
+                                        </f:facet>
+                                        <div class="ui-grid-row">
+                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                                         scrollable="true"
+                                                         scrollHeight="485">
+                                                <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
+                                                          filterBy="#{var.formatcode}" 
+                                                          style="font-size: #{commonBean.sizeFont1}">
+                                                    <p:spacer height="0" width="#{(var.levels * 7)}"/>
+                                                    <h:outputText value="#{var.formatcode}" />
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>
+                                    </p:tab>
+
+                                    <p:tab id="a3" title="3 - PATRIMONIO">
+                                        <f:facet name="title" >
+                                            <div class="ui-grid-row">
+                                                <i class="fa fa-archive fa-5x" style="text-align: center; width: 100%"></i>
+                                            </div>
+                                            <div class="ui-grid-row">
+                                                <h:outputText value="3 - PATRIMONIO" style="text-align: center; width: 100%"/>
+                                            </div>
+                                        </f:facet>
+                                        <div class="ui-grid-row">
+                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                                         scrollable="true"
+                                                         scrollHeight="485">
+                                                <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
+                                                          filterBy="#{var.formatcode}" 
+                                                          style="font-size: #{commonBean.sizeFont1}">
+                                                    <p:spacer height="0" width="#{(var.levels * 7)}"/>
+                                                    <h:outputText value="#{var.formatcode}" />
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>
+                                    </p:tab>
+
+                                    <p:tab id="a4" title="4 - CUENTAS DE RESULTADOS DEUDORAS">
+                                        <f:facet name="title" >
+                                            <div class="ui-grid-row">
+                                                <i class="fa fa-archive fa-5x" style="text-align: center; width: 100%"></i>
+                                            </div>
+                                            <div class="ui-grid-row">
+                                                <h:outputText value="4 - CUENTAS DE RESULTADOS DEUDORAS" style="text-align: center; width: 100%"/>
+                                            </div>
+                                        </f:facet>
+                                        <div class="ui-grid-row">
+                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                                         scrollable="true"
+                                                         scrollHeight="485">
+                                                <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
+                                                          filterBy="#{var.formatcode}" 
+                                                          style="font-size: #{commonBean.sizeFont1}">
+                                                    <p:spacer height="0" width="#{(var.levels * 7)}"/>
+                                                    <h:outputText value="#{var.formatcode}" />
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>
+                                    </p:tab>
+
+                                    <p:tab id="a5" title="5 - INGRESOS" >
+                                        <f:facet name="title" >
+                                            <div class="ui-grid-row">
+                                                <i class="fa fa-archive fa-5x" style="text-align: center; width: 100%"></i>
+                                            </div>
+                                            <div class="ui-grid-row">
+                                                <h:outputText value="5 - INGRESOS" style="text-align: center; width: 100%"/>
+                                            </div>
+                                        </f:facet>
+                                        <div class="ui-grid-row">
+                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                                         scrollable="true"
+                                                         scrollHeight="485">
+                                                <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
+                                                          filterBy="#{var.formatcode}" 
+                                                          style="font-size: #{commonBean.sizeFont1}">
+                                                    <p:spacer height="0" width="#{(var.levels * 7)}"/>
+                                                    <h:outputText value="#{var.formatcode}" />
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>
+                                    </p:tab>
+
+                                </p:tabView>
+                                <!--
                                 <p:scrollPanel mode="native" style="width:700px;height:500px">
-                                    <p:tree id="tree2" value="#{chartAccountsBean.root2}" var="node" selectionMode="single" selection="#{chartAccountsBean.selectedNode2}"
+                                    <p:tree id="tree22" value="#/{chartAccountsBean.root2}" var="node" selectionMode="single" selection="#/{chartAccountsBean.selectedNode2}"
                                             draggable="true" droppable="true" dragdropScope="demo" style="width: 99.6%"
                                             >
-                                        <p:ajax event="dragdrop" listener="#{chartAccountsBean.onDragDrop}"  />
+                                        <p:ajax event="dragdrop" listener="#/{chartAccountsBean.onDragDrop}"  />
                                         <p:treeNode>
-                                            <h:outputText value="#{node.acctcode} - #{node.acctname}" style="#{node.finanse == 'Y' ? 'background-color: skyblue;' : 'background-color: none;'}"/>
+                                            <h:outputText value="#/{node.acctcode} - #/{node.acctname}" style="#/{node.finanse == 'Y' ? 'background-color: skyblue;' : 'background-color: none;'}"/>
                                         </p:treeNode>
                                     </p:tree>
-                                </p:scrollPanel>
+                                </p:scrollPanel>-->    
                             </div>
 
                         </div>

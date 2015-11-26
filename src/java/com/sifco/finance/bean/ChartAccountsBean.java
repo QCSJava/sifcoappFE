@@ -10,6 +10,7 @@ import com.sifcoapp.objects.accounting.to.AccountTO;
 import com.sifcoapp.objects.common.to.ResultOutTO;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -24,6 +25,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.beanutils.BeanUtils;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TreeDragDropEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -62,8 +64,58 @@ public class ChartAccountsBean implements Serializable {
     //__________________________________________________________________________
     private int cont;
 
+    //
+    private ArrayList<AccountTO> lstAccTab = new ArrayList<>();
+
 //</editor-fold>
 //<editor-fold defaultstate="collapsed" desc="G & S">
+    public static AccountingEJBClient getAccEJBService() {
+        return accEJBService;
+    }
+
+    public static void setAccEJBService(AccountingEJBClient accEJBService) {
+        ChartAccountsBean.accEJBService = accEJBService;
+    }
+
+    public TreeNode getDr() {
+        return dr;
+    }
+
+    public void setDr(TreeNode dr) {
+        this.dr = dr;
+    }
+
+    public TreeNode getDp() {
+        return dp;
+    }
+
+    public void setDp(TreeNode dp) {
+        this.dp = dp;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public boolean isValidCode() {
+        return validCode;
+    }
+
+    public void setValidCode(boolean validCode) {
+        this.validCode = validCode;
+    }
+
+    public ArrayList<AccountTO> getLstAccTab() {
+        return lstAccTab;
+    }
+
+    public void setLstAccTab(ArrayList<AccountTO> lstAccTab) {
+        this.lstAccTab = lstAccTab;
+    }
 
     public int getCont() {
         return cont;
@@ -72,8 +124,7 @@ public class ChartAccountsBean implements Serializable {
     public void setCont(int cont) {
         this.cont = cont;
     }
-    
-    
+
     public TreeNode getRootAux() {
         return rootAux;
     }
@@ -157,20 +208,21 @@ public class ChartAccountsBean implements Serializable {
         AccountTO accNode = new AccountTO();
         accNode.setAcctname("-1");
         //llenar arbol 1
-        root1 = new DefaultTreeNode(accNode, null);
+        /*root1 = new DefaultTreeNode(accNode, null);
 
-        //llenar arbol 2
-        root2 = new DefaultTreeNode(accNode, null);
-        rootAux = new DefaultTreeNode(accNode, null);
+         //llenar arbol 2
+         root2 = new DefaultTreeNode(accNode, null);
+         rootAux = new DefaultTreeNode(accNode, null);
 
-        try {
-            LLenarRoot2();
-            LLenarRootAux1();
-        } catch (Exception e) {
-            facesMessage("Error");
-        }
+         try {
+         LLenarRoot2();
+         LLenarRootAux1();
+         } catch (Exception e) {
+         facesMessage("Error");
+         }*/
 
         //cloneRoot2_to_aux();
+        readAccGroup(1);
     }
 //</editor-fold>
 
@@ -470,7 +522,7 @@ public class ChartAccountsBean implements Serializable {
     public void doSaveAux(AccountTO padre, List hijos, List lstAcc, int nivel) {
         for (Object node : hijos) {
             //cont = cont + 1;
-            this.setCont(getCont()+1);
+            this.setCont(getCont() + 1);
             TreeNode acc = (TreeNode) node;
 
             AccountTO newAcc = (AccountTO) acc.getData();
@@ -582,6 +634,73 @@ public class ChartAccountsBean implements Serializable {
 
     private void facesMessage(String var) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(var)); //To change body of generated methods, choose Tools | Templates.
+    }
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="Evento principal">
+    public void eventTab(TabChangeEvent event) {
+        //facesMessage("entro "+event.getTab().getId());
+        String id = event.getTab().getId();
+
+        switch (id) {
+            case "a1":
+                facesMessage("1 - ACTIVO");
+                readAccGroup(1);
+                break;
+
+            case "a2":
+                facesMessage("2 - PASIVO");
+                readAccGroup(2);
+                break;
+
+            case "a3":
+                facesMessage("3 - PATRIMONIO");
+                readAccGroup(3);
+                break;
+
+            case "a4":
+                facesMessage("4 - CUENTAS DE RESULTADOS DEUDORAS");
+                readAccGroup(4);
+                break;
+
+            case "a5":
+                facesMessage("5 - INGRESOS");
+                readAccGroup(5);
+                break;
+
+            default:
+                break;
+        }
+    }
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="leer cuentas">
+    private void readAccGroup(int group) {
+        if (group > 0) {
+            this.lstAccTab.clear();
+            try {
+                List res = accEJBService.getAccountByFilter(null, null, null, group);
+
+                if (!res.isEmpty()) {
+                    for (Object obj : res) {
+                        /*String name;
+                        AccountTO acc = (AccountTO) obj;
+                        name = acc.getAcctcode() + " - " + acc.getAcctname();
+                        acc.setAcctname(name);*/
+                        this.lstAccTab.add((AccountTO) obj);//acc);
+                    }
+                } else {
+                    facesMessage("No se encontraron cuentas para el grupo: " + group);
+                }
+
+            } catch (Exception ex) {
+                Logger.getLogger(ChartAccountsBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            facesMessage("No se obtubo grupo");
+        }
+        
+        RequestContext.getCurrentInstance().update("tree2");
     }
 //</editor-fold>
 
