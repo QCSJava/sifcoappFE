@@ -43,16 +43,20 @@
                             <div class="ui-grid-col-3">
                                 <div class="ui-grid-row">
                                     <div class="ui-grid-col-4"><p:outputLabel value="Cuenta de Mayor"></p:outputLabel></div>
+
+                                </div>
+                                <div class="ui-grid-row">
                                     <div class="ui-grid-col-8">
                                         <p:inputText id="cuentamayor" value="#{chartAccounts.acctcode}" readonly="true" size="22">
                                         </p:inputText>
                                         <p:outputLabel value="#{chartAccounts.pk}" id="pk" />
                                     </div>
-
                                 </div>
                                 <br></br>
                                 <div class="ui-grid-row">
                                     <div class="ui-grid-col-4"><p:outputLabel value="Nombre de cuenta"></p:outputLabel></div>
+                                </div>
+                                <div class="ui-grid-row">
                                     <div class="ui-grid-col-1"><p:inputTextarea id="nombreacc" value="#{chartAccounts.acctname}"  readonly="false"></p:inputTextarea></div>
                                 </div>
                                 <br></br>
@@ -69,13 +73,17 @@
                                 <br></br>
                                 <div class="ui-grid-row">
                                     <div class="ui-grid-col-4"><p:outputLabel value="Nivel"></p:outputLabel></div>
-                                    <div class="ui-grid-col-8"><p:inputText id="nivel" value="#{chartAccounts.levels}" readonly="true"></p:inputText></div>
+                                </div>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-8"><p:inputText size="15" id="nivel" value="#{chartAccounts.levels}" readonly="true"></p:inputText></div>
                                 </div>
                                 <br></br>
                                 <div class="ui-grid-row">
                                     <div class="ui-grid-col-4"><p:outputLabel value="Saldo"></p:outputLabel></div>
+                                </div>
+                                <div class="ui-grid-row">
                                     <div class="ui-grid-col-8">
-                                        <p:inputText id="saldo" value="#{chartAccounts.currtotal}" readonly="true">
+                                        <p:inputText size="15" id="saldo" value="#{chartAccounts.currtotal}" readonly="true">
                                             <f:convertNumber  groupingUsed="true"/>
                                         </p:inputText>
                                         <!-- onclick="PF('dlgC3').show();"-->
@@ -85,6 +93,8 @@
                                 <br></br>
                                 <div class="ui-grid-row">
                                     <div class="ui-grid-col-4"><p:outputLabel value="Rubro"></p:outputLabel></div>
+                                </div>
+                                <div class="ui-grid-row">
                                     <div class="ui-grid-col-8">
                                         <p:selectOneMenu id="rubro" value="#{chartAccounts.rubro}"  style="width:150px">
                                             <f:selectItem itemLabel="Rubro de Cuenta" itemValue="0" />
@@ -95,8 +105,13 @@
                             </div>
 
                             <div class="ui-grid-col-9">
-                                <p:tabView id="tree2" orientation="right" style="height: 550px; width: 100%">
-                                    <p:ajax event="tabChange" listener="#{chartAccountsBean.eventTab}" process="tree2" update="tree2"/>
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+                                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                    <i class="fa fa-refresh fa-spin fa-2x"></i>
+                                </p:dialog>
+                                <p:tabView id="tree2" orientation="right" style="height: 550px; width: 100%" activeIndex="#{chartAccounts.grupoAct-1}">
+                                    <p:ajax event="tabChange" listener="#{chartAccounts.eventTab}" process="tree2" update="tree2"/>
 
                                     <p:tab id="a1" title="1 - ACTIVO">
                                         <f:facet name="title" >
@@ -108,9 +123,18 @@
                                             </div>
                                         </f:facet>
                                         <div class="ui-grid-row">
-                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                            <p:dataTable var="var" value="#{chartAccounts.lstAccTab}" emptyMessage="Sin resultados"
                                                          scrollable="true"
-                                                         scrollHeight="485">
+                                                         scrollHeight="485"
+                                                         selectionMode="single" 
+                                                         selection="#{chartAccounts.selectAcc}"
+                                                         rowKey="#{var.acctcode}">
+
+                                                <p:ajax event="rowSelect" listener="#{chartAccounts.onNodeSelect}"
+                                                        update=":principal:cuentamayor :principal:nombreacc :principal:isActive 
+                                                        :principal:nivel :principal:saldo :principal:pk :principal:btnLines 
+                                                        :principal:rubro"/>
+
                                                 <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
                                                           filterBy="#{var.formatcode}" 
                                                           style="font-size: #{commonBean.sizeFont1}; width: 80%">
@@ -140,14 +164,32 @@
                                             </div>
                                         </f:facet>
                                         <div class="ui-grid-row">
-                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                            <p:dataTable var="var" value="#{chartAccounts.lstAccTab}" emptyMessage="Sin resultados"
                                                          scrollable="true"
-                                                         scrollHeight="485">
+                                                         scrollHeight="485"
+                                                         selectionMode="single" 
+                                                         selection="#{chartAccounts.selectAcc}"
+                                                         rowKey="#{var.acctcode}">
+
+                                                <p:ajax event="rowSelect" listener="#{chartAccounts.onNodeSelect}"
+                                                        update=":principal:cuentamayor :principal:nombreacc :principal:isActive 
+                                                        :principal:nivel :principal:saldo :principal:pk :principal:btnLines 
+                                                        :principal:rubro"/>
+
                                                 <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
                                                           filterBy="#{var.formatcode}" 
-                                                          style="font-size: #{commonBean.sizeFont1}">
-                                                    <p:spacer height="0" width="#{(var.levels * 7)}"/>
+                                                          style="font-size: #{commonBean.sizeFont1}; width: 80%">
+                                                    <p:spacer height="0" width="#{(var.levels * 15)}"/>
                                                     <h:outputText value="#{var.formatcode}" />
+                                                </p:column>
+                                                <p:column headerText="Saldo" 
+                                                          style="font-size: #{commonBean.sizeFont1}; width: 20%">
+                                                    <h:outputText value="#{var.currtotal}" style="text-align: right" >
+                                                        <f:convertNumber type="currency"  
+                                                                         currencySymbol="$" 
+                                                                         minFractionDigits="#{commonBean.minFractionDigits1}" 
+                                                                         maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                                    </h:outputText>
                                                 </p:column>
                                             </p:dataTable>
                                         </div>
@@ -163,14 +205,32 @@
                                             </div>
                                         </f:facet>
                                         <div class="ui-grid-row">
-                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                            <p:dataTable var="var" value="#{chartAccounts.lstAccTab}" emptyMessage="Sin resultados"
                                                          scrollable="true"
-                                                         scrollHeight="485">
+                                                         scrollHeight="485"
+                                                         selectionMode="single" 
+                                                         selection="#{chartAccounts.selectAcc}"
+                                                         rowKey="#{var.acctcode}">
+
+                                                <p:ajax event="rowSelect" listener="#{chartAccounts.onNodeSelect}"
+                                                        update=":principal:cuentamayor :principal:nombreacc :principal:isActive 
+                                                        :principal:nivel :principal:saldo :principal:pk :principal:btnLines 
+                                                        :principal:rubro"/>
+
                                                 <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
                                                           filterBy="#{var.formatcode}" 
-                                                          style="font-size: #{commonBean.sizeFont1}">
-                                                    <p:spacer height="0" width="#{(var.levels * 7)}"/>
+                                                          style="font-size: #{commonBean.sizeFont1}; width: 80%">
+                                                    <p:spacer height="0" width="#{(var.levels * 15)}"/>
                                                     <h:outputText value="#{var.formatcode}" />
+                                                </p:column>
+                                                <p:column headerText="Saldo" 
+                                                          style="font-size: #{commonBean.sizeFont1}; width: 20%">
+                                                    <h:outputText value="#{var.currtotal}" style="text-align: right" >
+                                                        <f:convertNumber type="currency"  
+                                                                         currencySymbol="$" 
+                                                                         minFractionDigits="#{commonBean.minFractionDigits1}" 
+                                                                         maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                                    </h:outputText>
                                                 </p:column>
                                             </p:dataTable>
                                         </div>
@@ -186,14 +246,32 @@
                                             </div>
                                         </f:facet>
                                         <div class="ui-grid-row">
-                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                            <p:dataTable var="var" value="#{chartAccounts.lstAccTab}" emptyMessage="Sin resultados"
                                                          scrollable="true"
-                                                         scrollHeight="485">
+                                                         scrollHeight="485"
+                                                         selectionMode="single" 
+                                                         selection="#{chartAccounts.selectAcc}"
+                                                         rowKey="#{var.acctcode}">
+
+                                                <p:ajax event="rowSelect" listener="#{chartAccounts.onNodeSelect}"
+                                                        update=":principal:cuentamayor :principal:nombreacc :principal:isActive 
+                                                        :principal:nivel :principal:saldo :principal:pk :principal:btnLines 
+                                                        :principal:rubro"/>
+
                                                 <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
                                                           filterBy="#{var.formatcode}" 
-                                                          style="font-size: #{commonBean.sizeFont1}">
-                                                    <p:spacer height="0" width="#{(var.levels * 7)}"/>
+                                                          style="font-size: #{commonBean.sizeFont1}; width: 80%">
+                                                    <p:spacer height="0" width="#{(var.levels * 15)}"/>
                                                     <h:outputText value="#{var.formatcode}" />
+                                                </p:column>
+                                                <p:column headerText="Saldo" 
+                                                          style="font-size: #{commonBean.sizeFont1}; width: 20%">
+                                                    <h:outputText value="#{var.currtotal}" style="text-align: right" >
+                                                        <f:convertNumber type="currency"  
+                                                                         currencySymbol="$" 
+                                                                         minFractionDigits="#{commonBean.minFractionDigits1}" 
+                                                                         maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                                    </h:outputText>
                                                 </p:column>
                                             </p:dataTable>
                                         </div>
@@ -209,14 +287,32 @@
                                             </div>
                                         </f:facet>
                                         <div class="ui-grid-row">
-                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                            <p:dataTable var="var" value="#{chartAccounts.lstAccTab}" emptyMessage="Sin resultados"
                                                          scrollable="true"
-                                                         scrollHeight="485">
+                                                         scrollHeight="485"
+                                                         selectionMode="single" 
+                                                         selection="#{chartAccounts.selectAcc}"
+                                                         rowKey="#{var.acctcode}">
+
+                                                <p:ajax event="rowSelect" listener="#{chartAccounts.onNodeSelect}"
+                                                        update=":principal:cuentamayor :principal:nombreacc :principal:isActive 
+                                                        :principal:nivel :principal:saldo :principal:pk :principal:btnLines 
+                                                        :principal:rubro"/>
+
                                                 <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
                                                           filterBy="#{var.formatcode}" 
-                                                          style="font-size: #{commonBean.sizeFont1}">
-                                                    <p:spacer height="0" width="#{(var.levels * 7)}"/>
+                                                          style="font-size: #{commonBean.sizeFont1}; width: 80%">
+                                                    <p:spacer height="0" width="#{(var.levels * 15)}"/>
                                                     <h:outputText value="#{var.formatcode}" />
+                                                </p:column>
+                                                <p:column headerText="Saldo" 
+                                                          style="font-size: #{commonBean.sizeFont1}; width: 20%">
+                                                    <h:outputText value="#{var.currtotal}" style="text-align: right" >
+                                                        <f:convertNumber type="currency"  
+                                                                         currencySymbol="$" 
+                                                                         minFractionDigits="#{commonBean.minFractionDigits1}" 
+                                                                         maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                                    </h:outputText>
                                                 </p:column>
                                             </p:dataTable>
                                         </div>
@@ -322,12 +418,13 @@
                                      scrollable="true" scrollHeight="325"
                                      selectionMode="single" selection="#{chartAccounts.select}" rowKey="#{line.line_id}"
                                      paginator="true"
-                                     paginatorTemplate="{Exporters}">
+                                     paginatorTemplate="{Exporters}"
+                                     rowExpandMode="single">
 
                             <f:facet name="{Exporters}" >
                                 <p:spacer height="0" width="95%"/>
                                 <h:commandLink >
-                                    <p:graphicImage name="fa fa-bars" width="24"/>
+                                    <i class="fa fa fa-table fa-2x"></i>
                                     <p:dataExporter type="xls" target="dlgSaldo" fileName="#{chartAccounts.nameToEx}"
                                                     />
                                 </h:commandLink>

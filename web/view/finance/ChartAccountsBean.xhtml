@@ -41,45 +41,66 @@
                         <div class="ui-grid-row">
 
                             <div class="ui-grid-col-3">
-                                <p:outputLabel value="Agregar Cuenta" />
-                                <p:spacer width="100%" height="10"/>
+                                <div class="ui-grid-row">
+                                    <p:outputLabel value="Agregar Cuenta" />
+                                </div>
 
-                                <p:outputLabel value="Codigo" for="inCod"/>
-                                <p:spacer width="55" height="0" />
-                                <p:outputLabel value="Nombre" for="inName"/>
-                                <p:spacer width="100%" height="10"/>
+                                <br></br>
 
-                                <p:inputText id="inCod" size="10"  value="#{chartAccountsBean.accCode}"/>
-                                <p:spacer width="10" height="0" />
-                                <p:inputText id="inName" size="27" value="#{chartAccountsBean.accName}"/> 
-                                <p:spacer width="100%" height="10"/>
+                                <div class="ui-grid-row">
+                                    <p:outputLabel value="Codigo" for="inCod"/>
+                                </div>
+                                <div class="ui-grid-row">
+                                    <p:inputText id="inCod" size="15"  value="#{chartAccountsBean.accCode}"/>
+                                </div>
 
-                                <p:selectOneRadio id="Tipo" value="#{chartAccountsBean.opcion}">
-                                    <f:selectItem itemLabel="Titulo" itemValue="N" />
-                                    <f:selectItem itemLabel="Activa" itemValue="Y" />
-                                </p:selectOneRadio>
-                                <p:spacer width="100%" height="10"/>
-                                <p:commandButton value="Agregar" style="width: 90px" process="@this, inCod inName Tipo" action="#{chartAccountsBean.addAcc}"
-                                                 update="tree1"/>
+                                <br></br>
 
-                                <p:spacer width="100%" height="10"/>
+                                <div class="ui-grid-row">
+                                    <p:outputLabel value="Nombre" for="inName"/>
+                                </div>
+                                <div class="ui-grid-row">
+                                    <p:inputText id="inName" size="27" value="#{chartAccountsBean.accName}"/>
+                                </div>
 
-                                <p:tree id="tree1" value="#{chartAccountsBean.root1}" var="node" selectionMode="single" selection="#{chartAccountsBean.selectedNode1}"
-                                        draggable="true" droppable="true" dragdropScope="demo" style="width: 95%">
-                                    <p:ajax event="dragdrop" listener="#{chartAccountsBean.onDragDrop}"  />
-                                    <p:treeNode>
-                                        <h:outputText value="#{node.acctcode} - #{node.acctname}"  style="background-color: skyblue"/>
-                                    </p:treeNode>
-                                </p:tree>
-                                <p:tooltip  id="toolTipFade" for="tree1" value="Arrastre hacia la derecha" />
-                                <p:spacer width="100%" height="302"/>
+                                <br></br>
 
-                                <p:commandButton id="botonPrincipal" value="Guardar " process="@this"  action="#{chartAccountsBean.btnPrincipal}"/>
-                                <p:defaultCommand target="botonPrincipal" />
+                                <div class="ui-grid-row">
+                                    <p:selectOneRadio id="Tipo" value="#{chartAccountsBean.opcion}">
+                                        <f:selectItem itemLabel="Titulo" itemValue="N" />
+                                        <f:selectItem itemLabel="Activa" itemValue="Y" />
+                                    </p:selectOneRadio>
+                                </div>
+
+                                <br></br>
+
+                                <div class="ui-grid-row">
+                                    <p:commandButton id="botonPrincipal" value="Guardar " process="@this, inCod inName Tipo"  
+                                                     action="#{chartAccountsBean.btnPrincipal}"
+                                                     update=":frmAccounts:tree2 :frmAccounts:tree2:a#{chartAccountsBean.grupoAct}">
+                                        <p:confirm header="Confirmación" message="Desea agregar la cuenta?" icon="fa fa-alert" />
+                                    </p:commandButton>
+                                    <p:spacer height="0" width="15"/>
+                                    <p:commandButton id="btnDel" value="Eliminar" process="@this, inCod inName Tipo"  
+                                                     action="#{chartAccountsBean.deleteAcc}"
+                                                     update=":frmAccounts:tree2 :frmAccounts:tree2:a#{chartAccountsBean.grupoAct}">
+                                        <p:confirm header="Confirmación" message="Desea Eliminar la cuenta?" icon="fa fa-alert" />
+                                    </p:commandButton>
+                                    <p:defaultCommand target="botonPrincipal" />
+                                </div>
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="230">
+                                    <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </p:confirmDialog>
                             </div>
 
                             <div class="ui-grid-col-9">
-                                <p:tabView id="tree2" orientation="right" style="height: 550px; width: 100%">
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+                                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                    <i class="fa fa-refresh fa-spin fa-2x"></i>
+                                </p:dialog>
+                                <p:tabView id="tree2" orientation="right" style="height: 550px; width: 100%" activeIndex="#{(chartAccountsBean.grupoAct)-1}">
                                     <p:ajax event="tabChange" listener="#{chartAccountsBean.eventTab}" process="tree2" update="tree2"/>
 
                                     <p:tab id="a1" title="1 - ACTIVO">
@@ -92,9 +113,14 @@
                                             </div>
                                         </f:facet>
                                         <div class="ui-grid-row">
-                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                            <p:dataTable id="b1" var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
                                                          scrollable="true"
-                                                         scrollHeight="485">
+                                                         scrollHeight="485"
+                                                         selectionMode="single" 
+                                                         selection="#{chartAccountsBean.selectAcc}"
+                                                         rowKey="#{var.acctcode}">
+                                                <p:ajax event="rowSelect" listener="#{chartAccountsBean.selection}" 
+                                                        update="@this, :frmAccounts:inCod :frmAccounts:inName :frmAccounts:Tipo" />
                                                 <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
                                                           filterBy="#{var.formatcode}" 
                                                           style="font-size: #{commonBean.sizeFont1}">
@@ -115,7 +141,7 @@
                                             </div>
                                         </f:facet>
                                         <div class="ui-grid-row">
-                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                            <p:dataTable id="b2" var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
                                                          scrollable="true"
                                                          scrollHeight="485">
                                                 <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
@@ -138,7 +164,7 @@
                                             </div>
                                         </f:facet>
                                         <div class="ui-grid-row">
-                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                            <p:dataTable id="b3" var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
                                                          scrollable="true"
                                                          scrollHeight="485">
                                                 <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
@@ -161,7 +187,7 @@
                                             </div>
                                         </f:facet>
                                         <div class="ui-grid-row">
-                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                            <p:dataTable id="b4" var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
                                                          scrollable="true"
                                                          scrollHeight="485">
                                                 <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
@@ -184,7 +210,7 @@
                                             </div>
                                         </f:facet>
                                         <div class="ui-grid-row">
-                                            <p:dataTable var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
+                                            <p:dataTable id="b5" var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
                                                          scrollable="true"
                                                          scrollHeight="485">
                                                 <p:column headerText="Codigo Cuenta - Nombre Cuenta" 

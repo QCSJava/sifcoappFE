@@ -5,6 +5,7 @@
  */
 package com.sifco.bean;
 
+import com.sifco.finance.bean.ChartAccountsBean;
 import com.sifcoapp.client.AccountingEJBClient;
 import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.objects.accounting.to.AccountTO;
@@ -37,7 +38,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -103,13 +105,44 @@ public class ChartAccounts implements Serializable {
     //report
     @ManagedProperty(value = "#{reportsBean}")
     private ReportsBean bean;
+    
+    //
+    private ArrayList<AccountTO> lstAccTab = new ArrayList<>();
+    private AccountTO selectAcc = new AccountTO();
+    private int grupoAct = 1;
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Get and Set" >
+
+    public int getGrupoAct() {
+        return grupoAct;
+    }
+
+    public void setGrupoAct(int grupoAct) {
+        this.grupoAct = grupoAct;
+    }
+    
     public ReportsBean getBean() {
         return bean;
     }
 
+    public AccountTO getSelectAcc() {
+        return selectAcc;
+    }
+
+    public void setSelectAcc(AccountTO selectAcc) {
+        this.selectAcc = selectAcc;
+    }
+    public ArrayList<AccountTO> getLstAccTab() {
+        return lstAccTab;
+    }
+
+    public void setLstAccTab(ArrayList<AccountTO> lstAccTab) {
+        this.lstAccTab = lstAccTab;
+    }
+    
+    
     public void setBean(ReportsBean bean) {
         this.bean = bean;
     }
@@ -549,6 +582,7 @@ public class ChartAccounts implements Serializable {
     }
 
 //</editor-fold> 
+    
 //<editor-fold defaultstate="collapsed" desc="Load de la pantalla">
     //load de la pantalla    
     @PostConstruct
@@ -565,22 +599,22 @@ public class ChartAccounts implements Serializable {
             lstRubros = AdminEJBService.findCatalog(CATALOGORUB);
         } catch (Exception e) {
         }
-
-        llenarRoot();
+        readAccGroup(1);
+        setGrupoAct(1);
+        //llenarRoot();
     }
 
 //</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="Llenar arbol">
     public void updTreeAcc() {
         try {
-            facesMessage("Actualizando");
-            llenarRoot();
-            //seachAcc("11", "");
+            facesMessage("Actualizando grupo " + getGrupoAct());
+            readAccGroup(getGrupoAct());
         } catch (Exception e) {
             facesMessage(e.getCause() + " " + e.getCause());
         }
     }
-
-//<editor-fold defaultstate="collapsed" desc="Llenar arbol">
     public void llenarRoot() {
         try {
             this.setTreeAcc(accEJBService.getTreeAccount());
@@ -633,17 +667,17 @@ public class ChartAccounts implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del treeTable">
-    public void onNodeSelect(NodeSelectEvent event) {
+    public void onNodeSelect(SelectEvent event) {
         //facesMessage("entro");
-        AccountTO var = null;
+        //AccountTO var = null;
         if (newAccount != null) {
             newAccount = new AccountTO();
         }
-        this.setSelectedNode(event.getTreeNode());
-        var = (AccountTO) selectedNode.getData();//event.getTreeNode().getData();
+        //this.setSelectedNode(event.getTreeNode());
+        //var = (AccountTO) selectedNode.getData();//event.getTreeNode().getData();
 
         try {
-            newAccount = accEJBService.getAccountByKey(var.getAcctcode());
+            newAccount = accEJBService.getAccountByKey(this.selectAcc.getAcctcode());
         } catch (Exception ex) {
             Logger.getLogger(ChartAccounts.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -660,6 +694,7 @@ public class ChartAccounts implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Boton Principal">
     public void btnPrincipal() {
         showHideDialog("dlgC2", 1);
@@ -929,6 +964,7 @@ public class ChartAccounts implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Exporter">
     /*public void postProcessXLS(Object document) {
      HSSFWorkbook wb = (HSSFWorkbook) document;
@@ -946,6 +982,7 @@ public class ChartAccounts implements Serializable {
      }
      }*/
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="imprimir">
     public void print() {
         String _reportTitle, _reportname;
@@ -975,6 +1012,78 @@ public class ChartAccounts implements Serializable {
         getBean().setReportName(_reportname);
         getBean().execute();
 
+    }
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="Evento principal">
+    public void eventTab(TabChangeEvent event) {
+        //facesMessage("entro "+event.getTab().getId());
+        String id = event.getTab().getId();
+
+        switch (id) {
+            case "a1":
+                facesMessage("1 - ACTIVO");
+                setGrupoAct(1);
+                readAccGroup(1);
+                break;
+
+            case "a2":
+                facesMessage("2 - PASIVO");
+                setGrupoAct(2);
+                readAccGroup(2);
+                break;
+
+            case "a3":
+                facesMessage("3 - PATRIMONIO");
+                setGrupoAct(3);
+                readAccGroup(3);
+                break;
+
+            case "a4":
+                facesMessage("4 - CUENTAS DE RESULTADOS DEUDORAS");
+                setGrupoAct(4);
+                readAccGroup(4);
+                break;
+
+            case "a5":
+                facesMessage("5 - INGRESOS");
+                setGrupoAct(5);
+                readAccGroup(5);
+                break;
+
+            default:
+                break;
+        }
+    }
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="leer cuentas">
+    private void readAccGroup(int group) {
+        if (group > 0) {
+            this.lstAccTab.clear();
+            try {
+                List res = accEJBService.getAccountByFilter(null, null, null, group);
+
+                if (!res.isEmpty()) {
+                    for (Object obj : res) {
+                        /*String name;
+                        AccountTO acc = (AccountTO) obj;
+                        name = acc.getAcctcode() + " - " + acc.getAcctname();
+                        acc.setAcctname(name);*/
+                        this.lstAccTab.add((AccountTO) obj);//acc);
+                    }
+                } else {
+                    facesMessage("No se encontraron cuentas para el grupo: " + group);
+                }
+
+            } catch (Exception ex) {
+                Logger.getLogger(ChartAccountsBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            facesMessage("No se obtubo grupo");
+        }
+        
+        RequestContext.getCurrentInstance().update("tree2");
     }
 //</editor-fold>
 
