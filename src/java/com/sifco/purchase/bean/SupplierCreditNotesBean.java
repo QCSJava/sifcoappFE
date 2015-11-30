@@ -11,8 +11,6 @@ import com.sifcoapp.client.AccountingEJBClient;
 import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.client.CatalogEJBClient;
 import com.sifcoapp.client.PurchaseEJBClient;
-import com.sifcoapp.client.SalesEJBClient;
-import com.sifcoapp.objects.accounting.to.AccountTO;
 import com.sifcoapp.objects.admin.to.ArticlesInTO;
 import com.sifcoapp.objects.admin.to.ArticlesTO;
 import com.sifcoapp.objects.admin.to.BranchArticlesTO;
@@ -29,11 +27,6 @@ import com.sifcoapp.objects.purchase.to.PurchaseTO;
 import com.sifcoapp.objects.purchase.to.SupplierDetailTO;
 import com.sifcoapp.objects.purchase.to.SupplierInTO;
 import com.sifcoapp.objects.purchase.to.SupplierTO;
-import com.sifcoapp.objects.sales.to.ClientCrediDetailTO;
-import com.sifcoapp.objects.sales.to.ClientCrediTO;
-import com.sifcoapp.objects.sales.to.SalesDetailTO;
-import com.sifcoapp.objects.sales.to.SalesInTO;
-import com.sifcoapp.objects.sales.to.SalesTO;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.NumberFormat;
@@ -47,8 +40,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -60,7 +53,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name = "supplierCreditNotesBean")
-@ApplicationScoped
+@SessionScoped
 public class SupplierCreditNotesBean implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="Declaración de variables para formulario" >
@@ -180,7 +173,6 @@ public class SupplierCreditNotesBean implements Serializable {
     private final int ultPrecio = 1;
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -274,171 +266,117 @@ public class SupplierCreditNotesBean implements Serializable {
 
         while (iterator.hasNext()) {
             BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-            results.add(articulo.getCardname());
+            results.add(articulo.getCardcode()+"-"+articulo.getCardname());
         }
         return results;
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Autocompletado de CUENTA ">
     /*
-    public List<String> completeName(String query) {
-        List _result = null;
+     public List<String> completeName(String query) {
+     List _result = null;
 
-        String filterByCode = null;
-        try {
+     String filterByCode = null;
+     try {
 
-            _result = AccountingEJBClient.getAccountByFilter(filterByCode, query, "Y");
-        } catch (Exception ex) {
-            Logger.getLogger(SupplierCreditNotesBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+     _result = AccountingEJBClient.getAccountByFilter(filterByCode, query, "Y");
+     } catch (Exception ex) {
+     Logger.getLogger(SupplierCreditNotesBean.class.getName()).log(Level.SEVERE, null, ex);
+     }
 
-        List<String> results = new ArrayList<>();
+     List<String> results = new ArrayList<>();
 
-        Iterator<AccountTO> iterator = _result.iterator();
-        while (iterator.hasNext()) {
-            AccountTO cuentas = (AccountTO) iterator.next();
-            results.add(cuentas.getAcctname());
-        }
-        return results;
-    }
+     Iterator<AccountTO> iterator = _result.iterator();
+     while (iterator.hasNext()) {
+     AccountTO cuentas = (AccountTO) iterator.next();
+     results.add(cuentas.getAcctname());
+     }
+     return results;
+     }
 
-    public List<String> completeCode(String query) {
-        List _result = null;
+     public List<String> completeCode(String query) {
+     List _result = null;
 
-        String filterByName = null;
-        try {
-            _result = AccountingEJBClient.getAccountByFilter(query, filterByName, "Y");
-        } catch (Exception ex) {
-            Logger.getLogger(SupplierCreditNotesBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        List<String> results = new ArrayList<>();
+     String filterByName = null;
+     try {
+     _result = AccountingEJBClient.getAccountByFilter(query, filterByName, "Y");
+     } catch (Exception ex) {
+     Logger.getLogger(SupplierCreditNotesBean.class.getName()).log(Level.SEVERE, null, ex);
+     }
+     List<String> results = new ArrayList<>();
 
-        Iterator<AccountTO> iterator = _result.iterator();
-        while (iterator.hasNext()) {
-            AccountTO cuentas = (AccountTO) iterator.next();
-            results.add(cuentas.getAcctcode());
-        }
-        return results;
-    }
-    */
+     Iterator<AccountTO> iterator = _result.iterator();
+     while (iterator.hasNext()) {
+     AccountTO cuentas = (AccountTO) iterator.next();
+     results.add(cuentas.getAcctcode());
+     }
+     return results;
+     }
+     */
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del autocomplete CUENTA" > 
     /*
-    public void findAccount(SelectEvent event) {
-        List account = new Vector();
-        String var = null;
-        if (event.getObject().toString() != var) {
-            List _result = null;
+     public void findAccount(SelectEvent event) {
+     List account = new Vector();
+     String var = null;
+     if (event.getObject().toString() != var) {
+     List _result = null;
 
-            try {
-                if (newCodCuenta != null || newNomCuenta != null) {
-                    _result = AccountingEJBClient.getAccountByFilter(newCodCuenta, newNomCuenta);
-                }
+     try {
+     if (newCodCuenta != null || newNomCuenta != null) {
+     _result = AccountingEJBClient.getAccountByFilter(newCodCuenta, newNomCuenta);
+     }
 
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                newCodCuenta = null;
-                newNomCuenta = null;
-            }
-            if (_result.isEmpty()) {
-                this.newCodCuenta = null;
-                this.newNomCuenta = null;
+     } catch (Exception e) {
+     faceMessage(e.getMessage() + " -- " + e.getCause());
+     newCodCuenta = null;
+     newNomCuenta = null;
+     }
+     if (_result.isEmpty()) {
+     this.newCodCuenta = null;
+     this.newNomCuenta = null;
 
-            } else {
-                Iterator<AccountTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    AccountTO articulo = (AccountTO) iterator.next();
-                    account.add(articulo);
-                }
-                if (account.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        AccountTO art = (AccountTO) account.get(0);
-                        if (newCodCuenta != null || newNomCuenta != null) {
-                            newCodCuenta = art.getAcctcode();
-                            newNomCuenta = art.getAcctname();
-                        }
-                    } catch (Exception ex) {
-                        Logger.getLogger(SupplierCreditNotesBean.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    for (Object ac : account) {
-                        AccountTO art = (AccountTO) ac;
-                        if (newNomCuenta.equals(art.getAcctname())) {
-                            newCodCuenta = art.getAcctcode();
-                            newNomCuenta = art.getAcctname();
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    */
+     } else {
+     Iterator<AccountTO> iterator = _result.iterator();
+     while (iterator.hasNext()) {
+     AccountTO articulo = (AccountTO) iterator.next();
+     account.add(articulo);
+     }
+     if (account.size() == 1) {
+     try {
+     System.out.println("articulo unico, llenar campos en pantalla");
+     AccountTO art = (AccountTO) account.get(0);
+     if (newCodCuenta != null || newNomCuenta != null) {
+     newCodCuenta = art.getAcctcode();
+     newNomCuenta = art.getAcctname();
+     }
+     } catch (Exception ex) {
+     Logger.getLogger(SupplierCreditNotesBean.class.getName()).log(Level.SEVERE, null, ex);
+     }
+     } else {
+     for (Object ac : account) {
+     AccountTO art = (AccountTO) ac;
+     if (newNomCuenta.equals(art.getAcctname())) {
+     newCodCuenta = art.getAcctcode();
+     newNomCuenta = art.getAcctname();
+     break;
+     }
+     }
+     }
+     }
+     }
+     }
+     */
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocio(SelectEvent event) {
-        List socio = new Vector();
-        String var = null;
-
-        if (selectSocio == null) {
-            selectSocio = new BusinesspartnerTO();
-        }
-
-        if (event.getObject().toString() != var) {
-            List _result = null;
-
-            BusinesspartnerInTO in = new BusinesspartnerInTO();
-            //in.setCardcode(codSocio);
-            in.setCardname(socioNeg);
-
-            try {
-                _result = CatalogEJB.get_businesspartner(in);
-
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                codSocio = null;
-                socioNeg = null;
-            }
-            if (_result.isEmpty()) {
-                this.codSocio = null;
-                this.socioNeg = null;
-
-            } else {
-                Iterator<BusinesspartnerTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-                    socio.add(articulo);
-                    this.setSelectSocio(articulo);//----------------------------
-                }
-                if (socio.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                        ctlaccount = art.getDebpayacct();
-                        codSocio = art.getCardcode();
-                        socioNeg = art.getCardname();
-
-                    } catch (Exception ex) {
-                        Logger.getLogger(SupplierCreditNotesBean.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                    ctlaccount = art.getDebpayacct();
-                    codSocio = art.getCardcode();
-                    socioNeg = art.getCardname();
-                    faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
-                }
-            }
-        }
-
+        String[] newName = socioNeg.split("-");
+        this.codSocio = null;
+        selectSocioCod(newName[0]);
     }
 
-    public void selectSocioCod(SelectEvent event) {
+    public void selectSocioCod(String code) {
         List socio = new Vector();
         String var = null;
 
@@ -446,53 +384,50 @@ public class SupplierCreditNotesBean implements Serializable {
             selectSocio = new BusinesspartnerTO();
         }
 
-        if (event.getObject().toString() != var) {
-            List _result = null;
+        List _result = null;
 
-            BusinesspartnerInTO in = new BusinesspartnerInTO();
-            in.setCardcode(codSocio);
-            //in.setCardname(socioNeg);
+        BusinesspartnerInTO in = new BusinesspartnerInTO();
+        in.setCardcode(codSocio == null ? code : codSocio);
+        in.setCardtype("P");
 
-            try {
-                _result = CatalogEJB.get_businesspartner(in);
+        try {
+            _result = CatalogEJB.get_businesspartner(in);
 
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                codSocio = null;
-                socioNeg = null;
+        } catch (Exception e) {
+            faceMessage(e.getMessage() + " -- " + e.getCause());
+            codSocio = null;
+            socioNeg = null;
+        }
+        if (_result.isEmpty()) {
+            this.codSocio = null;
+            this.socioNeg = null;
+
+        } else {
+            Iterator<BusinesspartnerTO> iterator = _result.iterator();
+            while (iterator.hasNext()) {
+                BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
+                socio.add(articulo);
+                this.setSelectSocio(articulo);//----------------------------
             }
-            if (_result.isEmpty()) {
-                this.codSocio = null;
-                this.socioNeg = null;
-
-            } else {
-                Iterator<BusinesspartnerTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-                    socio.add(articulo);
-                    this.setSelectSocio(articulo);//----------------------------
-                }
-                if (socio.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                        ctlaccount = art.getDebpayacct();
-                        codSocio = art.getCardcode();
-                        socioNeg = art.getCardname();
-
-                    } catch (Exception ex) {
-                        Logger.getLogger(SupplierCreditNotesBean.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
+            if (socio.size() == 1) {
+                try {
+                    System.out.println("articulo unico, llenar campos en pantalla");
                     BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
                     ctlaccount = art.getDebpayacct();
                     codSocio = art.getCardcode();
                     socioNeg = art.getCardname();
-                    faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
+
+                } catch (Exception ex) {
+                    Logger.getLogger(SupplierCreditNotesBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            } else {
+                BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
+                ctlaccount = art.getDebpayacct();
+                codSocio = art.getCardcode();
+                socioNeg = art.getCardname();
+                faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
             }
         }
-
     }
 //</editor-fold>
 
@@ -609,10 +544,10 @@ public class SupplierCreditNotesBean implements Serializable {
             if (newPrecio > 0 && newCantidad > 0 && newPrecio != null && newCantidad != null) {
                 Double aux = (newPrecio) * (newCantidad);
                 /*NumberFormat nf = NumberFormat.getInstance();
-                nf.setMaximumFractionDigits(2);
-                String st = nf.format(aux);
-                Double dou = Double.valueOf(st);
-                //newTotal = dou;*/
+                 nf.setMaximumFractionDigits(2);
+                 String st = nf.format(aux);
+                 Double dou = Double.valueOf(st);
+                 //newTotal = dou;*/
                 newTotal = aux;
             }
         } catch (Exception e) {
@@ -635,7 +570,6 @@ public class SupplierCreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Boton Agregar al DATATABLE">
     public void accionAgregar(ActionEvent actionEvent) {
         try {
@@ -753,7 +687,6 @@ public class SupplierCreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Calcular Impuestos y TOTAL">
     public void calcularTotalBill(ArrayList<SupplierDetailTO> listaArt) {
         Double totalAux = 0.0;
@@ -771,7 +704,6 @@ public class SupplierCreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="funciones para calculos de impuestos">
     public Double calcularGravadas(ArrayList<SupplierDetailTO> listaArt) {
         Double sumTotal = 0.0;
@@ -870,7 +802,6 @@ public class SupplierCreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Eliminar del dataTable" > 
     public void deleteDetalle() {
         try {
@@ -1046,7 +977,7 @@ public class SupplierCreditNotesBean implements Serializable {
 
         newSupplier.setDoctotal(gTotalPadre);
         newSupplier.setsupplierDetails(listaPadre);
-        
+
         if (isBill) {
             newSupplier.setReceiptnum(docEntryBill);
         }
@@ -1317,7 +1248,6 @@ public class SupplierCreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="doSearchBill">
     public void doSearchBill() {
         PurchaseInTO searchBill = new PurchaseInTO();
@@ -1347,7 +1277,6 @@ public class SupplierCreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Boton COPIAR DESDE BILL">
     public void btnCopyFromBill(ActionEvent actionEvent) {
         this.listaBusquedaBill = new Vector();
@@ -1359,13 +1288,11 @@ public class SupplierCreditNotesBean implements Serializable {
 
         doSearchBill();
         RequestContext.getCurrentInstance().update("dlgCfromB2");
-        if (listaBusquedaTableBill.size()>0) {
+        if (listaBusquedaTableBill.size() > 0) {
             showHideDialog("dlgListBill3", 1);
-        }else{
+        } else {
             faceMessage("No se encontraron registros para el socio: " + this.codSocio + " - " + this.socioNeg);
         }
-        
-        
 
     }
 //</editor-fold>
@@ -1433,7 +1360,6 @@ public class SupplierCreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     public void reload() throws IOException {
         // ...
@@ -1441,7 +1367,7 @@ public class SupplierCreditNotesBean implements Serializable {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
     }
-    
+
     public void confirmDialog(ActionEvent actionEvent) {
         showHideDialog("dlgC2", 2);
         if (varEstados == 1) {
@@ -1721,7 +1647,6 @@ public class SupplierCreditNotesBean implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G & S">
-
     public boolean isIsBill() {
         return isBill;
     }
@@ -1737,7 +1662,7 @@ public class SupplierCreditNotesBean implements Serializable {
     public void setDocEntryBill(int docEntryBill) {
         this.docEntryBill = docEntryBill;
     }
-    
+
     public boolean isRendered() {
         return rendered;
     }

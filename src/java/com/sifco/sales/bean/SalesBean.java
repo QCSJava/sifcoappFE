@@ -198,7 +198,6 @@ public class SalesBean implements Serializable {
     private String url;
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -320,72 +319,20 @@ public class SalesBean implements Serializable {
 
         while (iterator.hasNext()) {
             BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-            results.add(articulo.getCardname());
+            results.add(articulo.getCardcode() + "-" + articulo.getCardname());
         }
         return results;
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocio(SelectEvent event) {
-        List socio = new Vector();
-        String var = null;
-
-        if (selectSocio == null) {
-            selectSocio = new BusinesspartnerTO();
-        }
-
-        if (event.getObject().toString() != var) {
-            List _result = null;
-
-            BusinesspartnerInTO in = new BusinesspartnerInTO();
-            //in.setCardcode(codSocio);
-            in.setCardname(socioNeg);
-
-            try {
-                _result = CatalogEJB.get_businesspartner(in);
-
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                codSocio = null;
-                socioNeg = null;
-            }
-            if (_result.isEmpty()) {
-                this.codSocio = null;
-                this.socioNeg = null;
-
-            } else {
-                Iterator<BusinesspartnerTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-                    socio.add(articulo);
-                    this.setSelectSocio(articulo);//----------------------------
-                }
-                if (socio.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                        ctlaccount = art.getDebpayacct();
-                        codSocio = art.getCardcode();
-                        socioNeg = art.getCardname();
-
-                    } catch (Exception ex) {
-                        Logger.getLogger(SalesBean.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                    ctlaccount = art.getDebpayacct();
-                    codSocio = art.getCardcode();
-                    socioNeg = art.getCardname();
-                    faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
-                }
-            }
-        }
-
+        String[] newName = socioNeg.split("-");
+        this.codSocio = null;
+        selectSocioCod(newName[0]);
     }
 
-    public void selectSocioCod(SelectEvent event) {
+    public void selectSocioCod(String code) {
         List socio = new Vector();
         String var = null;
 
@@ -393,53 +340,46 @@ public class SalesBean implements Serializable {
             selectSocio = new BusinesspartnerTO();
         }
 
-        if (event.getObject().toString() != var) {
-            List _result = null;
+        List _result = null;
 
-            BusinesspartnerInTO in = new BusinesspartnerInTO();
-            in.setCardcode(codSocio);
-            //in.setCardname(socioNeg);
+        BusinesspartnerInTO in = new BusinesspartnerInTO();
+        in.setCardcode(codSocio == null ? code : codSocio);
+        in.setCardtype("C");
 
-            try {
-                _result = CatalogEJB.get_businesspartner(in);
+        try {
+            _result = CatalogEJB.get_businesspartner(in);
 
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                codSocio = null;
-                socioNeg = null;
+        } catch (Exception e) {
+            faceMessage(e.getMessage() + " -- " + e.getCause());
+            codSocio = null;
+            socioNeg = null;
+        }
+        if (_result.isEmpty()) {
+            this.codSocio = null;
+            this.socioNeg = null;
+
+        } else {
+            Iterator<BusinesspartnerTO> iterator = _result.iterator();
+            while (iterator.hasNext()) {
+                BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
+                socio.add(articulo);
+                this.setSelectSocio(articulo);//----------------------------
             }
-            if (_result.isEmpty()) {
-                this.codSocio = null;
-                this.socioNeg = null;
-
-            } else {
-                Iterator<BusinesspartnerTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-                    socio.add(articulo);
-                    this.setSelectSocio(articulo);//----------------------------
-                }
-                if (socio.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                        ctlaccount = art.getDebpayacct();
-                        codSocio = art.getCardcode();
-                        socioNeg = art.getCardname();
-
-                    } catch (Exception ex) {
-                        Logger.getLogger(SalesBean.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
+            if (socio.size() == 1) {
+                try {
+                    System.out.println("articulo unico, llenar campos en pantalla");
                     BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
                     ctlaccount = art.getDebpayacct();
                     codSocio = art.getCardcode();
                     socioNeg = art.getCardname();
-                    faceMessage("Error: Mas de un elemento encontrado, nombre de socio repetido");
+
+                } catch (Exception ex) {
+                    Logger.getLogger(SalesBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            } else {
+                faceMessage("Error: Mas de un elemento encontrado, nombre de socio repetido");
             }
         }
-
     }
 //</editor-fold>
 
@@ -594,7 +534,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Boton Agregar al DATATABLE">
     public void accionAgregar(ActionEvent actionEvent) {
         try {
@@ -728,7 +667,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Calcular Impuestos y TOTAL">
     public void calcularTotalBill(ArrayList<SalesDetailTO> listaArt) {
         Double totalAux = 0.0;
@@ -746,7 +684,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="funciones para calculos de impuestos">
     public Double calcularGravadas(ArrayList<SalesDetailTO> listaArt) {
         Double sumTotal = 0.0;
@@ -846,7 +783,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Eliminar del dataTable" > 
     public void deleteDetalle() {
         try {
@@ -1302,7 +1238,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="COPY FROM REMISION">
     public void copyFromRemision() {
         //faceMessage("Copiar desde remision");
@@ -1456,7 +1391,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar un almacen y Forma de pago">
     public void stateChange1(ValueChangeEvent event) {
 
@@ -1563,7 +1497,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     private boolean validatePrice() {
         if (this.newPrecio < 0) {
@@ -2532,5 +2465,4 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold> 
-    
 }//Cierre de clase

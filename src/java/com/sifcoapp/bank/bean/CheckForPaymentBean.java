@@ -126,7 +126,6 @@ public class CheckForPaymentBean implements Serializable {
     private String url;
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -211,13 +210,12 @@ public class CheckForPaymentBean implements Serializable {
 
         while (iterator.hasNext()) {
             BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-            results.add(articulo.getCardname());
+            results.add(articulo.getCardcode() + "-" + articulo.getCardname());
         }
         return results;
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Autocompletado de CUENTA ">
     public List<String> completeName(String query) {
         List _result = null;
@@ -262,118 +260,52 @@ public class CheckForPaymentBean implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocioName(SelectEvent event) {
-        List socio = new Vector();
-        String var = null;
-
-        /*if (selectSocio == null) {
-         selectSocio = new BusinesspartnerTO();
-         }*/
-        if (event.getObject().toString() != var) {
-            List _result = null;
-
-            BusinesspartnerInTO in = new BusinesspartnerInTO();
-            //in.setCardcode(codSocio);
-            in.setCardname(nameSocio);
-
-            try {
-                _result = CatalogEJB.get_businesspartner(in);
-
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                codSocio = null;
-                nameSocio = null;
-                this.favorDe = null;
-            }
-            if (_result.isEmpty()) {
-                this.codSocio = null;
-                this.nameSocio = null;
-                this.favorDe = null;
-
-            } else {
-                Iterator<BusinesspartnerTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-                    socio.add(articulo);
-                    //this.setSelectSocio(articulo);//----------------------------
-                }
-                if (socio.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-
-                        codSocio = art.getCardcode();
-                        nameSocio = art.getCardname();
-                        favorDe = art.getCardname();
-
-                    } catch (Exception ex) {
-                        Logger.getLogger(CheckForPaymentBean.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                    codSocio = art.getCardcode();
-                    nameSocio = art.getCardname();
-                    favorDe = art.getCardname();
-                    faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
-                }
-            }
-        }
+        String[] newName = nameSocio.split("-");
+        this.codSocio = null;
+        selectSocioCod(newName[0]);
 
     }
 
-    public void selectSocioCod(SelectEvent event) {
+    public void selectSocioCod(String code) {
         List socio = new Vector();
         String var = null;
+        List _result = null;
+        BusinesspartnerInTO in = new BusinesspartnerInTO();
+        in.setCardcode(codSocio == null ? code : codSocio);
 
-        /*if (selectSocio == null) {
-         selectSocio = new BusinesspartnerTO();
-         }*/
-        if (event.getObject().toString() != var) {
-            List _result = null;
+        try {
+            _result = CatalogEJB.get_businesspartner(in);
 
-            BusinesspartnerInTO in = new BusinesspartnerInTO();
-            in.setCardcode(codSocio);
-            //in.setCardname(nameSocio);
+        } catch (Exception e) {
+            faceMessage(e.getMessage() + " -- " + e.getCause());
+            codSocio = null;
+            nameSocio = null;
+            favorDe = null;
+        }
+        if (_result.isEmpty()) {
+            this.codSocio = null;
+            this.nameSocio = null;
+            this.favorDe = null;
 
-            try {
-                _result = CatalogEJB.get_businesspartner(in);
-
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                codSocio = null;
-                nameSocio = null;
-                favorDe = null;
+        } else {
+            for (Object obj : _result) {
+                BusinesspartnerTO articulo = (BusinesspartnerTO) obj;
+                socio.add(articulo);
             }
-            if (_result.isEmpty()) {
-                this.codSocio = null;
-                this.nameSocio = null;
-                this.favorDe = null;
-
-            } else {
-                Iterator<BusinesspartnerTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-                    socio.add(articulo);
-                    //this.setSelectSocio(articulo);//----------------------------
-                }
-                if (socio.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-
-                        codSocio = art.getCardcode();
-                        nameSocio = art.getCardname();
-                        favorDe = art.getCardname();
-
-                    } catch (Exception ex) {
-                        Logger.getLogger(CheckForPaymentBean.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
+            if (socio.size() == 1) {
+                try {
+                    System.out.println("articulo unico, llenar campos en pantalla");
                     BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
+
                     codSocio = art.getCardcode();
                     nameSocio = art.getCardname();
                     favorDe = art.getCardname();
-                    faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
+
+                } catch (Exception ex) {
+                    Logger.getLogger(CheckForPaymentBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            } else {
+                faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
             }
         }
 
@@ -616,12 +548,12 @@ public class CheckForPaymentBean implements Serializable {
         CheckForPaymentInTO searchCheck = new CheckForPaymentInTO();
         String vacio = null;
         searchCheck.setCheckkey(idInterno);
-        
+
         if (NoCheque == null || NoCheque.equals("")) {
             searchCheck.setDpstacct(vacio);
-        }else
+        } else {
             searchCheck.setDpstacct(NoCheque);
-        
+        }
 
         if (banco.equals("-1")) {
             searchCheck.setBanknum(vacio);
@@ -716,7 +648,6 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Botones toolbar " > 
     public void botonNuevo(ActionEvent actionEvent) {
         if (varEstados != 2 && validarClear()) {
@@ -763,7 +694,6 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     public void confirmDialog(ActionEvent actionEvent) {
         showHideDialog("dlgC2", 2);
@@ -1247,9 +1177,7 @@ public class CheckForPaymentBean implements Serializable {
         this.NoCheque = NoCheque;
     }
 
-
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="IMPRIMIR FORMA 2">
     public String printInvoice() throws UnsupportedEncodingException {
         //faceMessage(getApplicationUri());

@@ -77,13 +77,13 @@
                                 <div class="ui-grid-row">
                                     <p:commandButton id="botonPrincipal" value="Guardar " process="@this, inCod inName Tipo"  
                                                      action="#{chartAccountsBean.btnPrincipal}"
-                                                     update=":frmAccounts:tree2 :frmAccounts:tree2:a#{chartAccountsBean.grupoAct}">
+                                                     >
                                         <p:confirm header="Confirmación" message="Desea agregar la cuenta?" icon="fa fa-alert" />
                                     </p:commandButton>
                                     <p:spacer height="0" width="15"/>
                                     <p:commandButton id="btnDel" value="Eliminar" process="@this, inCod inName Tipo"  
                                                      action="#{chartAccountsBean.deleteAcc}"
-                                                     update=":frmAccounts:tree2 :frmAccounts:tree2:a#{chartAccountsBean.grupoAct}">
+                                                     >
                                         <p:confirm header="Confirmación" message="Desea Eliminar la cuenta?" icon="fa fa-alert" />
                                     </p:commandButton>
                                     <p:defaultCommand target="botonPrincipal" />
@@ -120,7 +120,7 @@
                                                          selection="#{chartAccountsBean.selectAcc}"
                                                          rowKey="#{var.acctcode}">
                                                 <p:ajax event="rowSelect" listener="#{chartAccountsBean.selection}" 
-                                                        update="@this, :frmAccounts:inCod :frmAccounts:inName :frmAccounts:Tipo" />
+                                                        update="@this, b1 :frmAccounts:inCod :frmAccounts:inName :frmAccounts:Tipo" />
                                                 <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
                                                           filterBy="#{var.formatcode}" 
                                                           style="font-size: #{commonBean.sizeFont1}">
@@ -143,11 +143,16 @@
                                         <div class="ui-grid-row">
                                             <p:dataTable id="b2" var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
                                                          scrollable="true"
-                                                         scrollHeight="485">
+                                                         scrollHeight="485"
+                                                         selectionMode="single" 
+                                                         selection="#{chartAccountsBean.selectAcc}"
+                                                         rowKey="#{var.acctcode}">
+                                                <p:ajax event="rowSelect" listener="#{chartAccountsBean.selection}" 
+                                                        update="@this, b2 :frmAccounts:inCod :frmAccounts:inName :frmAccounts:Tipo" />
                                                 <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
                                                           filterBy="#{var.formatcode}" 
                                                           style="font-size: #{commonBean.sizeFont1}">
-                                                    <p:spacer height="0" width="#{(var.levels * 7)}"/>
+                                                    <p:spacer height="0" width="#{(var.levels * 15)}"/>
                                                     <h:outputText value="#{var.formatcode}" />
                                                 </p:column>
                                             </p:dataTable>
@@ -166,11 +171,16 @@
                                         <div class="ui-grid-row">
                                             <p:dataTable id="b3" var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
                                                          scrollable="true"
-                                                         scrollHeight="485">
+                                                         scrollHeight="485"
+                                                         selectionMode="single" 
+                                                         selection="#{chartAccountsBean.selectAcc}"
+                                                         rowKey="#{var.acctcode}">
+                                                <p:ajax event="rowSelect" listener="#{chartAccountsBean.selection}" 
+                                                        update="@this, b3 :frmAccounts:inCod :frmAccounts:inName :frmAccounts:Tipo" />
                                                 <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
                                                           filterBy="#{var.formatcode}" 
                                                           style="font-size: #{commonBean.sizeFont1}">
-                                                    <p:spacer height="0" width="#{(var.levels * 7)}"/>
+                                                    <p:spacer height="0" width="#{(var.levels * 15)}"/>
                                                     <h:outputText value="#{var.formatcode}" />
                                                 </p:column>
                                             </p:dataTable>
@@ -189,11 +199,16 @@
                                         <div class="ui-grid-row">
                                             <p:dataTable id="b4" var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
                                                          scrollable="true"
-                                                         scrollHeight="485">
+                                                         scrollHeight="485"
+                                                         selectionMode="single" 
+                                                         selection="#{chartAccountsBean.selectAcc}"
+                                                         rowKey="#{var.acctcode}">
+                                                <p:ajax event="rowSelect" listener="#{chartAccountsBean.selection}" 
+                                                        update="@this, b4 :frmAccounts:inCod :frmAccounts:inName :frmAccounts:Tipo" />
                                                 <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
                                                           filterBy="#{var.formatcode}" 
                                                           style="font-size: #{commonBean.sizeFont1}">
-                                                    <p:spacer height="0" width="#{(var.levels * 7)}"/>
+                                                    <p:spacer height="0" width="#{(var.levels * 15)}"/>
                                                     <h:outputText value="#{var.formatcode}" />
                                                 </p:column>
                                             </p:dataTable>
@@ -212,11 +227,16 @@
                                         <div class="ui-grid-row">
                                             <p:dataTable id="b5" var="var" value="#{chartAccountsBean.lstAccTab}" emptyMessage="Sin resultados"
                                                          scrollable="true"
-                                                         scrollHeight="485">
+                                                         scrollHeight="485"
+                                                         selectionMode="single" 
+                                                         selection="#{chartAccountsBean.selectAcc}"
+                                                         rowKey="#{var.acctcode}">
+                                                <p:ajax event="rowSelect" listener="#{chartAccountsBean.selection}" 
+                                                        update="@this, b5 :frmAccounts:inCod :frmAccounts:inName :frmAccounts:Tipo" />
                                                 <p:column headerText="Codigo Cuenta - Nombre Cuenta" 
                                                           filterBy="#{var.formatcode}" 
                                                           style="font-size: #{commonBean.sizeFont1}">
-                                                    <p:spacer height="0" width="#{(var.levels * 7)}"/>
+                                                    <p:spacer height="0" width="#{(var.levels * 15)}"/>
                                                     <h:outputText value="#{var.formatcode}" />
                                                 </p:column>
                                             </p:dataTable>

@@ -169,7 +169,6 @@ public class DeliveryBean implements Serializable {
     private String url;
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -282,15 +281,14 @@ public class DeliveryBean implements Serializable {
 
         while (iterator.hasNext()) {
             BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-            results.add(articulo.getCardname());
+            results.add(articulo.getCardcode() + "-" + articulo.getCardname());
         }
         return results;
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
-    public void selectSocio(SelectEvent event) {
+    public void selectSocioCod(String code) {
         List socio = new Vector();
         String var = null;
 
@@ -298,109 +296,52 @@ public class DeliveryBean implements Serializable {
             selectSocio = new BusinesspartnerTO();
         }
 
-        if (event.getObject().toString() != var) {
-            List _result = null;
+        List _result = null;
 
-            BusinesspartnerInTO in = new BusinesspartnerInTO();
-            //in.setCardcode(codSocio);
-            in.setCardname(socioNeg);
+        BusinesspartnerInTO in = new BusinesspartnerInTO();
+        in.setCardcode(codSocio == null ? code : codSocio);
+        in.setCardtype("C");
 
-            try {
-                _result = CatalogEJB.get_businesspartner(in);
+        try {
+            _result = CatalogEJB.get_businesspartner(in);
 
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                codSocio = null;
-                socioNeg = null;
+        } catch (Exception e) {
+            faceMessage(e.getMessage() + " -- " + e.getCause());
+            codSocio = null;
+            socioNeg = null;
+        }
+        if (_result.isEmpty()) {
+            this.codSocio = null;
+            this.socioNeg = null;
+
+        } else {
+            Iterator<BusinesspartnerTO> iterator = _result.iterator();
+            while (iterator.hasNext()) {
+                BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
+                socio.add(articulo);
+                this.setSelectSocio(articulo);//----------------------------
             }
-            if (_result.isEmpty()) {
-                this.codSocio = null;
-                this.socioNeg = null;
-
-            } else {
-                Iterator<BusinesspartnerTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-                    socio.add(articulo);
-                    this.setSelectSocio(articulo);//----------------------------
-                }
-                if (socio.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                        ctlaccount = art.getDebpayacct();
-                        codSocio = art.getCardcode();
-                        socioNeg = art.getCardname();
-
-                    } catch (Exception ex) {
-                        Logger.getLogger(DeliveryBean.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
+            if (socio.size() == 1) {
+                try {
+                    System.out.println("articulo unico, llenar campos en pantalla");
                     BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
                     ctlaccount = art.getDebpayacct();
                     codSocio = art.getCardcode();
                     socioNeg = art.getCardname();
-                    faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
+
+                } catch (Exception ex) {
+                    Logger.getLogger(DeliveryBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            } else {
+                faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
             }
         }
-
     }
 
-    public void selectSocioCod(SelectEvent event) {
-        List socio = new Vector();
-        String var = null;
-
-        if (selectSocio == null) {
-            selectSocio = new BusinesspartnerTO();
-        }
-
-        if (event.getObject().toString() != var) {
-            List _result = null;
-
-            BusinesspartnerInTO in = new BusinesspartnerInTO();
-            in.setCardcode(codSocio);
-            //in.setCardname(socioNeg);
-
-            try {
-                _result = CatalogEJB.get_businesspartner(in);
-
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                codSocio = null;
-                socioNeg = null;
-            }
-            if (_result.isEmpty()) {
-                this.codSocio = null;
-                this.socioNeg = null;
-
-            } else {
-                Iterator<BusinesspartnerTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-                    socio.add(articulo);
-                    this.setSelectSocio(articulo);//----------------------------
-                }
-                if (socio.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                        ctlaccount = art.getDebpayacct();
-                        codSocio = art.getCardcode();
-                        socioNeg = art.getCardname();
-
-                    } catch (Exception ex) {
-                        Logger.getLogger(DeliveryBean.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                    ctlaccount = art.getDebpayacct();
-                    codSocio = art.getCardcode();
-                    socioNeg = art.getCardname();
-                    faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
-                }
-            }
-        }
+    public void selectSocio(SelectEvent event) {
+        String[] newName = socioNeg.split("-");
+        this.codSocio = null;
+        selectSocioCod(newName[0]);
 
     }
 //</editor-fold>
@@ -521,9 +462,9 @@ public class DeliveryBean implements Serializable {
                 Double aux = (newPrecio) * (newCantidad);
                 NumberFormat nf = NumberFormat.getInstance();
                 /*nf.setMaximumFractionDigits(2);
-                String st = nf.format(aux);
-                Double dou = Double.valueOf(st);
-                //newTotal = dou;*/
+                 String st = nf.format(aux);
+                 Double dou = Double.valueOf(st);
+                 //newTotal = dou;*/
                 newTotal = aux;
             }
         } catch (Exception e) {
@@ -546,7 +487,6 @@ public class DeliveryBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Boton Agregar al DATATABLE">
     public void accionAgregar(ActionEvent actionEvent) {
         try {
@@ -655,7 +595,6 @@ public class DeliveryBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Calcular Impuestos y TOTAL">
     public void calcularTotalBill(ArrayList<DeliveryDetailTO> listaArt) {
         Double totalAux = 0.0;
@@ -673,7 +612,6 @@ public class DeliveryBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="funciones para calculos de impuestos">
     public Double calcularGravadas(ArrayList<DeliveryDetailTO> listaArt) {
         Double sumTotal = 0.0;
@@ -772,7 +710,6 @@ public class DeliveryBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Eliminar del dataTable" > 
     public void deleteDetalle() {
         try {
@@ -996,7 +933,7 @@ public class DeliveryBean implements Serializable {
 
         newDelivery.setDoctotal(gTotalPadre);
         newDelivery.setDeliveryDetails(listaPadre);
-        
+
         if (ifCancelacion) {
             //algo
             //setear id anterior
@@ -1233,7 +1170,6 @@ public class DeliveryBean implements Serializable {
      }
      */
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar un almacen y Forma de pago">
     public void stateChange1(ValueChangeEvent event) {
 
@@ -1332,7 +1268,6 @@ public class DeliveryBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Select Tipo Documento">
     public void changeTipoDoc() {
         String num;
@@ -1363,7 +1298,6 @@ public class DeliveryBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     private boolean validatePrice() {
         if (this.newPrecio < 0) {
@@ -1516,10 +1450,10 @@ public class DeliveryBean implements Serializable {
             return false;
         }
         /*
-        if (this.alm.equals(ParameterEJBClient.getParameterbykey(6).getValue1())) {
-            faceMessage("Almacen no valido");
-            return false;
-        }*/
+         if (this.alm.equals(ParameterEJBClient.getParameterbykey(6).getValue1())) {
+         faceMessage("Almacen no valido");
+         return false;
+         }*/
 
         return true;
     }
@@ -1656,12 +1590,12 @@ public class DeliveryBean implements Serializable {
         }
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="Contex Eliminar">
-    public void DeleteDelivery(){
+    public void DeleteDelivery() {
         if (newDelivery.getSeries() == 4) {
             faceMessage("No se puede anular");
-        }else{
+        } else {
             faceMessage("Anular Remision");
             estateGuardar();
             this.ifCancelacion = true;
@@ -1673,7 +1607,6 @@ public class DeliveryBean implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G & S">
-
     public int getIdAnterior() {
         return idAnterior;
     }
@@ -1681,6 +1614,7 @@ public class DeliveryBean implements Serializable {
     public void setIdAnterior(int idAnterior) {
         this.idAnterior = idAnterior;
     }
+
     public boolean isIfCancelacion() {
         return ifCancelacion;
     }
@@ -1688,6 +1622,7 @@ public class DeliveryBean implements Serializable {
     public void setIfCancelacion(boolean ifCancelacion) {
         this.ifCancelacion = ifCancelacion;
     }
+
     public boolean isRenderedContex() {
         return renderedContex;
     }
@@ -1695,7 +1630,7 @@ public class DeliveryBean implements Serializable {
     public void setRenderedContex(boolean renderedContex) {
         this.renderedContex = renderedContex;
     }
-    
+
     public ParameterEJBClient getParameterEJBClient() {
         return ParameterEJBClient;
     }
@@ -2201,5 +2136,4 @@ public class DeliveryBean implements Serializable {
     }
 
     //</editor-fold>
-    
 }//cierre de clase

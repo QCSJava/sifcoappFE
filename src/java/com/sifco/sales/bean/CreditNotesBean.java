@@ -147,7 +147,6 @@ public class CreditNotesBean implements Serializable {
     private boolean disabledSearch;
     private boolean disabledComun; //para campos y boton de detalles
     private boolean required1, rendered;
-    
 
     //__________________________________________________________________________
     //Listas para busqueda
@@ -173,7 +172,6 @@ public class CreditNotesBean implements Serializable {
     private int docEntryBill;
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >  
     @PostConstruct
     public void initForm() {
@@ -274,73 +272,20 @@ public class CreditNotesBean implements Serializable {
 
         while (iterator.hasNext()) {
             BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-            results.add(articulo.getCardname());
+            results.add(articulo.getCardcode() + "-" + articulo.getCardname());
         }
         return results;
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocio(SelectEvent event) {
-        List socio = new Vector();
-        String var = null;
-
-        if (selectSocio == null) {
-            selectSocio = new BusinesspartnerTO();
-        }
-
-        if (event.getObject().toString() != var) {
-            List _result = null;
-
-            BusinesspartnerInTO in = new BusinesspartnerInTO();
-            //in.setCardcode(codSocio);
-            in.setCardname(socioNeg);
-            in.setCardtype("C");
-
-            try {
-                _result = CatalogEJB.get_businesspartner(in);
-
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                codSocio = null;
-                socioNeg = null;
-            }
-            if (_result.isEmpty()) {
-                this.codSocio = null;
-                this.socioNeg = null;
-
-            } else {
-                Iterator<BusinesspartnerTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-                    socio.add(articulo);
-                    this.setSelectSocio(articulo);//----------------------------
-                }
-                if (socio.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                        ctlaccount = art.getDebpayacct();
-                        codSocio = art.getCardcode();
-                        socioNeg = art.getCardname();
-
-                    } catch (Exception ex) {
-                        Logger.getLogger(SalesBean.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                    ctlaccount = art.getDebpayacct();
-                    codSocio = art.getCardcode();
-                    socioNeg = art.getCardname();
-                    faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
-                }
-            }
-        }
-
+        String[] newName = socioNeg.split("-");
+        this.codSocio = null;
+        selectSocioCod(newName[0]);
     }
 
-    public void selectSocioCod(SelectEvent event) {
+    public void selectSocioCod(String code) {
         List socio = new Vector();
         String var = null;
 
@@ -348,54 +293,50 @@ public class CreditNotesBean implements Serializable {
             selectSocio = new BusinesspartnerTO();
         }
 
-        if (event.getObject().toString() != var) {
-            List _result = null;
+        List _result = null;
 
-            BusinesspartnerInTO in = new BusinesspartnerInTO();
-            in.setCardcode(codSocio);
-            //in.setCardname(socioNeg);
-            in.setCardtype("C");
+        BusinesspartnerInTO in = new BusinesspartnerInTO();
+        in.setCardcode(codSocio == null ? code : codSocio);
+        in.setCardtype("C");
 
-            try {
-                _result = CatalogEJB.get_businesspartner(in);
+        try {
+            _result = CatalogEJB.get_businesspartner(in);
 
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                codSocio = null;
-                socioNeg = null;
+        } catch (Exception e) {
+            faceMessage(e.getMessage() + " -- " + e.getCause());
+            codSocio = null;
+            socioNeg = null;
+        }
+        if (_result.isEmpty()) {
+            this.codSocio = null;
+            this.socioNeg = null;
+
+        } else {
+            Iterator<BusinesspartnerTO> iterator = _result.iterator();
+            while (iterator.hasNext()) {
+                BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
+                socio.add(articulo);
+                this.setSelectSocio(articulo);//----------------------------
             }
-            if (_result.isEmpty()) {
-                this.codSocio = null;
-                this.socioNeg = null;
-
-            } else {
-                Iterator<BusinesspartnerTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-                    socio.add(articulo);
-                    this.setSelectSocio(articulo);//----------------------------
-                }
-                if (socio.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                        ctlaccount = art.getDebpayacct();
-                        codSocio = art.getCardcode();
-                        socioNeg = art.getCardname();
-
-                    } catch (Exception ex) {
-                        Logger.getLogger(SalesBean.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
+            if (socio.size() == 1) {
+                try {
+                    System.out.println("articulo unico, llenar campos en pantalla");
                     BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
                     ctlaccount = art.getDebpayacct();
                     codSocio = art.getCardcode();
                     socioNeg = art.getCardname();
-                    faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
+
+                } catch (Exception ex) {
+                    Logger.getLogger(SalesBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            } else {
+                BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
+                ctlaccount = art.getDebpayacct();
+                codSocio = art.getCardcode();
+                socioNeg = art.getCardname();
+                faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
             }
         }
-
     }
 //</editor-fold>
 
@@ -473,7 +414,7 @@ public class CreditNotesBean implements Serializable {
                     for (Object ac : articulos) {
                         ArticlesTO art = (ArticlesTO) ac;
                         if (newNomArt.equals(art.getItemName())) {
-                            
+
                             newNomArt = art.getItemName();
                             newCod = art.getItemCode();
                             newUnidad = art.getSalUnitMsr();
@@ -511,10 +452,10 @@ public class CreditNotesBean implements Serializable {
             if (newPrecio > 0 && newCantidad > 0 && newPrecio != null && newCantidad != null) {
                 Double aux = (newPrecio) * (newCantidad);
                 /*NumberFormat nf = NumberFormat.getInstance();
-                nf.setMaximumFractionDigits(2);
-                String st = nf.format(aux);
-                Double dou = Double.valueOf(st);
-                //newTotal = dou;*/
+                 nf.setMaximumFractionDigits(2);
+                 String st = nf.format(aux);
+                 Double dou = Double.valueOf(st);
+                 //newTotal = dou;*/
                 newTotal = aux;
             }
         } catch (Exception e) {
@@ -537,7 +478,6 @@ public class CreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Boton Agregar al DATATABLE">
     public void accionAgregar(ActionEvent actionEvent) {
         try {
@@ -552,7 +492,7 @@ public class CreditNotesBean implements Serializable {
                 ClientCrediDetailTO newDetalle = new ClientCrediDetailTO();
                 ArticlesTO thisArt = new ArticlesTO();
                 CatalogTO thisCat = new CatalogTO();
-                newDetalle.setObjtype(""+11);
+                newDetalle.setObjtype("" + 11);
                 newDetalle.setItemcode(newCod);
                 newDetalle.setDscription(newNomArt);
                 newDetalle.setQuantity(newCantidad);
@@ -643,7 +583,6 @@ public class CreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Calcular Impuestos y TOTAL">
     public void calcularTotalBill(ArrayList<ClientCrediDetailTO> listaArt) {
         Double totalAux = 0.0;
@@ -661,7 +600,6 @@ public class CreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="funciones para calculos de impuestos">
     public Double calcularGravadas(ArrayList<ClientCrediDetailTO> listaArt) {
         Double sumTotal = 0.0;
@@ -760,7 +698,6 @@ public class CreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Eliminar del dataTable" > 
     public void deleteDetalle() {
         try {
@@ -805,7 +742,6 @@ public class CreditNotesBean implements Serializable {
     }
 
     //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Manejo de estados de la pantalla GUARDAR; ACTUALIZAR; BUSCAR; NUEVO" > 
     public void estateGuardar() {//Estado por defecto
         this.estadoDoc = Common.DocStatusOpen;
@@ -897,7 +833,7 @@ public class CreditNotesBean implements Serializable {
         if (newCredit == null) {
             newCredit = new ClientCrediTO();
         }
-        newCredit.setObjtype(""+11);
+        newCredit.setObjtype("" + 11);
         newCredit.setDocstatus(estadoDoc);
         newCredit.setUsersign((int) session.getAttribute("usersign"));
         newCredit.setCardname(socioNeg);
@@ -906,7 +842,7 @@ public class CreditNotesBean implements Serializable {
 
         newCredit.setDocdate(fechaConta);
         newCredit.setTaxdate(fechaDoc);
-        
+
         newCredit.setSeries(tipoDoc);
         newCredit.setPeymethod("" + formaPago);
         newCredit.setTowhscode(alm);
@@ -970,11 +906,11 @@ public class CreditNotesBean implements Serializable {
             newCredit = new ClientCrediTO();
         }
         String vacio = null;
-        newCredit.setObjtype(""+11);
+        newCredit.setObjtype("" + 11);
         newCredit.setDocentry(docEntry);
         newCredit.setDocnum(docNum);
         newCredit.setDocstatus(estadoDoc);
- 
+
         newCredit.setUsersign((int) session.getAttribute("usersign"));
         newCredit.setCardname(socioNeg);
         newCredit.setCardcode(codSocio);
@@ -1133,7 +1069,7 @@ public class CreditNotesBean implements Serializable {
         this.setFormaPago((int) event.getNewValue());
 
         if (validarRequeridos()) {
-            String pago =  this.getFormaPago()+"";
+            String pago = this.getFormaPago() + "";
             try {
                 CatalogTO cat = AdminEJBService.findCatalogByKey(pago, 8);
                 this.precioArt = Integer.parseInt(cat.getCatvalue2());
@@ -1156,7 +1092,7 @@ public class CreditNotesBean implements Serializable {
         this.setAlm(event.getNewValue().toString());
 
         if (validarRequeridos()) {
-            String pago =  this.getFormaPago()+"";
+            String pago = this.getFormaPago() + "";
             try {
                 CatalogTO cat = AdminEJBService.findCatalogByKey(pago, 8);
                 this.precioArt = Integer.parseInt(cat.getCatvalue2());
@@ -1176,12 +1112,13 @@ public class CreditNotesBean implements Serializable {
     public void stateChange3(ValueChangeEvent event) {
         try {
             this.setSocioNeg(event.getNewValue().toString());
-            
-            if (!socioNeg.isEmpty()) 
+
+            if (!socioNeg.isEmpty()) {
                 this.actBtn = false;
-        
+            }
+
             if (validarRequeridos()) {
-                String pago =  this.getFormaPago()+"";
+                String pago = this.getFormaPago() + "";
                 try {
                     CatalogTO cat = AdminEJBService.findCatalogByKey(pago, 8);
                     this.precioArt = Integer.parseInt(cat.getCatvalue2());
@@ -1195,23 +1132,24 @@ public class CreditNotesBean implements Serializable {
                 }
                 //RequestContext.getCurrentInstance().update("frmSales");
             }
-            
+
         } catch (Exception e) {
-            faceMessage(e.getMessage()+"socioneg");
+            faceMessage(e.getMessage() + "socioneg");
         }
-        
+
     }
 
     public void stateChange4(ValueChangeEvent event) {
-        
+
         try {
             this.setCodSocio(event.getNewValue().toString());
-        
-            if (!codSocio.isEmpty()) 
+
+            if (!codSocio.isEmpty()) {
                 this.actBtn = false;
+            }
 
             if (validarRequeridos()) {
-                String pago =  this.getFormaPago()+"";
+                String pago = this.getFormaPago() + "";
                 try {
                     CatalogTO cat = AdminEJBService.findCatalogByKey(pago, 8);
                     this.precioArt = Integer.parseInt(cat.getCatvalue2());
@@ -1225,12 +1163,11 @@ public class CreditNotesBean implements Serializable {
                 }
                 //RequestContext.getCurrentInstance().update("frmSales");
             }
-            
+
         } catch (Exception e) {
-            faceMessage((e.getMessage()+" " + e.getCause() + " codsocio"));
+            faceMessage((e.getMessage() + " " + e.getCause() + " codsocio"));
         }
 
-        
     }
 
     public boolean validarRequeridos() {
@@ -1239,11 +1176,10 @@ public class CreditNotesBean implements Serializable {
         } catch (Exception e) {
             return false;
         }
-        
+
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="CREAR CREDITNOTE FROM BILL">
     public void doCreditFromBill() {
         try {
@@ -1286,7 +1222,6 @@ public class CreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Boton COPIAR DESDE BILL">
     public void btnCopyFromBill(ActionEvent actionEvent) {
         this.listaBusquedaBill = new Vector();
@@ -1296,15 +1231,14 @@ public class CreditNotesBean implements Serializable {
         fromCopy = true;
         faceMessage("Copiar desde: Facturas Cliente");
 
-        
         doSearchBill();
         RequestContext.getCurrentInstance().update("dlgCfromB");
         if (listaBusquedaTableBill.size() > 0) {
             showHideDialog("dlgListBill2", 1);
-        }else{
+        } else {
             faceMessage("No se encontraron registros para el socio: " + this.codSocio + " - " + this.socioNeg);
         }
-        
+
     }
 //</editor-fold>
 
@@ -1338,7 +1272,6 @@ public class CreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="selec dialog bill">
     public void selectDialogCredit() {
         if (SalesEJBService == null) {
@@ -1400,7 +1333,6 @@ public class CreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     private boolean validatePrice() {
         if (this.newPrecio < 0) {
@@ -1409,7 +1341,7 @@ public class CreditNotesBean implements Serializable {
         }
         return true;
     }
-    
+
     public void reload() throws IOException {
         // ...
 
@@ -1599,7 +1531,7 @@ public class CreditNotesBean implements Serializable {
     //limpiar el bean
     public void cleanBean(int tipo) {
         cleanDetalle();
-        
+
         this.precioArt = 0;
         this.listaDetalles.clear();
         this.listaPadre.clear();
@@ -1661,15 +1593,15 @@ public class CreditNotesBean implements Serializable {
     public boolean validarClear() {
         return this.listaPadre.size() >= 1 && this.varEstados != 2 || doClean() && this.varEstados != 2;// && this.listaBusquedaTable.size() >=1;     
     }
-    
-    public boolean doClean(){
-        if (equipo>0 || tipoDoc>0 || formaPago>0 ) {
+
+    public boolean doClean() {
+        if (equipo > 0 || tipoDoc > 0 || formaPago > 0) {
             return true;
         }
         try {
-            if (socioNeg != null || codSocio!= null ||  !refe.equals("") ||  !alm.equals("-1")) {
-            return true;
-        }
+            if (socioNeg != null || codSocio != null || !refe.equals("") || !alm.equals("-1")) {
+                return true;
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage() + " -- " + e.getCause());
             return false;
@@ -1682,7 +1614,7 @@ public class CreditNotesBean implements Serializable {
         rc.execute("PF('dlgC1').hide();");
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="Update bill">
     public void updBillCopy(int id) {
         SalesTO updBill = new SalesTO();
@@ -1697,7 +1629,6 @@ public class CreditNotesBean implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G & S">
-
     public static CatalogEJBClient getCatalogEJB() {
         return CatalogEJB;
     }
@@ -1769,7 +1700,7 @@ public class CreditNotesBean implements Serializable {
     public void setCn(SalesBean cn) {
         this.cn = cn;
     }
-    
+
     public boolean isRendered() {
         return rendered;
     }
@@ -1777,8 +1708,7 @@ public class CreditNotesBean implements Serializable {
     public void setRendered(boolean rendered) {
         this.rendered = rendered;
     }
-    
-    
+
     public int getPrecioArt() {
         return precioArt;
     }
@@ -1786,8 +1716,7 @@ public class CreditNotesBean implements Serializable {
     public void setPrecioArt(int precioArt) {
         this.precioArt = precioArt;
     }
-    
-    
+
     public boolean isActBtn() {
         return actBtn;
     }
@@ -2237,5 +2166,4 @@ public class CreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 }//CIERRE CLASE

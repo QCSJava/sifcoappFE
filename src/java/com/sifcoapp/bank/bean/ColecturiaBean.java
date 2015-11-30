@@ -216,6 +216,7 @@ public class ColecturiaBean implements Serializable {
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocioName() {
         String[] newName = nameSocio.split("-");
+        this.codSocio = null;
         selectSocioCod(newName[0]);
     }
 

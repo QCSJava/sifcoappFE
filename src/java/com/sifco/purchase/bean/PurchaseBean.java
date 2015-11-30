@@ -48,7 +48,7 @@ import javax.validation.constraints.Digits;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
- @ManagedBean(name = "purchaseBean")
+@ManagedBean(name = "purchaseBean")
 @SessionScoped
 public class PurchaseBean implements Serializable {
 
@@ -111,8 +111,8 @@ public class PurchaseBean implements Serializable {
     private String newCodCuenta;
     private String newNomCuenta;
     private String newImpuesto;
-    
-    private Double newDesc=0.0;
+
+    private Double newDesc = 0.0;
 
     private PurchaseDetailTO selectDetail = new PurchaseDetailTO(); //detalle seleccionado para eliminar
     private ArrayList<PurchaseDetailTO> listaDetalles = new ArrayList<>(); //DataTable 
@@ -166,7 +166,6 @@ public class PurchaseBean implements Serializable {
     private final int ultPrecio = 1;
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -259,7 +258,7 @@ public class PurchaseBean implements Serializable {
 
         while (iterator.hasNext()) {
             BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-            results.add(articulo.getCardname());
+            results.add(articulo.getCardcode() + "-" + articulo.getCardname());
         }
         return results;
     }
@@ -268,164 +267,113 @@ public class PurchaseBean implements Serializable {
     
 //<editor-fold defaultstate="collapsed" desc="Autocompletado de CUENTA - NO USADA">
     /*
-    public List<String> completeName(String query) {
-        List _result = null;
+     public List<String> completeName(String query) {
+     List _result = null;
 
-        String filterByCode = null;
-        try {
+     String filterByCode = null;
+     try {
 
-            _result = AccountingEJBClient.getAccountByFilter(filterByCode, query, "Y");
-        } catch (Exception ex) {
-            Logger.getLogger(AccassignmentBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+     _result = AccountingEJBClient.getAccountByFilter(filterByCode, query, "Y");
+     } catch (Exception ex) {
+     Logger.getLogger(AccassignmentBean.class.getName()).log(Level.SEVERE, null, ex);
+     }
 
-        List<String> results = new ArrayList<>();
+     List<String> results = new ArrayList<>();
 
-        Iterator<AccountTO> iterator = _result.iterator();
-        while (iterator.hasNext()) {
-            AccountTO cuentas = (AccountTO) iterator.next();
-            results.add(cuentas.getAcctname());
-        }
-        return results;
-    }
+     Iterator<AccountTO> iterator = _result.iterator();
+     while (iterator.hasNext()) {
+     AccountTO cuentas = (AccountTO) iterator.next();
+     results.add(cuentas.getAcctname());
+     }
+     return results;
+     }
 
-    public List<String> completeCode(String query) {
-        List _result = null;
+     public List<String> completeCode(String query) {
+     List _result = null;
 
-        String filterByName = null;
-        try {
-            _result = AccountingEJBClient.getAccountByFilter(query, filterByName, "Y");
-        } catch (Exception ex) {
-            Logger.getLogger(AccassignmentBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        List<String> results = new ArrayList<>();
+     String filterByName = null;
+     try {
+     _result = AccountingEJBClient.getAccountByFilter(query, filterByName, "Y");
+     } catch (Exception ex) {
+     Logger.getLogger(AccassignmentBean.class.getName()).log(Level.SEVERE, null, ex);
+     }
+     List<String> results = new ArrayList<>();
 
-        Iterator<AccountTO> iterator = _result.iterator();
-        while (iterator.hasNext()) {
-            AccountTO cuentas = (AccountTO) iterator.next();
-            results.add(cuentas.getAcctcode());
-        }
-        return results;
-    }
-    */
+     Iterator<AccountTO> iterator = _result.iterator();
+     while (iterator.hasNext()) {
+     AccountTO cuentas = (AccountTO) iterator.next();
+     results.add(cuentas.getAcctcode());
+     }
+     return results;
+     }
+     */
 //</editor-fold>
-
+    
 //<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del autocomplete CUENTA - NO USADA" > 
     /*
-    public void findAccount(SelectEvent event) {
-        List account = new Vector();
-        String var = null;
-        if (event.getObject().toString() != var) {
-            List _result = null;
+     public void findAccount(SelectEvent event) {
+     List account = new Vector();
+     String var = null;
+     if (event.getObject().toString() != var) {
+     List _result = null;
 
-            try {
-                if (newCodCuenta != null || newNomCuenta != null) {
-                    _result = AccountingEJBClient.getAccountByFilter(newCodCuenta, newNomCuenta);
-                }
+     try {
+     if (newCodCuenta != null || newNomCuenta != null) {
+     _result = AccountingEJBClient.getAccountByFilter(newCodCuenta, newNomCuenta);
+     }
 
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                newCodCuenta = null;
-                newNomCuenta = null;
-            }
-            if (_result.isEmpty()) {
-                this.newCodCuenta = null;
-                this.newNomCuenta = null;
+     } catch (Exception e) {
+     faceMessage(e.getMessage() + " -- " + e.getCause());
+     newCodCuenta = null;
+     newNomCuenta = null;
+     }
+     if (_result.isEmpty()) {
+     this.newCodCuenta = null;
+     this.newNomCuenta = null;
 
-            } else {
-                Iterator<AccountTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    AccountTO articulo = (AccountTO) iterator.next();
-                    account.add(articulo);
-                }
-                if (account.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        AccountTO art = (AccountTO) account.get(0);
-                        if (newCodCuenta != null || newNomCuenta != null) {
-                            newCodCuenta = art.getAcctcode();
-                            newNomCuenta = art.getAcctname();
-                        }
-                    } catch (Exception ex) {
-                        Logger.getLogger(BusinessPartner.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    for (Object ac : account) {
-                        AccountTO art = (AccountTO) ac;
-                        if (newNomCuenta.equals(art.getAcctname())) {
-                            newCodCuenta = art.getAcctcode();
-                            newNomCuenta = art.getAcctname();
-                            break;
-                        }
-                    }
+     } else {
+     Iterator<AccountTO> iterator = _result.iterator();
+     while (iterator.hasNext()) {
+     AccountTO articulo = (AccountTO) iterator.next();
+     account.add(articulo);
+     }
+     if (account.size() == 1) {
+     try {
+     System.out.println("articulo unico, llenar campos en pantalla");
+     AccountTO art = (AccountTO) account.get(0);
+     if (newCodCuenta != null || newNomCuenta != null) {
+     newCodCuenta = art.getAcctcode();
+     newNomCuenta = art.getAcctname();
+     }
+     } catch (Exception ex) {
+     Logger.getLogger(BusinessPartner.class.getName()).log(Level.SEVERE, null, ex);
+     }
+     } else {
+     for (Object ac : account) {
+     AccountTO art = (AccountTO) ac;
+     if (newNomCuenta.equals(art.getAcctname())) {
+     newCodCuenta = art.getAcctcode();
+     newNomCuenta = art.getAcctname();
+     break;
+     }
+     }
 
                     
-                }
-            }
-        }
-    }
-    */
+     }
+     }
+     }
+     }
+     */
 //</editor-fold>
-
+    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocio(SelectEvent event) {
-        List socio = new Vector();
-        String var = null;
-
-        if (selectSocio == null) {
-            selectSocio = new BusinesspartnerTO();
-        }
-
-        if (event.getObject().toString() != var) {
-            List _result = null;
-
-            BusinesspartnerInTO in = new BusinesspartnerInTO();
-            //in.setCardcode(codSocio);
-            in.setCardname(socioNeg);
-
-            try {
-                _result = CatalogEJB.get_businesspartner(in);
-
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                codSocio = null;
-                socioNeg = null;
-            }
-            if (_result.isEmpty()) {
-                this.codSocio = null;
-                this.socioNeg = null;
-
-            } else {
-                Iterator<BusinesspartnerTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-                    socio.add(articulo);
-                    this.setSelectSocio(articulo);//----------------------------
-                }
-                if (socio.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                        ctlaccount = art.getDebpayacct();
-                        codSocio = art.getCardcode();
-                        socioNeg = art.getCardname();
-                        
-                    } catch (Exception ex) {
-                        Logger.getLogger(PurchaseBean.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                    ctlaccount = art.getDebpayacct();
-                    codSocio = art.getCardcode();
-                    socioNeg = art.getCardname();
-                    faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
-                }
-            }
-        }
-
+        String[] newName = socioNeg.split("-");
+        this.codSocio = null;
+        selectSocioCod(newName[0]);
     }
 
-    public void selectSocioCod(SelectEvent event) {
+    public void selectSocioCod(String code) {
         List socio = new Vector();
         String var = null;
 
@@ -433,53 +381,46 @@ public class PurchaseBean implements Serializable {
             selectSocio = new BusinesspartnerTO();
         }
 
-        if (event.getObject().toString() != var) {
-            List _result = null;
+        List _result = null;
 
-            BusinesspartnerInTO in = new BusinesspartnerInTO();
-            in.setCardcode(codSocio);
-            //in.setCardname(socioNeg);
+        BusinesspartnerInTO in = new BusinesspartnerInTO();
+        in.setCardcode(codSocio == null ? code : codSocio);
+        in.setCardtype("P");
 
-            try {
-                _result = CatalogEJB.get_businesspartner(in);
+        try {
+            _result = CatalogEJB.get_businesspartner(in);
 
-            } catch (Exception e) {
-                faceMessage(e.getMessage() + " -- " + e.getCause());
-                codSocio = null;
-                socioNeg = null;
+        } catch (Exception e) {
+            faceMessage(e.getMessage() + " -- " + e.getCause());
+            codSocio = null;
+            socioNeg = null;
+        }
+        if (_result.isEmpty()) {
+            this.codSocio = null;
+            this.socioNeg = null;
+
+        } else {
+            Iterator<BusinesspartnerTO> iterator = _result.iterator();
+            while (iterator.hasNext()) {
+                BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
+                socio.add(articulo);
+                this.setSelectSocio(articulo);//----------------------------
             }
-            if (_result.isEmpty()) {
-                this.codSocio = null;
-                this.socioNeg = null;
-
-            } else {
-                Iterator<BusinesspartnerTO> iterator = _result.iterator();
-                while (iterator.hasNext()) {
-                    BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-                    socio.add(articulo);
-                    this.setSelectSocio(articulo);//----------------------------
-                }
-                if (socio.size() == 1) {
-                    try {
-                        System.out.println("articulo unico, llenar campos en pantalla");
-                        BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                        ctlaccount = art.getDebpayacct();
-                        codSocio = art.getCardcode();
-                        socioNeg = art.getCardname();
-
-                    } catch (Exception ex) {
-                        Logger.getLogger(PurchaseBean.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
+            if (socio.size() == 1) {
+                try {
+                    System.out.println("articulo unico, llenar campos en pantalla");
                     BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
                     ctlaccount = art.getDebpayacct();
                     codSocio = art.getCardcode();
                     socioNeg = art.getCardname();
-                    faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
+
+                } catch (Exception ex) {
+                    Logger.getLogger(PurchaseBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            } else {
+                faceMessage("Error: Mas de un elemento encontrado, nombre de articulo repetido");
             }
         }
-
     }
 //</editor-fold>
 
@@ -595,10 +536,10 @@ public class PurchaseBean implements Serializable {
             //faceMessage("...");
             if (newPrecio > 0 && newCantidad > 0 && newPrecio != null && newCantidad != null) {
                 if (newDesc > 0) {
-                    Double np = newPrecio - (newPrecio * (newDesc/100));
+                    Double np = newPrecio - (newPrecio * (newDesc / 100));
                     //newPrecio = np;
                     newTotal = (np) * (newCantidad);
-                }else{
+                } else {
                     newTotal = (newPrecio) * (newCantidad);
                 }
             }
@@ -622,7 +563,6 @@ public class PurchaseBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Boton Agregar al DATATABLE">
     public void accionAgregar(ActionEvent actionEvent) {
         try {
@@ -633,8 +573,8 @@ public class PurchaseBean implements Serializable {
                 if (listaPadre == null) {
                     listaPadre = new Vector();
                 }
-                
-                Double np = newPrecio - (newPrecio * (newDesc/100));
+
+                Double np = newPrecio - (newPrecio * (newDesc / 100));
                 newPrecio = np;
 
                 PurchaseDetailTO newDetalle = new PurchaseDetailTO();
@@ -655,12 +595,12 @@ public class PurchaseBean implements Serializable {
 
                 aux = Integer.parseInt(cat1.getCatvalue()) + 0.0;//impuesto debe ser un valor entero
                 Double imp = aux / 100;
-                
+
                 if (newImpuesto.equals("FOV")) {
                     impFOV = Double.parseDouble(cat1.getCatvalue2());
                     impCOT = Double.parseDouble(cat1.getCatvalue3());
                 }
-                
+
                 newDetalle.setTaxcode(cat1.getCatcode());
                 newDetalle.setVatgroup(imp + "|" + impFOV + "|" + impCOT);
 
@@ -748,7 +688,6 @@ public class PurchaseBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Calcular Impuestos y TOTAL">
     public void calcularTotalBill(ArrayList<PurchaseDetailTO> listaArt) {
         Double totalAux = 0.0;
@@ -766,7 +705,6 @@ public class PurchaseBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="funciones para calculos de impuestos">
     public Double calcularGravadas(ArrayList<PurchaseDetailTO> listaArt) {
         Double sumTotal = 0.0;
@@ -865,7 +803,6 @@ public class PurchaseBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Eliminar del dataTable" > 
     public void deleteDetalle() {
         try {
@@ -940,7 +877,7 @@ public class PurchaseBean implements Serializable {
             reload();
         } catch (IOException ex) {
         }
-        
+
     }
 
     public void estateBuscar() {
@@ -1014,7 +951,7 @@ public class PurchaseBean implements Serializable {
         newPurchase.setPeymethod("" + formaPago);
         newPurchase.setTowhscode(alm);
         newPurchase.setComments(coment);
-        
+
         newPurchase.setCtlaccount(ctlaccount);
 
         Double gTotalPadre = 0.0;
@@ -1142,7 +1079,7 @@ public class PurchaseBean implements Serializable {
         searchPurchase.setDocdate(fechaConta);
         searchPurchase.setTaxdate(fechaDoc);
         searchPurchase.setDocduedate(fechaVen);
-        
+
         searchPurchase.setSeries(tipoDoc);
 
         String var3 = "" + formaPago;
@@ -1287,7 +1224,6 @@ public class PurchaseBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     public void reload() throws IOException {
         // ...
@@ -1303,7 +1239,7 @@ public class PurchaseBean implements Serializable {
         }
         return true;
     }
-    
+
     public void confirmDialog(ActionEvent actionEvent) {
         showHideDialog("dlgC2", 2);
         if (varEstados == 1) {
@@ -1390,7 +1326,7 @@ public class PurchaseBean implements Serializable {
             setEquipo(Integer.parseInt(var.getRef2()));
         } catch (Exception e) {
         }
-        
+
         setRefe(var.getNumatcard());
 
         setFechaConta(var.getDocdate());
@@ -1401,7 +1337,7 @@ public class PurchaseBean implements Serializable {
             setFormaPago(Integer.parseInt(var.getPeymethod()));
         } catch (Exception e) {
         }
-        
+
         setAlm(var.getTowhscode());
 
         setComent(var.getComments());
@@ -1546,7 +1482,6 @@ public class PurchaseBean implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G & S" >
-
     public Double getNewDesc() {
         return newDesc;
     }
@@ -1554,7 +1489,7 @@ public class PurchaseBean implements Serializable {
     public void setNewDesc(Double newDesc) {
         this.newDesc = newDesc;
     }
-    
+
     public static CatalogEJBClient getCatalogEJB() {
         return CatalogEJB;
     }
@@ -1634,11 +1569,7 @@ public class PurchaseBean implements Serializable {
     public void setTermino(boolean termino) {
         this.termino = termino;
     }
-    
-    
-    
-    
-    
+
     public boolean isRendered() {
         return rendered;
     }
@@ -1646,8 +1577,6 @@ public class PurchaseBean implements Serializable {
     public void setRendered(boolean rendered) {
         this.rendered = rendered;
     }
-    
-    
 
     public Date getFechaVen() {
         return fechaVen;
@@ -1656,9 +1585,7 @@ public class PurchaseBean implements Serializable {
     public void setFechaVen(Date fechaVen) {
         this.fechaVen = fechaVen;
     }
-    
-    
-    
+
     public List<CatalogTO> getLstImpuestos() {
         return lstImpuestos;
     }
@@ -2068,5 +1995,4 @@ public class PurchaseBean implements Serializable {
     }
 
 //</editor-fold> 
-    
 }//CIERRE PRINCIPAL

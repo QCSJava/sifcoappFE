@@ -110,7 +110,8 @@
                                 <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
                                     <i class="fa fa-refresh fa-spin fa-2x"></i>
                                 </p:dialog>
-                                <p:tabView id="tree2" orientation="right" style="height: 550px; width: 100%" activeIndex="#{chartAccounts.grupoAct-1}">
+                                <p:tabView id="tree2" orientation="right" style="height: 550px; width: 100%" 
+                                           activeIndex="#{chartAccounts.grp2}">
                                     <p:ajax event="tabChange" listener="#{chartAccounts.eventTab}" process="tree2" update="tree2"/>
 
                                     <p:tab id="a1" title="1 - ACTIVO">

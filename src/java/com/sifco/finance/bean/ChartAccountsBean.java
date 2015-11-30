@@ -68,11 +68,10 @@ public class ChartAccountsBean implements Serializable {
     private ArrayList<AccountTO> lstAccTab = new ArrayList<>();
     private AccountTO selectAcc = new AccountTO();
     private int grupoAct = 1;
+    
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="G & S">
-
     public AccountTO getSelectAcc() {
         return selectAcc;
     }
@@ -80,6 +79,7 @@ public class ChartAccountsBean implements Serializable {
     public void setSelectAcc(AccountTO selectAcc) {
         this.selectAcc = selectAcc;
     }
+
     public int getGrupoAct() {
         return grupoAct;
     }
@@ -87,7 +87,7 @@ public class ChartAccountsBean implements Serializable {
     public void setGrupoAct(int grupoAct) {
         this.grupoAct = grupoAct;
     }
-    
+
     public static AccountingEJBClient getAccEJBService() {
         return accEJBService;
     }
@@ -217,7 +217,6 @@ public class ChartAccountsBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Init de la ventana">
     @PostConstruct
     public void init() {
@@ -225,8 +224,8 @@ public class ChartAccountsBean implements Serializable {
             accEJBService = new AccountingEJBClient();
         }
 
-        AccountTO accNode = new AccountTO();
-        accNode.setAcctname("-1");
+        //AccountTO accNode = new AccountTO();
+        //accNode.setAcctname("-1");
         //llenar arbol 1
         /*root1 = new DefaultTreeNode(accNode, null);
 
@@ -240,7 +239,6 @@ public class ChartAccountsBean implements Serializable {
          } catch (Exception e) {
          facesMessage("Error");
          }*/
-
         //cloneRoot2_to_aux();
         readAccGroup(1);
         setGrupoAct(1);
@@ -286,7 +284,6 @@ public class ChartAccountsBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Clonar de root2 a rootAux">
     public void cloneAux_to_Root2() {
         AccountTO accNode = null;
@@ -310,7 +307,6 @@ public class ChartAccountsBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Root 2">
     public void LLenarRoot2() {
         try {
@@ -337,7 +333,6 @@ public class ChartAccountsBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Crear Arbol Cuentas">
     public TreeNode createDocuments() {
         AccountTO accNode = null;
@@ -389,14 +384,17 @@ public class ChartAccountsBean implements Serializable {
             newNode.setGroupmask(this.grupoAct);
 
             res = accEJBService.cat_acc0_ACCOUNT_mtto(newNode, 1);
-            
+
             if (res.getCodigoError() == 0) {
                 readAccGroup(this.grupoAct);
+                RequestContext.getCurrentInstance().update(":frmAccounts:tree2");//":frmAccounts:tree2:a" + this.grupoAct);
+                RequestContext.getCurrentInstance().update("frmAccounts:tree2:a" + grupoAct);
                 facesMessage(res.getMensaje());
-            }else
+                // update=":frmAccounts:tree2 :frmAccounts:tree2:a#{chartAccountsBean.grupoAct}"
+            } else {
                 facesMessage(res.getMensaje());
-            
-            RequestContext.getCurrentInstance().update("tree2");
+            }
+
         }
     }
 
@@ -415,7 +413,6 @@ public class ChartAccountsBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="deleteNode">
     public void deleteNode() {
         selectedNode2.getChildren().clear();
@@ -574,7 +571,6 @@ public class ChartAccountsBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones de Validaciones">
     public boolean validateDestino(AccountTO des) {
         if (!des.getPostable().equals("N")) {
@@ -655,7 +651,6 @@ public class ChartAccountsBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     public void reload() throws IOException {
         // ...
@@ -721,9 +716,9 @@ public class ChartAccountsBean implements Serializable {
                 if (!res.isEmpty()) {
                     for (Object obj : res) {
                         /*String name;
-                        AccountTO acc = (AccountTO) obj;
-                        name = acc.getAcctcode() + " - " + acc.getAcctname();
-                        acc.setAcctname(name);*/
+                         AccountTO acc = (AccountTO) obj;
+                         name = acc.getAcctcode() + " - " + acc.getAcctname();
+                         acc.setAcctname(name);*/
                         this.lstAccTab.add((AccountTO) obj);//acc);
                     }
                 } else {
@@ -736,36 +731,39 @@ public class ChartAccountsBean implements Serializable {
         } else {
             facesMessage("No se obtubo grupo");
         }
-        
+
         RequestContext.getCurrentInstance().update("tree2");
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="eliminar con contex">
-    public void deleteAcc(){
+    public void deleteAcc() {
         try {
             facesMessage("Eliminar cuenta: " + this.selectAcc.getAcctcode());
-            
+
             ResultOutTO res = accEJBService.cat_acc0_ACCOUNT_mtto(this.selectAcc, 3);
-            
+
             if (res.getCodigoError() == 0) {
-                facesMessage(res.getMensaje());
                 readAccGroup(this.grupoAct);
-            }else
+                RequestContext.getCurrentInstance().update(":frmAccounts:tree2");//":frmAccounts:tree2:a" + this.grupoAct);
+                RequestContext.getCurrentInstance().update(":frmAccounts:tree2:a" + grupoAct);
                 facesMessage(res.getMensaje());
-            
-            //RequestContext.getCurrentInstance().update("tree2");
+                RequestContext.getCurrentInstance().update(":frmAccounts:tree2:a" + grupoAct);
+            } else {
+                facesMessage(res.getMensaje());
+            }
+
         } catch (Exception ex) {
             Logger.getLogger(ChartAccountsBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="select click">
-    public void selection(){
+    public void selection() {
         this.AccCode = this.selectAcc.getAcctcode();
         this.AccName = this.selectAcc.getAcctname();
-        this.opcion  = this.selectAcc.getPostable();
+        this.opcion = this.selectAcc.getPostable();
     }
 //</editor-fold>
 

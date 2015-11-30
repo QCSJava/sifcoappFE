@@ -110,7 +110,7 @@ public class ChartAccounts implements Serializable {
     private ArrayList<AccountTO> lstAccTab = new ArrayList<>();
     private AccountTO selectAcc = new AccountTO();
     private int grupoAct = 1;
-
+    private int grp2 = 0;
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="Get and Set" >
@@ -119,6 +119,14 @@ public class ChartAccounts implements Serializable {
         return grupoAct;
     }
 
+    public int getGrp2() {
+        return grp2;
+    }
+
+    public void setGrp2(int grp2) {
+        this.grp2 = grp2;
+    }
+    
     public void setGrupoAct(int grupoAct) {
         this.grupoAct = grupoAct;
     }
@@ -1022,32 +1030,37 @@ public class ChartAccounts implements Serializable {
 
         switch (id) {
             case "a1":
-                facesMessage("1 - ACTIVO");
+                //facesMessage("1 - ACTIVO");
                 setGrupoAct(1);
+                setGrp2(0);
                 readAccGroup(1);
                 break;
 
             case "a2":
-                facesMessage("2 - PASIVO");
+                //facesMessage("2 - PASIVO");
                 setGrupoAct(2);
+                setGrp2(1);
                 readAccGroup(2);
                 break;
 
             case "a3":
-                facesMessage("3 - PATRIMONIO");
+                //facesMessage("3 - PATRIMONIO");
                 setGrupoAct(3);
+                setGrp2(2);
                 readAccGroup(3);
                 break;
 
             case "a4":
-                facesMessage("4 - CUENTAS DE RESULTADOS DEUDORAS");
+                //facesMessage("4 - CUENTAS DE RESULTADOS DEUDORAS");
                 setGrupoAct(4);
+                setGrp2(3);
                 readAccGroup(4);
                 break;
 
             case "a5":
-                facesMessage("5 - INGRESOS");
+                //facesMessage("5 - INGRESOS");
                 setGrupoAct(5);
+                setGrp2(4);
                 readAccGroup(5);
                 break;
 

@@ -57,7 +57,7 @@
                                 <p:autoComplete id="codSocio" forceSelection="true" minQueryLength="2" value="#{checkForPaymentBean.codSocio}"
                                                 completeMethod="#{checkForPaymentBean.compSocioCode}" effect="fade" size="15" label="Codigo de Socio" 
                                                 disabled="#{checkForPaymentBean.common}">
-                                    <p:ajax event="itemSelect" listener="#{checkForPaymentBean.selectSocioCod}" update="nameSocio codSocio favorDe"/>
+                                    <p:ajax event="itemSelect" listener="#{checkForPaymentBean.selectSocioCod(null)}" update="nameSocio codSocio favorDe"/>
                                 </p:autoComplete>
                                 <p:spacer width="10" height="0" />
                                 <p:autoComplete id="nameSocio" forceSelection="true" minQueryLength="2" value="#{checkForPaymentBean.nameSocio}"
