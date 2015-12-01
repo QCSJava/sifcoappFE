@@ -40,6 +40,13 @@ public class ColectPrint extends HttpServlet {
             newColect = BankEJBClient.get_ges_colecturiaByKey_print(Integer.parseInt(request.getParameter("foo")));
         } catch (Exception e) {
         }
+        
+        String doc = "";
+        if (newColect.getSeries() == 1) {
+            doc = "CREACION";
+        }else
+            doc = "REVERSION";
+        
 
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -77,28 +84,25 @@ public class ColectPrint extends HttpServlet {
                     + "                                    ACOETMISAB DE R.L.\n"
                     + "                                </td>\n"
                     + "                                <td style=\"width: 10%\">\n"
-                    + "                                    RECIBO:\n"
+                    + "                                    RECIBO: " + newColect.getDocentry()+ "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                        </table>\n"
                     + "\n"
-                    + "                        <table style=\"height: 20px\">\n"
+                    + "                        <table style=\"height: 20px; width: 100%\">\n"
                     + "                            <tr >\n"
                     + "                                <td style=\"width: 75%\">\n"
                     + "                                    SOCIO: " + newColect.getCardname().toUpperCase() + "\n"
                     + "                                </td>\n"
                     + "                                <td style=\"width: 25%\">\n"
-                    + "                                   \n"
+                    + "                                   DOCUMENTO: " + doc + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                        </table>\n"
                     + "\n"
                     + "                        <table style=\"height: 20px\">\n"
                     + "                            <tr >\n"
-                    + "                                <td style=\"width: 12%\">\n"
-                    + "                                    EQUIPO:\n"
-                    + "                                </td>\n"
-                    + "                                <td style=\"width: 35%\">\n"
+                    + "                                <td style=\"width: 47%\">\n"
                     + "                                    FACTURO: " + nombre + "\n"
                     + "                                </td>\n"
                     + "\n"

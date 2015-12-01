@@ -1,22 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AccountingCatalog" language="groovy" pageWidth="612" pageHeight="792" columnWidth="502" leftMargin="85" rightMargin="25" topMargin="35" bottomMargin="35" isIgnorePagination="true" uuid="4259f606-a35d-4ae0-bae1-08f11d1ace69">
-	<property name="ireport.zoom" value="1.2100000000000006"/>
-	<property name="ireport.x" value="8"/>
+	<property name="ireport.zoom" value="1.7715610000000015"/>
+	<property name="ireport.x" value="270"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="reportName" class="java.lang.String"/>
 	<parameter name="corpName" class="java.lang.String">
 		<defaultValueExpression><![CDATA["ACOETMISAB DE R.L."]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select acctcode, acctname, postable, levels, grpline, groupmask from cat_acc0_account
+		<![CDATA[select acctcode, acctname, postable, levels, grpline, groupmask,acttype,
+coalesce((select catvalue from cat_tab1_catalogos  t2 where tablecode = 25 and t1.acttype = t2.catcode),'No definido') as rubro
+
+from cat_acc0_account t1
+
 order by groupmask, grpline]]>
 	</queryString>
-	<field name="acctcode" class="java.lang.String"/>
-	<field name="acctname" class="java.lang.String"/>
-	<field name="postable" class="java.lang.String"/>
-	<field name="levels" class="java.lang.Integer"/>
-	<field name="grpline" class="java.lang.Integer"/>
-	<field name="groupmask" class="java.lang.Integer"/>
+	<field name="acctcode" class="java.lang.String">
+		<fieldDescription><![CDATA[CÃ³digo de cuenta
+]]></fieldDescription>
+	</field>
+	<field name="acctname" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre de cuenta
+]]></fieldDescription>
+	</field>
+	<field name="postable" class="java.lang.String">
+		<fieldDescription><![CDATA[Cuenta [Activa/TÃ­tulo]
+]]></fieldDescription>
+	</field>
+	<field name="levels" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Nivel de cuenta
+]]></fieldDescription>
+	</field>
+	<field name="grpline" class="java.lang.Integer">
+		<fieldDescription><![CDATA[NÃºmero de serie en grupo
+]]></fieldDescription>
+	</field>
+	<field name="groupmask" class="java.lang.Integer">
+		<fieldDescription><![CDATA[MÃ¡scara de grupo
+]]></fieldDescription>
+	</field>
+	<field name="acttype" class="java.lang.String">
+		<fieldDescription><![CDATA[CategorÃ­a de cuenta
+]]></fieldDescription>
+	</field>
+	<field name="rubro" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -41,80 +68,106 @@ order by groupmask, grpline]]>
 	<columnHeader>
 		<band height="16" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="75" height="16" uuid="411bebe0-bbd6-4046-b2d2-8d05f99d851d"/>
+				<reportElement x="0" y="0" width="65" height="16" uuid="411bebe0-bbd6-4046-b2d2-8d05f99d851d"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[CODIGO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="75" y="0" width="231" height="16" uuid="5b9aaf78-02b9-49b0-be78-6c7082db2144"/>
+				<reportElement x="65" y="0" width="200" height="16" uuid="5b9aaf78-02b9-49b0-be78-6c7082db2144"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[NOMBRE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="306" y="0" width="57" height="16" uuid="3d7c3bda-34b5-4009-9a72-08d8ec650916"/>
+				<reportElement x="265" y="0" width="57" height="16" uuid="3d7c3bda-34b5-4009-9a72-08d8ec650916"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[CARGABLE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="363" y="0" width="43" height="16" uuid="f9f59799-47b1-41e7-8a95-89bcc92a9fae"/>
+				<reportElement x="322" y="0" width="35" height="16" uuid="f9f59799-47b1-41e7-8a95-89bcc92a9fae"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[NIVEL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="406" y="0" width="55" height="16" uuid="6574753e-49f1-433f-85c1-29e2803fb7c0"/>
+				<reportElement x="357" y="0" width="50" height="16" uuid="6574753e-49f1-433f-85c1-29e2803fb7c0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[POSICION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="461" y="0" width="41" height="16" uuid="596f5ca1-fdb2-4424-bee3-b968219f4687"/>
+				<reportElement x="407" y="0" width="40" height="16" uuid="596f5ca1-fdb2-4424-bee3-b968219f4687"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[GRUPO]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="447" y="0" width="55" height="16" uuid="45a4bd30-9627-464b-8a96-4d6ba390b5a6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RUBRO]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="15" splitType="Stretch">
-			<textField>
-				<reportElement x="0" y="0" width="75" height="15" uuid="e35d3065-4177-48ca-957b-5d1cc09714cb"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="65" height="15" uuid="e35d3065-4177-48ca-957b-5d1cc09714cb"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{acctcode}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="75" y="0" width="231" height="15" uuid="f3ef996c-f0fe-4c8a-a4fc-ea3e2ad26d52"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="65" y="0" width="200" height="15" uuid="f3ef996c-f0fe-4c8a-a4fc-ea3e2ad26d52"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{acctname}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="306" y="0" width="57" height="15" uuid="0f564522-b8a9-49e9-a767-82e136eba5e5"/>
+				<reportElement x="265" y="0" width="57" height="15" uuid="0f564522-b8a9-49e9-a767-82e136eba5e5"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{postable}.equals("Y")? "SI":"NO"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="363" y="0" width="43" height="15" uuid="65ca14fb-37bc-44f1-9885-16d80fbba827"/>
-				<textElement textAlignment="Center"/>
+				<reportElement x="322" y="0" width="35" height="15" uuid="65ca14fb-37bc-44f1-9885-16d80fbba827"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{levels}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="406" y="0" width="55" height="15" uuid="29370eaf-2a93-4e76-afb6-91f8e413d219"/>
-				<textElement textAlignment="Center"/>
+				<reportElement x="357" y="0" width="50" height="15" uuid="29370eaf-2a93-4e76-afb6-91f8e413d219"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{grpline}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="461" y="0" width="41" height="15" uuid="8b59e42a-98da-40c1-b827-1e99837c137f"/>
-				<textElement textAlignment="Center"/>
+				<reportElement x="407" y="0" width="40" height="15" uuid="8b59e42a-98da-40c1-b827-1e99837c137f"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{groupmask}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="447" y="0" width="55" height="15" uuid="54d3339a-f508-4bdc-9e92-c17b26d9cba2"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rubro}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

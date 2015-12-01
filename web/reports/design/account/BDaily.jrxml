@@ -24,8 +24,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[
-SELECT 	t0.acctcode, t0.acctname,$P{startdate} as refdate,0 as transid, '  ' as objtype,' ' as comment,
+		<![CDATA[SELECT 	t0.acctcode, t0.acctname,$P{startdate} as refdate,0 as transid, '  ' as objtype,' ' as comment,
 	t0.sal_inicio as inicial, t0.sal_debe as debe, t0.sal_haber as haber, t0.groupmask, t0.grpline,
  	1 as ttype
 FROM 	sp_get_update_balance($P{startdate},$P{enddate}) t0
@@ -38,12 +37,18 @@ SELECT 	t0.account, t1.acctname,t0.refdate,t0.transid,t2.descrip2,t0.linememo,0.
 	t1.groupmask, t1.grpline, 2 as ttype
 FROM 	cat_jdt1_journalentrylines t0
 	RIGHT JOIN cat_acc0_account t1 ON t0.account=t1.acctcode
-	LEFT JOIN cat_obj0_objectype t2 ON t0.objtype = t2.objtype
+	LEFT JOIN cat_obj0_objectype t2 ON t0.transtype = t2.objtype
 WHERE 	t0.account ~$P{account} AND t0.refdate >=$P{startdate} AND t0.refdate <= $P{enddate}
 ORDER BY 	groupmask, grpline, refdate asc, transid]]>
 	</queryString>
-	<field name="acctcode" class="java.lang.String"/>
-	<field name="acctname" class="java.lang.String"/>
+	<field name="acctcode" class="java.lang.String">
+		<fieldDescription><![CDATA[CÃ³digo de cuenta
+]]></fieldDescription>
+	</field>
+	<field name="acctname" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre de cuenta
+]]></fieldDescription>
+	</field>
 	<field name="refdate" class="java.sql.Date">
 		<fieldDescription><![CDATA[Fecha de contabilizaciÃ³n
 ]]></fieldDescription>
@@ -57,8 +62,14 @@ ORDER BY 	groupmask, grpline, refdate asc, transid]]>
 	<field name="inicial" class="java.math.BigDecimal"/>
 	<field name="debe" class="java.math.BigDecimal"/>
 	<field name="haber" class="java.math.BigDecimal"/>
-	<field name="groupmask" class="java.lang.Integer"/>
-	<field name="grpline" class="java.lang.Integer"/>
+	<field name="groupmask" class="java.lang.Integer">
+		<fieldDescription><![CDATA[MÃ¡scara de grupo
+]]></fieldDescription>
+	</field>
+	<field name="grpline" class="java.lang.Integer">
+		<fieldDescription><![CDATA[NÃºmero de serie en grupo
+]]></fieldDescription>
+	</field>
 	<field name="ttype" class="java.lang.Integer"/>
 	<variable name="PAGE_TOTAL" class="java.lang.Integer" resetType="Page" calculation="DistinctCount">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>

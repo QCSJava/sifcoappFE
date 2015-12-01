@@ -237,8 +237,13 @@
                                             <f:convertNumber type="currency" currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}" />
                                         </p:outputLabel>
                                     </p:column>
-                                    <p:column headerText="Total" style="width: 8%; font-size: #{commonBean.sizeFont1}">
+                                    <p:column headerText="Total gravado" style="width: 8%; font-size: #{commonBean.sizeFont1}">
                                         <p:outputLabel  value="#{Art.linetotal}" style="float:right">
+                                            <f:convertNumber type="currency" currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                        </p:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="Total" style="width: 8%; font-size: #{commonBean.sizeFont1}">
+                                        <p:outputLabel  value="#{Art.gtotal}" style="float:right">
                                             <f:convertNumber type="currency" currencySymbol="$" minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
                                         </p:outputLabel>
                                     </p:column>

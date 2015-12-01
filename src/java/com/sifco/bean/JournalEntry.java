@@ -844,9 +844,17 @@ public class JournalEntry implements Serializable {
         } else {
             searchJournal.setBaseref(baseref);
         }
+        
+        if (credit > 0) {
+            searchJournal.setLoctotal(credit);
+        }
+        
+        if (memo != null && !memo.equals("")) {
+            searchJournal.setMemo(memo);
+        }else
+            searchJournal.setMemo(null);
+        
         searchJournal.setTransid(transid);
-
-        searchJournal.setMemo(memo);
 
         try {
 
