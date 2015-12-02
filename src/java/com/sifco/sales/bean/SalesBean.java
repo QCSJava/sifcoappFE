@@ -198,6 +198,7 @@ public class SalesBean implements Serializable {
     private String url;
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -325,6 +326,7 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocio(SelectEvent event) {
         String[] newName = socioNeg.split("-");
@@ -534,6 +536,7 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Boton Agregar al DATATABLE">
     public void accionAgregar(ActionEvent actionEvent) {
         try {
@@ -667,6 +670,7 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Calcular Impuestos y TOTAL">
     public void calcularTotalBill(ArrayList<SalesDetailTO> listaArt) {
         Double totalAux = 0.0;
@@ -684,6 +688,7 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="funciones para calculos de impuestos">
     public Double calcularGravadas(ArrayList<SalesDetailTO> listaArt) {
         Double sumTotal = 0.0;
@@ -783,6 +788,7 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Eliminar del dataTable" > 
     public void deleteDetalle() {
         try {
@@ -1238,6 +1244,7 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="COPY FROM REMISION">
     public void copyFromRemision() {
         //faceMessage("Copiar desde remision");
@@ -1391,6 +1398,7 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar un almacen y Forma de pago">
     public void stateChange1(ValueChangeEvent event) {
 
@@ -1497,6 +1505,7 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     private boolean validatePrice() {
         if (this.newPrecio < 0) {
@@ -1827,16 +1836,20 @@ public class SalesBean implements Serializable {
                 if (newBill.getSeries() == 1) {//consumidor final
                     String foo = newBill.getDocentry() + "";
                     String bar = (String) session.getAttribute("userfullname");
+                    String tip = "1";//venta-sales
                     return "/testPrintView?faces-redirect=true"
                             + "&foo=" + URLEncoder.encode(foo, "UTF-8")
-                            + "&bar=" + URLEncoder.encode(bar, "UTF-8");
+                            + "&bar=" + URLEncoder.encode(bar, "UTF-8")
+                            + "&tip=" + URLEncoder.encode(tip, "UTF-8");
                 }
                 if (newBill.getSeries() == 2) {//credito fiscal
                     String foo = newBill.getDocentry() + "";
-                    String bar = "xyz";
+                    String bar = (String) session.getAttribute("userfullname");
+                    String tip = "1";//venta-sales
                     return "/testSalesView?faces-redirect=true"
                             + "&foo=" + URLEncoder.encode(foo, "UTF-8")
-                            + "&bar=" + URLEncoder.encode(bar, "UTF-8");
+                            + "&bar=" + URLEncoder.encode(bar, "UTF-8")
+                            + "&tip=" + URLEncoder.encode(tip, "UTF-8");
                 }
             } else {
                 faceMessage("No se puede imprimir este tipo de documento");

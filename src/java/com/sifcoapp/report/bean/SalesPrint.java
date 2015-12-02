@@ -6,14 +6,19 @@
 package com.sifcoapp.report.bean;
 
 import com.sifcoapp.client.AdminEJBClient;
+import com.sifcoapp.client.PurchaseEJBClient;
 import com.sifcoapp.client.SalesEJBClient;
 import com.sifcoapp.objects.admin.to.CatalogTO;
+import com.sifcoapp.objects.purchase.to.PurchaseDetailTO;
+import com.sifcoapp.objects.purchase.to.PurchaseTO;
 import com.sifcoapp.objects.sales.to.SalesDetailTO;
 import com.sifcoapp.objects.sales.to.SalesTO;
 import com.sifcoapp.report.common.numerosAletras;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,6 +35,7 @@ public class SalesPrint extends HttpServlet {
 
     private static AdminEJBClient AdminEJBService;
     private static SalesEJBClient SalesEJBService;
+    private static PurchaseEJBClient PurchaseEJBClient;
     private numerosAletras convertNumber;
 
     /**
@@ -43,237 +49,630 @@ public class SalesPrint extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SalesTO var = new SalesTO();
+        PurchaseTO pur = new PurchaseTO();
         CatalogTO _R = new CatalogTO();
         String numberToletter = null;
         Double total = 0.0;
+        String vendedor = "";
+        int tipoDoc = 0;
+        //hora
+        Calendar calendario = new GregorianCalendar();
+        int hora, minutos, ampm;
+        hora = calendario.get(Calendar.HOUR);
+        minutos = calendario.get(Calendar.MINUTE);
+        String minuteS;
+        if (minutos < 10) {
+            minuteS = "0" + minutos;
+        } else {
+            minuteS = minutos + "";
+        }
+        ampm = calendario.get(Calendar.AM_PM);
+        String horaImp = hora + ":" + minuteS + (ampm == Calendar.AM ? " am" : " pm");
+
+        //tipo doc
+        String tipoDocu = "";//Credito Fiscal CCF
+
         try {
-            convertNumber = new numerosAletras() {
-            };
-            SalesEJBService = new SalesEJBClient();
+            convertNumber = new numerosAletras() {};
             AdminEJBService = new AdminEJBClient();
 
-            var = SalesEJBService.getSalesByKey(Integer.parseInt(request.getParameter("foo")));//quemado
-            _R = AdminEJBService.findCatalogByKey(var.getPeymethod(), 8);
-            total = var.getDoctotal() - var.getVatsum();//formatNumber(var.getDoctotal());
-            numberToletter = convertNumber.convertNumberToLetter(var.getDoctotal());
-            
-
+            tipoDoc = Integer.parseInt(request.getParameter("tip"));
+            if (tipoDoc == 1) {
+                //venta
+                SalesEJBService = new SalesEJBClient();
+                var = SalesEJBService.getSalesByKey(Integer.parseInt(request.getParameter("foo")));//quemado
+                vendedor = request.getParameter("bar");
+                _R = AdminEJBService.findCatalogByKey(var.getPeymethod(), 8);
+                total = var.getDoctotal() - var.getVatsum();//formatNumber(var.getDoctotal());
+                numberToletter = convertNumber.convertNumberToLetter(var.getDoctotal());
+                tipoDocu = "Credito Fiscal CCF";
+            } else {
+                if (tipoDoc == 2) {
+                    //compra
+                    PurchaseEJBClient = new PurchaseEJBClient();
+                    pur = PurchaseEJBClient.getPurchaseByKey(Integer.parseInt(request.getParameter("foo")));//quemado
+                    vendedor = request.getParameter("bar");
+                    _R = AdminEJBService.findCatalogByKey(pur.getPeymethod(), 8);
+                    total = pur.getDoctotal() - pur.getVatsum();//formatNumber(var.getDoctotal());
+                    numberToletter = convertNumber.convertNumberToLetter(pur.getDoctotal());
+                    tipoDocu = request.getParameter("doc");
+                }
+            }
         } catch (Exception ex) {
             Logger.getLogger(Pdf.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        //fecha
+        Calendar fecha = Calendar.getInstance();
+        if (tipoDoc == 1) {
+            fecha.setTime(var.getDocdate());
+        } else {
+            fecha.setTime(pur.getDocdate());
+        }
+
+        int year = fecha.get(Calendar.YEAR);
+        int mes = fecha.get(Calendar.MONTH) + 1;
+        int dia = fecha.get(Calendar.DAY_OF_MONTH);
+
+        String fechaImp = dia + "/" + mes + "/" + year;
+
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>\n"
-                    + "<html>\n"
-                    + "\n"
-                    + "    <head>\n"
-                    + "        <title>Sales Print</title>\n"
-                    + "        <meta charset=\"UTF-8\">\n"
-                    + "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
-                    + "<script type=\"text/javascript\">\n"
-                    + "window.print();\n"
-                    + "window.open('', '_self', ''); window.close(); \n"
-                    + "</script>"
-                    + "\n"
-                    + "<script type=\"text/javascript\">\n"
-                    + "function currencyFormat (num) {\n"
-                    + "    return  num.toFixed(2).replace(/(\\d)(?=(\\d{3})+(?!\\d))/g, \"$1,\")\n"
-                    + "}\n"
-                    + "</script>"
-                    + "\n"
-                    + "    </head>\n"
-                    + "\n"
-                    + "    <body style=\"font-size: 12px; font-family: sans-serif; line-height: 0px\">\n"
-                    + "        <!-- tamanio de factura 566x453px-->\n"
-                    + "        <div style=\"width: 690px; height: 453px\">\n"
-                    + "\n"
-                    + "            <table style=\"width:100%\" border=\"0\">\n"
-                    + "                <!-- borde top y unica fila-->\n"
-                    + "                <tr>\n"
-                    + "                    <td style=\"height: 145px\">\n"
-                    + "\n"
-                    + "                    </td>\n"
-                    + "                    <td style=\"height: 145px\">\n"
-                    + "                        <table border=\"0\" style=\"width: 100%\">\n"
-                    + "                            <tr>\n"
-                    + "                                <td style=\"height: 25px; width: 60%\">\n"
-                    + "                                    \n"
-                    + "                                </td>\n"
-                    + "                                <td style=\"height: 25px; width: 25%\">\n"
-                    + "                                    " + var.getRef1()+"\n"
-                    + "                                </td>\n"
-                    + "                                <td style=\"height: 25px\">\n"
-                    + "                                    \n"
-                    + "                                </td>\n"
-                    + "                            </tr>\n"
-                    + "                        </table>\n"
-                    + "                    </td>"
-                    + "                </tr>\n"
-                    + "                <tr>\n"
-                    + "                    <!-- borde izquierdo -->\n"
-                    + "                    <td style=\"width: 5px; height: 313px\"></td>\n"
-                    + "\n"
-                    + "                    <!-- contenido -->\n"
-                    + "                    <td style=\"width: 556px; height: 313px\">\n"
-                    + "                        <!-- ENCABEZADO -->\n"
-                    + "                        <table style=\"width:100%\" border=\"0\">\n"
-                    + "\n"
-                    + "                            <!-- Encabezado 56px -->\n"
-                    + "\n"
-                    + "                            <tr style=\"height: 18px\">\n"
-                    + "                                <td style=\"width: 10%\">\n"
-                    + "\n"
-                    + "                                </td>\n"
-                    + "                                <td style=\"width: 70%\">\n"
-                    + "                                    " + var.getCardcode() + "-" + var.getCardname().toUpperCase() + "\n"
-                    + "                                </td>\n"
-                    + "                                <td>\n"
-                    + "                                    " + var.getDocdate() + "\n"
-                    + "                                </td>\n"
-                    + "                            </tr>\n"
-                    + "                            <tr style=\"height: 18px\">\n"
-                    + "                                <td>\n"
-                    + "\n"
-                    + "                                </td>\n"
-                    + "                                <td style=\"width: 50px\">\n"
-                    + "\n"
-                    + "                                </td>\n"
-                    + "                                <td>\n"
-                    + "                                    " + "" + "\n"
-                    + "                                </td>\n"
-                    + "                            </tr>\n"
-                    + "                            <tr style=\"height: 18px\">\n"
-                    + "                                <td></td>\n"
-                    + "                                <td>\n"
-                    + "                                    " + "" + "\n"
-                    + "                                </td>\n"
-                    + "                                <td>\n"
-                    + "                                    " + _R.getCatvalue().toUpperCase() + "\n"
-                    + "                                </td>\n"
-                    + "                            </tr>\n"
-                    + "                            <tr style=\"height: 2px\"/>\n"
-                    + "\n"
-                    + "                            <!-- header detalles 30px -->\n"
-                    + "                            <tr style=\"height: 55px\">\n"
-                    + "                                <td colspan=\"7\"></td>\n"
-                    + "                            </tr>\n"
-                    + "                        </table>\n"
-                    + "\n"
-                    + "                        <!-- DETALLES -->\n"
-                    + "                        <table border=\"0\">\n"
-                    + "                            <!-- Detalles de factura 148px -->\n");
 
-            int tam = var.getSalesDetails().size();
-            List det = var.getSalesDetails();
-            for (int i = 0; i < 10; i++) {
+        if (tipoDoc == 1) {
+            //venta
+            try (PrintWriter out = response.getWriter()) {
+                out.println("<!DOCTYPE html>\n"
+                        + "<html>\n"
+                        + "\n"
+                        + "    <head>\n"
+                        + "        <title>Sales Print - Credito Fiscal</title>\n"
+                        + "        <meta charset=\"UTF-8\">\n"
+                        + "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+                        + "<script type=\"text/javascript\">\n"
+                        + "window.print();\n"
+                        + "window.open('', '_self', ''); window.close(); \n"
+                        + "</script>"
+                        + "\n"
+                        + "    </head>\n"
+                        + "\n"
+                        + "    <body style=\"font-size: 12px; font-family: sans-serif; line-height: 0px\">\n"
+                        + "        <!-- tamanio de factura 566x453px-->\n"
+                        + "        <div style=\"width: 550px; height: 650px\">\n"
+                        + "            <table style=\"width:100%\" border=\"0\">\n"
+                        + "                <!-- primero -->\n"
+                        + "                <tr>\n"
+                        + "                    <td style=\" width: 19px; height: 120px \">\n"
+                        + "                    </td>\n"
+                        + "                    <td style=\"\">\n"
+                        + "                        <table style=\"width:100%\" border=\"0\">\n"
+                        + "                            <tr style=\"height: 60px\">\n"
+                        + "                                <td style=\"width: 60%\">\n"
+                        + "                                </td>\n"
+                        + "                                <td style=\"width: 20%; vertical-align: bottom\">\n"
+                        + "                                    " + var.getNumatcard() + "\n"
+                        + "                                </td>\n"
+                        + "                                <td></td>\n"
+                        + "                            </tr>\n"
+                        + "                            <tr style=\"height: 51px\">\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                            </tr>\n"
+                        + "                            <tr style=\"height: 19px\">\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td style=\"vertical-align: bottom\">\n"
+                        + "                                    " + horaImp + "\n"
+                        + "                                </td>\n"
+                        + "                            </tr>\n"
+                        + "                        </table>\n"
+                        + "                    </td>\n"
+                        + "                    <td style=\" width: 19px\"></td>\n"
+                        + "                </tr>\n"
+                        + "                <!-- segundo -->\n"
+                        + "                <tr>\n"
+                        + "                    <td style=\"height: 126px\"></td>\n"
+                        + "                    <td style=\"\">\n"
+                        + "                        <table style=\"width:100%\" border=\"0\">\n"
+                        + "                            <tr style=\"height: 18px\">\n"
+                        + "                                <td style=\"width: 10%\"></td>\n"
+                        + "                                <td style=\"width: 60%\">\n"
+                        + "                                    " + var.getCardcode() + "-" + var.getCardname().toUpperCase() + "\n"
+                        + "                                </td>\n"
+                        + "                                <td style=\"width: 10%\"></td>\n"
+                        + "                                <td style=\"width: 20%\">\n"
+                        + "                                    " + fechaImp + "\n"
+                        + "                                </td>\n"
+                        + "                            </tr>\n"
+                        + "                            <tr style=\"height: 18px\">\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                            </tr>\n"
+                        + "                            <tr style=\"height: 18px\">\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                            </tr>\n"
+                        + "                            <tr style=\"height: 18px\">\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                            </tr>\n"
+                        + "                            <tr style=\"height: 18px\">\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                            </tr>\n"
+                        + "                            <tr style=\"height: 18px\">\n"
+                        + "                                <td></td>\n"
+                        + "                                <td>\n"
+                        + "                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; " + _R.getCatvalue().toUpperCase() + "\n"
+                        + "                                </td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                            </tr>\n"
+                        + "                            <tr style=\"height: 25px\">\n"
+                        + "                                <td></td>\n"
+                        + "                                <td>\n"
+                        + "                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; " + tipoDocu + "\n"
+                        + "                                </td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                            </tr>\n"
+                        + "                        </table>\n"
+                        + "                    </td>\n"
+                        + "                    <td></td>\n"
+                        + "                </tr>\n"
+                        + "                <!-- tercero -->\n"
+                        + "                <tr>\n"
+                        + "                    <td > </td>\n"
+                        + "                    <td>\n"
+                        + "                        <table style=\"width:100%\" border=\"0\">\n"
+                        + "                            <tr style=\"height: 25px\">\n"
+                        + "                                <td style=\"width: 8%\"/>\n"
+                        + "                                <td style=\"width: 54%\"/>\n"
+                        + "                                <td style=\"width: 10%\"/>\n"
+                        + "                                <td style=\"width: 9%\"/>\n"
+                        + "                                <td style=\"width: 9%\"/>\n"
+                        + "                                <td></td>\n"
+                        + "                            </tr>\n"
+                        + "\n");
 
-                if (i < tam) {
-                    SalesDetailTO var2 = (SalesDetailTO) det.get(i);
-                    String des = var2.getDscription();
-                    int largo = des.length();
-                    if (largo > 35) {
-                        des = des.substring(0, 35);
+                int tam = var.getSalesDetails().size();
+                List det = var.getSalesDetails();
+                for (int i = 0; i < 12; i++) {
+
+                    if (i < tam) {
+                        SalesDetailTO var2 = (SalesDetailTO) det.get(i);
+                        String des = var2.getDscription();
+                        int largo = des.length();
+                        if (largo > 35) {
+                            des = des.substring(0, 35);
+                        }
+
+                        out.println("                            <tr style=\"height: 19px\">\n"
+                                + "                                <td>\n"
+                                + "                                    " + var2.getQuantity() + "\n"
+                                + "                                </td>\n"
+                                + "                                <td>\n"
+                                + "                                    " + des.toUpperCase() + "\n"
+                                + "                                </td>\n"
+                                + "                                <td>\n"
+                                + "                                   $" + truncarDouble(var2.getPrice()) + "\n"
+                                + "                                </td>\n"
+                                + "                                <td>\n"
+                                + "                                    " + "$0.00" + "\n"
+                                + "                                </td>\n"
+                                + "                                <td>\n"
+                                + "                                    " + "$0.00" + "\n"
+                                + "                                </td>\n"
+                                + "                                <td>\n"
+                                + "                                    $" + truncarDouble(var2.getLinetotal()) + "\n"
+                                + "                                </td>\n"
+                                + "                            </tr>\n");
+
+                    } else {
+                        String vacio = "";
+                        out.println("                            <tr style=\"height: 19px\">\n"
+                                + "                                <td>\n"
+                                + "                                    " + vacio + "\n"
+                                + "                                </td>\n"
+                                + "                                <td>\n"
+                                + "                                   " + vacio + "\n"
+                                + "                                </td>\n"
+                                + "                                <td>\n"
+                                + "                                   " + vacio + "\n"
+                                + "                                </td>\n"
+                                + "                                <td>\n"
+                                + "                                    " + vacio + "\n"
+                                + "                                </td>\n"
+                                + "                                <td>\n"
+                                + "                                    " + vacio + "\n"
+                                + "                                </td>\n"
+                                + "                                <td>\n"
+                                + "                                    " + vacio + "\n"
+                                + "                                </td>\n"
+                                + "                            </tr>\n");
+                    }
+                }
+
+                out.println("                            <tr style=\"height: 25px\">\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                            </tr>\n"
+                        + "                        </table>\n"
+                        + "                    </td>\n"
+                        + "                    <td></td>\n"
+                        + "                </tr>\n"
+                        + "                <!-- cuarto -->\n"
+                        + "                <tr>\n"
+                        + "                    <td style=\"height: 144px\"/>\n"
+                        + "                    <td>\n"
+                        + "                        <table style=\"width:100%\" border=\"0\">\n"
+                        + "                            <tr style=\"height: 20px\">\n"
+                        + "                                <td style=\"width: 62%\"></td>\n"
+                        + "                                <td style=\"width: 28%\"/>\n"
+                        + "                                <td >\n"
+                        + "                                    $" + truncarDouble(total) + "\n"
+                        + "                                </td>\n"
+                        + "                            </tr>\n"
+                        + "                            <tr style=\"height: 20px\">\n"
+                        + "                                <td>\n"
+                        + "                                    &nbsp; &nbsp; " + numberToletter + "\n"
+                        + "                                </td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td>\n"
+                        + "                                    $" + truncarDouble(var.getVatsum()) + "\n"
+                        + "                                </td>\n"
+                        + "                            </tr>\n"
+                        + "                            <tr style=\"height: 20px\">\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td>\n"
+                        + "                                    $0.00\n"
+                        + "                                </td>\n"
+                        + "                            </tr>\n"
+                        + "                            <tr style=\"height: 20px\">\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td>\n"
+                        + "                                    $0.00\n"
+                        + "                                </td>\n"
+                        + "                            </tr>\n"
+                        + "                            <tr style=\"height: 20px\">\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td>\n"
+                        + "                                    $0.00 \n"
+                        + "                                </td>\n"
+                        + "                            </tr>\n"
+                        + "                            <tr style=\"height: 20px\">\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td>\n"
+                        + "                                    $0.00\n"
+                        + "                                </td>\n"
+                        + "                            </tr>\n"
+                        + "                            <tr style=\"height: 20px\">\n"
+                        + "                                <td>\n"
+                        + "                                    &nbsp; &nbsp; &nbsp; &nbsp; " + vendedor.toUpperCase() + "\n"
+                        + "                                </td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td>\n"
+                        + "                                    $0.00\n"
+                        + "                                </td>\n"
+                        + "                            </tr>\n"
+                        + "                            <tr style=\"height: 20px\">\n"
+                        + "                                <td></td>\n"
+                        + "                                <td></td>\n"
+                        + "                                <td>\n"
+                        + "                                    $" + truncarDouble(var.getDoctotal()) + "\n"
+                        + "                                </td>\n"
+                        + "                            </tr>\n"
+                        + "                        </table>\n"
+                        + "                    </td>\n"
+                        + "                    <td></td>\n"
+                        + "                </tr>\n"
+                        + "                <!-- quinto -->\n"
+                        + "                <tr>\n"
+                        + "                    <td style=\"height: 50px\"/>\n"
+                        + "                    <td></td>\n"
+                        + "                    <td></td>\n"
+                        + "                </tr>\n"
+                        + "            </table>\n"
+                        + "        </div>\n"
+                        + "    </body>\n"
+                        + "</html>");
+            }//cierre html
+        } else {
+            if (tipoDoc == 2) {
+                //compra
+                try (PrintWriter out = response.getWriter()) {
+                    out.println("<!DOCTYPE html>\n"
+                            + "<html>\n"
+                            + "\n"
+                            + "    <head>\n"
+                            + "        <title>Impresion de Compra</title>\n"
+                            + "        <meta charset=\"UTF-8\">\n"
+                            + "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+                            + "<script type=\"text/javascript\">\n"
+                            + "window.print();\n"
+                            + "window.open('', '_self', ''); window.close(); \n"
+                            + "</script>"
+                            + "\n"
+                            + "    </head>\n"
+                            + "\n"
+                            + "    <body style=\"font-size: 12px; font-family: sans-serif; line-height: 0px\">\n"
+                            + "        <!-- tamanio de factura 566x453px-->\n"
+                            + "        <div style=\"width: 550px; height: 650px\">\n"
+                            + "            <table style=\"width:100%\" border=\"0\">\n"
+                            + "                <!-- primero -->\n"
+                            + "                <tr>\n"
+                            + "                    <td style=\" width: 19px; height: 120px \">\n"
+                            + "                    </td>\n"
+                            + "                    <td style=\"\">\n"
+                            + "                        <table style=\"width:100%\" border=\"0\">\n"
+                            + "                            <tr style=\"height: 60px\">\n"
+                            + "                                <td style=\"width: 60%\">\n"
+                            + "                                </td>\n"
+                            + "                                <td style=\"width: 20%; vertical-align: bottom\">\n"
+                            + "                                    " + pur.getNumatcard() + "\n"
+                            + "                                </td>\n"
+                            + "                                <td></td>\n"
+                            + "                            </tr>\n"
+                            + "                            <tr style=\"height: 51px\">\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                            </tr>\n"
+                            + "                            <tr style=\"height: 19px\">\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td style=\"vertical-align: bottom\">\n"
+                            + "                                    " + horaImp + "\n"
+                            + "                                </td>\n"
+                            + "                            </tr>\n"
+                            + "                        </table>\n"
+                            + "                    </td>\n"
+                            + "                    <td style=\" width: 19px\"></td>\n"
+                            + "                </tr>\n"
+                            + "                <!-- segundo -->\n"
+                            + "                <tr>\n"
+                            + "                    <td style=\"height: 126px\"></td>\n"
+                            + "                    <td style=\"\">\n"
+                            + "                        <table style=\"width:100%\" border=\"0\">\n"
+                            + "                            <tr style=\"height: 18px\">\n"
+                            + "                                <td style=\"width: 10%\"></td>\n"
+                            + "                                <td style=\"width: 60%\">\n"
+                            + "                                    " + pur.getCardcode() + "-" + pur.getCardname().toUpperCase() + "\n"
+                            + "                                </td>\n"
+                            + "                                <td style=\"width: 10%\"></td>\n"
+                            + "                                <td style=\"width: 20%\">\n"
+                            + "                                    " + fechaImp + "\n"
+                            + "                                </td>\n"
+                            + "                            </tr>\n"
+                            + "                            <tr style=\"height: 18px\">\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                            </tr>\n"
+                            + "                            <tr style=\"height: 18px\">\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                            </tr>\n"
+                            + "                            <tr style=\"height: 18px\">\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                            </tr>\n"
+                            + "                            <tr style=\"height: 18px\">\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                            </tr>\n"
+                            + "                            <tr style=\"height: 18px\">\n"
+                            + "                                <td></td>\n"
+                            + "                                <td>\n"
+                            + "                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; " + _R.getCatvalue().toUpperCase() + "\n"
+                            + "                                </td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                            </tr>\n"
+                            + "                            <tr style=\"height: 25px\">\n"
+                            + "                                <td></td>\n"
+                            + "                                <td>\n"
+                            + "                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; " + tipoDocu + "\n"
+                            + "                                </td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                            </tr>\n"
+                            + "                        </table>\n"
+                            + "                    </td>\n"
+                            + "                    <td></td>\n"
+                            + "                </tr>\n"
+                            + "                <!-- tercero -->\n"
+                            + "                <tr>\n"
+                            + "                    <td > </td>\n"
+                            + "                    <td>\n"
+                            + "                        <table style=\"width:100%\" border=\"0\">\n"
+                            + "                            <tr style=\"height: 25px\">\n"
+                            + "                                <td style=\"width: 8%\"/>\n"
+                            + "                                <td style=\"width: 54%\"/>\n"
+                            + "                                <td style=\"width: 10%\"/>\n"
+                            + "                                <td style=\"width: 9%\"/>\n"
+                            + "                                <td style=\"width: 9%\"/>\n"
+                            + "                                <td></td>\n"
+                            + "                            </tr>\n"
+                            + "\n");
+
+                    int tam = pur.getpurchaseDetails().size();
+                    List det = pur.getpurchaseDetails();
+                    for (int i = 0; i < 12; i++) {
+
+                        if (i < tam) {
+                            PurchaseDetailTO var2 = (PurchaseDetailTO) det.get(i);
+                            String des = var2.getDscription();
+                            int largo = des.length();
+                            if (largo > 35) {
+                                des = des.substring(0, 35);
+                            }
+
+                            out.println("                            <tr style=\"height: 19px\">\n"
+                                    + "                                <td>\n"
+                                    + "                                    " + var2.getQuantity() + "\n"
+                                    + "                                </td>\n"
+                                    + "                                <td>\n"
+                                    + "                                    " + des.toUpperCase() + "\n"
+                                    + "                                </td>\n"
+                                    + "                                <td>\n"
+                                    + "                                   $" + truncarDouble(var2.getPrice()) + "\n"
+                                    + "                                </td>\n"
+                                    + "                                <td>\n"
+                                    + "                                    " + "$0.00" + "\n"
+                                    + "                                </td>\n"
+                                    + "                                <td>\n"
+                                    + "                                    " + "$0.00" + "\n"
+                                    + "                                </td>\n"
+                                    + "                                <td>\n"
+                                    + "                                    $" + truncarDouble(var2.getLinetotal()) + "\n"
+                                    + "                                </td>\n"
+                                    + "                            </tr>\n");
+
+                        } else {
+                            String vacio = "";
+                            out.println("                            <tr style=\"height: 19px\">\n"
+                                    + "                                <td>\n"
+                                    + "                                    " + vacio + "\n"
+                                    + "                                </td>\n"
+                                    + "                                <td>\n"
+                                    + "                                   " + vacio + "\n"
+                                    + "                                </td>\n"
+                                    + "                                <td>\n"
+                                    + "                                   " + vacio + "\n"
+                                    + "                                </td>\n"
+                                    + "                                <td>\n"
+                                    + "                                    " + vacio + "\n"
+                                    + "                                </td>\n"
+                                    + "                                <td>\n"
+                                    + "                                    " + vacio + "\n"
+                                    + "                                </td>\n"
+                                    + "                                <td>\n"
+                                    + "                                    " + vacio + "\n"
+                                    + "                                </td>\n"
+                                    + "                            </tr>\n");
+                        }
                     }
 
-                    out.println(
-                            "                            <tr style=\"height: 18px; width: 100%\" >\n"
-                            + "\n"
-                            + "                                <td style=\"width: 40px\">" + var2.getQuantity() + "</td>\n"
-                            + "                                <td style=\"width: 100px\">" + var2.getItemcode() + "</td>\n"
-                            + "                                <td style=\"width: 270px\">" + des.toUpperCase() + "</td>\n"
-                            + "                                <td style=\"width: 60px\">$" + truncarDouble(var2.getPrice()) + "</td>\n"
-                            + "                                <td style=\"width: 50px\">" + "$0.00" + "</td>\n"
-                            + "                                <td style=\"width: 50px\">" + "$0.00" + "</td>\n"
-                            + "                                <td style=\"width: 10px\">$" + truncarDouble(var2.getLinetotal()) + "</td>\n"
-                            + "\n"
-                            + "                            </tr>\n");
-
-                } else {
-                    String vacio = "";
-                    out.println(
-                            "<tr style=\"height: 18px; width: 100%\" >\n"
-                            + "\n"
-                            + "                                <td style=\"width: 40px\">" + vacio + "</td>\n"
-                            + "                                <td style=\"width: 100px\">" + vacio + "</td>\n"
-                            + "                                <td style=\"width: 270px\">" + vacio + "</td>\n"
-                            + "                                <td style=\"width: 60px\">" + vacio + "</td>\n"
-                            + "                                <td style=\"width: 50px\">" + vacio + "</td>\n"
-                            + "                                <td style=\"width: 50px\">" + vacio + "</td>\n"
-                            + "                                <td style=\"width: 10px\">" + vacio + "</td>\n"
-                            + "\n"
-                            + "                            </tr>\n");
-                }
+                    out.println("                            <tr style=\"height: 25px\">\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                            </tr>\n"
+                            + "                        </table>\n"
+                            + "                    </td>\n"
+                            + "                    <td></td>\n"
+                            + "                </tr>\n"
+                            + "                <!-- cuarto -->\n"
+                            + "                <tr>\n"
+                            + "                    <td style=\"height: 144px\"/>\n"
+                            + "                    <td>\n"
+                            + "                        <table style=\"width:100%\" border=\"0\">\n"
+                            + "                            <tr style=\"height: 20px\">\n"
+                            + "                                <td style=\"width: 62%\"></td>\n"
+                            + "                                <td style=\"width: 28%\"/>\n"
+                            + "                                <td >\n"
+                            + "                                    $" + truncarDouble(total) + "\n"
+                            + "                                </td>\n"
+                            + "                            </tr>\n"
+                            + "                            <tr style=\"height: 20px\">\n"
+                            + "                                <td>\n"
+                            + "                                    &nbsp; &nbsp; " + numberToletter + "\n"
+                            + "                                </td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td>\n"
+                            + "                                    $" + truncarDouble(pur.getVatsum()) + "\n"
+                            + "                                </td>\n"
+                            + "                            </tr>\n"
+                            + "                            <tr style=\"height: 20px\">\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td>\n"
+                            + "                                    $0.00\n"
+                            + "                                </td>\n"
+                            + "                            </tr>\n"
+                            + "                            <tr style=\"height: 20px\">\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td>\n"
+                            + "                                    $0.00\n"
+                            + "                                </td>\n"
+                            + "                            </tr>\n"
+                            + "                            <tr style=\"height: 20px\">\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td>\n"
+                            + "                                    $0.00 \n"
+                            + "                                </td>\n"
+                            + "                            </tr>\n"
+                            + "                            <tr style=\"height: 20px\">\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td>\n"
+                            + "                                    $0.00\n"
+                            + "                                </td>\n"
+                            + "                            </tr>\n"
+                            + "                            <tr style=\"height: 20px\">\n"
+                            + "                                <td>\n"
+                            + "                                    &nbsp; &nbsp; &nbsp; &nbsp; " + vendedor.toUpperCase() + "\n"
+                            + "                                </td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td>\n"
+                            + "                                    $0.00\n"
+                            + "                                </td>\n"
+                            + "                            </tr>\n"
+                            + "                            <tr style=\"height: 20px\">\n"
+                            + "                                <td></td>\n"
+                            + "                                <td></td>\n"
+                            + "                                <td>\n"
+                            + "                                    $" + truncarDouble(pur.getDoctotal()) + "\n"
+                            + "                                </td>\n"
+                            + "                            </tr>\n"
+                            + "                        </table>\n"
+                            + "                    </td>\n"
+                            + "                    <td></td>\n"
+                            + "                </tr>\n"
+                            + "                <!-- quinto -->\n"
+                            + "                <tr>\n"
+                            + "                    <td style=\"height: 50px\"/>\n"
+                            + "                    <td></td>\n"
+                            + "                    <td></td>\n"
+                            + "                </tr>\n"
+                            + "            </table>\n"
+                            + "        </div>\n"
+                            + "    </body>\n"
+                            + "</html>");
+                }//cierre html
             }
-
-            out.println("                            <tr style=\"height: 30px\">\n"
-                    + "                            <br/>\n"
-                    + "                </tr>\n"
-                    + "            </table>\n"
-                    + "\n"
-                    + "            <!-- TOTALES -->\n"
-                    + "            <table border=\"0\">\n"
-                    + "                <!-- Parte de totales de factura -->\n"
-                    + "                <tr style=\"height: 18px\">\n"
-                    + "                    <td style=\"width: 50px\"/>\n"
-                    + "                    <td valign=\"bot\" style=\"width: 545px\">\n"
-                    + "                        " + numberToletter + "\n"
-                    + "                    </td>\n"
-                    + "                    <td valign=\"bot\">\n"
-                    + "                        $" + truncarDouble(total) + "\n"
-                    + "                    </td>\n"
-                    + "                </tr>\n"
-                    + "                <tr style=\"height: 15.8px\">\n"
-                    + "                    <td style=\"width: 50px\"/>\n"
-                    + "                    <td   style=\"width: 100px\">\n"
-                    + "                    </td>\n"
-                    + "                    <td>\n"
-                    + "                        $" + truncarDouble(var.getVatsum()) + "\n"
-                    + "                    </td>\n"
-                    + "                </tr>\n"
-                    + "                <tr style=\"height: 15.8px\">\n"
-                    + "                    <td style=\"width: 50px\"/>\n"
-                    + "                    <td   style=\"width: 100px\">\n"
-                    + "                    </td>\n"
-                    + "                    <td>\n"
-                    + "                        $0.00\n"
-                    + "                    </td>\n"
-                    + "                </tr>\n"
-                    + "                <tr style=\"height: 15.8px\">\n"
-                    + "                    <td style=\"width: 50px\"/>\n"
-                    + "                    <td   style=\"width: 100px\">\n"
-                    + "                    </td>\n"
-                    + "                    <td>\n"
-                    + "                        $0.00\n"
-                    + "                    </td>\n"
-                    + "                </tr>\n"
-                    + "                <tr style=\"height: 15.8px\">\n"
-                    + "                    <td style=\"width: 50px\"/>\n"
-                    + "                    <td  style=\"width: 100px\">\n"
-                    + "                    </td>\n"
-                    + "                    <td>\n"
-                    + "                        $" + truncarDouble(var.getDoctotal()) + "\n"
-                    + "                    </td>\n"
-                    + "                </tr>\n"
-                    + "            </table>\n"
-                    + "        </td> \n"
-                    + "\n"
-                    + "        <!-- borde derecho -->\n"
-                    + "        <td style=\"width: 5px; height: 313px\"></td>\n"
-                    + "    </tr>\n"
-                    + "    <tr>\n"
-                    + "        <td style=\"height: 36px\">\n"
-                    + "\n"
-                    + "        </td>\n"
-                    + "    </tr>\n"
-                    + "</table>\n"
-                    + "\n"
-                    + "</div>\n"
-                    + "</body>\n"
-                    + "</html>"
-            );
         }
-    }
+
+    }//cierre de clase
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

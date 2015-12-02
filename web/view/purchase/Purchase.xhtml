@@ -34,9 +34,9 @@
 
                             <p:commandButton tabindex="-1" title="Buscar" icon="ui-icon-search"  process="@this" actionListener="#{purchaseBean.botonBuscar}"
                                              update="frmPurchase">
-
                             </p:commandButton>
-                                <p:commandButton rendered="false" tabindex="-1" type="button" title="Print" icon="ui-icon-print" disabled="true"/>
+                                
+                            <p:commandButton tabindex="-1" ajax="false" action="#{purchaseBean.printInvoice}" icon="ui-icon-print" />
                         </f:facet>
                     </p:toolbar>
 

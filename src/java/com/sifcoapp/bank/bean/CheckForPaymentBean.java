@@ -125,7 +125,7 @@ public class CheckForPaymentBean implements Serializable {
     //
     private String url;
 
-//</editor-fold>
+//</editor-fold> 
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {

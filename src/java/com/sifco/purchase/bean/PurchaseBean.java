@@ -25,6 +25,10 @@ import com.sifcoapp.objects.purchase.to.PurchaseInTO;
 import com.sifcoapp.objects.purchase.to.PurchaseTO;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +39,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -165,6 +170,9 @@ public class PurchaseBean implements Serializable {
     //Lista de precio
     private final int ultPrecio = 1;
 
+    //
+    private String url;
+
 //</editor-fold>
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
@@ -264,7 +272,6 @@ public class PurchaseBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Autocompletado de CUENTA - NO USADA">
     /*
      public List<String> completeName(String query) {
@@ -308,7 +315,6 @@ public class PurchaseBean implements Serializable {
      }
      */
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del autocomplete CUENTA - NO USADA" > 
     /*
      public void findAccount(SelectEvent event) {
@@ -365,7 +371,6 @@ public class PurchaseBean implements Serializable {
      }
      */
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocio(SelectEvent event) {
         String[] newName = socioNeg.split("-");
@@ -1482,6 +1487,14 @@ public class PurchaseBean implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G & S" >
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public Double getNewDesc() {
         return newDesc;
     }
@@ -1995,4 +2008,48 @@ public class PurchaseBean implements Serializable {
     }
 
 //</editor-fold> 
+//<editor-fold defaultstate="collapsed" desc="IMPRIMIR FORMA 2">
+    public String printInvoice() throws UnsupportedEncodingException {
+        //faceMessage(getApplicationUri());
+        //System.out.println(getApplicationUri()+"||----------------------------------------------------------------");
+        setUrl(getApplicationUri());
+        if (newPurchase.getDocentry() > 0) {//consumidor final
+            String foo = newPurchase.getDocentry() + "";
+            String bar = (String) session.getAttribute("userfullname");
+            String tip = "2";//compra
+            String doc = " ";
+            return "/testPurchaseView?faces-redirect=true"
+                    + "&foo=" + URLEncoder.encode(foo, "UTF-8")
+                    + "&bar=" + URLEncoder.encode(bar, "UTF-8")
+                    + "&tip=" + URLEncoder.encode(tip, "UTF-8")
+                    + "&doc=" + URLEncoder.encode(doc, "UTF-8");
+
+        } else {
+            faceMessage("No se puede imprimir");
+            return "/view/purchase/Purchase.xhtml";
+        }
+    }
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="redirect">
+    public void redirect() throws IOException {
+        String url2 = getUrl() + "/faces/view/purchase/Purchase.xhtml"; //view/purchase/Purchase.xhtml
+        FacesContext fc = FacesContext.getCurrentInstance();
+        fc.getExternalContext().redirect(url2);
+    }
+
+    public String getApplicationUri() {
+        try {
+            FacesContext ctxt = FacesContext.getCurrentInstance();
+            ExternalContext ext = ctxt.getExternalContext();
+            URI uri = new URI(ext.getRequestScheme(),
+                    null, ext.getRequestServerName(), ext.getRequestServerPort(),
+                    ext.getRequestContextPath(), null, null);
+            return uri.toASCIIString();
+        } catch (URISyntaxException e) {
+            throw new FacesException(e);
+        }
+    }
+//</editor-fold>
+
 }//CIERRE PRINCIPAL
