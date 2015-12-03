@@ -475,7 +475,8 @@ public class CheckForPaymentBean implements Serializable {
             _res = BankEJBClient.ges_cfp0_checkforpayment_mtto(newCheck, Common.MTTOINSERT); //1 insert
 
             if (_res.getCodigoError() == 0) {//se realizo correctamente
-                this.newCheck.setCheckkey(_res.getDocentry());
+                //this.newCheck.setCheckkey(_res.getDocentry());
+                this.newCheck = BankEJBClient.get_cfp0_checkforpaymentByKey(_res.getDocentry());
                 idInterno = _res.getDocentry();
                 faceMessage(_res.getMensaje());
 

@@ -55,6 +55,10 @@ public class SalesPrint extends HttpServlet {
         Double total = 0.0;
         String vendedor = "";
         int tipoDoc = 0;
+
+        //letras num
+        String numberToletter1 = "", numberToletter2 = "", name1 = "", name2 = "";
+
         //hora
         Calendar calendario = new GregorianCalendar();
         int hora, minutos, ampm;
@@ -73,7 +77,8 @@ public class SalesPrint extends HttpServlet {
         String tipoDocu = "";//Credito Fiscal CCF
 
         try {
-            convertNumber = new numerosAletras() {};
+            convertNumber = new numerosAletras() {
+            };
             AdminEJBService = new AdminEJBClient();
 
             tipoDoc = Integer.parseInt(request.getParameter("tip"));
@@ -85,6 +90,18 @@ public class SalesPrint extends HttpServlet {
                 _R = AdminEJBService.findCatalogByKey(var.getPeymethod(), 8);
                 total = var.getDoctotal() - var.getVatsum();//formatNumber(var.getDoctotal());
                 numberToletter = convertNumber.convertNumberToLetter(var.getDoctotal());
+                int tam = numberToletter.length();
+                if (tam > 30) {
+                    numberToletter1 = numberToletter.substring(0, 30);
+                    numberToletter2 = numberToletter.substring(30, tam);
+                }
+
+                String name = var.getCardcode() + "-" + var.getCardname().toUpperCase();
+                int tam2 = name.length();
+                if (tam2 > 30) {
+                    name1 = name.substring(0, 35);
+                    name2 = name.substring(35, tam2);
+                }
                 tipoDocu = "Credito Fiscal CCF";
             } else {
                 if (tipoDoc == 2) {
@@ -95,6 +112,18 @@ public class SalesPrint extends HttpServlet {
                     _R = AdminEJBService.findCatalogByKey(pur.getPeymethod(), 8);
                     total = pur.getDoctotal() - pur.getVatsum();//formatNumber(var.getDoctotal());
                     numberToletter = convertNumber.convertNumberToLetter(pur.getDoctotal());
+                    int tam = numberToletter.length();
+                    if (tam > 30) {
+                        numberToletter1 = numberToletter.substring(0, 30);
+                        numberToletter2 = numberToletter.substring(30, tam);
+                    }
+
+                    String name = pur.getCardcode() + "-" + pur.getCardname().toUpperCase();
+                    int tam2 = name.length();
+                    if (tam2 > 30) {
+                        name1 = name.substring(0, 35);
+                        name2 = name.substring(35, tam2);
+                    }
                     tipoDocu = request.getParameter("doc");
                 }
             }
@@ -177,7 +206,7 @@ public class SalesPrint extends HttpServlet {
                         + "                            <tr style=\"height: 18px\">\n"
                         + "                                <td style=\"width: 10%\"></td>\n"
                         + "                                <td style=\"width: 60%\">\n"
-                        + "                                    " + var.getCardcode() + "-" + var.getCardname().toUpperCase() + "\n"
+                        + "                                    " + name1 + "\n"
                         + "                                </td>\n"
                         + "                                <td style=\"width: 10%\"></td>\n"
                         + "                                <td style=\"width: 20%\">\n"
@@ -186,7 +215,7 @@ public class SalesPrint extends HttpServlet {
                         + "                            </tr>\n"
                         + "                            <tr style=\"height: 18px\">\n"
                         + "                                <td></td>\n"
-                        + "                                <td></td>\n"
+                        + "                                <td>" + name2 + "</td>\n"
                         + "                                <td></td>\n"
                         + "                                <td></td>\n"
                         + "                            </tr>\n"
@@ -453,7 +482,7 @@ public class SalesPrint extends HttpServlet {
                             + "                            <tr style=\"height: 18px\">\n"
                             + "                                <td style=\"width: 10%\"></td>\n"
                             + "                                <td style=\"width: 60%\">\n"
-                            + "                                    " + pur.getCardcode() + "-" + pur.getCardname().toUpperCase() + "\n"
+                            + "                                    " + name1 + "\n"
                             + "                                </td>\n"
                             + "                                <td style=\"width: 10%\"></td>\n"
                             + "                                <td style=\"width: 20%\">\n"
@@ -462,7 +491,7 @@ public class SalesPrint extends HttpServlet {
                             + "                            </tr>\n"
                             + "                            <tr style=\"height: 18px\">\n"
                             + "                                <td></td>\n"
-                            + "                                <td></td>\n"
+                            + "                                <td>"+name2+"</td>\n"
                             + "                                <td></td>\n"
                             + "                                <td></td>\n"
                             + "                            </tr>\n"
@@ -525,10 +554,11 @@ public class SalesPrint extends HttpServlet {
 
                         if (i < tam) {
                             PurchaseDetailTO var2 = (PurchaseDetailTO) det.get(i);
+
                             String des = var2.getDscription();
                             int largo = des.length();
-                            if (largo > 35) {
-                                des = des.substring(0, 35);
+                            if (largo > 30) {
+                                des = des.substring(0, 30);
                             }
 
                             out.println("                            <tr style=\"height: 19px\">\n"
@@ -603,7 +633,7 @@ public class SalesPrint extends HttpServlet {
                             + "                            </tr>\n"
                             + "                            <tr style=\"height: 20px\">\n"
                             + "                                <td>\n"
-                            + "                                    &nbsp; &nbsp; " + numberToletter + "\n"
+                            + "                                    &nbsp; &nbsp; " + numberToletter1 + "\n"
                             + "                                </td>\n"
                             + "                                <td></td>\n"
                             + "                                <td>\n"
@@ -611,7 +641,8 @@ public class SalesPrint extends HttpServlet {
                             + "                                </td>\n"
                             + "                            </tr>\n"
                             + "                            <tr style=\"height: 20px\">\n"
-                            + "                                <td></td>\n"
+                            + "                                <td>"
+                            + "                                     &nbsp; &nbsp; " + numberToletter2 + "</td>\n"
                             + "                                <td></td>\n"
                             + "                                <td>\n"
                             + "                                    $0.00\n"
