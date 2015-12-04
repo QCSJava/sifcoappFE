@@ -221,10 +221,6 @@
                                 <p:column headerText="#" style="width: 10px">
                                     <h:outputText value="#{rowIndex + 1}" />
                                 </p:column>
-                                <p:column headerText="Número" style="width: 30px" sortBy="#{Rec.number}" filterBy="#{Rec.number}">
-                                    <h:outputText value="#{Rec.number}" />
-                                </p:column>
-
                                 <p:column headerText="Origen" sortBy="#{Rec.transtype}" filterBy="#{Rec.transtype}">
                                     <h:outputText value="#{Rec.transtype}" />
                                 </p:column>
@@ -257,6 +253,10 @@
                                     <h:outputText value="#{Rec.taxdate}">
                                         <f:convertDateTime pattern="dd/MM/yyyy" />
                                     </h:outputText>
+                                </p:column>
+                                
+                                <p:column headerText="Comentario" sortBy="#{Rec.memo}" filterBy="#{Rec.memo}">
+                                    <h:outputText value="#{Rec.memo}" />
                                 </p:column>
 
                             </p:dataTable>

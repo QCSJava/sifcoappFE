@@ -845,7 +845,7 @@ public class JournalEntry implements Serializable {
             searchJournal.setBaseref(baseref);
         }
         
-        if (credit > 0) {
+        if (credit != null && credit > 0) {
             searchJournal.setLoctotal(credit);
         }
         

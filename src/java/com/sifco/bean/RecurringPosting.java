@@ -106,6 +106,7 @@ public class RecurringPosting implements Serializable {
     //para el footer de la pagina
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Getters and setters">
     public RecurringPosting() {
     }
@@ -463,6 +464,7 @@ public class RecurringPosting implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="init de la ventana">
     @PostConstruct
     public void initForm() {
@@ -599,8 +601,8 @@ public class RecurringPosting implements Serializable {
         this.credit = selectDetail.getCredit();
 
     }
-    
-    public void updMontos(){
+
+    public void updMontos() {
         loctotal = 0.0;
         systotal = 0.0;
         for (RecurringPostingsDetailTO obj : getListaDetalles()) {
@@ -609,18 +611,18 @@ public class RecurringPosting implements Serializable {
             }
             if (obj.getCredit() != null) {
                 systotal = systotal + obj.getCredit();
-            } 
+            }
         }
     }
-    
-//</editor-fold>
 
+//</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Agregar detalles al dataTable" > 
     public void accionAgregar(ActionEvent actionEvent) {
         try {
             if (validarNull()) {
                 if (upd) {
-                   // faceMessage("update ...");
+                    // faceMessage("update ...");
                     this.upd = false;
                     for (RecurringPostingsDetailTO obj : getListaDetalles()) {
                         if (obj.getLineid() == selectDetail.getLineid()) {
@@ -631,7 +633,7 @@ public class RecurringPosting implements Serializable {
                     updMontos();
                 } else {
                     RecurringPostingsDetailTO nuevoDetalle = new RecurringPostingsDetailTO();
-                    
+
                     nuevoDetalle.setAcctcode(account);
                     nuevoDetalle.setAcctdesc(shortname);
                     nuevoDetalle.setDebit(debit);
@@ -641,7 +643,7 @@ public class RecurringPosting implements Serializable {
                     if (listaDetalles == null) {
                         listaDetalles = new ArrayList<>();
                     }
-                    
+
                     getListaDetalles().add(nuevoDetalle);
                     updMontos();
                 }
@@ -969,7 +971,7 @@ public class RecurringPosting implements Serializable {
         } else {
             newRecurring.setLimitrtrns("N");
         }
-        
+
         listaPadre = new Vector();
         for (RecurringPostingsDetailTO obj : getListaDetalles()) {
             obj.setRcurcode(rcurcode);
@@ -1035,7 +1037,7 @@ public class RecurringPosting implements Serializable {
         } else {
             newRecurring.setLimitrtrns("N");
         }
-        
+
         listaPadre = new Vector();
         listaPadre.clear();
         for (RecurringPostingsDetailTO obj : getListaDetalles()) {
@@ -1249,6 +1251,7 @@ public class RecurringPosting implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del ComboBox Frecuencia" > 
     public void stateChangeListener(ValueChangeEvent event) {
         System.out.print(event.getNewValue());
@@ -1427,6 +1430,7 @@ public class RecurringPosting implements Serializable {
     }
 
 //</editor-fold>
+    
     public void Add(SelectEvent event) {
         Iterator<RecurringPostingsTO> iterator = RecurringSelected.iterator();
         totalVolumen = 0.0;
@@ -1435,11 +1439,11 @@ public class RecurringPosting implements Serializable {
             totalVolumen = totalVolumen + nuevo.getVolume();
         }
         RequestContext.getCurrentInstance().update("dlgT:tableDialog2");
-        faceMessage("Seleccion" + totalVolumen);
+        // faceMessage("Seleccion" + totalVolumen);
     }
 
     public void Rest(SelectEvent event) {
-        faceMessage("nooo");
+        //faceMessage("nooo");
     }
 
 }//cierre de clase
