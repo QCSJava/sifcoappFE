@@ -33,6 +33,10 @@
         <servlet-name>SalesPrint</servlet-name>
         <servlet-class>com.sifcoapp.report.bean.SalesPrint</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PrintNotes</servlet-name>
+        <servlet-class>com.sifcoapp.report.bean.PrintNotes</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
@@ -60,6 +64,10 @@
     <servlet-mapping>
         <servlet-name>SalesPrint</servlet-name>
         <url-pattern>/SalesPrint</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PrintNotes</servlet-name>
+        <url-pattern>/PrintNotes</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

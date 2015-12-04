@@ -35,8 +35,9 @@
 
                             <p:commandButton tabindex="-1" title="Buscar" icon="ui-icon-search"  process="@this" actionListener="#{creditNotesBean.botonBuscar}"
                                              update="frmCreditNotes">
-
                             </p:commandButton>
+
+                            <p:commandButton tabindex="-1" ajax="false" action="#{creditNotesBean.printInvoice()}" icon="ui-icon-print" />
                             <!--<p:commandButton tabindex="-1" type="button" title="Print" icon="ui-icon-print"  process="@this" actionListener="#1{creditNotesBean.btnPrint}"
                                              update="frmCreditNotes" disabled="true"/>-->
                         </f:facet>

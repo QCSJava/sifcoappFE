@@ -29,6 +29,10 @@ import com.sifcoapp.objects.purchase.to.SupplierInTO;
 import com.sifcoapp.objects.purchase.to.SupplierTO;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,6 +43,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -172,7 +177,11 @@ public class SupplierCreditNotesBean implements Serializable {
     //Lista de precio
     private final int ultPrecio = 1;
 
+    //
+    private String url;
+
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -266,12 +275,13 @@ public class SupplierCreditNotesBean implements Serializable {
 
         while (iterator.hasNext()) {
             BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-            results.add(articulo.getCardcode()+"-"+articulo.getCardname());
+            results.add(articulo.getCardcode() + "-" + articulo.getCardname());
         }
         return results;
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Autocompletado de CUENTA ">
     /*
      public List<String> completeName(String query) {
@@ -315,6 +325,7 @@ public class SupplierCreditNotesBean implements Serializable {
      }
      */
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del autocomplete CUENTA" > 
     /*
      public void findAccount(SelectEvent event) {
@@ -369,6 +380,7 @@ public class SupplierCreditNotesBean implements Serializable {
      }
      */
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocio(SelectEvent event) {
         String[] newName = socioNeg.split("-");
@@ -570,6 +582,7 @@ public class SupplierCreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Boton Agregar al DATATABLE">
     public void accionAgregar(ActionEvent actionEvent) {
         try {
@@ -687,6 +700,7 @@ public class SupplierCreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Calcular Impuestos y TOTAL">
     public void calcularTotalBill(ArrayList<SupplierDetailTO> listaArt) {
         Double totalAux = 0.0;
@@ -704,6 +718,7 @@ public class SupplierCreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="funciones para calculos de impuestos">
     public Double calcularGravadas(ArrayList<SupplierDetailTO> listaArt) {
         Double sumTotal = 0.0;
@@ -802,6 +817,7 @@ public class SupplierCreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Eliminar del dataTable" > 
     public void deleteDetalle() {
         try {
@@ -1248,6 +1264,7 @@ public class SupplierCreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="doSearchBill">
     public void doSearchBill() {
         PurchaseInTO searchBill = new PurchaseInTO();
@@ -1277,6 +1294,7 @@ public class SupplierCreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Boton COPIAR DESDE BILL">
     public void btnCopyFromBill(ActionEvent actionEvent) {
         this.listaBusquedaBill = new Vector();
@@ -1360,6 +1378,7 @@ public class SupplierCreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     public void reload() throws IOException {
         // ...
@@ -1646,7 +1665,57 @@ public class SupplierCreditNotesBean implements Serializable {
     }
 //</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="IMPRIMIR FORMA 2">
+    public String printInvoice() throws UnsupportedEncodingException {
+        //faceMessage(getApplicationUri());
+        //System.out.println(getApplicationUri()+"||----------------------------------------------------------------");
+        setUrl(getApplicationUri());
+        if (newSupplier.getDocentry() > 0) {
+            String foo = newSupplier.getDocentry() + "";
+            //String bar = (String) session.getAttribute("userfullname");
+            String tip = "2";//nota credito from venta
+            return "/PrintDebitView?faces-redirect=true"
+                    + "&foo=" + URLEncoder.encode(foo, "UTF-8")
+                    //+ "&bar=" + URLEncoder.encode(bar, "UTF-8")
+                    + "&tip=" + URLEncoder.encode(tip, "UTF-8");
+
+        } else {
+            faceMessage("No se puede imprimir");
+            return "/view/purchase/SupplierCreditNotes.xhtml";
+        }
+    }
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="redirect">
+    public void redirect() throws IOException {
+        String url2 = getUrl() + "/faces/view/purchase/SupplierCreditNotes.xhtml"; //url donde se redirige la pantalla
+        FacesContext fc = FacesContext.getCurrentInstance();
+        fc.getExternalContext().redirect(url2);
+    }
+
+    public String getApplicationUri() {
+        try {
+            FacesContext ctxt = FacesContext.getCurrentInstance();
+            ExternalContext ext = ctxt.getExternalContext();
+            URI uri = new URI(ext.getRequestScheme(),
+                    null, ext.getRequestServerName(), ext.getRequestServerPort(),
+                    ext.getRequestContextPath(), null, null);
+            return uri.toASCIIString();
+        } catch (URISyntaxException e) {
+            throw new FacesException(e);
+        }
+    }
+//</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="G & S">
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public boolean isIsBill() {
         return isBill;
     }

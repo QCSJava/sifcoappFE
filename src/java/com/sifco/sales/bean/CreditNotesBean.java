@@ -27,6 +27,10 @@ import com.sifcoapp.objects.sales.to.SalesInTO;
 import com.sifcoapp.objects.sales.to.SalesTO;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,9 +41,10 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -51,7 +56,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name = "creditNotesBean")
-@ApplicationScoped
+@SessionScoped
 public class CreditNotesBean implements Serializable {
 
     public CreditNotesBean() {
@@ -171,7 +176,11 @@ public class CreditNotesBean implements Serializable {
     private boolean actBtn, isBill;
     private int docEntryBill;
 
+    //
+    private String url;
+
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >  
     @PostConstruct
     public void initForm() {
@@ -278,6 +287,7 @@ public class CreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocio(SelectEvent event) {
         String[] newName = socioNeg.split("-");
@@ -478,6 +488,7 @@ public class CreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Boton Agregar al DATATABLE">
     public void accionAgregar(ActionEvent actionEvent) {
         try {
@@ -583,6 +594,7 @@ public class CreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Calcular Impuestos y TOTAL">
     public void calcularTotalBill(ArrayList<ClientCrediDetailTO> listaArt) {
         Double totalAux = 0.0;
@@ -600,6 +612,7 @@ public class CreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="funciones para calculos de impuestos">
     public Double calcularGravadas(ArrayList<ClientCrediDetailTO> listaArt) {
         Double sumTotal = 0.0;
@@ -698,6 +711,7 @@ public class CreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Eliminar del dataTable" > 
     public void deleteDetalle() {
         try {
@@ -742,6 +756,7 @@ public class CreditNotesBean implements Serializable {
     }
 
     //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Manejo de estados de la pantalla GUARDAR; ACTUALIZAR; BUSCAR; NUEVO" > 
     public void estateGuardar() {//Estado por defecto
         this.estadoDoc = Common.DocStatusOpen;
@@ -1180,6 +1195,7 @@ public class CreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="CREAR CREDITNOTE FROM BILL">
     public void doCreditFromBill() {
         try {
@@ -1222,6 +1238,7 @@ public class CreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Boton COPIAR DESDE BILL">
     public void btnCopyFromBill(ActionEvent actionEvent) {
         this.listaBusquedaBill = new Vector();
@@ -1272,6 +1289,7 @@ public class CreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="selec dialog bill">
     public void selectDialogCredit() {
         if (SalesEJBService == null) {
@@ -1333,6 +1351,7 @@ public class CreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     private boolean validatePrice() {
         if (this.newPrecio < 0) {
@@ -1628,7 +1647,73 @@ public class CreditNotesBean implements Serializable {
     }
 //</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="IMPRIMIR FORMA 2">
+    public String printInvoice() throws UnsupportedEncodingException {
+        //faceMessage(getApplicationUri());
+        //System.out.println(getApplicationUri()+"||----------------------------------------------------------------");
+        setUrl(getApplicationUri());
+        if (newCredit.getDocentry() > 0) {
+            String foo = newCredit.getDocentry() + "";
+            //String bar = (String) session.getAttribute("userfullname");
+            String tip = "1";//nota credito from venta
+            return "/PrintCreditView?faces-redirect=true"
+                    + "&foo=" + URLEncoder.encode(foo, "UTF-8")
+                    //+ "&bar=" + URLEncoder.encode(bar, "UTF-8")
+                    + "&tip=" + URLEncoder.encode(tip, "UTF-8");
+
+        } else {
+            faceMessage("No se puede imprimir");
+            return "/view/sales/ClientCreditNotes.xhtml";
+        }
+    }
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="redirect">
+    public void redirect() throws IOException {
+        String url2 = getUrl() + "/faces/view/sales/ClientCreditNotes.xhtml"; //url donde se redirige la pantalla
+        FacesContext fc = FacesContext.getCurrentInstance();
+        fc.getExternalContext().redirect(url2);
+    }
+
+    public String getApplicationUri() {
+        try {
+            FacesContext ctxt = FacesContext.getCurrentInstance();
+            ExternalContext ext = ctxt.getExternalContext();
+            URI uri = new URI(ext.getRequestScheme(),
+                    null, ext.getRequestServerName(), ext.getRequestServerPort(),
+                    ext.getRequestContextPath(), null, null);
+            return uri.toASCIIString();
+        } catch (URISyntaxException e) {
+            throw new FacesException(e);
+        }
+    }
+//</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="G & S">
+    public boolean isIsBill() {
+        return isBill;
+    }
+
+    public void setIsBill(boolean isBill) {
+        this.isBill = isBill;
+    }
+
+    public int getDocEntryBill() {
+        return docEntryBill;
+    }
+
+    public void setDocEntryBill(int docEntryBill) {
+        this.docEntryBill = docEntryBill;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public static CatalogEJBClient getCatalogEJB() {
         return CatalogEJB;
     }
@@ -2166,4 +2251,5 @@ public class CreditNotesBean implements Serializable {
     }
 
 //</editor-fold>
+    
 }//CIERRE CLASE
