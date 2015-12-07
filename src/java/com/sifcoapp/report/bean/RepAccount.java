@@ -284,10 +284,36 @@ public class RepAccount implements Serializable {
             if (this.ftype == 9) {
                 _reportname = "/account/BDjournal";
                 _reportTitle = "DIARIO MAYOR";
-
+                
+                
                 reportParameters.put("startdate", this.getFdatefrom());
                 reportParameters.put("enddate", this.getFdateto());
                 reportParameters.put("account", this.getAccount());
+            }
+            
+            if (this.ftype == 10) {
+                _reportname = "/account/flowAccounts";
+                _reportTitle = "Estado de Flujos de Efectivo";
+                
+                reportParameters.put("pdocdate", this.getFdatefrom());
+                reportParameters.put("PDOCDATE2", this.getFdateto());
+                reportParameters.put("level", this.getReportLevel());
+                
+                //firma1
+                reportParameters.put("F1_NAME", ParameterEJBClient.getParameterbykey(19).getValue1());
+                reportParameters.put("F1_TITLE", ParameterEJBClient.getParameterbykey(19).getValue2());
+
+                //firma2
+                reportParameters.put("F2_NAME", ParameterEJBClient.getParameterbykey(20).getValue1());
+                reportParameters.put("F2_TITLE", ParameterEJBClient.getParameterbykey(20).getValue2());
+
+                //firma3
+                reportParameters.put("F3_NAME", ParameterEJBClient.getParameterbykey(21).getValue1());
+                reportParameters.put("F3_TITLE", ParameterEJBClient.getParameterbykey(21).getValue2());
+
+                //firma4
+                reportParameters.put("F4_NAME", ParameterEJBClient.getParameterbykey(22).getValue1());
+                reportParameters.put("F4_TITLE", ParameterEJBClient.getParameterbykey(22).getValue2());
             }
 
             reportParameters.put("reportName", _reportTitle);
