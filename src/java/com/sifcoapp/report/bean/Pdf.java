@@ -5,6 +5,7 @@
  */
 package com.sifcoapp.report.bean;
 
+import com.sifco.login.bean.Util;
 import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.client.SalesEJBClient;
 import com.sifcoapp.objects.admin.to.CatalogTO;
@@ -23,6 +24,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class Pdf extends HttpServlet {
 
@@ -40,6 +42,10 @@ public class Pdf extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(true);
+        String var5 = (String) session.getAttribute("username");
+        
+        
         SalesTO var = new SalesTO();
         CatalogTO _R = new CatalogTO();
         String numberToletter = null;

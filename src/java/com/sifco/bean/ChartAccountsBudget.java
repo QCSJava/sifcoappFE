@@ -589,7 +589,7 @@ public class ChartAccountsBudget implements Serializable {
                anio2= Integer.parseInt(dateFormat.format(fechaSave));
                     
                BudgetList=accEJBService.getBudget(anio2);
-               if(BudgetList.size()!=0){
+               if(!BudgetList.isEmpty()){
                    CalculoDocument();
                    UpdateDocumentX();
                }
@@ -817,6 +817,5 @@ private static boolean isNumeric(String cadena){
 		return false;
 	}
 }
-
 
 }

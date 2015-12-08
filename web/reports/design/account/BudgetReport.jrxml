@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BudgetReport" language="groovy" pageWidth="612" pageHeight="792" columnWidth="472" leftMargin="85" rightMargin="55" topMargin="35" bottomMargin="35" uuid="a136dbbe-7d02-4c79-a3e7-38723ac7a8f3">
+	<property name="ireport.zoom" value="1.4641000000000013"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="corpName" class="java.lang.String"/>
+	<parameter name="reportName" class="java.lang.String"/>
+	<parameter name="PFECHAREPORTE" class="java.lang.String"/>
+	<parameter name="pdocdate" class="java.util.Date"/>
+	<parameter name="PDOCDATE2" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="levels" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PWHERE" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select 	t0.acctcode,
+	t0.acctname,
+	coalesce(t0.sal_inicio,0.00) AS sal_fecha,
+
+	case when coalesce(t1.sal_debe,0.00) > 0.0 then coalesce(t0.sal_inicio,0.00)/coalesce(t1.sal_debe,0.00) else 1.0 end as relativo_real,
+
+	coalesce(t1.sal_inicio,0.00) as presupuesto_fecha,
+	case when coalesce(t1.sal_debe,0.00) > 0.0 then coalesce(t1.sal_inicio,0.00)/coalesce(t1.sal_debe,0.00) else 1.0 end as relativo_presupuesto,
+	case when coalesce(t1.sal_debe,0.00) > 0.0 then coalesce(t0.sal_inicio,0.00)/coalesce(t1.sal_debe,0.00) else 0.0 end -
+	case when coalesce(t1.sal_debe,0.00) > 0.0 then coalesce(t1.sal_inicio,0.00)/coalesce(t1.sal_debe,0.00) else 0.0 end as variacion,
+	T1.sal_debe as total_presupuesto,
+
+	t0.levels, t0.groupmask, t0.acttype
+	from sp_get_update_balance(date $P!{pdocdate} + integer '1',date $P!{pdocdate} + integer '1') t0
+	left join sp_get_update_balance_budget($P!{pdocdate}) t1 on t0.acctcode = t1.acctcode
+	$P!{PWHERE}]]>
+	</queryString>
+	<field name="acctcode" class="java.lang.String"/>
+	<field name="acctname" class="java.lang.String"/>
+	<field name="sal_fecha" class="java.math.BigDecimal"/>
+	<field name="relativo_real" class="java.math.BigDecimal"/>
+	<field name="presupuesto_fecha" class="java.math.BigDecimal"/>
+	<field name="relativo_presupuesto" class="java.math.BigDecimal"/>
+	<field name="variacion" class="java.math.BigDecimal"/>
+	<field name="total_presupuesto" class="java.math.BigDecimal"/>
+	<field name="levels" class="java.lang.Integer"/>
+	<field name="groupmask" class="java.lang.Integer"/>
+	<field name="acttype" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="20" width="472" height="20" uuid="06c10a7c-a6de-4f55-9066-206706ee22c1"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{reportName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="472" height="20" uuid="4e486e21-2ab9-4b5a-bc1d-94f8ef1c228d"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{PFECHAREPORTE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="472" height="20" uuid="7250e1d6-616b-4d00-be76-806d8e21e850"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{corpName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="27" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="3" width="75" height="22" uuid="55a5422b-33fd-44cc-9c59-d28dc10a0256"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="75" y="3" width="197" height="22" uuid="6d14e92e-b651-48df-8ef9-8d51c6a10391"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nombre de cuenta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="432" y="3" width="40" height="22" uuid="c7f5385d-370f-4712-9e71-5fe9b2c16eab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Variacion Absoluta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="312" y="3" width="40" height="22" uuid="4cde2403-224f-4eeb-8236-1b18dbe9488b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Relativo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="272" y="3" width="40" height="22" uuid="13240f99-3ddd-4bf6-a261-a62f057a5eff"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Valor Real]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="352" y="3" width="40" height="22" uuid="821a840d-56bf-4849-8dbb-8a53acce0917"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ejecución]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="392" y="3" width="40" height="22" uuid="6138680f-4b47-4071-a2d5-96883a881a1c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Relativo]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="472" height="1" uuid="236567cd-3212-48f4-a52c-4392c86cd8bd"/>
+			</line>
+			<line>
+				<reportElement x="0" y="2" width="472" height="1" uuid="eaa37959-f67f-40a9-8393-525dc426ea16"/>
+			</line>
+			<line>
+				<reportElement x="0" y="24" width="472" height="1" uuid="3ff13571-8453-4597-9a9a-e2cddea380cd"/>
+			</line>
+			<line>
+				<reportElement x="0" y="26" width="472" height="1" uuid="b1ec0e68-f5de-40d1-9c7a-eb9031187172"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="75" height="15" uuid="6c6134df-5c1a-4755-9727-73eac56325c8"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acctcode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="75" y="0" width="197" height="15" uuid="03c61ad1-cb81-4d30-936f-8f6616076681"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acctname}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="432" y="0" width="40" height="15" uuid="c5d300c7-6053-4689-89f6-655b9aa4a61a"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{variacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="312" y="0" width="40" height="15" uuid="7535fcdd-cd91-4410-afb4-09a740245da9"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{relativo_real}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="272" y="0" width="40" height="15" uuid="09fa66a5-8ef4-4449-8c29-f59fa0ecddef"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sal_fecha}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="352" y="0" width="40" height="15" uuid="05d3359a-5fa4-4075-8a46-65a52f46bafa"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{presupuesto_fecha}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="392" y="0" width="40" height="15" uuid="71c23cfe-a4af-42b8-a386-6d82839083b9"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{relativo_presupuesto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="39" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="24" width="392" height="15" uuid="9f8ad5de-4f6c-4c4f-961b-cc7a791f097d"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="392" y="24" width="40" height="15" uuid="b6eff0d9-1e3f-4494-b14d-667d57f0f71b"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="392" height="24" uuid="4dddc628-feb7-4598-b812-ec59b73993bb"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{JASPER_REPORT}.getName()]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="432" y="24" width="40" height="15" uuid="31b91582-ef0b-44e2-b6f4-c0d8bfe633f8"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

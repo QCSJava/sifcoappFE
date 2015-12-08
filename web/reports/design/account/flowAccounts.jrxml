@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="flowAccounts" language="groovy" pageWidth="612" pageHeight="792" columnWidth="472" leftMargin="85" rightMargin="55" topMargin="35" bottomMargin="35" uuid="640f18bd-83fc-4d55-bb9b-ff00fa488766">
 	<property name="ireport.zoom" value="1.4641000000000006"/>
-	<property name="ireport.x" value="49"/>
+	<property name="ireport.x" value="104"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="PFECHAREPORTE" class="java.lang.String"/>
 	<parameter name="reportName" class="java.lang.String"/>
@@ -129,10 +129,12 @@ WHERE Q1.TIPO <> 'N' AND levels <= 3  ORDER BY TIPO,  acctcode]]>
 			</line>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="336" y="3" width="65" height="16" uuid="19ebf98e-dcfb-403b-859e-0b2b83fd1db1"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$P{PDOCDATE2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="401" y="3" width="65" height="16" uuid="4dcbe677-472a-4238-b19f-a56b5969d966"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$P{pdocdate}]]></textFieldExpression>
 			</textField>
 		</band>
