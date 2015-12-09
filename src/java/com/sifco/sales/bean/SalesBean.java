@@ -198,7 +198,6 @@ public class SalesBean implements Serializable {
     private String url;
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -326,7 +325,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocio(SelectEvent event) {
         String[] newName = socioNeg.split("-");
@@ -536,7 +534,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Boton Agregar al DATATABLE">
     public void accionAgregar(ActionEvent actionEvent) {
         try {
@@ -670,7 +667,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Calcular Impuestos y TOTAL">
     public void calcularTotalBill(ArrayList<SalesDetailTO> listaArt) {
         Double totalAux = 0.0;
@@ -688,7 +684,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="funciones para calculos de impuestos">
     public Double calcularGravadas(ArrayList<SalesDetailTO> listaArt) {
         Double sumTotal = 0.0;
@@ -788,7 +783,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Eliminar del dataTable" > 
     public void deleteDetalle() {
         try {
@@ -1244,7 +1238,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="COPY FROM REMISION">
     public void copyFromRemision() {
         //faceMessage("Copiar desde remision");
@@ -1398,7 +1391,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar un almacen y Forma de pago">
     public void stateChange1(ValueChangeEvent event) {
 
@@ -1505,7 +1497,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     private boolean validatePrice() {
         if (this.newPrecio < 0) {
@@ -1860,6 +1851,68 @@ public class SalesBean implements Serializable {
             return "/view/sales/Sales.xhtml";
         }
         return null;
+    }
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="PRINT COTIZACION">
+    public String printCoti() throws UnsupportedEncodingException {
+
+        setUrl(getApplicationUri());
+
+        if (this.listaDetalles.size() >= 1) {
+            setSessionObj();
+            String foo = "COTIZACION";
+            String bar = (String) session.getAttribute("userfullname");
+            return "/quoteView?faces-redirect=true"
+                    + "&foo=" + URLEncoder.encode(foo, "UTF-8")
+                    + "&bar=" + URLEncoder.encode(bar, "UTF-8");
+        } else {
+            faceMessage("Ingrese al menos un articulo para imprimir cotización");
+            return "/view/sales/Sales.xhtml";
+        }
+    }
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="llenar objeto en sesion ">
+    public void setSessionObj() {
+        //setear valores
+        SalesTO newCot = new SalesTO();
+        int line = 0;
+        newCot.setObjtype("" + 10);
+        newCot.setDocstatus(estadoDoc);
+        newCot.setUsersign((int) session.getAttribute("usersign"));
+        newCot.setCardname(socioNeg);
+        newCot.setCardcode(codSocio);
+        newCot.setRef2("" + equipo);
+        newCot.setNumatcard(getRefe() + "");
+        newCot.setDocdate(fechaConta);
+        newCot.setTaxdate(fechaDoc);
+        newCot.setSeries(tipoDoc);
+        newCot.setPeymethod("" + formaPago);
+        newCot.setTowhscode(alm);
+        newCot.setComments(coment);
+        newCot.setCtlaccount(ctlaccount);
+
+        Double gTotalPadre = 0.0;
+        Double sumImp = 0.0;
+        Iterator<SalesDetailTO> iterator2 = listaPadre.iterator();
+        while (iterator2.hasNext()) {
+            try {
+                SalesDetailTO articleDetalle = (SalesDetailTO) iterator2.next();
+                articleDetalle.setLinenum(line + 1);
+                gTotalPadre = gTotalPadre + articleDetalle.getGtotal();
+                sumImp = sumImp + articleDetalle.getVatsum();
+                line = line + 1;
+            } catch (Exception e) {
+            }
+
+        }
+
+        newCot.setVatsum(sumImp);
+        newCot.setDoctotal(gTotalPadre);
+        newCot.setSalesDetails(listaPadre);
+
+        session.setAttribute("objSales", newCot);
     }
 //</editor-fold>
 

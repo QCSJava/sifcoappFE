@@ -53,19 +53,19 @@
                             <span class="ui-separator">
                                 <span class="ui-icon ui-icon-grip-dotted-vertical" />
                             </span>
-                            <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document" actionListener="#{salesBean.botonNuevo}" 
+                            <p:commandButton tabindex="-1" title="Nuevo" icon="fa fa-file-o" actionListener="#{salesBean.botonNuevo}" 
                                              update="frmSales, newCod newNomArt newCantidad newPrecio newTotal newUnidad newExistencia"
                                              process="@this,   inTipoDoc inEquipo  inReferencia"
                                              >
 
                             </p:commandButton>
 
-                            <p:commandButton tabindex="-1" title="Buscar" icon="ui-icon-search"  process="@this" actionListener="#{salesBean.botonBuscar}"
+                            <p:commandButton tabindex="-1" title="Buscar" icon="fa fa-search"  process="@this" actionListener="#{salesBean.botonBuscar}"
                                              update="frmSales">
                             </p:commandButton>
                                 
-                            <p:commandButton tabindex="-1" ajax="false" action="#{salesBean.printInvoice()}" icon="ui-icon-print" />
-                            <!--<h:commandButton id="btnP" action="#/{salesBean.printInvoice()}" />-->
+                            <p:commandButton tabindex="-1" ajax="false" action="#{salesBean.printInvoice()}" icon="fa fa-print" />
+                            <p:commandButton immediate="true" tabindex="-1" ajax="false" action="#{salesBean.printCoti()}" icon="fa fa-file-text-o" />
                         </f:facet>
                     </p:toolbar>
 

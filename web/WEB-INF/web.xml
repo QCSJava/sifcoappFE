@@ -37,6 +37,10 @@
         <servlet-name>PrintNotes</servlet-name>
         <servlet-class>com.sifcoapp.report.bean.PrintNotes</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>QuotePrint</servlet-name>
+        <servlet-class>com.sifcoapp.report.bean.QuotePrint</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
@@ -68,6 +72,10 @@
     <servlet-mapping>
         <servlet-name>PrintNotes</servlet-name>
         <url-pattern>/PrintNotes</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuotePrint</servlet-name>
+        <url-pattern>/QuotePrint</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

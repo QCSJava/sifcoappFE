@@ -321,8 +321,8 @@ public class RepAccount implements Serializable {
                 _reportname = "/account/BudgetReport";
                 _reportTitle = "Reporte de presupuesto ";
                 
-                reportParameters.put("pdocdate", this.getFdatefrom());
-                reportParameters.put("PDOCDATE2", this.getFdateto());
+                reportParameters.put("pdocdate",sumarFecha(this.getFdateto(), 1));
+                //reportParameters.put("PDOCDATE2", this.getFdateto());
                 
                 //where t0.acctcode like '1%' and t0.levels <= 5
                 //where t0.levels <= 5 and t0.acctcode like '1%' 
@@ -331,7 +331,7 @@ public class RepAccount implements Serializable {
                     where = where + " where t0.levels <= "+this.reportLevel+" ";
                 }
                 if (this.account != null && this.account.length()>0) {
-                    where = where + "and t0.acctcode like '"+this.account+"' ";//'1%'";
+                    where = where + "and t0.acctcode like '"+this.account+"%' ";//'1%'";
                 }
                 reportParameters.put("PWHERE", where);
                 
@@ -376,7 +376,7 @@ public class RepAccount implements Serializable {
             }
             anio2 = Al.get(Calendar.YEAR);
 
-            if (this.ftype == 1 || this.ftype == 2) {
+            if (this.ftype == 1 || this.ftype == 2 || this.ftype == 11) {
                 try {
                     String[] mesesString = {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
                     reportParameters.put("PFECHAREPORTE", "AL " + Sdia2 + " DE " + mesesString[mes2 - 1] + " DE " + anio2);
