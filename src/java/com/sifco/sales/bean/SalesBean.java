@@ -1856,20 +1856,22 @@ public class SalesBean implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="PRINT COTIZACION">
     public String printCoti() throws UnsupportedEncodingException {
+        if (this.varEstados == 1) {
+            setUrl(getApplicationUri());
 
-        setUrl(getApplicationUri());
-
-        if (this.listaDetalles.size() >= 1) {
-            setSessionObj();
-            String foo = "COTIZACION";
-            String bar = (String) session.getAttribute("userfullname");
-            return "/quoteView?faces-redirect=true"
-                    + "&foo=" + URLEncoder.encode(foo, "UTF-8")
-                    + "&bar=" + URLEncoder.encode(bar, "UTF-8");
-        } else {
-            faceMessage("Ingrese al menos un articulo para imprimir cotización");
-            return "/view/sales/Sales.xhtml";
+            if (this.listaDetalles.size() >= 1) {
+                setSessionObj();
+                String foo = "COTIZACION";
+                String bar = (String) session.getAttribute("userfullname");
+                return "/quoteView?faces-redirect=true"
+                        + "&foo=" + URLEncoder.encode(foo, "UTF-8")
+                        + "&bar=" + URLEncoder.encode(bar, "UTF-8");
+            } else {
+                faceMessage("Ingrese al menos un articulo para imprimir cotización");
+                return "/view/sales/Sales.xhtml";
+            }
         }
+        return null; 
     }
 //</editor-fold>
 
