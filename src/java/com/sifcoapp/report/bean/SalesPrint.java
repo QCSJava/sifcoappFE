@@ -85,7 +85,7 @@ public class SalesPrint extends HttpServlet {
             if (tipoDoc == 1) {
                 //venta
                 SalesEJBService = new SalesEJBClient();
-                var = SalesEJBService.getSalesByKey(Integer.parseInt(request.getParameter("foo")));//quemado
+                var = SalesEJBService.getSalesByKey(Integer.parseInt(request.getParameter("foo")));
                 vendedor = request.getParameter("bar");
                 _R = AdminEJBService.findCatalogByKey(var.getPeymethod(), 8);
                 total = var.getDoctotal() - var.getVatsum();//formatNumber(var.getDoctotal());

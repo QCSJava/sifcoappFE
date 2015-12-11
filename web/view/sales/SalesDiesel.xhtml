@@ -28,19 +28,11 @@
                             <span class="ui-separator">
                                 <span class="ui-icon ui-icon-grip-dotted-vertical" />
                             </span>
-                            <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document" actionListener="#{salesDieselBean.botonNuevo}" 
-
-                                             >
-
-                            </p:commandButton>
+                            <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document" actionListener="#{salesDieselBean.botonNuevo}"/>
 
                             <p:commandButton tabindex="-1" title="Buscar" icon="ui-icon-search"  process="@this" actionListener="#{salesDieselBean.botonBuscar}"
-                                             update="frmSalesDiesel">
-
-
-                            </p:commandButton>
-
-                                <p:commandButton rendered="false"  tabindex="-1"  ajax="false"  icon="ui-icon-print" disabled="#{salesBean.btnPrint}"/>
+                                             update="frmSalesDiesel"/>
+                            <p:commandButton tabindex="-1" ajax="false" action="#{salesDieselBean.printInvoice()}" icon="fa fa-print" />
 
                         </f:facet>
                     </p:toolbar>

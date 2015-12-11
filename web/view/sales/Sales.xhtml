@@ -477,7 +477,7 @@
 
                 <h:form>
                     <p:dialog header="Confirmacion" widgetVar="dlgC2" width="230" modal="true" resizable="false">
-                        <p:panel>
+                        <p:panel id="panel">
                             <div class="ui-grid ui-grid-responsive">
                                 <div class="ui-grid-row">
                                     <div class="ui-grid-col-10">
@@ -487,7 +487,8 @@
                                 <p:spacer height="15"/>
                                 <div class="ui-grid-row">
                                     <div class="ui-grid-col-1">
-                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="#{salesBean.confirmDialog}" ajax="false" />
+                                        <p:focus for="btn" context="panel"/>
+                                        <p:commandButton id="btn" value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="#{salesBean.confirmDialog}" ajax="false" />
                                     </div>
                                     <div class="ui-grid-col-4">
 

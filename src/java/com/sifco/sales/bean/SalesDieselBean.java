@@ -19,7 +19,12 @@ import com.sifcoapp.objects.common.to.ResultOutTO;
 import com.sifcoapp.objects.sales.to.SalesDetailTO;
 import com.sifcoapp.objects.sales.to.SalesInTO;
 import com.sifcoapp.objects.sales.to.SalesTO;
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -29,9 +34,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJBException;
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
@@ -132,12 +139,23 @@ public class SalesDieselBean implements Serializable {
     private List listaBusqueda = new Vector();
     private ArrayList<SalesTO> listaBusquedaTable = new ArrayList<>();
 
+    //
+    private String url;
+
+//</editor-fold>
+//<editor-fold defaultstate="collapsed" desc="G & S">
     public boolean isDisabledDocNum() {
         return disabledDocNum;
     }
 
-//</editor-fold>
-//<editor-fold defaultstate="collapsed" desc="G & S">
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public static CatalogEJBClient getCatalogEJB() {
         return CatalogEJB;
     }
@@ -1329,6 +1347,45 @@ public class SalesDieselBean implements Serializable {
     //mostrar un mensaje en pantalla dado un string
     public void faceMessage(String var) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(var));
+    }
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="IMPRIMIR FORMA 2">
+    public String printInvoice() throws UnsupportedEncodingException {
+        //faceMessage(getApplicationUri());
+        //System.out.println(getApplicationUri()+"||----------------------------------------------------------------");
+        setUrl(getApplicationUri());
+        if (newBill.getSeries() == 3 && newBill.getDocentry() > 0) {
+            String foo = newBill.getDocentry() + "";
+            String bar = (String) session.getAttribute("userfullname");
+            return "/DieselPrintView?faces-redirect=true"
+                    + "&foo=" + URLEncoder.encode(foo, "UTF-8")
+                    + "&bar=" + URLEncoder.encode(bar, "UTF-8");
+        } else {
+            faceMessage("No se puede imprimir este tipo de documento");
+            return "/view/sales/SalesDiesel.xhtml";
+        }
+    }
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="redirect">
+    public void redirect() throws IOException {
+        String url2 = getUrl() + "/faces/view/sales/SalesDiesel.xhtml"; //url donde se redirige la pantalla
+        FacesContext fc = FacesContext.getCurrentInstance();
+        fc.getExternalContext().redirect(url2);
+    }
+
+    public String getApplicationUri() {
+        try {
+            FacesContext ctxt = FacesContext.getCurrentInstance();
+            ExternalContext ext = ctxt.getExternalContext();
+            URI uri = new URI(ext.getRequestScheme(),
+                    null, ext.getRequestServerName(), ext.getRequestServerPort(),
+                    ext.getRequestContextPath(), null, null);
+            return uri.toASCIIString();
+        } catch (URISyntaxException e) {
+            throw new FacesException(e);
+        }
     }
 //</editor-fold>
 

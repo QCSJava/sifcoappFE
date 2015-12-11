@@ -61,6 +61,7 @@ public class SessionFilter implements Filter {
                 || url.contains("testPurchaseView")
                 || url.contains("PrintCreditView")
                 || url.contains("PrintDebitView")
+                || url.contains("DieselPrintView")
                 || url.contains("RemisionPrint")) {
             allowedRequest = true;
             //System.out.println("url permitida: " + url);
@@ -95,6 +96,7 @@ public class SessionFilter implements Filter {
                         || url.contains("SalesPrint")
                         || url.contains("QuotePrint")
                         || url.contains("PrintNotes")
+                        || url.contains("DieselPrint")
                         || url.contains("RemisionPrint")) {
                     allowedRequest = true;
                     System.out.println("url permitida: " + url);
