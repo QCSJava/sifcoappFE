@@ -20,7 +20,7 @@
         <ui:composition template="./../../template.xhtml">
             <ui:define name="content">
                 <h:form id="frmColect">
-
+                    <p:hotkey bind="ctrl+shift+y" actionListener="#{colecturiaBean.updTotal}" process="@all" update="tableDetailColet"/>
                     <p:toolbar id="toolbarBill">
                         <f:facet name="left">
                             <p:focus context="toolbarBill"/>
@@ -132,6 +132,7 @@
 
 
                             <div id="tabTable" class="ui-grid-col-12">
+
                                 <p:contextMenu id="Contex2" for="tableDetailColet">
                                     <p:menuitem value="Actualizar" actionListener="#{colecturiaBean.updTotal}"  icon="fa fa-refresh" process="@all" update="tableDetailColet"/>
                                 </p:contextMenu>
@@ -156,10 +157,15 @@
                                     </p:column>
 
                                     <p:column headerText="Valor"  style="width: 8%; font-size: #{commonBean.sizeFont1}">
-                                        <p:inputText id="valor1" tabindex="9" value="#{det.paidsum}" size="10" disabled="#{colecturiaBean.common || colecturiaBean.ifCancelacion? true:false}" readonly="#{det.linenum == 17? true:det.linenum == 21? true:det.linenum == 23?true:false}"
-                                                     >
-                                            <f:convertNumber minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
-
+                                        <p:inputText id="valor1" tabindex="9" value="#{det.paidsum}" size="10" 
+                                                     disabled="#{colecturiaBean.common || colecturiaBean.ifCancelacion? true:false}" 
+                                                     readonly="#{det.linenum == 17? true:det.linenum == 21? true:det.linenum == 23?true:false}"
+                                                     onfocus="$('input[type=text]').focus(function(){	   
+                                                     this.select();
+                                                     });">
+                                                     <f:convertNumber minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                            <p:ajax event="change" listener="#{colecturiaBean.updTotal}"
+                                                    process="@all" update="tableDetailColet"/>
                                         </p:inputText>
                                     </p:column> 
 
@@ -209,10 +215,14 @@
                         <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                     </p:confirmDialog>
                 </h:form>
-                
+
                 <h:form>
-                    <p:dialog closeOnEscape="true" header="Confirmacion" widgetVar="dlgC2" width="230" modal="true" resizable="false">
-                        <p:panel>
+                    <p:dialog closeOnEscape="true" header="Confirmacion" 
+                              widgetVar="dlgC2" width="230" modal="true" 
+                              resizable="false"
+                              >
+
+                        <p:panel id="panel">
                             <div class="ui-grid ui-grid-responsive">
                                 <div class="ui-grid-row">
                                     <div class="ui-grid-col-10">
@@ -222,8 +232,9 @@
                                 <p:spacer height="15"/>
                                 <div class="ui-grid-row">
                                     <div class="ui-grid-col-1">
-                                        <p:commandButton  id="btnConfirm" value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{colecturiaBean.confirmDialog}" />
-                                        <p:defaultCommand target="btnConfirm" />
+                                        <p:focus for="btnConfirm"/>
+                                        <p:commandButton widgetVar="btnf" id="btnConfirm" value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{colecturiaBean.confirmDialog}" />
+
                                     </div>
                                     <div class="ui-grid-col-4">
 

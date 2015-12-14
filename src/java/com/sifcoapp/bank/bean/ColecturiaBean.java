@@ -378,6 +378,7 @@ public class ColecturiaBean implements Serializable {
         }
         t2 = formatNumber2(t2);
         doTotalAct();
+        //RequestContext.getCurrentInstance().execute("PF('btnf').focus();");
     }
 
     public void doTotalAct() {
