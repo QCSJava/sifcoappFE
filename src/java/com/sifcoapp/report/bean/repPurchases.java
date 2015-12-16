@@ -5,9 +5,12 @@
  */
 package com.sifcoapp.report.bean;
 
+import com.sifco.inventory.bean.GoodsReceiptBean;
 import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.client.CatalogEJBClient;
 import com.sifcoapp.client.ParameterEJBClient;
+import com.sifcoapp.objects.admin.to.ArticlesInTO;
+import com.sifcoapp.objects.admin.to.ArticlesTO;
 import com.sifcoapp.objects.admin.to.EnterpriseTO;
 import com.sifcoapp.objects.catalog.to.BusinesspartnerInTO;
 import com.sifcoapp.objects.catalog.to.BusinesspartnerTO;
@@ -27,14 +30,15 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
  * @author ri00642
  */
 @ManagedBean(name = "rpurchase")
-@RequestScoped
+@SessionScoped
 public class repPurchases implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="VARIABLES">
@@ -49,6 +53,11 @@ public class repPurchases implements Serializable {
     private int ftype;
     private static CatalogEJBClient CatalogEJB;
     private static ParameterEJBClient ParameterEJBClient;
+
+    //articulo
+    String newCod  = "";
+    String newNomArt  = "";
+
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="Autocomplete Socio" > 
@@ -163,13 +172,13 @@ public class repPurchases implements Serializable {
         Calendar cal1 = GregorianCalendar.getInstance();
         cal1.setTime(this.getFdatefrom());
         EnterpriseTO resp = null;
-        
+
         try {
             resp = AdminEJBService.getEnterpriseInfo();
         } catch (Exception ex) {
             Logger.getLogger(repPurchases.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         if (this.ftype == 1) {
             _reportname = "/purchase/DailyPurchase";
             _reportTitle = "Control Diario de Compras";
@@ -181,8 +190,8 @@ public class repPurchases implements Serializable {
             if (this.getFname() != null && this.getFname().length() > 0) {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
-        } 
-        
+        }
+
         if (this.ftype == 2) {
             _reportname = "/purchase/DailyPurchaseDet";
             _reportTitle = "Productos comprados por Proveedor";
@@ -193,8 +202,8 @@ public class repPurchases implements Serializable {
             if (this.getFname() != null && this.getFname().length() > 0) {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
-        } 
-        
+        }
+
         if (this.ftype == 3) {
             _reportname = "/purchase/DailyPurchaseProv";
             _reportTitle = " Compras por proveedor - RESUMEN";
@@ -205,8 +214,8 @@ public class repPurchases implements Serializable {
             if (this.getFname() != null && this.getFname().length() > 0) {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
-        } 
-        
+        }
+
         if (this.ftype == 4) {
             _reportname = "/purchase/DailyPurchaseProvVou";
             _reportTitle = "Facturas por proveedores";
@@ -218,7 +227,7 @@ public class repPurchases implements Serializable {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
         }
-        
+
         if (this.ftype == 5) {
             _reportname = "/purchase/suggestPurch";
             _whereclausule = " h.docentry=d.docentry and docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2} and h.usersign=u.usersign";
@@ -301,16 +310,15 @@ public class repPurchases implements Serializable {
 
             _reportname = "/purchase/PurchaseLedger";
 
-            
             _reportTitle = "LIBRO DE COMPRAS"; //(ART. 141 Y 86 R.C.T.)";
             reportParameters.put("nameF1", ParameterEJBClient.getParameterbykey(22).getValue1());
             reportParameters.put("titleF1", ParameterEJBClient.getParameterbykey(22).getValue2());
         }
-        
+
         if (this.ftype == 12) {
             _reportname = "/purchase/PurchasePending";
             _reportTitle = "Deuda por Proveedor";
-            reportParameters.put("codigo",fname);
+            reportParameters.put("codigo", fname);
         }
 
         System.out.println(_whereclausule);
@@ -417,6 +425,39 @@ public class repPurchases implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G&S">
+
+    public static CatalogEJBClient getCatalogEJB() {
+        return CatalogEJB;
+    }
+
+    public static void setCatalogEJB(CatalogEJBClient CatalogEJB) {
+        repPurchases.CatalogEJB = CatalogEJB;
+    }
+
+    public static ParameterEJBClient getParameterEJBClient() {
+        return ParameterEJBClient;
+    }
+
+    public static void setParameterEJBClient(ParameterEJBClient ParameterEJBClient) {
+        repPurchases.ParameterEJBClient = ParameterEJBClient;
+    }
+
+    public String getNewCod() {
+        return newCod;
+    }
+
+    public void setNewCod(String newCod) {
+        this.newCod = newCod;
+    }
+
+    public String getNewNomArt() {
+        return newNomArt;
+    }
+
+    public void setNewNomArt(String newNomArt) {
+        this.newNomArt = newNomArt;
+    }
+    
     public String getFname2() {
         return fname2;
     }
@@ -515,4 +556,111 @@ public class repPurchases implements Serializable {
     }
 
 //</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="Autocompletado" > 
+    public List<String> completeText(String query) {
+        List _result = null;
+        String var = null;
+
+        ArticlesInTO in = new ArticlesInTO();
+        in.setItemCode(var);
+        in.setItemName(query);
+
+        try {
+            _result = AdminEJBService.getArticles(in);
+
+        } catch (Exception e) {
+        }
+
+        List<String> results = new ArrayList<>();
+
+        Iterator<ArticlesTO> iterator = _result.iterator();
+
+        while (iterator.hasNext()) {
+            ArticlesTO articulo = (ArticlesTO) iterator.next();
+            results.add(articulo.getItemName());
+        }
+        return results;
+    }
+
+    public List<String> completeCode(String query) {
+        List _result = null;
+        String var = null;
+
+        ArticlesInTO in = new ArticlesInTO();
+        in.setItemCode(query);
+        in.setItemName(var);
+
+        try {
+            _result = AdminEJBService.getArticles(in);
+
+        } catch (Exception e) {
+        }
+
+        List<String> results = new ArrayList<>();
+
+        Iterator<ArticlesTO> iterator = _result.iterator();
+
+        while (iterator.hasNext()) {
+            ArticlesTO articulo = (ArticlesTO) iterator.next();
+            results.add(articulo.getItemCode());
+        }
+        return results;
+    }
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del autocomplete" > 
+    public void findArticle(SelectEvent event) {
+        List articulos = new Vector();
+        String var = null;
+
+        if (event.getObject().toString() != var) {
+            List _result = null;
+
+            ArticlesInTO in = new ArticlesInTO();
+            in.setItemCode(newCod);
+            in.setItemName(newNomArt);
+
+            try {
+                _result = AdminEJBService.getArticles(in);
+
+            } catch (Exception e) {
+                //faceMessage(e.getMessage() + " -- " + e.getCause());
+                newCod = null;
+                newNomArt = null;
+            }
+            if (_result.isEmpty()) {
+                this.newCod = null;
+                this.newNomArt = null;
+
+            } else {
+                Iterator<ArticlesTO> iterator = _result.iterator();
+                while (iterator.hasNext()) {
+                    ArticlesTO articulo = (ArticlesTO) iterator.next();
+                    articulos.add(articulo);
+                }
+                if (articulos.size() == 1) {
+                    try {
+                        System.out.println("articulo unico, llenar campos en pantalla");
+                        ArticlesTO art = (ArticlesTO) articulos.get(0);
+                        newNomArt = art.getItemName();
+                        newCod = art.getItemCode();
+                    } catch (Exception ex) {
+                        Logger.getLogger(GoodsReceiptBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    for (Object artt : articulos) {
+                        ArticlesTO art = (ArticlesTO) artt;
+                        if (newNomArt.equals(art.getItemName())) {
+                            newNomArt = art.getItemName();
+                            newCod = art.getItemCode();
+                        }
+                    }//cierre for
+                }
+            }
+        }
+
+    }
+//</editor-fold>
+
 }//cierre de clase

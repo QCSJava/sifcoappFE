@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dailySalesControlCost.jrxml" pageWidth="612" pageHeight="792" columnWidth="542" leftMargin="35" rightMargin="35" topMargin="35" bottomMargin="35" uuid="d665bf20-2d51-4d8b-aae5-566096205736">
 	<property name="ireport.zoom" value="1.4641000000000013"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="37"/>
+	<property name="ireport.y" value="20"/>
 	<parameter name="pdocnum" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -30,7 +30,7 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
   FROM sal_sal0_sales h join sal_sal1_salesdetail d ON h.docentry = d.docentry
 	where $P!{PWHERE}
 	GROUP BY h.docentry
-	ORDER BY docdate ASC, docentry ASC]]>
+	ORDER BY h.docdate ASC, h.docentry ASC]]>
 	</queryString>
 	<field name="vatsum" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[Impuesto total]]></fieldDescription>
@@ -78,6 +78,9 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 	<variable name="CURRENT_DATE" class="java.util.Date">
 		<variableExpression><![CDATA[]]></variableExpression>
 		<initialValueExpression><![CDATA[new Date();]]></initialValueExpression>
+	</variable>
+	<variable name="doctotal_3" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{peymethod}.equals("1")?$F{doctotal}:0.0]]></variableExpression>
 	</variable>
 	<group name="doctypes">
 		<groupExpression><![CDATA[$F{doctypename}]]></groupExpression>
@@ -458,21 +461,7 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 		</band>
 	</lastPageFooter>
 	<summary>
-		<band height="16">
-			<subreport>
-				<reportElement x="256" y="0" width="45" height="16" uuid="920a65d0-8991-4828-9b39-e119628cd864"/>
-				<subreportParameter name="PDOCDATE2">
-					<subreportParameterExpression><![CDATA[$P{PDOCDATE2}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="PWHERE">
-					<subreportParameterExpression><![CDATA[$P{PWHERE}+ " and doctype='" + $F{doctype}+"'" + " and peymethod='1'"]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="pdocdate">
-					<subreportParameterExpression><![CDATA[$P{pdocdate}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["dailySalesControl_sr1.jasper"]]></subreportExpression>
-			</subreport>
+		<band height="34">
 			<subreport>
 				<reportElement x="347" y="0" width="63" height="16" uuid="0ba31028-d611-4735-8d35-a8e7b84d8984"/>
 				<subreportParameter name="PDOCDATE2">
@@ -555,6 +544,10 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA["dailySalesControl_sr1.jasper"]]></subreportExpression>
 			</subreport>
+			<textField>
+				<reportElement x="256" y="0" width="45" height="16" uuid="ec0f70a5-0281-4fc5-a65f-8164cb4d7e10"/>
+				<textFieldExpression><![CDATA[$V{doctotal_3}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>
