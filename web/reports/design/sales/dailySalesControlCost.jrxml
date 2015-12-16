@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dailySalesControlCost.jrxml" pageWidth="612" pageHeight="792" columnWidth="542" leftMargin="35" rightMargin="35" topMargin="35" bottomMargin="35" uuid="d665bf20-2d51-4d8b-aae5-566096205736">
-	<property name="ireport.zoom" value="1.4641000000000013"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="20"/>
+	<property name="ireport.zoom" value="1.331000000000001"/>
+	<property name="ireport.x" value="86"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="pdocnum" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -81,6 +81,24 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 	</variable>
 	<variable name="doctotal_3" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{peymethod}.equals("1")?$F{doctotal}:0.0]]></variableExpression>
+	</variable>
+	<variable name="doctotal_4" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{peymethod}.equals("2")?$F{doctotal}:0.0]]></variableExpression>
+	</variable>
+	<variable name="doctotal_5" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{peymethod}.equals("3")?$F{doctotal}:0.0]]></variableExpression>
+	</variable>
+	<variable name="doctotal_6" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{peymethod}.equals("5")?$F{doctotal}:0.0]]></variableExpression>
+	</variable>
+	<variable name="doctotal_7" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{doctotal}]]></variableExpression>
+	</variable>
+	<variable name="doctotal_8" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{peymethod}.equals("4")?$F{doctotal}:0.0]]></variableExpression>
+	</variable>
+	<variable name="utilidad_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{utilidad}]]></variableExpression>
 	</variable>
 	<group name="doctypes">
 		<groupExpression><![CDATA[$F{doctypename}]]></groupExpression>
@@ -461,64 +479,7 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 		</band>
 	</lastPageFooter>
 	<summary>
-		<band height="34">
-			<subreport>
-				<reportElement x="347" y="0" width="63" height="16" uuid="0ba31028-d611-4735-8d35-a8e7b84d8984"/>
-				<subreportParameter name="PDOCDATE2">
-					<subreportParameterExpression><![CDATA[$P{PDOCDATE2}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="SUBREPORT_DIR">
-					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="PWHERE">
-					<subreportParameterExpression><![CDATA[$P{PWHERE}+ " and doctype='" + $F{doctype}+"'" + " and peymethod='3'"]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="pdocdate">
-					<subreportParameterExpression><![CDATA[$P{pdocdate}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["dailySalesControl_sr1.jasper"]]></subreportExpression>
-			</subreport>
-			<subreport>
-				<reportElement x="454" y="0" width="46" height="16" uuid="809878ee-ac99-4856-b9e3-38fbd9f2ea7b"/>
-				<subreportParameter name="SUBREPORT_DIR">
-					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="PDOCDATE2">
-					<subreportParameterExpression><![CDATA[$P{PDOCDATE2}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="corpName">
-					<subreportParameterExpression><![CDATA[$P{corpName}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="PWHERE">
-					<subreportParameterExpression><![CDATA[$P{PWHERE}+ " and doctype='" + $F{doctype}+"'" + " and peymethod='5'"]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="pdocnum">
-					<subreportParameterExpression><![CDATA[$P{pdocnum}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="pdocdate">
-					<subreportParameterExpression><![CDATA[$P{pdocdate}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["dailySalesControl_sr1.jasper"]]></subreportExpression>
-			</subreport>
-			<subreport isUsingCache="true">
-				<reportElement x="410" y="0" width="45" height="16" uuid="b3a64959-0009-4b7a-93c1-74ebb33b5ef0"/>
-				<subreportParameter name="PDOCDATE2">
-					<subreportParameterExpression><![CDATA[$P{PDOCDATE2}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="SUBREPORT_DIR">
-					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="PWHERE">
-					<subreportParameterExpression><![CDATA[$P{PWHERE}+ " and doctype='" + $F{doctype}+"'" + " and peymethod='4'"]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="pdocdate">
-					<subreportParameterExpression><![CDATA[$P{pdocdate}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["dailySalesControl_sr1.jasper"]]></subreportExpression>
-			</subreport>
+		<band height="16">
 			<staticText>
 				<reportElement x="46" y="0" width="210" height="16" uuid="d5ad3630-495f-45d4-b614-2b644924d74e"/>
 				<box rightPadding="8"/>
@@ -527,26 +488,35 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 				</textElement>
 				<text><![CDATA[Ventas Totales  $ :]]></text>
 			</staticText>
-			<subreport>
-				<reportElement x="301" y="0" width="45" height="16" uuid="5e79f43c-7ae2-472d-83f3-537848bbb8d4"/>
-				<subreportParameter name="PDOCDATE2">
-					<subreportParameterExpression><![CDATA[$P{PDOCDATE2}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="SUBREPORT_DIR">
-					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="PWHERE">
-					<subreportParameterExpression><![CDATA[$P{PWHERE}+ " and doctype='" + $F{doctype}+"'" + " and peymethod='2'"]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="pdocdate">
-					<subreportParameterExpression><![CDATA[$P{pdocdate}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["dailySalesControl_sr1.jasper"]]></subreportExpression>
-			</subreport>
-			<textField>
+			<textField pattern="#,##0.00">
 				<reportElement x="256" y="0" width="45" height="16" uuid="ec0f70a5-0281-4fc5-a65f-8164cb4d7e10"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$V{doctotal_3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="301" y="0" width="45" height="16" uuid="e0882895-f126-4df0-a75a-8148f8da7674"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{doctotal_4}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="346" y="0" width="63" height="16" uuid="490a9eab-9b2d-44e9-a757-898273c1e934"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{doctotal_5}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="454" y="0" width="46" height="16" uuid="25d56ff4-8cfb-4317-9afd-b2ed4848d11b"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{doctotal_6}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="409" y="0" width="45" height="16" uuid="046e3d36-591a-4341-85d2-9d8aaae99995"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{doctotal_8}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="500" y="0" width="42" height="16" uuid="b27fca74-6e91-446a-8f51-34356ab62eea"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{utilidad_1}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

@@ -24,6 +24,12 @@
                     <p:spacer width="0" height="5"/>
                     <div class="ui-grid ui-grid-responsive">
                         <div class="ui-grid-row">
+                            <div class="ui-grid-col-2"><p:outputLabel value="Usuario:"></p:outputLabel></div>
+                            <div class="ui-grid-col-2">
+                                <p:inputText id="user" value="#{rsales.user}" size="15"></p:inputText>
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
                             <div class="ui-grid-col-2"><p:outputLabel value="Por Numero Comprobante:"></p:outputLabel></div>
                             <div class="ui-grid-col-2"><p:inputText id="fcode" value="#{rsales.fcode}" size="15"></p:inputText></div>
                         </div>

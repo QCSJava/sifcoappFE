@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SalesBySeller.jrxml" pageWidth="595" pageHeight="842" columnWidth="455" leftMargin="85" rightMargin="55" topMargin="35" bottomMargin="35" uuid="d665bf20-2d51-4d8b-aae5-566096205736">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="43"/>
+	<property name="ireport.zoom" value="1.4641000000000008"/>
+	<property name="ireport.x" value="139"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="pdocnum" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -30,7 +30,7 @@ order by h.usersign,d.itemcode,docnum]]>
 ]]></fieldDescription>
 	</field>
 	<field name="docnum" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Número de documento]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de documento]]></fieldDescription>
 	</field>
 	<field name="doctype" class="java.lang.String"/>
 	<field name="canceled" class="java.lang.String">
@@ -55,15 +55,11 @@ order by h.usersign,d.itemcode,docnum]]>
 ]]></fieldDescription>
 	</field>
 	<field name="numatcard" class="java.lang.String">
-		<fieldDescription><![CDATA[Número de referencia del SN
+		<fieldDescription><![CDATA[NÃºmero de referencia del SN
 ]]></fieldDescription>
 	</field>
 	<field name="cardname" class="java.lang.String">
 		<fieldDescription><![CDATA[Nombre SN
-]]></fieldDescription>
-	</field>
-	<field name="vatsum1" class="java.lang.String">
-		<fieldDescription><![CDATA[Impuesto total
 ]]></fieldDescription>
 	</field>
 	<field name="discsum" class="java.math.BigDecimal">
@@ -92,15 +88,15 @@ order by h.usersign,d.itemcode,docnum]]>
 ]]></fieldDescription>
 	</field>
 	<field name="transid" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Número de operación
+		<fieldDescription><![CDATA[NÃºmero de operaciÃ³n
 ]]></fieldDescription>
 	</field>
 	<field name="receiptnum" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Número de recibo
+		<fieldDescription><![CDATA[NÃºmero de recibo
 ]]></fieldDescription>
 	</field>
 	<field name="groupnum" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Código de condiciones de pago
+		<fieldDescription><![CDATA[CÃ³digo de condiciones de pago
 ]]></fieldDescription>
 	</field>
 	<field name="confirmed" class="java.lang.String">
@@ -129,7 +125,7 @@ order by h.usersign,d.itemcode,docnum]]>
 ]]></fieldDescription>
 	</field>
 	<field name="canceldate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha de cancelación]]></fieldDescription>
+		<fieldDescription><![CDATA[Fecha de cancelaciÃ³n]]></fieldDescription>
 	</field>
 	<field name="peymethod" class="java.lang.String">
 		<fieldDescription><![CDATA[Forma de pago
@@ -144,7 +140,7 @@ order by h.usersign,d.itemcode,docnum]]>
 ]]></fieldDescription>
 	</field>
 	<field name="vatregnum" class="java.lang.String">
-		<fieldDescription><![CDATA[Número de registro de IVA
+		<fieldDescription><![CDATA[NÃºmero de registro de IVA
 ]]></fieldDescription>
 	</field>
 	<field name="paidsum" class="java.math.BigDecimal">
@@ -159,7 +155,7 @@ order by h.usersign,d.itemcode,docnum]]>
 ]]></fieldDescription>
 	</field>
 	<field name="namenp" class="java.lang.String">
-		<fieldDescription><![CDATA[Razón Social Cliente/Proveedor
+		<fieldDescription><![CDATA[RazÃ³n Social Cliente/Proveedor
 ]]></fieldDescription>
 	</field>
 	<field name="quedan" class="java.lang.Integer">
@@ -171,18 +167,18 @@ order by h.usersign,d.itemcode,docnum]]>
 ]]></fieldDescription>
 	</field>
 	<field name="fquedan" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha de Emisión de Quedan
+		<fieldDescription><![CDATA[Fecha de EmisiÃ³n de Quedan
 ]]></fieldDescription>
 	</field>
 	<field name="usersign" class="java.lang.Integer">
 		<fieldDescription><![CDATA[Firma de usuario]]></fieldDescription>
 	</field>
 	<field name="createdate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha de creación
+		<fieldDescription><![CDATA[Fecha de creaciÃ³n
 ]]></fieldDescription>
 	</field>
 	<field name="createtime" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Hora de creación]]></fieldDescription>
+		<fieldDescription><![CDATA[Hora de creaciÃ³n]]></fieldDescription>
 	</field>
 	<field name="docsubtype" class="java.lang.String">
 		<fieldDescription><![CDATA[Subtipo de documento]]></fieldDescription>
@@ -192,7 +188,7 @@ order by h.usersign,d.itemcode,docnum]]>
 ]]></fieldDescription>
 	</field>
 	<field name="linenum" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Número de línea
+		<fieldDescription><![CDATA[NÃºmero de lÃ­nea
 ]]></fieldDescription>
 	</field>
 	<field name="targettype" class="java.lang.Integer">
@@ -204,7 +200,7 @@ order by h.usersign,d.itemcode,docnum]]>
 ]]></fieldDescription>
 	</field>
 	<field name="basetype" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Tipo de transacción base
+		<fieldDescription><![CDATA[Tipo de transacciÃ³n base
 ]]></fieldDescription>
 	</field>
 	<field name="baseentry" class="java.lang.Integer">
@@ -212,19 +208,19 @@ order by h.usersign,d.itemcode,docnum]]>
 ]]></fieldDescription>
 	</field>
 	<field name="baseline" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Número de línea base
+		<fieldDescription><![CDATA[NÃºmero de lÃ­nea base
 ]]></fieldDescription>
 	</field>
 	<field name="linestatus" class="java.lang.String">
-		<fieldDescription><![CDATA[Status de la línea
+		<fieldDescription><![CDATA[Status de la lÃ­nea
 ]]></fieldDescription>
 	</field>
 	<field name="itemcode" class="java.lang.String">
-		<fieldDescription><![CDATA[Número de artículo
+		<fieldDescription><![CDATA[NÃºmero de artÃ­culo
 ]]></fieldDescription>
 	</field>
 	<field name="dscription" class="java.lang.String">
-		<fieldDescription><![CDATA[Descripción del artículo
+		<fieldDescription><![CDATA[DescripciÃ³n del artÃ­culo
 ]]></fieldDescription>
 	</field>
 	<field name="quantity" class="java.math.BigDecimal">
@@ -240,21 +236,20 @@ order by h.usersign,d.itemcode,docnum]]>
 ]]></fieldDescription>
 	</field>
 	<field name="discprcnt" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Descuento % por línea
+		<fieldDescription><![CDATA[Descuento % por lÃ­nea
 ]]></fieldDescription>
 	</field>
 	<field name="linetotal" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Total líneas
+		<fieldDescription><![CDATA[Total lÃ­neas
 ]]></fieldDescription>
 	</field>
 	<field name="whscode" class="java.lang.String"/>
 	<field name="acctcode" class="java.lang.String">
-		<fieldDescription><![CDATA[Código de cuenta
+		<fieldDescription><![CDATA[CÃ³digo de cuenta
 ]]></fieldDescription>
 	</field>
 	<field name="taxstatus" class="java.lang.String">
-		<fieldDescription><![CDATA[Definición del impuesto
-]]></fieldDescription>
+		<fieldDescription><![CDATA[indicador de impuesto]]></fieldDescription>
 	</field>
 	<field name="pricebefdi" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[Precio unitario
@@ -277,7 +272,7 @@ order by h.usersign,d.itemcode,docnum]]>
 ]]></fieldDescription>
 	</field>
 	<field name="grssprofit" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Ingreso bruto línea
+		<fieldDescription><![CDATA[Ingreso bruto lÃ­nea
 ]]></fieldDescription>
 	</field>
 	<field name="taxcode" class="java.lang.String">
@@ -293,7 +288,7 @@ order by h.usersign,d.itemcode,docnum]]>
 ]]></fieldDescription>
 	</field>
 	<field name="stockpricestockprice" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Costo del artículo
+		<fieldDescription><![CDATA[Costo del artÃ­culo
 ]]></fieldDescription>
 	</field>
 	<field name="gtotal" class="java.math.BigDecimal">
@@ -349,16 +344,16 @@ order by h.usersign,d.itemcode,docnum]]>
 	<group name="seller">
 		<groupExpression><![CDATA[$F{usersign}]]></groupExpression>
 		<groupHeader>
-			<band height="23">
+			<band height="16">
 				<textField>
-					<reportElement x="55" y="0" width="302" height="20" uuid="9183df65-d306-43e0-825b-05662c16f589"/>
+					<reportElement x="55" y="0" width="325" height="16" uuid="9183df65-d306-43e0-825b-05662c16f589"/>
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{seller}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="0" y="0" width="53" height="20" uuid="1b26a527-b851-4f1d-9f97-0dc4b7713b01"/>
+					<reportElement x="0" y="0" width="55" height="16" uuid="1b26a527-b851-4f1d-9f97-0dc4b7713b01"/>
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
@@ -367,30 +362,30 @@ order by h.usersign,d.itemcode,docnum]]>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="22">
+			<band height="16">
 				<staticText>
-					<reportElement x="0" y="0" width="40" height="20" uuid="ec2cdd04-b4a0-4162-bbc4-f92a7405626c"/>
+					<reportElement x="0" y="0" width="49" height="16" uuid="ec2cdd04-b4a0-4162-bbc4-f92a7405626c"/>
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[Totales]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="55" y="0" width="230" height="20" uuid="58546a97-bfce-4f39-b2fe-3759758eb230"/>
+					<reportElement x="49" y="0" width="237" height="16" uuid="58546a97-bfce-4f39-b2fe-3759758eb230"/>
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{sellerName}]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.0000">
-					<reportElement x="286" y="2" width="35" height="20" uuid="97ac8ced-6065-4b9b-9c03-030de06550b7"/>
+				<textField pattern="#,##0.00">
+					<reportElement x="286" y="0" width="44" height="16" uuid="97ac8ced-6065-4b9b-9c03-030de06550b7"/>
 					<textElement textAlignment="Right">
 						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{quantitySeller}]]></textFieldExpression>
 				</textField>
-				<textField pattern="¤ #,##0.0000">
-					<reportElement x="375" y="2" width="70" height="20" uuid="c68e8158-ab59-4060-892b-b8c96b873f47"/>
+				<textField pattern="¤ #,##0.00">
+					<reportElement x="380" y="0" width="75" height="16" uuid="c68e8158-ab59-4060-892b-b8c96b873f47"/>
 					<textElement textAlignment="Right">
 						<font size="8" isBold="true"/>
 					</textElement>
@@ -402,32 +397,32 @@ order by h.usersign,d.itemcode,docnum]]>
 	<group name="productGroup">
 		<groupExpression><![CDATA[$F{itemcode}]]></groupExpression>
 		<groupHeader>
-			<band height="21">
+			<band height="16">
 				<textField>
-					<reportElement x="5" y="0" width="270" height="20" uuid="7ccbb81e-2708-4b73-834f-8bbbcc24da77"/>
+					<reportElement x="0" y="0" width="380" height="16" uuid="7ccbb81e-2708-4b73-834f-8bbbcc24da77"/>
 					<textFieldExpression><![CDATA[$F{dscription}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="22">
+			<band height="16">
 				<textField>
-					<reportElement x="47" y="0" width="238" height="20" uuid="19e7ab95-f77e-4435-a7ad-eac104ca3d7f"/>
+					<reportElement x="49" y="0" width="237" height="16" uuid="19e7ab95-f77e-4435-a7ad-eac104ca3d7f"/>
 					<textFieldExpression><![CDATA[$F{dscription}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="5" y="0" width="40" height="20" uuid="08f508cf-b675-4082-9c74-7fc6aedccd4a"/>
+					<reportElement x="0" y="0" width="49" height="16" uuid="08f508cf-b675-4082-9c74-7fc6aedccd4a"/>
 					<text><![CDATA[Totales ]]></text>
 				</staticText>
-				<textField pattern="#,##0.0000">
-					<reportElement x="286" y="2" width="35" height="20" uuid="56abf198-9a4a-4f44-8cef-1a270d0a9af3"/>
+				<textField pattern="#,##0.00">
+					<reportElement x="286" y="0" width="44" height="16" uuid="56abf198-9a4a-4f44-8cef-1a270d0a9af3"/>
 					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{quantityProduct}]]></textFieldExpression>
 				</textField>
-				<textField pattern="¤ #,##0.0000">
-					<reportElement x="375" y="2" width="70" height="20" uuid="21b66da6-1ce9-4639-81b6-4b93baf636f2"/>
+				<textField pattern="¤ #,##0.00">
+					<reportElement x="380" y="0" width="75" height="16" uuid="21b66da6-1ce9-4639-81b6-4b93baf636f2"/>
 					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
@@ -440,9 +435,9 @@ order by h.usersign,d.itemcode,docnum]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="86" splitType="Stretch">
+		<band height="80" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="263" y="56" width="68" height="20" isRemoveLineWhenBlank="true" uuid="032623da-a15a-4670-ae3e-4db8816bc2ac">
+				<reportElement x="263" y="40" width="68" height="20" isRemoveLineWhenBlank="true" uuid="032623da-a15a-4670-ae3e-4db8816bc2ac">
 					<printWhenExpression><![CDATA[!$P{pdocdate}.equals($P{PDOCDATE2})]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -451,7 +446,7 @@ order by h.usersign,d.itemcode,docnum]]>
 				<textFieldExpression><![CDATA[$P{PDOCDATE2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="159" y="56" width="68" height="20" isRemoveLineWhenBlank="true" uuid="70580eb4-6ff6-4335-abbb-644defe49df6">
+				<reportElement x="159" y="40" width="68" height="20" isRemoveLineWhenBlank="true" uuid="70580eb4-6ff6-4335-abbb-644defe49df6">
 					<printWhenExpression><![CDATA[!$P{pdocdate}.equals($P{PDOCDATE2})]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -460,7 +455,7 @@ order by h.usersign,d.itemcode,docnum]]>
 				<textFieldExpression><![CDATA[$P{pdocdate}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="124" y="56" width="35" height="21" isRemoveLineWhenBlank="true" uuid="83c3e3b6-9c7b-4693-8bd4-0ff0034e2d9b">
+				<reportElement x="124" y="40" width="35" height="21" isRemoveLineWhenBlank="true" uuid="83c3e3b6-9c7b-4693-8bd4-0ff0034e2d9b">
 					<printWhenExpression><![CDATA[!$P{pdocdate}.equals($P{PDOCDATE2})]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -469,7 +464,7 @@ order by h.usersign,d.itemcode,docnum]]>
 				<text><![CDATA[Desde:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="227" y="55" width="35" height="21" isRemoveLineWhenBlank="true" uuid="bae0b330-2e26-4b83-987f-be7e32a604af">
+				<reportElement x="227" y="40" width="35" height="21" isRemoveLineWhenBlank="true" uuid="bae0b330-2e26-4b83-987f-be7e32a604af">
 					<printWhenExpression><![CDATA[!$P{pdocdate}.equals($P{PDOCDATE2})]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -478,7 +473,7 @@ order by h.usersign,d.itemcode,docnum]]>
 				<text><![CDATA[Hasta:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="176" y="56" width="35" height="21" uuid="e1e30278-c782-44a9-8a75-2694fa9f18ca">
+				<reportElement x="176" y="40" width="35" height="21" uuid="e1e30278-c782-44a9-8a75-2694fa9f18ca">
 					<printWhenExpression><![CDATA[$P{pdocdate}.equals($P{PDOCDATE2})]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -487,7 +482,7 @@ order by h.usersign,d.itemcode,docnum]]>
 				<text><![CDATA[Fecha:]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="214" y="56" width="68" height="20" uuid="9d38076e-aca6-4534-84b1-82feae8f8b7a">
+				<reportElement x="214" y="40" width="68" height="20" uuid="9d38076e-aca6-4534-84b1-82feae8f8b7a">
 					<printWhenExpression><![CDATA[$P{pdocdate}.equals($P{PDOCDATE2})]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -496,14 +491,14 @@ order by h.usersign,d.itemcode,docnum]]>
 				<textFieldExpression><![CDATA[$P{pdocdate}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="60" y="34" width="334" height="20" uuid="df77b96f-3d8a-432d-b028-5a8709923667"/>
+				<reportElement x="60" y="20" width="334" height="20" uuid="df77b96f-3d8a-432d-b028-5a8709923667"/>
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="60" y="12" width="334" height="20" uuid="cc6c9cf6-9ae4-4827-87ce-3b98eb363bec"/>
+				<reportElement x="60" y="0" width="334" height="20" uuid="cc6c9cf6-9ae4-4827-87ce-3b98eb363bec"/>
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
@@ -511,120 +506,120 @@ order by h.usersign,d.itemcode,docnum]]>
 			</textField>
 		</band>
 	</title>
-	<pageHeader>
-		<band height="10" splitType="Stretch"/>
-	</pageHeader>
 	<columnHeader>
-		<band height="38" splitType="Stretch">
+		<band height="28" splitType="Stretch">
 			<staticText>
-				<reportElement x="5" y="5" width="44" height="17" uuid="3fcb8c21-da00-4d9f-bfbc-fa51eeb5fd91"/>
-				<textElement>
+				<reportElement x="0" y="3" width="49" height="23" uuid="3fcb8c21-da00-4d9f-bfbc-fa51eeb5fd91"/>
+				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="49" y="5" width="61" height="33" uuid="114fb874-3146-4547-8e1f-50cc49312dc5"/>
+				<reportElement x="49" y="3" width="63" height="23" uuid="114fb874-3146-4547-8e1f-50cc49312dc5"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Num. Comprobante]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="112" y="5" width="66" height="17" uuid="c7473875-02a5-4011-b959-add23962ebbf"/>
-				<textElement>
+				<reportElement x="112" y="3" width="64" height="23" uuid="c7473875-02a5-4011-b959-add23962ebbf"/>
+				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Item]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="180" y="5" width="78" height="17" uuid="aed8bc09-83e8-4e47-8d98-6dc51e53eb12"/>
-				<textElement>
+				<reportElement x="176" y="3" width="110" height="23" uuid="aed8bc09-83e8-4e47-8d98-6dc51e53eb12"/>
+				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Descripcion]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="286" y="5" width="35" height="17" uuid="82a662ef-afbf-4def-9935-20bea7fe526c"/>
-				<textElement textAlignment="Right">
+				<reportElement x="286" y="3" width="45" height="23" uuid="82a662ef-afbf-4def-9935-20bea7fe526c"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cantidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="323" y="5" width="50" height="17" uuid="778ce74d-f3ab-416f-9d39-d255b6383c62"/>
-				<textElement textAlignment="Right">
+				<reportElement x="330" y="3" width="50" height="23" uuid="778ce74d-f3ab-416f-9d39-d255b6383c62"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[P. Unitario]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="394" y="5" width="51" height="17" uuid="34044942-e207-4d68-8168-8bbcc8e9515a"/>
-				<textElement textAlignment="Right">
+				<reportElement x="380" y="3" width="75" height="23" uuid="34044942-e207-4d68-8168-8bbcc8e9515a"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="1" width="455" height="1" uuid="9d0b6b2f-5b83-455d-9253-758556f45879"/>
+				<reportElement x="0" y="0" width="455" height="1" uuid="9d0b6b2f-5b83-455d-9253-758556f45879"/>
 			</line>
 			<line>
-				<reportElement x="0" y="37" width="455" height="1" uuid="76dee2d7-131e-4f14-a70c-6827d23cd6ee"/>
+				<reportElement x="0" y="27" width="455" height="1" uuid="76dee2d7-131e-4f14-a70c-6827d23cd6ee"/>
 			</line>
 			<line>
-				<reportElement x="0" y="35" width="455" height="1" uuid="3b1f6b96-b779-46bf-80c7-a82769692c7a"/>
+				<reportElement x="0" y="25" width="455" height="1" uuid="3b1f6b96-b779-46bf-80c7-a82769692c7a"/>
 			</line>
 			<line>
-				<reportElement x="0" y="3" width="455" height="1" uuid="f20079c4-1190-4579-881e-1119fe1d8143"/>
+				<reportElement x="0" y="2" width="455" height="1" uuid="f20079c4-1190-4579-881e-1119fe1d8143"/>
 			</line>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="24" splitType="Stretch">
+		<band height="16" splitType="Stretch">
 			<textField>
-				<reportElement x="112" y="4" width="66" height="20" uuid="5c25aaa7-0230-46fc-a157-c42cbfc08f2b"/>
+				<reportElement x="112" y="0" width="66" height="16" uuid="5c25aaa7-0230-46fc-a157-c42cbfc08f2b"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{itemcode}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="179" y="4" width="106" height="20" uuid="82cb7c26-648f-4604-9578-4998b98a3c0f"/>
+				<reportElement x="176" y="0" width="110" height="16" uuid="82cb7c26-648f-4604-9578-4998b98a3c0f"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{dscription}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.0000;###0.0000-">
-				<reportElement x="286" y="4" width="35" height="20" uuid="f19d8a61-ebf8-42f3-97d5-4799b300f72d"/>
+			<textField pattern="#,##0.00">
+				<reportElement x="286" y="0" width="44" height="16" uuid="f19d8a61-ebf8-42f3-97d5-4799b300f72d"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤ #,##0.0000">
-				<reportElement x="323" y="4" width="50" height="20" uuid="d27435da-24fb-4f1c-ad88-d88f1acfa149"/>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="330" y="0" width="50" height="16" uuid="d27435da-24fb-4f1c-ad88-d88f1acfa149"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{priceafvat}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤ #,##0.0000">
-				<reportElement x="375" y="4" width="70" height="20" uuid="e00813ac-5a27-4061-855f-96413ec14185"/>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="380" y="0" width="75" height="16" uuid="e00813ac-5a27-4061-855f-96413ec14185"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{gtotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="5" y="4" width="44" height="20" uuid="c04c56c7-9750-487a-a89f-3462daacdba8"/>
+				<reportElement x="0" y="0" width="49" height="16" uuid="c04c56c7-9750-487a-a89f-3462daacdba8"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="49" y="4" width="61" height="20" uuid="744e82c7-732c-40bf-a9b8-d66e1afe7c74"/>
+				<reportElement x="49" y="0" width="63" height="16" uuid="744e82c7-732c-40bf-a9b8-d66e1afe7c74"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
@@ -632,48 +627,31 @@ order by h.usersign,d.itemcode,docnum]]>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="14" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
-		<band height="41" splitType="Stretch">
+		<band height="39" splitType="Stretch">
 			<textField>
-				<reportElement x="426" y="16" width="26" height="20" uuid="ddcddabf-65b5-420d-8bfb-7385a294694d"/>
-				<textElement>
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{PAGE_TOTAL}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="377" y="16" width="26" height="20" uuid="b85076ce-7131-45eb-8eb1-4a03a754be0d"/>
-				<textElement>
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="353" y="16" width="27" height="20" uuid="c4be3222-01ce-4fd3-ad15-da302a144ab2"/>
-				<textElement>
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Pag.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="400" y="16" width="27" height="20" uuid="16309d0b-07fd-4a3f-a220-f4ffaee3cb1d"/>
-				<textElement>
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[de]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="1" y="3" width="79" height="15" uuid="c24273ec-1890-423a-918a-6b929cdb87e8"/>
+				<reportElement x="-1" y="0" width="331" height="24" uuid="9d5253ca-0e9b-41e7-99f7-23093b311d52"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{JASPER_REPORT}.getName()]]></textFieldExpression>
 			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="379" y="0" width="75" height="39" uuid="3723084f-3ceb-4d1e-a872-5c14e735d43a"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
 			<textField>
-				<reportElement x="0" y="20" width="100" height="20" uuid="777aa97d-4d5c-4588-91f5-f493f679a715"/>
+				<reportElement x="330" y="0" width="49" height="39" uuid="2d019c08-0b70-49e1-b129-7d6e7fc29568"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="0" y="24" width="331" height="15" uuid="5abe8f7c-0ed2-4d40-b84e-2b5eb31e7d2b"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -681,7 +659,4 @@ order by h.usersign,d.itemcode,docnum]]>
 			</textField>
 		</band>
 	</pageFooter>
-	<summary>
-		<band height="70" splitType="Stretch"/>
-	</summary>
 </jasperReport>

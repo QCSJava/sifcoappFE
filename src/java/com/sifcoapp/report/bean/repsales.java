@@ -6,6 +6,7 @@
 package com.sifcoapp.report.bean;
 
 import com.sifco.inventory.bean.GoodsReceiptBean;
+import com.sifco.login.bean.Util;
 import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.client.CatalogEJBClient;
 import com.sifcoapp.client.ParameterEJBClient;
@@ -31,13 +32,14 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.servlet.http.HttpSession;
 import org.primefaces.event.SelectEvent;
-
 
 @ManagedBean(name = "rsales")
 @SessionScoped
 public class repsales implements Serializable {
 
+//<editor-fold defaultstate="collapsed" desc="VAR">
     private String fcode;
     private String fname;
     private String fname2;
@@ -49,9 +51,14 @@ public class repsales implements Serializable {
     private static CatalogEJBClient CatalogEJB;
     private int ftype;
     ParameterEJBClient ParameterEJBClient;
-    String newCod  = "";
-    String newNomArt  = "";
+    String newCod = "";
+    String newNomArt = "";
+    private String user="";
+    HttpSession session = Util.getSession();
 
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="LOAD">
     @PostConstruct
     public void initForm() {
         this.setFtype(1);
@@ -72,10 +79,26 @@ public class repsales implements Serializable {
             ParameterEJBClient = new ParameterEJBClient();
         }
     }
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="PRINTERS">
+    public void printFormatExcel() {
+        this.print(2);
+    }
+
+    public repsales() {
+    }
+
+    public void printFormat() {
+        this.print(1);
+    }
 
     public void doPrint() {
         this.print(0);
     }
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="PRINT">
 
     public void print(int _type) {
         Map<String, Object> reportParameters = new HashMap<>();
@@ -97,7 +120,8 @@ public class repsales implements Serializable {
             }
 
             _reportTitle = "Control Diario de Ventas";
-
+            reportParameters.put("userName", "-1");
+            
             _whereclausule = " h.docdate>=$P{pdocdate} and h.docdate<=$P{PDOCDATE2}";
             if (this.getFcode() != null && this.getFcode().length() > 0) {
                 _whereclausule += " and docnum=" + this.getFcode();
@@ -106,8 +130,13 @@ public class repsales implements Serializable {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
             //d.itemcode = '001'
-            if (this.getNewCod() != null && this.getNewCod().length() >0) {
-                _whereclausule += " and d.itemcode like '"+this.newCod+"'";
+            if (this.getNewCod() != null && this.getNewCod().length() > 0) {
+                _whereclausule += " and d.itemcode like '" + this.newCod + "'";
+            }
+            //t2.nickname = 'Hugo'
+            if (this.getUser() != null && this.getUser().length()>0) {
+                _whereclausule += " and t2.nickname = '"+this.user+"'";
+                reportParameters.put("userName", session.getAttribute("userfullname"));
             }
         } else if (this.ftype == 2) {
             _reportname = "/sales/dailySales";
@@ -119,8 +148,8 @@ public class repsales implements Serializable {
             if (this.getFname() != null && this.getFname().length() > 0) {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
-            if (this.getNewCod() != null && this.getNewCod().length() >0) {
-                _whereclausule += " and d.itemcode = '"+this.newCod+"'";
+            if (this.getNewCod() != null && this.getNewCod().length() > 0) {
+                _whereclausule += " and d.itemcode = '" + this.newCod + "'";
             }
         } else if (this.ftype == 3) {
             _reportname = "/sales/dailySalesCust";
@@ -141,7 +170,7 @@ public class repsales implements Serializable {
             if (this.getFname() != null && this.getFname().length() > 0) {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
-            
+
         }
         if (this.ftype == 5) {
             _reportname = "/sales/SalesBySeller";
@@ -154,8 +183,8 @@ public class repsales implements Serializable {
             if (this.getFname() != null && this.getFname().length() > 0) {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
             }
-            if (this.getNewCod() != null && this.getNewCod().length() >0) {
-                _whereclausule += " and d.itemcode = '"+this.newCod+"'";
+            if (this.getNewCod() != null && this.getNewCod().length() > 0) {
+                _whereclausule += " and d.itemcode = '" + this.newCod + "'";
             }
         }
         if (this.ftype == 6) {
@@ -241,17 +270,7 @@ public class repsales implements Serializable {
         getBean().execute();
 
     }
-
-    public void printFormat() {
-        this.print(1);
-    }
-
-    public void printFormatExcel() {
-        this.print(2);
-    }
-
-    public repsales() {
-    }
+//</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Autocomplete Socio" > 
     public List<String> compSocioCode(String query) {
@@ -350,6 +369,14 @@ public class repsales implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G & S">
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
     /**
      * @return the fcode
      */
@@ -481,8 +508,6 @@ public class repsales implements Serializable {
     public void setNewNomArt(String newNomArt) {
         this.newNomArt = newNomArt;
     }
-    
-    
 
 //</editor-fold>
     
