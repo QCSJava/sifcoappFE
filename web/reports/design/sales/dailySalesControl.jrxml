@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dailySalesControl.jrxml" pageWidth="595" pageHeight="842" columnWidth="455" leftMargin="85" rightMargin="55" topMargin="35" bottomMargin="35" uuid="d665bf20-2d51-4d8b-aae5-566096205736">
-	<property name="ireport.zoom" value="1.6105100000000014"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="88"/>
+	<property name="ireport.zoom" value="1.331000000000001"/>
+	<property name="ireport.x" value="92"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="pdocnum" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -26,7 +26,7 @@
 	</parameter>
 	<parameter name="userName" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[(SELECT h.objtype, h.vatsum, h.peymethod, h.docdate, h.docentry, h.cardname, h.doctotal, h.numatcard, h.doctype,h.series,h.canceled, (select catvalue from cat_tab1_catalogos where to_number(catcode,'99')= h.series
+		<![CDATA[(SELECT h.objtype, h.vatsum, h.peymethod, h.docdate, h.docentry, h.cardname, h.doctotal, h.numatcard, h.doctype,h.series,h.canceled,(min(t2.username)||' '||min(t2.lastname)) as fullname, (select catvalue from cat_tab1_catalogos where to_number(catcode,'99')= h.series
 and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo, SUM(d.grssprofit) as utilidad
   FROM sal_sal0_sales h join sal_sal1_salesdetail d ON h.docentry = d.docentry join adm_usr0_user t2 on h.usersign = t2.usersign
 	where $P!{PWHERE}
@@ -35,7 +35,7 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 
 	UNION ALL
 
-(SELECT h.objtype, h.vatsum, h.peymethod, h.docdate, h.docentry, h.cardname, h.doctotal, h.numatcard, h.doctype,h.series,h.canceled, (select catvalue from cat_tab1_catalogos where to_number(catcode,'99')= h.series
+(SELECT h.objtype, h.vatsum, h.peymethod, h.docdate, h.docentry, h.cardname, h.doctotal, h.numatcard, h.doctype,h.series,h.canceled,(min(t2.username)||' '||min(t2.lastname)) as fullname, (select catvalue from cat_tab1_catalogos where to_number(catcode,'99')= h.series
 and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo, SUM(d.grssprofit) as utilidad
   FROM sal_ccn0_clientcreditnotes h join sal_ccn1_clientcreditnotedetail d ON h.docentry = d.docentry join adm_usr0_user t2 on h.usersign = t2.usersign
 	where $P!{PWHERE}
@@ -44,42 +44,34 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 	</queryString>
 	<field name="objtype" class="java.lang.String"/>
 	<field name="vatsum" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Impuesto total
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Impuesto total]]></fieldDescription>
 	</field>
 	<field name="peymethod" class="java.lang.String">
-		<fieldDescription><![CDATA[Forma de pago
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Forma de pago]]></fieldDescription>
 	</field>
 	<field name="docdate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha doc.
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Fecha doc.]]></fieldDescription>
 	</field>
 	<field name="docentry" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Entrada doc.emis.
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Entrada doc.emis.]]></fieldDescription>
 	</field>
 	<field name="cardname" class="java.lang.String">
-		<fieldDescription><![CDATA[Nombre SN
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Nombre SN]]></fieldDescription>
 	</field>
 	<field name="doctotal" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Total del documento
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Total del documento]]></fieldDescription>
 	</field>
 	<field name="numatcard" class="java.lang.String">
-		<fieldDescription><![CDATA[NÃºmero de referencia del SN
-]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de referencia del SN]]></fieldDescription>
 	</field>
 	<field name="doctype" class="java.lang.String"/>
 	<field name="series" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Serie
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Serie]]></fieldDescription>
 	</field>
 	<field name="canceled" class="java.lang.String">
-		<fieldDescription><![CDATA[Cancelado
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Cancelado]]></fieldDescription>
 	</field>
+	<field name="fullname" class="java.lang.String"/>
 	<field name="doctypename" class="java.lang.String"/>
 	<field name="costo" class="java.math.BigDecimal"/>
 	<field name="utilidad" class="java.math.BigDecimal"/>
@@ -138,9 +130,9 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 	<group name="object">
 		<groupExpression><![CDATA[$F{objtype}]]></groupExpression>
 		<groupHeader>
-			<band height="16">
+			<band height="32">
 				<staticText>
-					<reportElement x="0" y="0" width="90" height="16" uuid="dfd931d2-ace6-4979-898d-6ec1a8b4ff5d">
+					<reportElement x="0" y="16" width="90" height="16" uuid="dfd931d2-ace6-4979-898d-6ec1a8b4ff5d">
 						<printWhenExpression><![CDATA[$F{objtype}.equals("10")]]></printWhenExpression>
 					</reportElement>
 					<textElement>
@@ -149,7 +141,7 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 					<text><![CDATA[VENTAS]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="0" width="211" height="16" uuid="19b5a0ef-04ba-46e6-9efa-5c2cf9f3583f">
+					<reportElement x="0" y="16" width="211" height="16" uuid="19b5a0ef-04ba-46e6-9efa-5c2cf9f3583f">
 						<printWhenExpression><![CDATA[$F{objtype}.equals("11")]]></printWhenExpression>
 					</reportElement>
 					<textElement>
@@ -160,7 +152,7 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 			</band>
 		</groupHeader>
 	</group>
-	<group name="doctype" isStartNewPage="true" keepTogether="true">
+	<group name="doctype">
 		<groupExpression><![CDATA[$F{series}]]></groupExpression>
 		<groupHeader>
 			<band height="16">
@@ -288,7 +280,7 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 				<reportElement x="0" y="60" width="455" height="20" uuid="97a0c292-9676-4647-a7dd-63d4b4da8dee"/>
 				<box bottomPadding="2"/>
 				<textElement verticalAlignment="Bottom"/>
-				<textFieldExpression><![CDATA[$P{userName}.equals("-1")? " ":"Vendedor: " + $P{userName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{userName}.equals("-1")? " ":"Vendedor: " + $F{fullname}.toUpperCase()]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

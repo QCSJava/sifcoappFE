@@ -143,6 +143,7 @@ public class SalesDieselBean implements Serializable {
     private String url;
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="G & S">
     public boolean isDisabledDocNum() {
         return disabledDocNum;
@@ -558,6 +559,7 @@ public class SalesDieselBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="SET REF">
     public void setRef() {
         String num;
@@ -832,6 +834,7 @@ public class SalesDieselBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="BUSCAR EN BASE">
     public void doSearch() {
         listaBusqueda.clear();
@@ -1049,6 +1052,7 @@ public class SalesDieselBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="funciones para calculos de impuestos">
     public Double calcularGravadas(SalesDetailTO detail) {
 
@@ -1150,6 +1154,7 @@ public class SalesDieselBean implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Funciones varias">
     public boolean isNum(String num) {
         if (num == null || num.isEmpty()) {
@@ -1352,15 +1357,17 @@ public class SalesDieselBean implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="IMPRIMIR FORMA 2">
     public String printInvoice() throws UnsupportedEncodingException {
-        //faceMessage(getApplicationUri());
-        //System.out.println(getApplicationUri()+"||----------------------------------------------------------------");
         setUrl(getApplicationUri());
         if (newBill.getSeries() == 3 && newBill.getDocentry() > 0) {
             String foo = newBill.getDocentry() + "";
             String bar = (String) session.getAttribute("userfullname");
+            String tip = ParameterEJBClient.getParameterbykey(2).getValue1();
+            String art = ParameterEJBClient.getParameterbykey(3).getValue1();
             return "/DieselPrintView?faces-redirect=true"
                     + "&foo=" + URLEncoder.encode(foo, "UTF-8")
-                    + "&bar=" + URLEncoder.encode(bar, "UTF-8");
+                    + "&bar=" + URLEncoder.encode(bar, "UTF-8")
+                    + "&tip=" + URLEncoder.encode(tip, "UTF-8")
+                    + "&art=" + URLEncoder.encode(art, "UTF-8");
         } else {
             faceMessage("No se puede imprimir este tipo de documento");
             return "/view/sales/SalesDiesel.xhtml";

@@ -136,7 +136,7 @@ public class repsales implements Serializable {
             //t2.nickname = 'Hugo'
             if (this.getUser() != null && this.getUser().length()>0) {
                 _whereclausule += " and t2.nickname = '"+this.user+"'";
-                reportParameters.put("userName", session.getAttribute("userfullname"));
+                reportParameters.put("userName", "1");
             }
         } else if (this.ftype == 2) {
             _reportname = "/sales/dailySales";

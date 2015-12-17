@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dailySalesControlCost.jrxml" pageWidth="612" pageHeight="792" columnWidth="542" leftMargin="35" rightMargin="35" topMargin="35" bottomMargin="35" uuid="d665bf20-2d51-4d8b-aae5-566096205736">
-	<property name="ireport.zoom" value="1.331000000000001"/>
-	<property name="ireport.x" value="86"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.6105100000000017"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="112"/>
 	<parameter name="pdocnum" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -24,14 +24,25 @@
 	<parameter name="reportName" class="java.lang.String">
 		<defaultValueExpression><![CDATA["Control Diario de Ventas"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="userName" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT h.vatsum, h.peymethod, h.docdate, h.docentry, h.cardname, h.doctotal, h.numatcard, h.doctype, (select catvalue from cat_tab1_catalogos where to_number(catcode,'99')= h.series
+		<![CDATA[(SELECT h.objtype, h.vatsum, h.peymethod, h.docdate, h.docentry, h.cardname, h.doctotal, h.numatcard, h.doctype,h.series,h.canceled,(min(t2.username)||' '||min(t2.lastname)) as fullname, (select catvalue from cat_tab1_catalogos where to_number(catcode,'99')= h.series
 and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo, SUM(d.grssprofit) as utilidad
-  FROM sal_sal0_sales h join sal_sal1_salesdetail d ON h.docentry = d.docentry
+  FROM sal_sal0_sales h join sal_sal1_salesdetail d ON h.docentry = d.docentry join adm_usr0_user t2 on h.usersign = t2.usersign
 	where $P!{PWHERE}
 	GROUP BY h.docentry
-	ORDER BY h.docdate ASC, h.docentry ASC]]>
+	ORDER BY h.objtype, h.series ASC, h.docdate ASC, h.docentry ASC)
+
+	UNION ALL
+
+(SELECT h.objtype, h.vatsum, h.peymethod, h.docdate, h.docentry, h.cardname, h.doctotal, h.numatcard, h.doctype,h.series,h.canceled,(min(t2.username)||' '||min(t2.lastname)) as fullname, (select catvalue from cat_tab1_catalogos where to_number(catcode,'99')= h.series
+and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo, SUM(d.grssprofit) as utilidad
+  FROM sal_ccn0_clientcreditnotes h join sal_ccn1_clientcreditnotedetail d ON h.docentry = d.docentry join adm_usr0_user t2 on h.usersign = t2.usersign
+	where $P!{PWHERE}
+	GROUP BY h.docentry
+	ORDER BY h.objtype, h.series ASC, h.docdate ASC, h.docentry ASC)]]>
 	</queryString>
+	<field name="objtype" class="java.lang.String"/>
 	<field name="vatsum" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[Impuesto total]]></fieldDescription>
 	</field>
@@ -54,6 +65,13 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 		<fieldDescription><![CDATA[NÃºmero de referencia del SN]]></fieldDescription>
 	</field>
 	<field name="doctype" class="java.lang.String"/>
+	<field name="series" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Serie]]></fieldDescription>
+	</field>
+	<field name="canceled" class="java.lang.String">
+		<fieldDescription><![CDATA[Cancelado]]></fieldDescription>
+	</field>
+	<field name="fullname" class="java.lang.String"/>
 	<field name="doctypename" class="java.lang.String"/>
 	<field name="costo" class="java.math.BigDecimal"/>
 	<field name="utilidad" class="java.math.BigDecimal"/>
@@ -63,14 +81,8 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 	<variable name="vatsum_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
 		<variableExpression><![CDATA[$F{vatsum}]]></variableExpression>
 	</variable>
-	<variable name="doctotal_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
-		<variableExpression><![CDATA[$F{doctotal}]]></variableExpression>
-	</variable>
 	<variable name="vatsum_2" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{vatsum}]]></variableExpression>
-	</variable>
-	<variable name="doctotal_2" class="java.math.BigDecimal" resetType="Group" resetGroup="doctypes" calculation="Sum">
-		<variableExpression><![CDATA[$F{doctotal}]]></variableExpression>
 	</variable>
 	<variable name="PAGE_TOTAL" class="java.lang.Integer" resetType="Page" calculation="DistinctCount">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
@@ -79,20 +91,32 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 		<variableExpression><![CDATA[]]></variableExpression>
 		<initialValueExpression><![CDATA[new Date();]]></initialValueExpression>
 	</variable>
-	<variable name="doctotal_3" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="costo_1" class="java.math.BigDecimal" resetType="Group" resetGroup="docType" calculation="Sum">
+		<variableExpression><![CDATA[$F{costo}]]></variableExpression>
+	</variable>
+	<variable name="doctotal_1" class="java.math.BigDecimal" resetType="Group" resetGroup="docType" calculation="Sum">
 		<variableExpression><![CDATA[$F{peymethod}.equals("1")?$F{doctotal}:0.0]]></variableExpression>
 	</variable>
-	<variable name="doctotal_4" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="doctotal_2" class="java.math.BigDecimal" resetType="Group" resetGroup="docType" calculation="Sum">
 		<variableExpression><![CDATA[$F{peymethod}.equals("2")?$F{doctotal}:0.0]]></variableExpression>
 	</variable>
-	<variable name="doctotal_5" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="doctotal_3" class="java.math.BigDecimal" resetType="Group" resetGroup="docType" calculation="Sum">
 		<variableExpression><![CDATA[$F{peymethod}.equals("3")?$F{doctotal}:0.0]]></variableExpression>
 	</variable>
+	<variable name="doctotal_4" class="java.math.BigDecimal" resetType="Group" resetGroup="docType" calculation="Sum">
+		<variableExpression><![CDATA[$F{peymethod}.equals("4")?$F{doctotal}:0.0]]></variableExpression>
+	</variable>
+	<variable name="utilidad_2" class="java.math.BigDecimal" resetType="Group" resetGroup="docType" calculation="Sum">
+		<variableExpression><![CDATA[$F{utilidad}]]></variableExpression>
+	</variable>
+	<variable name="doctotal_5" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{peymethod}.equals("1")?$F{doctotal}:0.0]]></variableExpression>
+	</variable>
 	<variable name="doctotal_6" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{peymethod}.equals("5")?$F{doctotal}:0.0]]></variableExpression>
+		<variableExpression><![CDATA[$F{peymethod}.equals("2")?$F{doctotal}:0.0]]></variableExpression>
 	</variable>
 	<variable name="doctotal_7" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{doctotal}]]></variableExpression>
+		<variableExpression><![CDATA[$F{peymethod}.equals("3")?$F{doctotal}:0.0]]></variableExpression>
 	</variable>
 	<variable name="doctotal_8" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{peymethod}.equals("4")?$F{doctotal}:0.0]]></variableExpression>
@@ -100,12 +124,37 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 	<variable name="utilidad_1" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{utilidad}]]></variableExpression>
 	</variable>
-	<group name="doctypes">
-		<groupExpression><![CDATA[$F{doctypename}]]></groupExpression>
+	<group name="objType">
+		<groupExpression><![CDATA[$F{objtype}]]></groupExpression>
+		<groupHeader>
+			<band height="32">
+				<staticText>
+					<reportElement x="0" y="16" width="215" height="16" uuid="70ce9e3e-474f-4a39-b836-21085fe63484">
+						<printWhenExpression><![CDATA[$F{objtype}.equals("11")]]></printWhenExpression>
+					</reportElement>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[NOTAS DE CREDITO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="16" width="105" height="16" uuid="f20d1144-7795-4fae-8942-963b2eb52163">
+						<printWhenExpression><![CDATA[$F{objtype}.equals("10")]]></printWhenExpression>
+					</reportElement>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[VENTAS]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="docType">
+		<groupExpression><![CDATA[$F{series}]]></groupExpression>
 		<groupHeader>
 			<band height="16">
 				<textField>
-					<reportElement x="0" y="0" width="224" height="16" uuid="586a7e47-3b3f-4d94-9919-4498d106badc"/>
+					<reportElement x="0" y="0" width="215" height="16" uuid="586a7e47-3b3f-4d94-9919-4498d106badc"/>
 					<textElement>
 						<font fontName="SansSerif"/>
 					</textElement>
@@ -114,16 +163,9 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="25">
-				<textField pattern="¤ #,##0.00">
-					<reportElement x="211" y="0" width="45" height="16" uuid="96334852-eb97-4810-8ae4-d52cedc678fd"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="SansSerif"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{doctotal_2}]]></textFieldExpression>
-				</textField>
+			<band height="17">
 				<textField>
-					<reportElement x="46" y="0" width="165" height="16" uuid="22505acf-ae1e-4924-93e1-6253245bbc35"/>
+					<reportElement x="50" y="1" width="165" height="16" uuid="22505acf-ae1e-4924-93e1-6253245bbc35"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="SansSerif" size="10"/>
 					</textElement>
@@ -135,6 +177,36 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 				<line>
 					<reportElement x="0" y="16" width="542" height="1" uuid="f455d8e2-a054-4872-a62f-e3cdbc07b035"/>
 				</line>
+				<textField pattern="¤ #,##0.00">
+					<reportElement x="215" y="1" width="45" height="15" uuid="cdd01966-7089-42e0-8a36-06b8e1ff0d50"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{costo_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="¤ #,##0.00">
+					<reportElement x="260" y="1" width="55" height="16" uuid="7a9ddaa8-74e1-4412-a860-d29ba5a3d9e8"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{doctotal_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="¤ #,##0.00">
+					<reportElement x="315" y="1" width="53" height="16" uuid="81711911-7215-41dc-9709-ac5485216397"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{doctotal_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="¤ #,##0.00">
+					<reportElement x="368" y="1" width="63" height="15" uuid="4bfb2998-07dc-4987-b5db-dbf946224103"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{doctotal_3}]]></textFieldExpression>
+				</textField>
+				<textField pattern="¤ #,##0.00">
+					<reportElement x="431" y="1" width="69" height="15" uuid="eb3bbd7b-bb6f-479b-b418-39799483b1ce"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{doctotal_4}]]></textFieldExpression>
+				</textField>
+				<textField pattern="¤ #,##0.00">
+					<reportElement x="500" y="1" width="42" height="15" uuid="c60fb551-531c-4d2b-833d-3161e661dc74"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{utilidad_2}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupFooter>
 	</group>
@@ -211,66 +283,16 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportName}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="60" width="542" height="20" uuid="b411358a-760b-4686-9b5e-d1005336fdea"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="12"/>
-				</textElement>
+			<textField>
+				<reportElement x="0" y="60" width="542" height="20" uuid="32991c56-ce6d-4bd3-a146-29d38d81f32f"/>
+				<box bottomPadding="2"/>
+				<textElement verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$P{userName}.equals("-1")? " ":"Vendedor: " + $F{fullname}.toUpperCase()]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
 	<pageHeader>
 		<band height="24" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="2" width="46" height="21" uuid="3fcb8c21-da00-4d9f-bfbc-fa51eeb5fd91"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Fecha Doc.
-]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="46" y="2" width="55" height="21" uuid="114fb874-3146-4547-8e1f-50cc49312dc5"/>
-				<textElement verticalAlignment="Top">
-					<font fontName="SansSerif" size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Num. Comprobante]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="101" y="2" width="110" height="21" uuid="172f59a1-30e6-4133-aa84-17881ba952fa"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Cliente]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="256" y="2" width="45" height="21" uuid="ec75697a-e26c-4e22-9df8-cf2d74fd3b72"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Contado]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="301" y="2" width="45" height="21" uuid="802abb5f-2b71-48b9-ab21-83d6a9946a70"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Credito]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="346" y="2" width="63" height="21" uuid="912dbc96-9767-4b20-9b68-5215563b7b3d"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Autoconsumo]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="409" y="2" width="45" height="21" uuid="b585209c-a54c-4dd7-84eb-a680566e9f04"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Tarjeta]]></text>
-			</staticText>
 			<line>
 				<reportElement x="0" y="1" width="542" height="1" uuid="745c6573-5fee-44d3-a9d7-9e65087779f4"/>
 			</line>
@@ -284,46 +306,91 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 				<reportElement x="0" y="21" width="542" height="1" uuid="7df947b6-518e-4988-9b55-32532ff911d3"/>
 			</line>
 			<staticText>
-				<reportElement x="454" y="2" width="46" height="21" uuid="94919ecd-cc4c-4381-9806-ce7c0be0c35b"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Colecturía]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="211" y="2" width="45" height="21" uuid="81ec46d4-828f-4816-924f-564d1d46eb9f"/>
+				<reportElement x="215" y="1" width="45" height="21" uuid="81ec46d4-828f-4816-924f-564d1d46eb9f"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Costo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="500" y="2" width="42" height="21" uuid="3b824466-67e3-4fad-a44c-830ac6a5cea0"/>
+				<reportElement x="500" y="1" width="42" height="21" uuid="3b824466-67e3-4fad-a44c-830ac6a5cea0"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Utilidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="1" width="50" height="21" uuid="a2e010ea-d4ca-4d3f-825f-4720801c607a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Doc.
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="1" width="55" height="21" uuid="5f0d425c-8b8b-47ef-bccd-6f52eab6c499"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Num. Comprobante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="105" y="1" width="110" height="21" uuid="7db24e1e-a037-451f-a73c-e15fe1326b69"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="1" width="55" height="21" uuid="31fcd470-5a8b-46a7-8dd7-49828b377933"/>
+				<box rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Contado E]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="313" y="1" width="55" height="21" uuid="f0e473aa-fa05-476e-a8cf-fe3aa7c1357a"/>
+				<box rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Credito C]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="368" y="1" width="63" height="21" uuid="8870e56b-3930-4160-ada3-4f275361f370"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Auto Consumo AC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="431" y="1" width="69" height="21" uuid="33c28c86-a9dd-4445-aafc-1974b726bcd8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Diesel Asociado CE]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
 	<detail>
 		<band height="15" splitType="Stretch">
 			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy">
-				<reportElement x="-1" y="0" width="47" height="15" uuid="c0ebb738-8b2a-476d-9645-91c0e6243edf"/>
+				<reportElement x="-1" y="0" width="51" height="15" uuid="c0ebb738-8b2a-476d-9645-91c0e6243edf"/>
 				<textElement>
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="101" y="0" width="110" height="15" uuid="3bba158b-00ea-458d-b166-dcefbf745324"/>
+				<reportElement x="105" y="0" width="110" height="15" uuid="3bba158b-00ea-458d-b166-dcefbf745324"/>
 				<textElement>
 					<font fontName="SansSerif" size="9" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cardname}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="301" y="0" width="45" height="15" uuid="ea3ac897-ef4f-4a43-b3c3-4e1b57277731">
+				<reportElement x="315" y="0" width="53" height="15" uuid="ea3ac897-ef4f-4a43-b3c3-4e1b57277731">
 					<printWhenExpression><![CDATA[$F{peymethod}.equals("2")]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
@@ -332,7 +399,7 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="346" y="0" width="63" height="15" uuid="1c6541c6-1430-4cad-bdbf-70f78d8e9981">
+				<reportElement x="368" y="0" width="63" height="15" uuid="1c6541c6-1430-4cad-bdbf-70f78d8e9981">
 					<printWhenExpression><![CDATA[$F{peymethod}.equals("3")]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
@@ -341,7 +408,7 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="409" y="0" width="45" height="15" uuid="770f2df9-9ca6-410e-b4fb-5a4d45587829">
+				<reportElement x="431" y="0" width="69" height="15" uuid="770f2df9-9ca6-410e-b4fb-5a4d45587829">
 					<printWhenExpression><![CDATA[$F{peymethod}.equals("4")]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
@@ -349,24 +416,15 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 				</textElement>
 				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤ #,##0.00">
-				<reportElement x="454" y="0" width="46" height="15" uuid="29de092c-8918-4159-bd9d-e20adb1da4b1">
-					<printWhenExpression><![CDATA[$F{peymethod}.equals("5")]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Right">
-					<font fontName="SansSerif" size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="46" y="0" width="55" height="15" uuid="bcf13113-1eab-441b-bd6d-3b14f221c6e1"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="50" y="0" width="55" height="15" uuid="bcf13113-1eab-441b-bd6d-3b14f221c6e1"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{numatcard}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{canceled}.equals("Y")?$F{numatcard}+"-C":$F{numatcard}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="256" y="0" width="45" height="15" uuid="92405a0c-228e-41e1-9758-686757b83593">
+				<reportElement x="260" y="0" width="55" height="15" uuid="92405a0c-228e-41e1-9758-686757b83593">
 					<printWhenExpression><![CDATA[$F{peymethod}.equals("1")]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
@@ -380,7 +438,7 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 				<textFieldExpression><![CDATA[$F{utilidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="211" y="0" width="45" height="15" uuid="542f8522-8f34-457c-bb37-edb7bebccfd7"/>
+				<reportElement x="215" y="0" width="45" height="15" uuid="542f8522-8f34-457c-bb37-edb7bebccfd7"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{costo}]]></textFieldExpression>
 			</textField>
@@ -389,21 +447,21 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 	<pageFooter>
 		<band height="39" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy h.mm a">
-				<reportElement x="-1" y="24" width="456" height="15" uuid="40f5b112-b6df-411e-9aaf-46e2c41fc2df"/>
+				<reportElement x="-1" y="24" width="432" height="15" uuid="40f5b112-b6df-411e-9aaf-46e2c41fc2df"/>
 				<textElement>
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="455" height="24" uuid="c6718780-024a-4580-a0d6-4750363a40ef"/>
+				<reportElement x="0" y="0" width="431" height="24" uuid="c6718780-024a-4580-a0d6-4750363a40ef"/>
 				<textElement>
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{JASPER_REPORT}.getName()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="455" y="0" width="45" height="39" uuid="56e83d53-8591-4cac-805c-1a38486678f0"/>
+				<reportElement x="431" y="0" width="69" height="39" uuid="56e83d53-8591-4cac-805c-1a38486678f0"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
@@ -449,7 +507,7 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 				<text><![CDATA[]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy h.mm a">
-				<reportElement x="-1" y="60" width="365" height="15" uuid="d65e58da-a424-4f55-872c-3a46fbe1efee"/>
+				<reportElement x="-1" y="60" width="432" height="15" uuid="d65e58da-a424-4f55-872c-3a46fbe1efee"/>
 				<textElement>
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
@@ -463,14 +521,14 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="455" y="36" width="45" height="39" uuid="76dca7cc-8ed3-44d8-bdc3-0e18ff07efe6"/>
+				<reportElement x="431" y="36" width="69" height="39" uuid="76dca7cc-8ed3-44d8-bdc3-0e18ff07efe6"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="36" width="364" height="24" uuid="99ccbc22-8be2-44ab-a8fd-eff1db14f7c3"/>
+				<reportElement x="0" y="36" width="431" height="24" uuid="99ccbc22-8be2-44ab-a8fd-eff1db14f7c3"/>
 				<textElement>
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
@@ -481,40 +539,35 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 	<summary>
 		<band height="16">
 			<staticText>
-				<reportElement x="46" y="0" width="210" height="16" uuid="d5ad3630-495f-45d4-b614-2b644924d74e"/>
+				<reportElement x="0" y="0" width="260" height="16" uuid="d5ad3630-495f-45d4-b614-2b644924d74e"/>
 				<box rightPadding="8"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
-				<text><![CDATA[Ventas Totales  $ :]]></text>
+				<text><![CDATA[Ventas Totales:]]></text>
 			</staticText>
-			<textField pattern="#,##0.00">
-				<reportElement x="256" y="0" width="45" height="16" uuid="ec0f70a5-0281-4fc5-a65f-8164cb4d7e10"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$V{doctotal_3}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="301" y="0" width="45" height="16" uuid="e0882895-f126-4df0-a75a-8148f8da7674"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$V{doctotal_4}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="346" y="0" width="63" height="16" uuid="490a9eab-9b2d-44e9-a757-898273c1e934"/>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="260" y="0" width="55" height="16" uuid="38506e85-574a-47ae-8869-2c6ca063b09a"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$V{doctotal_5}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="454" y="0" width="46" height="16" uuid="25d56ff4-8cfb-4317-9afd-b2ed4848d11b"/>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="315" y="0" width="53" height="16" uuid="be93b11f-10b9-47ef-b18e-77674eb190e2"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$V{doctotal_6}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="409" y="0" width="45" height="16" uuid="046e3d36-591a-4341-85d2-9d8aaae99995"/>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="368" y="0" width="63" height="16" uuid="061a8ef5-47c0-4bb4-8847-b625be0f2c8d"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{doctotal_7}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="431" y="0" width="69" height="16" uuid="4add9d92-8504-4ddf-aa99-8e8756850751"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$V{doctotal_8}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="500" y="0" width="42" height="16" uuid="b27fca74-6e91-446a-8f51-34356ab62eea"/>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="500" y="0" width="42" height="16" uuid="8261a366-e58d-42bf-84fc-96a1e5b38f6f"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$V{utilidad_1}]]></textFieldExpression>
 			</textField>
