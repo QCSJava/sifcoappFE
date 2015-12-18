@@ -57,7 +57,7 @@ public class repPurchases implements Serializable {
     //articulo
     String newCod  = "";
     String newNomArt  = "";
-
+    private String user="";
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="Autocomplete Socio" > 
@@ -426,6 +426,14 @@ public class repPurchases implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="G&S">
 
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+    
     public static CatalogEJBClient getCatalogEJB() {
         return CatalogEJB;
     }

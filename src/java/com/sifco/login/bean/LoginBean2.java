@@ -5,6 +5,7 @@
  */
 package com.sifco.login.bean;
 
+import com.sifco.common.bean.LicenseBean;
 import com.sifcoapp.client.AdminEJBClient;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
@@ -19,6 +20,7 @@ import com.sifcoapp.objects.utilities.PasswordService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.sifcoapp.objects.security.to.UserTO;
+import static com.sun.faces.facelets.util.Path.context;
 import java.io.IOException;
 import javax.faces.context.ExternalContext;
 import org.primefaces.context.RequestContext;
@@ -31,6 +33,7 @@ import org.primefaces.context.RequestContext;
  */
 public class LoginBean2 implements Serializable {
 
+//<editor-fold defaultstate="collapsed" desc="VARIABLES">
     private static final long serialVersionUID = 1L;
     private String nombreEmpresa;
     private String password;
@@ -41,7 +44,9 @@ public class LoginBean2 implements Serializable {
     private static SecurityEJBClient SecurityEJBService = null;
     private static AdminEJBClient AdminEJBService = null;
     private String userName;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="G & S">
     public String getNombreEmpresa() {
         return nombreEmpresa;
     }
@@ -114,6 +119,9 @@ public class LoginBean2 implements Serializable {
         this.uname = uname;
     }
 
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="LOGIN">
     public String loginProject() throws Exception {
         //  boolean result = UserDAO.login(uname, password);
         String res = null;
@@ -147,9 +155,11 @@ public class LoginBean2 implements Serializable {
                 userName = (String) session.getAttribute("username");
                 res = "index";
             } else {
+                
+
                 FacesContext.getCurrentInstance().addMessage(
                         null,
-                        new FacesMessage(FacesMessage.SEVERITY_WARN, "Invalid Login!", "Please Try Again!"));
+                        new FacesMessage(FacesMessage.SEVERITY_WARN, "Datos incorrectos!", "Intente de nuevo!"));
             }
             /* else {
              FacesContext.getCurrentInstance().addMessage(
@@ -162,7 +172,9 @@ public class LoginBean2 implements Serializable {
         }
         return res;
     }
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="LOGOUT">
     public String logout() {
         /* ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap()).invalidate();
          FacesContext.getCurrentInstance().getExternalContext().invalidateSession();*/
@@ -181,7 +193,9 @@ public class LoginBean2 implements Serializable {
 
         return "login";
     }
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="VALIDARPASS">
     public void ValidarPass() throws Exception {
         UserTO parameters = new UserTO();
         String password0;
@@ -203,7 +217,9 @@ public class LoginBean2 implements Serializable {
             faceMessage("Error La Contraseña Actual no es correcta");
         }
     }
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="FUNCIONES VARIAS">
     public void faceMessage(String var) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(var));
     }
@@ -215,5 +231,6 @@ public class LoginBean2 implements Serializable {
         this.password2 = null;
         this.password3 = null;
     }
+//</editor-fold>
 
 }//cierre clase

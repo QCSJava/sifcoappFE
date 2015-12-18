@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DailyPurchase.jrxml" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="472" leftMargin="85" rightMargin="55" topMargin="35" bottomMargin="35" uuid="707d1793-2a3b-4cd8-8300-b30249552bc1">
-	<property name="ireport.zoom" value="1.4641000000000006"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="11"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DailyPurchase.jrxml" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="502" leftMargin="55" rightMargin="55" topMargin="35" bottomMargin="35" uuid="707d1793-2a3b-4cd8-8300-b30249552bc1">
+	<property name="ireport.zoom" value="1.464100000000001"/>
+	<property name="ireport.x" value="57"/>
+	<property name="ireport.y" value="56"/>
 	<parameter name="reportName" class="java.lang.String"/>
 	<parameter name="corpName" class="java.lang.String">
 		<defaultValueExpression><![CDATA["ACOETMISAB DE R.L."]]></defaultValueExpression>
@@ -15,16 +15,35 @@
 	<parameter name="pdocnum" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="userName" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select p.docnum,p.doctype,p.docstatus,p.docdate,p.numatcard,
-p.cardcode,p.cardname,p.vatsum,p.doctotal,p.peymethod,p.usersign,(select catvalue from cat_tab1_catalogos where catcode='1'
+		<![CDATA[(select p.docentry,p.objtype, p.docnum,p.doctype,p.docstatus,p.docdate,p.numatcard,p.canceled,
+p.cardcode,p.cardname,p.vatsum,p.doctotal,p.peymethod,p.usersign,(min(t2.username)||' '||min(t2.lastname)) as fullname,p.series,
+(select catvalue from cat_tab1_catalogos where catcode=cast(p.series as text)
 and tablecode=(select tablecode from cat_tab0_tables where tablename='TypesInvoices')) doctypename,
 SUM(d.price * d.quantity) as costo
-from pur_pur0_purchase p join pur_pur1_purchasedetail d ON p.docentry = d.docentry
-where $P!{PWHERE}
-GROUP BY p.docentry
-	ORDER BY p.docdate ASC, p.docentry ASC]]>
+from pur_pur0_purchase p join pur_pur1_purchasedetail d ON p.docentry = d.docentry join adm_usr0_user t2 on p.usersign = t2.usersign
+	where $P!{PWHERE}
+	GROUP BY p.docentry
+	ORDER BY p.objtype, p.series, p.docdate ASC, p.docentry ASC)
+
+	UNION ALL
+
+(select p.docentry,p.objtype, p.docnum,p.doctype,p.docstatus,p.docdate,p.numatcard,p.canceled,
+p.cardcode,p.cardname,p.vatsum,p.doctotal,p.peymethod,p.usersign,(min(t2.username)||' '||min(t2.lastname)) as fullname,p.series,
+(select catvalue from cat_tab1_catalogos where catcode=cast(p.series as text)
+and tablecode=(select tablecode from cat_tab0_tables where tablename='TypesInvoices')) doctypename,
+SUM(d.price * d.quantity) as costo
+from pur_scn0_suppliercreditnotes p join pur_scn1_screditnotedetail d ON p.docentry = d.docentry join adm_usr0_user t2 on p.usersign = t2.usersign
+	where $P!{PWHERE}
+	GROUP BY p.docentry
+	ORDER BY p.objtype, p.series, p.docdate ASC, p.docentry )]]>
 	</queryString>
+	<field name="docentry" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Entrada doc.emis.
+]]></fieldDescription>
+	</field>
+	<field name="objtype" class="java.lang.String"/>
 	<field name="docnum" class="java.lang.Integer">
 		<fieldDescription><![CDATA[NÃºmero de documento]]></fieldDescription>
 	</field>
@@ -39,6 +58,10 @@ GROUP BY p.docentry
 	</field>
 	<field name="numatcard" class="java.lang.String">
 		<fieldDescription><![CDATA[NÃºmero de referencia del SN
+]]></fieldDescription>
+	</field>
+	<field name="canceled" class="java.lang.String">
+		<fieldDescription><![CDATA[Cancelado
 ]]></fieldDescription>
 	</field>
 	<field name="cardcode" class="java.lang.String">
@@ -64,28 +87,64 @@ GROUP BY p.docentry
 	<field name="usersign" class="java.lang.Integer">
 		<fieldDescription><![CDATA[Firma de usuario]]></fieldDescription>
 	</field>
+	<field name="fullname" class="java.lang.String"/>
+	<field name="series" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Serie
+]]></fieldDescription>
+	</field>
 	<field name="doctypename" class="java.lang.String"/>
 	<field name="costo" class="java.math.BigDecimal"/>
 	<variable name="PAGE_TOTAL" class="java.lang.Integer" resetType="Page" calculation="DistinctCount">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 	</variable>
-	<variable name="doctotal_1" class="java.math.BigDecimal" resetType="Group" resetGroup="doctype" calculation="Sum">
-		<variableExpression><![CDATA[$F{peymethod}.equals("1")? $F{doctotal}:0.0]]></variableExpression>
-	</variable>
-	<variable name="doctotal_2" class="java.math.BigDecimal" resetType="Group" resetGroup="doctype" calculation="Sum">
-		<variableExpression><![CDATA[$F{peymethod}.equals("2")? $F{doctotal}:0.0]]></variableExpression>
-	</variable>
 	<variable name="costo_1" class="java.math.BigDecimal" resetType="Group" resetGroup="doctype" calculation="Sum">
 		<variableExpression><![CDATA[$F{costo}]]></variableExpression>
 	</variable>
+	<variable name="doctotal_1" class="java.math.BigDecimal" resetType="Group" resetGroup="typeDoc" calculation="Sum">
+		<variableExpression><![CDATA[$F{peymethod}.equals("1")? $F{doctotal}:0.0]]></variableExpression>
+	</variable>
+	<variable name="doctotal_2" class="java.math.BigDecimal" resetType="Group" resetGroup="typeDoc" calculation="Sum">
+		<variableExpression><![CDATA[$F{peymethod}.equals("2")? $F{doctotal}:0.0]]></variableExpression>
+	</variable>
+	<variable name="doctotal_3" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{peymethod}.equals("1")? $F{doctotal}:0.0]]></variableExpression>
+	</variable>
+	<variable name="doctotal_4" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{peymethod}.equals("2")? $F{doctotal}:0.0]]></variableExpression>
+	</variable>
 	<group name="doctype">
-		<groupExpression><![CDATA[$F{doctype}]]></groupExpression>
+		<groupExpression><![CDATA[$F{objtype}]]></groupExpression>
+		<groupHeader>
+			<band height="32">
+				<staticText>
+					<reportElement x="0" y="16" width="332" height="16" uuid="7eaa15a2-c833-4301-b4fc-14d3eb3c6704">
+						<printWhenExpression><![CDATA[$F{objtype}.equals("20")]]></printWhenExpression>
+					</reportElement>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[COMPRAS]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="16" width="332" height="16" uuid="1a18dd7e-7b9f-4c6e-9971-71eade4b43bc">
+						<printWhenExpression><![CDATA[$F{objtype}.equals("21")]]></printWhenExpression>
+					</reportElement>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[NOTAS DE CREDITO]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="typeDoc">
+		<groupExpression><![CDATA[$F{series}]]></groupExpression>
 		<groupHeader>
 			<band height="16">
 				<textField isBlankWhenNull="true">
-					<reportElement x="1" y="0" width="248" height="16" uuid="18c1d3cb-19e8-4eee-b82d-f1d155aee7a5"/>
+					<reportElement x="0" y="0" width="332" height="16" uuid="18c1d3cb-19e8-4eee-b82d-f1d155aee7a5"/>
 					<textElement>
-						<font size="12" isBold="true"/>
+						<font size="10" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{doctypename}]]></textFieldExpression>
 				</textField>
@@ -94,24 +153,24 @@ GROUP BY p.docentry
 		<groupFooter>
 			<band height="16">
 				<textField pattern="¤ #,##0.00">
-					<reportElement x="352" y="0" width="60" height="16" uuid="2210a0a6-e771-4812-890d-7223195dc3d1"/>
-					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$V{doctotal_1}]]></textFieldExpression>
-				</textField>
-				<textField pattern="¤ #,##0.00">
-					<reportElement x="412" y="0" width="60" height="16" uuid="6351355b-86b5-430a-b199-ec2f94c33ec0"/>
-					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$V{doctotal_2}]]></textFieldExpression>
-				</textField>
-				<textField pattern="¤ #,##0.00">
-					<reportElement x="292" y="0" width="60" height="16" uuid="45405671-6cb6-4a4f-9968-2103fda1515f"/>
+					<reportElement x="332" y="0" width="50" height="16" uuid="45405671-6cb6-4a4f-9968-2103fda1515f"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$V{costo_1}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="110" y="0" width="182" height="16" uuid="dbeff93f-b537-4842-804d-8401185b30fc"/>
+					<reportElement x="162" y="0" width="170" height="16" uuid="dbeff93f-b537-4842-804d-8401185b30fc"/>
 					<text><![CDATA[Subtotal:]]></text>
 				</staticText>
+				<textField pattern="¤ #,##0.00">
+					<reportElement x="382" y="0" width="60" height="16" uuid="fd0f8d8c-549d-4305-8e5b-04b28f031088"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{doctotal_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="¤ #,##0.00">
+					<reportElement x="442" y="0" width="60" height="16" uuid="322599c8-f4c4-47ab-88e0-151e84be3b60"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{doctotal_2}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupFooter>
 	</group>
@@ -121,14 +180,14 @@ GROUP BY p.docentry
 	<title>
 		<band height="80" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="20" width="472" height="20" uuid="2483f6c6-eed1-4b14-a75b-c8aa286d4f3a"/>
+				<reportElement x="0" y="20" width="502" height="20" uuid="2483f6c6-eed1-4b14-a75b-c8aa286d4f3a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="472" height="20" uuid="109ddf9f-67b8-4626-9d0b-ade37e1c30a9"/>
+				<reportElement x="0" y="0" width="502" height="20" uuid="109ddf9f-67b8-4626-9d0b-ade37e1c30a9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
@@ -188,74 +247,80 @@ GROUP BY p.docentry
 				</textElement>
 				<text><![CDATA[Desde:]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="60" width="472" height="20" uuid="923cb75f-d5c2-474c-b9ed-666c6434c458"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
+			<textField>
+				<reportElement x="0" y="60" width="502" height="20" uuid="da26e4ea-cb5e-4e3d-a796-516630204694"/>
+				<box bottomPadding="2"/>
+				<textElement verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$P{userName}.equals("-1")? " ":"Vendedor: " + $F{fullname}.toUpperCase()]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
 	<pageHeader>
 		<band height="29" splitType="Stretch">
 			<line>
-				<reportElement x="0" y="2" width="472" height="1" uuid="1c7af57e-605d-4fa2-b3a8-45fcfb7ca8d8"/>
+				<reportElement x="0" y="2" width="502" height="1" uuid="1c7af57e-605d-4fa2-b3a8-45fcfb7ca8d8"/>
 			</line>
 			<line>
-				<reportElement x="0" y="28" width="472" height="1" uuid="d478702c-11aa-40bc-8a55-7ded1c34c0e3"/>
+				<reportElement x="0" y="28" width="502" height="1" uuid="d478702c-11aa-40bc-8a55-7ded1c34c0e3"/>
 			</line>
 			<line>
-				<reportElement x="0" y="0" width="472" height="1" uuid="e37a9bfb-77f0-45f7-95d3-44a222c2fc68"/>
+				<reportElement x="0" y="0" width="502" height="1" uuid="e37a9bfb-77f0-45f7-95d3-44a222c2fc68"/>
 			</line>
 			<line>
-				<reportElement x="0" y="26" width="472" height="1" uuid="7b81c6dd-2c3d-4769-8cca-af681afaa32d"/>
+				<reportElement x="0" y="26" width="502" height="1" uuid="7b81c6dd-2c3d-4769-8cca-af681afaa32d"/>
 			</line>
 			<staticText>
-				<reportElement x="0" y="3" width="55" height="26" uuid="b9396e94-e07c-4da6-995a-8b89598a9f3b"/>
+				<reportElement x="35" y="1" width="55" height="26" uuid="b9396e94-e07c-4da6-995a-8b89598a9f3b"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="55" y="3" width="55" height="26" uuid="8874626f-e49d-408a-9c51-92107636a918"/>
+				<reportElement x="90" y="0" width="55" height="26" uuid="8874626f-e49d-408a-9c51-92107636a918"/>
+				<textElement textAlignment="Center"/>
 				<text><![CDATA[Número de documento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="110" y="3" width="182" height="26" uuid="0e9bcb72-0067-4b1f-b1b0-8bd9c01621b8"/>
+				<reportElement x="145" y="3" width="187" height="26" uuid="0e9bcb72-0067-4b1f-b1b0-8bd9c01621b8"/>
 				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Nombre]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="352" y="3" width="60" height="26" uuid="12e145a6-5310-4185-a74f-a9896f6724fb"/>
+				<reportElement x="382" y="3" width="60" height="26" uuid="12e145a6-5310-4185-a74f-a9896f6724fb"/>
 				<box rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[Contado]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="412" y="3" width="60" height="26" uuid="fa8bfe54-7b32-4bc3-bc0b-6b9d582e980b"/>
+				<reportElement x="442" y="3" width="60" height="26" uuid="fa8bfe54-7b32-4bc3-bc0b-6b9d582e980b"/>
 				<box rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[Crédito]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="292" y="2" width="60" height="26" uuid="1f5d2775-58fe-496d-8ba6-6aa45941ec22"/>
+				<reportElement x="332" y="3" width="50" height="26" uuid="1f5d2775-58fe-496d-8ba6-6aa45941ec22"/>
 				<box rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[Costo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="1" width="35" height="26" uuid="9c9306e2-c69a-4f49-890d-196a99f36f08"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Id]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
 	<detail>
 		<band height="16" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="0" y="0" width="55" height="16" uuid="7bf7f824-b85e-4e02-822d-5db31414650b"/>
+				<reportElement x="35" y="0" width="55" height="16" uuid="7bf7f824-b85e-4e02-822d-5db31414650b"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="110" y="0" width="182" height="16" uuid="3c4baf3e-b8bc-4b8a-95e4-a62b9862ce1a"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="145" y="0" width="187" height="16" uuid="3c4baf3e-b8bc-4b8a-95e4-a62b9862ce1a"/>
 				<box leftPadding="3"/>
 				<textElement>
 					<font size="9"/>
@@ -263,7 +328,7 @@ GROUP BY p.docentry
 				<textFieldExpression><![CDATA[$F{cardname}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="352" y="0" width="60" height="16" uuid="1d5874c9-12ec-4578-af88-fbb84603e013">
+				<reportElement x="382" y="0" width="60" height="16" uuid="1d5874c9-12ec-4578-af88-fbb84603e013">
 					<printWhenExpression><![CDATA[$F{peymethod}.equals("1")]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
@@ -272,7 +337,7 @@ GROUP BY p.docentry
 				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="412" y="0" width="60" height="16" uuid="453f64a6-dc69-4b73-bfe3-b659d4d8b60a">
+				<reportElement x="442" y="0" width="60" height="16" uuid="453f64a6-dc69-4b73-bfe3-b659d4d8b60a">
 					<printWhenExpression><![CDATA[$F{peymethod}.equals("2")]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
@@ -281,41 +346,45 @@ GROUP BY p.docentry
 				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="292" y="0" width="60" height="16" uuid="5736fa2c-e4a1-448d-95a2-73848cc6c644"/>
+				<reportElement x="332" y="0" width="50" height="16" uuid="5736fa2c-e4a1-448d-95a2-73848cc6c644"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{costo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="55" y="0" width="55" height="16" uuid="7b7f14ef-7103-4dfb-92c8-d416bbc5d98b"/>
-				<textFieldExpression><![CDATA[$F{numatcard}]]></textFieldExpression>
+				<reportElement x="90" y="0" width="55" height="16" uuid="7b7f14ef-7103-4dfb-92c8-d416bbc5d98b"/>
+				<textFieldExpression><![CDATA[$F{canceled}.equals("Y")?$F{numatcard}+"-C":$F{numatcard}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="35" height="16" uuid="72ec236b-7ce0-4e78-868c-7037daae5615"/>
+				<textFieldExpression><![CDATA[$F{docentry}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<pageFooter>
 		<band height="39" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy h.mm a">
-				<reportElement x="0" y="24" width="352" height="15" uuid="be1fe514-7e47-4c67-ab83-23c6e3b143a6"/>
+				<reportElement x="0" y="24" width="382" height="15" uuid="be1fe514-7e47-4c67-ab83-23c6e3b143a6"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="352" height="24" uuid="cd9695f6-7a9e-4020-a735-e2a3d644b856"/>
+				<reportElement x="0" y="0" width="382" height="24" uuid="cd9695f6-7a9e-4020-a735-e2a3d644b856"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{JASPER_REPORT}.getName()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="352" y="0" width="60" height="39" uuid="00be17dc-82d8-4325-8d87-d8d4a9e4c871"/>
+				<reportElement x="382" y="0" width="60" height="39" uuid="00be17dc-82d8-4325-8d87-d8d4a9e4c871"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="412" y="0" width="60" height="39" uuid="3be0829b-d16e-443c-98b9-532047a552e9"/>
+				<reportElement x="442" y="0" width="60" height="39" uuid="3be0829b-d16e-443c-98b9-532047a552e9"/>
 				<textElement verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
@@ -326,41 +395,41 @@ GROUP BY p.docentry
 	<lastPageFooter>
 		<band height="66">
 			<line>
-				<reportElement x="352" y="11" width="120" height="1" uuid="a4494856-59a6-4854-8d7a-8c78640d7f2c"/>
+				<reportElement x="382" y="11" width="120" height="1" uuid="a4494856-59a6-4854-8d7a-8c78640d7f2c"/>
 			</line>
 			<line>
-				<reportElement x="0" y="11" width="110" height="1" uuid="930ab58f-a4d5-4b43-93cb-9935e287bb1b"/>
+				<reportElement x="-1" y="11" width="110" height="1" uuid="930ab58f-a4d5-4b43-93cb-9935e287bb1b"/>
 			</line>
 			<textField evaluationTime="Report">
-				<reportElement x="412" y="27" width="60" height="39" uuid="92282c7e-5eea-4a35-bc94-53b9a123578b"/>
+				<reportElement x="442" y="27" width="60" height="39" uuid="92282c7e-5eea-4a35-bc94-53b9a123578b"/>
 				<textElement verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="352" y="27" width="60" height="39" uuid="16c52992-f9ae-43e5-aa73-3ea4a48356fc"/>
+				<reportElement x="382" y="27" width="60" height="39" uuid="16c52992-f9ae-43e5-aa73-3ea4a48356fc"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy h.mm a">
-				<reportElement x="0" y="51" width="352" height="15" uuid="11d23a0a-08d6-4e73-8c40-c63f019aada9"/>
+				<reportElement x="0" y="51" width="382" height="15" uuid="11d23a0a-08d6-4e73-8c40-c63f019aada9"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="27" width="352" height="24" uuid="91740022-53eb-4107-9f81-78b72c6d3e85"/>
+				<reportElement x="0" y="27" width="382" height="24" uuid="91740022-53eb-4107-9f81-78b72c6d3e85"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{JASPER_REPORT}.getName()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="352" y="12" width="120" height="15" uuid="de47b7e8-95d6-4727-bcc8-c53c78489f93"/>
+				<reportElement x="382" y="12" width="120" height="15" uuid="de47b7e8-95d6-4727-bcc8-c53c78489f93"/>
 				<box rightPadding="3"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="8"/>
@@ -368,7 +437,7 @@ GROUP BY p.docentry
 				<text><![CDATA[Revisado por:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="12" width="109" height="15" uuid="678f9c2f-be24-4fa1-a115-599d57838af5"/>
+				<reportElement x="0" y="12" width="109" height="15" uuid="678f9c2f-be24-4fa1-a115-599d57838af5"/>
 				<box rightPadding="3"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="8"/>
@@ -380,28 +449,28 @@ GROUP BY p.docentry
 	<summary>
 		<band height="22">
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="352" y="6" width="60" height="16" uuid="abb0828b-0bd8-4913-b9fd-d01633e710bc"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{doctotal_1}]]></textFieldExpression>
-			</textField>
-			<textField pattern="¤ #,##0.00">
-				<reportElement x="292" y="6" width="60" height="16" uuid="4c7b5f53-e54d-4729-99f3-e4e56e44179a"/>
+				<reportElement x="332" y="6" width="50" height="16" uuid="4c7b5f53-e54d-4729-99f3-e4e56e44179a"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{costo_1}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤ #,##0.00">
-				<reportElement x="412" y="6" width="60" height="16" uuid="48fe1a86-77b4-4eeb-bc44-b1ceb8bea7ce"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{doctotal_2}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="110" y="6" width="182" height="16" uuid="c70e3c2f-fd9d-46fa-bfd5-daf8c86d1659"/>
+				<reportElement x="140" y="6" width="192" height="16" uuid="c70e3c2f-fd9d-46fa-bfd5-daf8c86d1659"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Total:]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="5" width="472" height="1" uuid="f6c043e3-f98d-46ba-b6e2-92bd7f258687"/>
+				<reportElement x="0" y="5" width="502" height="1" uuid="f6c043e3-f98d-46ba-b6e2-92bd7f258687"/>
 			</line>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="382" y="6" width="60" height="16" uuid="162afe1c-4ea7-47e1-b035-349fe52c9dbc"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{doctotal_3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="442" y="6" width="60" height="16" uuid="a18fcf35-3d09-4706-ad23-8b54f0540d36"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{doctotal_4}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

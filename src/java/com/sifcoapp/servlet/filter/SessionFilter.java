@@ -9,10 +9,11 @@ package com.sifcoapp.servlet.filter;
  *
  * @author ri00642
  */
+import com.sifco.common.bean.LicenseBean;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-
+import javax.faces.context.FacesContext;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -32,7 +33,14 @@ public class SessionFilter implements Filter {
 
     public void doFilter(ServletRequest req, ServletResponse res,
             FilterChain chain) throws IOException, ServletException {
-
+        /*
+        FacesContext ctxt = FacesContext.getCurrentInstance();
+        Object objeto = ctxt.getExternalContext().getApplicationMap().get("LicenseBean");
+        LicenseBean LicBean = new LicenseBean();
+        if (objeto != null) {
+            LicBean = (LicenseBean) objeto;
+        }
+        */
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         String url = request.getServletPath();
@@ -117,7 +125,7 @@ public class SessionFilter implements Filter {
                     }
 
                 }
-                    //response.sendRedirect(request.getContextPath() + "/faces/login.xhtml");
+                //response.sendRedirect(request.getContextPath() + "/faces/login.xhtml");
                 // }
             }
         }
