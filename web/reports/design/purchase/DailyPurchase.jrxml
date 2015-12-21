@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DailyPurchase.jrxml" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="502" leftMargin="55" rightMargin="55" topMargin="35" bottomMargin="35" uuid="707d1793-2a3b-4cd8-8300-b30249552bc1">
 	<property name="ireport.zoom" value="1.464100000000001"/>
 	<property name="ireport.x" value="57"/>
-	<property name="ireport.y" value="56"/>
+	<property name="ireport.y" value="55"/>
 	<parameter name="reportName" class="java.lang.String"/>
 	<parameter name="corpName" class="java.lang.String">
 		<defaultValueExpression><![CDATA["ACOETMISAB DE R.L."]]></defaultValueExpression>
@@ -40,8 +40,7 @@ from pur_scn0_suppliercreditnotes p join pur_scn1_screditnotedetail d ON p.docen
 	ORDER BY p.objtype, p.series, p.docdate ASC, p.docentry )]]>
 	</queryString>
 	<field name="docentry" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Entrada doc.emis.
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Entrada doc.emis.]]></fieldDescription>
 	</field>
 	<field name="objtype" class="java.lang.String"/>
 	<field name="docnum" class="java.lang.Integer">
@@ -49,55 +48,45 @@ from pur_scn0_suppliercreditnotes p join pur_scn1_screditnotedetail d ON p.docen
 	</field>
 	<field name="doctype" class="java.lang.String"/>
 	<field name="docstatus" class="java.lang.String">
-		<fieldDescription><![CDATA[Status de documento
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Status de documento]]></fieldDescription>
 	</field>
 	<field name="docdate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha doc.
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Fecha doc.]]></fieldDescription>
 	</field>
 	<field name="numatcard" class="java.lang.String">
-		<fieldDescription><![CDATA[NÃºmero de referencia del SN
-]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de referencia del SN]]></fieldDescription>
 	</field>
 	<field name="canceled" class="java.lang.String">
-		<fieldDescription><![CDATA[Cancelado
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Cancelado]]></fieldDescription>
 	</field>
 	<field name="cardcode" class="java.lang.String">
-		<fieldDescription><![CDATA[Proveedor por defecto
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Proveedor por defecto]]></fieldDescription>
 	</field>
 	<field name="cardname" class="java.lang.String">
-		<fieldDescription><![CDATA[Nombre SN
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Nombre SN]]></fieldDescription>
 	</field>
 	<field name="vatsum" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Impuesto total
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Impuesto total]]></fieldDescription>
 	</field>
 	<field name="doctotal" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Total del documento
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Total del documento]]></fieldDescription>
 	</field>
 	<field name="peymethod" class="java.lang.String">
-		<fieldDescription><![CDATA[Forma de pago
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Forma de pago]]></fieldDescription>
 	</field>
 	<field name="usersign" class="java.lang.Integer">
 		<fieldDescription><![CDATA[Firma de usuario]]></fieldDescription>
 	</field>
 	<field name="fullname" class="java.lang.String"/>
 	<field name="series" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Serie
-]]></fieldDescription>
+		<fieldDescription><![CDATA[Serie]]></fieldDescription>
 	</field>
 	<field name="doctypename" class="java.lang.String"/>
 	<field name="costo" class="java.math.BigDecimal"/>
 	<variable name="PAGE_TOTAL" class="java.lang.Integer" resetType="Page" calculation="DistinctCount">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 	</variable>
-	<variable name="costo_1" class="java.math.BigDecimal" resetType="Group" resetGroup="doctype" calculation="Sum">
+	<variable name="costo_1" class="java.math.BigDecimal" resetType="Group" resetGroup="typeDoc" calculation="Sum">
 		<variableExpression><![CDATA[$F{costo}]]></variableExpression>
 	</variable>
 	<variable name="doctotal_1" class="java.math.BigDecimal" resetType="Group" resetGroup="typeDoc" calculation="Sum">
@@ -112,12 +101,15 @@ from pur_scn0_suppliercreditnotes p join pur_scn1_screditnotedetail d ON p.docen
 	<variable name="doctotal_4" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{peymethod}.equals("2")? $F{doctotal}:0.0]]></variableExpression>
 	</variable>
-	<group name="doctype">
+	<variable name="costo_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{costo}]]></variableExpression>
+	</variable>
+	<group name="obj">
 		<groupExpression><![CDATA[$F{objtype}]]></groupExpression>
 		<groupHeader>
 			<band height="32">
 				<staticText>
-					<reportElement x="0" y="16" width="332" height="16" uuid="7eaa15a2-c833-4301-b4fc-14d3eb3c6704">
+					<reportElement x="0" y="16" width="320" height="16" uuid="7eaa15a2-c833-4301-b4fc-14d3eb3c6704">
 						<printWhenExpression><![CDATA[$F{objtype}.equals("20")]]></printWhenExpression>
 					</reportElement>
 					<textElement>
@@ -126,7 +118,7 @@ from pur_scn0_suppliercreditnotes p join pur_scn1_screditnotedetail d ON p.docen
 					<text><![CDATA[COMPRAS]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="16" width="332" height="16" uuid="1a18dd7e-7b9f-4c6e-9971-71eade4b43bc">
+					<reportElement x="0" y="16" width="320" height="16" uuid="1a18dd7e-7b9f-4c6e-9971-71eade4b43bc">
 						<printWhenExpression><![CDATA[$F{objtype}.equals("21")]]></printWhenExpression>
 					</reportElement>
 					<textElement>
@@ -142,7 +134,7 @@ from pur_scn0_suppliercreditnotes p join pur_scn1_screditnotedetail d ON p.docen
 		<groupHeader>
 			<band height="16">
 				<textField isBlankWhenNull="true">
-					<reportElement x="0" y="0" width="332" height="16" uuid="18c1d3cb-19e8-4eee-b82d-f1d155aee7a5"/>
+					<reportElement x="0" y="0" width="320" height="16" uuid="18c1d3cb-19e8-4eee-b82d-f1d155aee7a5"/>
 					<textElement>
 						<font size="10" isBold="true"/>
 					</textElement>
@@ -153,12 +145,12 @@ from pur_scn0_suppliercreditnotes p join pur_scn1_screditnotedetail d ON p.docen
 		<groupFooter>
 			<band height="16">
 				<textField pattern="¤ #,##0.00">
-					<reportElement x="332" y="0" width="50" height="16" uuid="45405671-6cb6-4a4f-9968-2103fda1515f"/>
+					<reportElement x="320" y="0" width="62" height="16" uuid="45405671-6cb6-4a4f-9968-2103fda1515f"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$V{costo_1}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="162" y="0" width="170" height="16" uuid="dbeff93f-b537-4842-804d-8401185b30fc"/>
+					<reportElement x="162" y="0" width="158" height="16" uuid="dbeff93f-b537-4842-804d-8401185b30fc"/>
 					<text><![CDATA[Subtotal:]]></text>
 				</staticText>
 				<textField pattern="¤ #,##0.00">
@@ -251,7 +243,7 @@ from pur_scn0_suppliercreditnotes p join pur_scn1_screditnotedetail d ON p.docen
 				<reportElement x="0" y="60" width="502" height="20" uuid="da26e4ea-cb5e-4e3d-a796-516630204694"/>
 				<box bottomPadding="2"/>
 				<textElement verticalAlignment="Bottom"/>
-				<textFieldExpression><![CDATA[$P{userName}.equals("-1")? " ":"Vendedor: " + $F{fullname}.toUpperCase()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{userName}.equals("-1")? " ":"Comprador: " + $F{fullname}.toUpperCase()]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -280,7 +272,7 @@ from pur_scn0_suppliercreditnotes p join pur_scn1_screditnotedetail d ON p.docen
 				<text><![CDATA[Número de documento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="145" y="3" width="187" height="26" uuid="0e9bcb72-0067-4b1f-b1b0-8bd9c01621b8"/>
+				<reportElement x="145" y="3" width="175" height="26" uuid="0e9bcb72-0067-4b1f-b1b0-8bd9c01621b8"/>
 				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Nombre]]></text>
@@ -298,7 +290,7 @@ from pur_scn0_suppliercreditnotes p join pur_scn1_screditnotedetail d ON p.docen
 				<text><![CDATA[Crédito]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="332" y="3" width="50" height="26" uuid="1f5d2775-58fe-496d-8ba6-6aa45941ec22"/>
+				<reportElement x="320" y="3" width="62" height="26" uuid="1f5d2775-58fe-496d-8ba6-6aa45941ec22"/>
 				<box rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[Costo]]></text>
@@ -320,7 +312,7 @@ from pur_scn0_suppliercreditnotes p join pur_scn1_screditnotedetail d ON p.docen
 				<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="145" y="0" width="187" height="16" uuid="3c4baf3e-b8bc-4b8a-95e4-a62b9862ce1a"/>
+				<reportElement x="145" y="0" width="175" height="16" uuid="3c4baf3e-b8bc-4b8a-95e4-a62b9862ce1a"/>
 				<box leftPadding="3"/>
 				<textElement>
 					<font size="9"/>
@@ -346,7 +338,7 @@ from pur_scn0_suppliercreditnotes p join pur_scn1_screditnotedetail d ON p.docen
 				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="332" y="0" width="50" height="16" uuid="5736fa2c-e4a1-448d-95a2-73848cc6c644"/>
+				<reportElement x="320" y="0" width="62" height="16" uuid="5736fa2c-e4a1-448d-95a2-73848cc6c644"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{costo}]]></textFieldExpression>
 			</textField>
@@ -448,13 +440,8 @@ from pur_scn0_suppliercreditnotes p join pur_scn1_screditnotedetail d ON p.docen
 	</lastPageFooter>
 	<summary>
 		<band height="22">
-			<textField pattern="¤ #,##0.00">
-				<reportElement x="332" y="6" width="50" height="16" uuid="4c7b5f53-e54d-4729-99f3-e4e56e44179a"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{costo_1}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="140" y="6" width="192" height="16" uuid="c70e3c2f-fd9d-46fa-bfd5-daf8c86d1659"/>
+				<reportElement x="140" y="6" width="180" height="16" uuid="c70e3c2f-fd9d-46fa-bfd5-daf8c86d1659"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Total:]]></text>
 			</staticText>
@@ -470,6 +457,11 @@ from pur_scn0_suppliercreditnotes p join pur_scn1_screditnotedetail d ON p.docen
 				<reportElement x="442" y="6" width="60" height="16" uuid="a18fcf35-3d09-4706-ad23-8b54f0540d36"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$V{doctotal_4}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="320" y="6" width="62" height="16" uuid="3507af6c-c894-4b0d-81bb-7e9514e8b86c"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{costo_2}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

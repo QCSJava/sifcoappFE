@@ -55,11 +55,11 @@ public class repPurchases implements Serializable {
     private static ParameterEJBClient ParameterEJBClient;
 
     //articulo
-    String newCod  = "";
-    String newNomArt  = "";
-    private String user="";
+    String newCod = "";
+    String newNomArt = "";
+    private String user = "";
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="Autocomplete Socio" > 
     public List<String> compSocioCode(String query) {
         List _result = null;
@@ -136,7 +136,7 @@ public class repPurchases implements Serializable {
     }
 
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="DOPRINT">
     /*
      * despliega pdf a pantalla
@@ -159,7 +159,7 @@ public class repPurchases implements Serializable {
     }
 
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="Print">
     public void print(int _type) {
 
@@ -182,13 +182,18 @@ public class repPurchases implements Serializable {
         if (this.ftype == 1) {
             _reportname = "/purchase/DailyPurchase";
             _reportTitle = "Control Diario de Compras";
-
+            reportParameters.put("userName", "-1");
             _whereclausule = " docdate>=$P{pdocdate} and docdate<=$P{PDOCDATE2}";
             if (this.getFcode() != null && this.getFcode().length() > 0) {
                 _whereclausule += " and docnum=" + this.getFcode();
             }
             if (this.getFname() != null && this.getFname().length() > 0) {
                 _whereclausule += " and cardcode='" + this.getFname() + "'";
+            }
+            //t2.nickname = 'Hugo'
+            if (this.getUser() != null && this.getUser().length() > 0) {
+                _whereclausule += " and t2.nickname = '" + this.user + "'";
+                reportParameters.put("userName", "1");
             }
         }
 
@@ -380,7 +385,7 @@ public class repPurchases implements Serializable {
     }
 
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocioName() {
         String[] newName = fname2.split("-");
@@ -425,7 +430,6 @@ public class repPurchases implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="G&S">
-
     public String getUser() {
         return user;
     }
@@ -433,7 +437,7 @@ public class repPurchases implements Serializable {
     public void setUser(String user) {
         this.user = user;
     }
-    
+
     public static CatalogEJBClient getCatalogEJB() {
         return CatalogEJB;
     }
@@ -465,7 +469,7 @@ public class repPurchases implements Serializable {
     public void setNewNomArt(String newNomArt) {
         this.newNomArt = newNomArt;
     }
-    
+
     public String getFname2() {
         return fname2;
     }
@@ -564,7 +568,7 @@ public class repPurchases implements Serializable {
     }
 
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="Autocompletado" > 
     public List<String> completeText(String query) {
         List _result = null;

@@ -19,12 +19,15 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select docnum,doctype,docstatus,docdate,
-cardcode,cardname,p.vatsum,p.doctotal,p.peymethod,p.usersign,(select catvalue from cat_tab1_catalogos where catcode='1'
+		<![CDATA[select p.docnum,p.doctype,p.docstatus,p.docdate,
+p.cardcode,p.cardname,p.vatsum,p.doctotal,p.peymethod,p.usersign,(select catvalue from cat_tab1_catalogos where catcode='1'
 and tablecode=(select tablecode from cat_tab0_tables where tablename='TypesInvoices')) doctypename,
-d.itemcode, d.dscription,d.quantity,d.price,d.gtotal
-from pur_pur0_purchase p, pur_pur1_purchasedetail d
-where $P!{PWHERE}]]>
+d.itemcode,d.dscription,d.quantity,d.priceafvat,d.gtotal
+from pur_pur0_purchase p join pur_pur1_purchasedetail d on p.docentry = d.docentry
+	where $P!{PWHERE}
+	GROUP BY p.docentry,d.itemcode,d.dscription,d.quantity,d.priceafvat,d.gtotal
+	ORDER BY p.objtype, p.cardcode ASC, p.docdate ASC, p.docnum ASC
+]]>
 	</queryString>
 	<field name="docnum" class="java.lang.Integer">
 		<fieldDescription><![CDATA[NÃºmero de documento]]></fieldDescription>
@@ -74,8 +77,8 @@ where $P!{PWHERE}]]>
 		<fieldDescription><![CDATA[Cantidad en doc.
 ]]></fieldDescription>
 	</field>
-	<field name="price" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Precio
+	<field name="priceafvat" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Precio bruto
 ]]></fieldDescription>
 	</field>
 	<field name="gtotal" class="java.math.BigDecimal">
@@ -196,7 +199,7 @@ where $P!{PWHERE}]]>
 				<text><![CDATA[Código]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="128" y="3" width="133" height="16" uuid="1adabdca-57fe-45e2-8b9f-3f92fcdea10c"/>
+				<reportElement x="128" y="3" width="213" height="16" uuid="1adabdca-57fe-45e2-8b9f-3f92fcdea10c"/>
 				<text><![CDATA[Descripción artículo/serv.
 ]]></text>
 			</staticText>
@@ -206,19 +209,15 @@ where $P!{PWHERE}]]>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="261" y="3" width="45" height="16" uuid="ae675c2f-7cac-48c6-8be8-29ecb5c062ba"/>
+				<reportElement x="341" y="3" width="45" height="16" uuid="ae675c2f-7cac-48c6-8be8-29ecb5c062ba"/>
 				<textElement textAlignment="Right"/>
 				<text><![CDATA[Cantidad ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="306" y="3" width="72" height="16" uuid="2bb0fcd6-ad97-41e8-ba3f-4ade60915328"/>
+				<reportElement x="386" y="3" width="72" height="16" uuid="2bb0fcd6-ad97-41e8-ba3f-4ade60915328"/>
 				<textElement textAlignment="Right"/>
 				<text><![CDATA[Total
 ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="378" y="3" width="39" height="16" uuid="fa521fa6-e24b-40c7-a165-c34aaf747c46"/>
-				<text><![CDATA[]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -231,8 +230,8 @@ where $P!{PWHERE}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{itemcode}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="128" y="0" width="133" height="16" uuid="77f91e56-f65c-4982-b413-c864363fa391"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="128" y="0" width="213" height="16" uuid="77f91e56-f65c-4982-b413-c864363fa391"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
@@ -247,14 +246,14 @@ where $P!{PWHERE}]]>
 				<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="261" y="0" width="45" height="16" uuid="f2695ab3-0ef0-4325-9132-be3bc809b4a5"/>
+				<reportElement x="341" y="0" width="45" height="16" uuid="f2695ab3-0ef0-4325-9132-be3bc809b4a5"/>
 				<textElement textAlignment="Right">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="306" y="0" width="72" height="16" uuid="cb508ddf-31c2-4ac9-857f-a13398e8d174"/>
+				<reportElement x="386" y="0" width="72" height="16" uuid="cb508ddf-31c2-4ac9-857f-a13398e8d174"/>
 				<textElement textAlignment="Right">
 					<font size="10"/>
 				</textElement>
@@ -265,28 +264,28 @@ where $P!{PWHERE}]]>
 	<pageFooter>
 		<band height="39" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy h.mm a">
-				<reportElement x="0" y="24" width="301" height="15" uuid="be1fe514-7e47-4c67-ab83-23c6e3b143a6"/>
+				<reportElement x="0" y="24" width="341" height="15" uuid="be1fe514-7e47-4c67-ab83-23c6e3b143a6"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="301" height="24" uuid="cd9695f6-7a9e-4020-a735-e2a3d644b856"/>
+				<reportElement x="0" y="0" width="341" height="24" uuid="cd9695f6-7a9e-4020-a735-e2a3d644b856"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{JASPER_REPORT}.getName()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="301" y="0" width="111" height="39" uuid="1fabb7c7-11c8-4b90-b870-27b27725147e"/>
+				<reportElement x="341" y="0" width="45" height="39" uuid="1fabb7c7-11c8-4b90-b870-27b27725147e"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="412" y="0" width="60" height="39" uuid="62847f8a-6510-480c-bda0-cf9db7243846"/>
+				<reportElement x="386" y="0" width="72" height="39" uuid="62847f8a-6510-480c-bda0-cf9db7243846"/>
 				<textElement verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BookSales" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3fe33911-5026-49dd-bba0-74ef06485f12">
 	<property name="ireport.zoom" value="1.1000000000000036"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="87"/>
+	<property name="ireport.y" value="73"/>
 	<parameter name="corpName" class="java.lang.String">
 		<defaultValueExpression><![CDATA["ACOETMISAB DE R.L."]]></defaultValueExpression>
 	</parameter>
@@ -16,7 +16,7 @@
 	<queryString>
 		<![CDATA[select p.docnum,p.docdate,p.vatsum as debito,p.doctotal as totalventa, Q1.total as Tventas, Q1.exento as Eventas, Q2.total as Tcompras, Q2.exento as Ecompras
 
-from sal_sal0_sales p,
+from sal_sal0_sales p right join
 
 (select	sum(p.doctotal) as total,
 	coalesce( sum(CASE WHEN d.taxcode = 'FOV' THEN d.quantity * (CAST(split_part(d.vatgroup, '|',2) as float)
@@ -24,17 +24,16 @@ from sal_sal0_sales p,
 		   ),0.0) as exento
 
 	from sal_sal0_sales p join sal_sal1_salesdetail d ON p.docentry = d.docentry
-	where p.series in (1,3) and p.docdate>=$P{pdocdate} and p.docdate<=$P{PDOCDATE2}) as Q1,
-
+	where p.series in (1,3) and p.docdate>=$P{pdocdate} and p.docdate<=$P{PDOCDATE2}) as Q1 on 1=1
+	and p.docdate>=$P{pdocdate} and p.docdate<=$P{PDOCDATE2} and p.series = 2
+right join
 (select	sum(p.doctotal) as total,
 	coalesce( sum(CASE WHEN d.taxcode = 'FOV' THEN d.quantity * (CAST(split_part(d.vatgroup, '|',2) as float)
 			+ CAST(split_part(d.vatgroup, '|',3)as float)) END
 		   ),0.0) as exento
 
 	from pur_pur0_purchase p join pur_pur1_purchasedetail d ON p.docentry = d.docentry
-	where p.series in (1,3) and p.docdate>=$P{pdocdate} and p.docdate<=$P{PDOCDATE2}) as Q2
-
-where p.docdate>=$P{pdocdate} and p.docdate<=$P{PDOCDATE2} and p.series = 2
+	where p.series in (1,3) and p.docdate>=$P{pdocdate} and p.docdate<=$P{PDOCDATE2}) as Q2 on 1=1
 
 ORDER BY p.docdate ASC, p.docentry ASC]]>
 	</queryString>
@@ -42,7 +41,8 @@ ORDER BY p.docdate ASC, p.docentry ASC]]>
 		<fieldDescription><![CDATA[NÃºmero de documento]]></fieldDescription>
 	</field>
 	<field name="docdate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha doc.]]></fieldDescription>
+		<fieldDescription><![CDATA[Fecha doc.
+]]></fieldDescription>
 	</field>
 	<field name="debito" class="java.math.BigDecimal"/>
 	<field name="totalventa" class="java.math.BigDecimal"/>
@@ -345,7 +345,7 @@ ORDER BY p.docdate ASC, p.docentry ASC]]>
 				</textElement>
 				<text><![CDATA[0.00]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="402" y="0" width="42" height="15" uuid="59676d89-b554-4ae1-ae6e-6f65c9fafbc1"/>
 				<box rightPadding="5"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -353,7 +353,7 @@ ORDER BY p.docdate ASC, p.docentry ASC]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{debito}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="579" y="0" width="38" height="15" uuid="54da7115-8230-47d5-bee6-1dd0448e6b1b"/>
 				<box rightPadding="5"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -1118,7 +1118,7 @@ ORDER BY p.docdate ASC, p.docentry ASC]]>
 				</textElement>
 				<text><![CDATA[0.00]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="402" y="1" width="42" height="15" uuid="b7715b6d-5f5c-41d4-9f57-25b9864f6534"/>
 				<box rightPadding="5"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -1126,7 +1126,7 @@ ORDER BY p.docdate ASC, p.docentry ASC]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{debito_1}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="579" y="1" width="38" height="15" uuid="3ed5cd21-2eb5-4de6-9a2a-4d908f46d54b"/>
 				<box rightPadding="5"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">

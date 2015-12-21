@@ -16,39 +16,50 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select docnum,doctype,docstatus,docdate,
-cardcode,cardname,p.vatsum,p.doctotal,p.peymethod,p.usersign,(select catvalue from cat_tab1_catalogos where to_number(catcode,'99')=p.series
-and tablecode=(select tablecode from cat_tab0_tables where tablename='TypesInvoices')) doctypename,
-(select catvalue from cat_tab1_catalogos where catcode=p.peymethod
-and tablecode=(select tablecode from cat_tab0_tables where tablename='TypesPayment')) doctypepay
+		<![CDATA[select docnum,doctype,docstatus,docdate,cardcode,cardname,p.vatsum,p.doctotal,
+	p.peymethod,p.usersign,
+	(select catvalue from cat_tab1_catalogos where to_number(catcode,'99')=p.series
+		and tablecode=(select tablecode from cat_tab0_tables where tablename='TypesInvoices')) doctypename,
+
+	(select catvalue from cat_tab1_catalogos where catcode=p.peymethod
+		and tablecode=(select tablecode from cat_tab0_tables where tablename='TypesPayment')) doctypepay
+
 from pur_pur0_purchase p
 where $P!{PWHERE}
-order by cardcode,docnum]]>
+order by cardcode,docnum
+]]>
 	</queryString>
 	<field name="docnum" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Número de documento]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de documento]]></fieldDescription>
 	</field>
 	<field name="doctype" class="java.lang.String"/>
 	<field name="docstatus" class="java.lang.String">
-		<fieldDescription><![CDATA[Status de documento]]></fieldDescription>
+		<fieldDescription><![CDATA[Status de documento
+]]></fieldDescription>
 	</field>
 	<field name="docdate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha doc.]]></fieldDescription>
+		<fieldDescription><![CDATA[Fecha doc.
+]]></fieldDescription>
 	</field>
 	<field name="cardcode" class="java.lang.String">
-		<fieldDescription><![CDATA[Proveedor por defecto]]></fieldDescription>
+		<fieldDescription><![CDATA[Proveedor por defecto
+]]></fieldDescription>
 	</field>
 	<field name="cardname" class="java.lang.String">
-		<fieldDescription><![CDATA[Nombre SN]]></fieldDescription>
+		<fieldDescription><![CDATA[Nombre SN
+]]></fieldDescription>
 	</field>
-	<field name="vatsum" class="java.lang.String">
-		<fieldDescription><![CDATA[Impuesto total]]></fieldDescription>
+	<field name="vatsum" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Impuesto total
+]]></fieldDescription>
 	</field>
 	<field name="doctotal" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Total del documento]]></fieldDescription>
+		<fieldDescription><![CDATA[Total del documento
+]]></fieldDescription>
 	</field>
 	<field name="peymethod" class="java.lang.String">
-		<fieldDescription><![CDATA[Forma de pago]]></fieldDescription>
+		<fieldDescription><![CDATA[Forma de pago
+]]></fieldDescription>
 	</field>
 	<field name="usersign" class="java.lang.Integer">
 		<fieldDescription><![CDATA[Firma de usuario]]></fieldDescription>
@@ -63,7 +74,7 @@ order by cardcode,docnum]]>
 		<groupHeader>
 			<band height="16">
 				<textField isBlankWhenNull="true">
-					<reportElement x="0" y="0" width="472" height="16" uuid="2fcc2030-2981-4bb9-ac5e-531e2f6a671e"/>
+					<reportElement x="0" y="0" width="412" height="16" uuid="2fcc2030-2981-4bb9-ac5e-531e2f6a671e"/>
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
@@ -72,7 +83,7 @@ order by cardcode,docnum]]>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="10"/>
+			<band height="16"/>
 		</groupFooter>
 	</group>
 	<background>
@@ -175,7 +186,7 @@ order by cardcode,docnum]]>
 				<text><![CDATA[Número de documento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="237" y="3" width="50" height="26" uuid="12e145a6-5310-4185-a74f-a9896f6724fb"/>
+				<reportElement x="237" y="3" width="68" height="26" uuid="12e145a6-5310-4185-a74f-a9896f6724fb"/>
 				<textElement textAlignment="Center" verticalAlignment="Top"/>
 				<text><![CDATA[Valor
 Facturado]]></text>
@@ -186,7 +197,7 @@ Facturado]]></text>
 				<text><![CDATA[Tipo de documento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="287" y="3" width="125" height="26" uuid="55fedbc2-67aa-4fc2-aad6-b5f9b86dc237"/>
+				<reportElement x="305" y="3" width="107" height="26" uuid="55fedbc2-67aa-4fc2-aad6-b5f9b86dc237"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Tipo de Pago]]></text>
 			</staticText>
@@ -209,7 +220,7 @@ Facturado]]></text>
 				<textFieldExpression><![CDATA[$F{docnum}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="237" y="0" width="50" height="16" uuid="1d5874c9-12ec-4578-af88-fbb84603e013"/>
+				<reportElement x="237" y="0" width="68" height="16" uuid="1d5874c9-12ec-4578-af88-fbb84603e013"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
@@ -223,7 +234,7 @@ Facturado]]></text>
 				<textFieldExpression><![CDATA[$F{doctypename}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="287" y="0" width="125" height="16" uuid="a6d2ce0a-5eb1-4f0b-8e44-ca689dab77e1"/>
+				<reportElement x="305" y="0" width="107" height="16" uuid="a6d2ce0a-5eb1-4f0b-8e44-ca689dab77e1"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
@@ -234,14 +245,14 @@ Facturado]]></text>
 	<pageFooter>
 		<band height="39" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy h.mm a">
-				<reportElement x="0" y="24" width="287" height="15" uuid="be1fe514-7e47-4c67-ab83-23c6e3b143a6"/>
+				<reportElement x="0" y="24" width="305" height="15" uuid="be1fe514-7e47-4c67-ab83-23c6e3b143a6"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="287" height="24" uuid="cd9695f6-7a9e-4020-a735-e2a3d644b856"/>
+				<reportElement x="0" y="0" width="305" height="24" uuid="cd9695f6-7a9e-4020-a735-e2a3d644b856"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -255,7 +266,7 @@ Facturado]]></text>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="287" y="0" width="125" height="39" uuid="73d3f11d-e3cd-439a-9943-59ab5a309d1e"/>
+				<reportElement x="305" y="0" width="107" height="39" uuid="73d3f11d-e3cd-439a-9943-59ab5a309d1e"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
