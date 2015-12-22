@@ -71,13 +71,13 @@
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2"><p:outputLabel  value="Fecha Inicio:" for="FechaInicio" ></p:outputLabel></div>
                             <div class="ui-grid-col-2">
-                                <p:calendar required="true" id="FechaInicio" value="#{rsales.fdatefrom}" showOn="button" size="10"  pattern="dd/MM/yyyy" />
+                                <p:calendar mask="true"  required="true" id="FechaInicio" value="#{rsales.fdatefrom}" showOn="button" size="10"  pattern="dd/MM/yyyy" />
                             </div>
                         </div>
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2"><p:outputLabel  value="Fecha Fin:" for="FechaFin" ></p:outputLabel></div>
                             <div class="ui-grid-col-2">
-                                <p:calendar required="true" id="FechaFin" value="#{rsales.fdateto}" showOn="button" size="10"  pattern="dd/MM/yyyy" />
+                                <p:calendar mask="true"  required="true" id="FechaFin" value="#{rsales.fdateto}" showOn="button" size="10"  pattern="dd/MM/yyyy" />
                             </div>
                         </div>
                         <p:spacer height="20" width="0"/>

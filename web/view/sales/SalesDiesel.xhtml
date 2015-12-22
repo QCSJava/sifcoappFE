@@ -47,7 +47,7 @@
                             <div class="ui-grid-col-2"><p:inputText id="inNo" disabled="#{salesDieselBean.disabledDocNum}" size="15" value="#{salesDieselBean.docNum}"/></div>
                             <div class="ui-grid-col-4"></div>
                             <div class="ui-grid-col-2"><p:outputLabel value="Fecha Contabilizacion" for="f1"/></div>
-                            <div class="ui-grid-col-2"><p:calendar id="f1" showOn="button" size="16"  pattern="dd/MM/yyyy" value="#{salesDieselBean.fechaConta}" disabled="#{salesDieselBean.disabledSearch}"/></div>
+                            <div class="ui-grid-col-2"><p:calendar mask="true"  id="f1" showOn="button" size="16"  pattern="dd/MM/yyyy" value="#{salesDieselBean.fechaConta}" disabled="#{salesDieselBean.disabledSearch}"/></div>
                         </div>
                         <p:spacer height="#{salesDieselBean.spacer}" width="0"/>
                         <div class="ui-grid-row">

@@ -48,9 +48,9 @@
                             <div class="ui-grid-col-2">
                                 <p:inputText size="15" id="number" value="#{JournalEntry.number}" readonly="#{JournalEntry.disableX}"></p:inputText>
                             </div>
-                            <div class="ui-grid-col-2"><p:calendar id="FechaCont" value="#{JournalEntry.refdate}" showOn="button" size="15"  pattern="dd/MM/yyyy" locale="es"  disabled="#{JournalEntry.disableY}"/></div>
-                            <div class="ui-grid-col-2"><p:calendar id="FechaVenc" value="#{JournalEntry.duedate}" showOn="button" size="15" pattern="dd/MM/yyyy" locale="es" disabled="#{JournalEntry.disableY}"/></div>
-                            <div class="ui-grid-col-2"><p:calendar id="FechaDoc" value="#{JournalEntry.taxdate}" showOn="button" size="15" pattern="dd/MM/yyyy" locale="es" disabled="#{JournalEntry.disableY}"/></div>
+                            <div class="ui-grid-col-2"><p:calendar mask="true"  id="FechaCont" value="#{JournalEntry.refdate}" showOn="button" size="15"  pattern="dd/MM/yyyy" locale="es"  disabled="#{JournalEntry.disableY}"/></div>
+                            <div class="ui-grid-col-2"><p:calendar mask="true"  id="FechaVenc" value="#{JournalEntry.duedate}" showOn="button" size="15" pattern="dd/MM/yyyy" locale="es" disabled="#{JournalEntry.disableY}"/></div>
+                            <div class="ui-grid-col-2"><p:calendar mask="true"  id="FechaDoc" value="#{JournalEntry.taxdate}" showOn="button" size="15" pattern="dd/MM/yyyy" locale="es" disabled="#{JournalEntry.disableY}"/></div>
                         </div>
                         <p:spacer height="7" width="0"></p:spacer>
                         <div class="ui-grid-row">

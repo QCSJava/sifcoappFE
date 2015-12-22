@@ -58,7 +58,7 @@
                         </div>
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2">
-                                <p:calendar required="true" id="f1" showOn="button" size="15"  pattern="dd/MM/yyyy" value="#{conciliationBean.fechaCuentas}">
+                                <p:calendar mask="true"  required="true" id="f1" showOn="button" size="15"  pattern="dd/MM/yyyy" value="#{conciliationBean.fechaCuentas}">
                                      <p:ajax event="dateSelect"  update="f1" />
                                 </p:calendar>
                             </div>

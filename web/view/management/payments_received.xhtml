@@ -33,18 +33,18 @@
                         
                         <!-- Fecha y Saldo de columna -->
                         <h:outputLabel value="#{msg_payment['message_payment.postdate']}"/>
-                        <p:calendar id="postdate" value="#{paymentBank.postdate}" showOn="button" />
+                        <p:calendar mask="true"  id="postdate" value="#{paymentBank.postdate}" showOn="button" />
                         
                         <p:outputLabel  value="#{msg_payment['message_payment.contact']} :"  />
                         <p:inputText id="paycon" value="#{paymentBank.contact}"/>
                         
                         <!-- Saldo de Columna -->
                         <h:outputLabel value="#{msg_payment['message_payment.postdoc']}"/>
-                        <p:calendar id="postdoc" value="#{paymentBank.postdoc}" showOn="button" />
+                        <p:calendar mask="true"  id="postdoc" value="#{paymentBank.postdoc}" showOn="button" />
                         
                        
                         <h:outputLabel value="#{msg_payment['message_payment.postdocf']}"/>
-                        <p:calendar id="postdocf" value="#{paymentBank.postdocf}" showOn="button" />
+                        <p:calendar mask="true"  id="postdocf" value="#{paymentBank.postdocf}" showOn="button" />
                         <!-- Salto de Columna -->
                         <!-- Salto de Columna -->
                         
@@ -57,7 +57,7 @@
                         <!-- Salto de Columna -->
                         <!-- Salto de Columna -->
                         <h:outputLabel value="#{msg_payment['message_payment.referen']}"/>
-                        <p:calendar id="referen" value="#{paymentBank.reference}" showOn="referen" />
+                        <p:calendar mask="true"  id="referen" value="#{paymentBank.reference}" showOn="referen" />
                         
 
 

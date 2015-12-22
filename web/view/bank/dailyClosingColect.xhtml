@@ -43,7 +43,7 @@
                                 <p:outputLabel value="Fecha de Contabilizacion"/>
                             </div>
                             <div class="ui-grid-col-2">
-                                <p:calendar id="f1" showOn="button" size="15"  pattern="dd/MM/yyyy" value="#{dailyClosingColectBean.fecha}" >
+                                <p:calendar mask="true"  id="f1" showOn="button" size="15"  pattern="dd/MM/yyyy" value="#{dailyClosingColectBean.fecha}" >
                                     <p:ajax event="dateSelect" listener="#{dailyClosingColectBean.onDateSelect}" />
                                 </p:calendar>
                             </div>

@@ -29,14 +29,14 @@
                         <div class="ui-grid-row">                            
                             <div class="ui-grid-col-2"><p:outputLabel  value="Reporte Del:" for="FechaInicio" ></p:outputLabel></div>
                             <div class="ui-grid-col-2">
-                                <p:calendar id="FechaInicio" value="#{raccount.fdatefrom}" showOn="button" size="15"  pattern="dd/MM/yyyy" />
+                                <p:calendar mask="true"  id="FechaInicio" value="#{raccount.fdatefrom}" showOn="button" size="15"  pattern="dd/MM/yyyy" />
                             </div>
                         </div>
                         <div class="ui-grid-row">
 
                             <div class="ui-grid-col-2"><p:outputLabel  value="Reporte Al:" for="FechaFin" ></p:outputLabel></div>
                             <div class="ui-grid-col-2">
-                                <p:calendar id="FechaFin" value="#{raccount.fdateto}" showOn="button" size="15"  pattern="dd/MM/yyyy" />
+                                <p:calendar mask="true"  id="FechaFin" value="#{raccount.fdateto}" showOn="button" size="15"  pattern="dd/MM/yyyy" />
                             </div>
                         </div>
                         <p:spacer height="10" width="0"/>

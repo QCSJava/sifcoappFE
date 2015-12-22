@@ -43,7 +43,7 @@
                             <div class="ui-grid-col-2"><p:inputText id="docEntry" size="10" value="#{goodsIssuesBean.docNum}" disabled="#{goodsIssuesBean.docEntryState}"></p:inputText></div>
                             <div class="ui-grid-col-4"></div>
                             <div class="ui-grid-col-2"><h:outputText value="Fecha Contabilizacion" ></h:outputText></div>
-                            <div class="ui-grid-col-2"><p:calendar id="FechaCont" value="#{goodsIssuesBean.fechaConta}" showOn="button" size="10"  pattern="dd/MM/yyyy" disabled="#{goodsIssuesBean.disable}"/></div>
+                            <div class="ui-grid-col-2"><p:calendar mask="true"  id="FechaCont" value="#{goodsIssuesBean.fechaConta}" showOn="button" size="10"  pattern="dd/MM/yyyy" disabled="#{goodsIssuesBean.disable}"/></div>
                         </div>
 
                         <div class="ui-grid-row">
@@ -60,7 +60,7 @@
                             </div>
 
                             <div class="ui-grid-col-2"><h:outputText value="Fecha Documento"/></div>
-                            <div class="ui-grid-col-2"><p:calendar id="FechaDoc" value="#{goodsIssuesBean.fechaDoc}" showOn="button" size="10" pattern="dd/MM/yyyy" locale="es" disabled="#{goodsIssuesBean.disable}"/></div>
+                            <div class="ui-grid-col-2"><p:calendar mask="true"  id="FechaDoc" value="#{goodsIssuesBean.fechaDoc}" showOn="button" size="10" pattern="dd/MM/yyyy" locale="es" disabled="#{goodsIssuesBean.disable}"/></div>
                         </div>
 
                         <div class="ui-grid-row">

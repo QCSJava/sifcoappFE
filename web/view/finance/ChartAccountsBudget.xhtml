@@ -5,15 +5,29 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <script> function justNumbers(e)
-        {
-            var keynum = window.event ? window.event.keyCode : e.which;
-            if ((keynum === 8) || (keynum === 46))
-                return true;
 
-            return /\d/.test(String.fromCharCode(keynum));
-        }
-    </script>
+    <head>
+        <script>
+            function format(input)
+            {
+                var num = input.value.replace(/\./g, '');
+                if (!isNaN(num)) {
+                    num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g, '$1.');
+                    num = num.split('').reverse().join('').replace(/^[\.]/, '');
+                    input.value = num;
+                }
+            }
+        </script>
+        <script> function justNumbers(e)
+            {
+                var keynum = window.event ? window.event.keyCode : e.which;
+                if ((keynum === 8) || (keynum === 46))
+                    return true;
+
+                return /\d/.test(String.fromCharCode(keynum));
+            }
+        </script>
+    </head>
     <body>
 
         <ui:composition template="./../../template.xhtml">
@@ -55,13 +69,15 @@
                                     <p:column headerText="Cuenta" >
                                         <h:outputText value="#{documentnew.name}" style="width: 50%"/>
                                     </p:column>
-                                    
+
                                     <p:column headerText="Presupuesto" style="width: 15%">
                                         <p:inputText id="debe" disabled="#{documentnew.post=='Y' ? false:true}" value="#{documentnew.monto}"  type="number"/>
                                     </p:column>
-                                    
+
                                     <p:column headerText="Saldo a Fecha" style="width: 15%">
-                                        <h:outputText value="#{documentnew.size}"/>
+                                        <h:outputText value="#{documentnew.size}">
+                                            <f:convertNumber minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                        </h:outputText>
                                     </p:column>
                                 </p:treeTable> 
                             </div>

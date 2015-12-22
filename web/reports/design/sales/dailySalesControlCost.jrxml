@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dailySalesControlCost.jrxml" pageWidth="612" pageHeight="792" columnWidth="542" leftMargin="35" rightMargin="35" topMargin="35" bottomMargin="35" uuid="d665bf20-2d51-4d8b-aae5-566096205736">
-	<property name="ireport.zoom" value="1.6105100000000017"/>
+	<property name="ireport.zoom" value="1.4641000000000015"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="112"/>
+	<property name="ireport.y" value="1"/>
 	<parameter name="pdocnum" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -167,7 +167,7 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 				<textField>
 					<reportElement x="50" y="1" width="165" height="16" uuid="22505acf-ae1e-4924-93e1-6253245bbc35"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="SansSerif" size="10"/>
+						<font fontName="SansSerif" size="9"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Subtotal "+$F{doctypename}+":  "]]></textFieldExpression>
 				</textField>
@@ -179,32 +179,44 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 				</line>
 				<textField pattern="¤ #,##0.00">
 					<reportElement x="215" y="1" width="45" height="15" uuid="cdd01966-7089-42e0-8a36-06b8e1ff0d50"/>
-					<textElement textAlignment="Right"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$V{costo_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="¤ #,##0.00">
 					<reportElement x="260" y="1" width="55" height="16" uuid="7a9ddaa8-74e1-4412-a860-d29ba5a3d9e8"/>
-					<textElement textAlignment="Right"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$V{doctotal_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="¤ #,##0.00">
 					<reportElement x="315" y="1" width="53" height="16" uuid="81711911-7215-41dc-9709-ac5485216397"/>
-					<textElement textAlignment="Right"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$V{doctotal_2}]]></textFieldExpression>
 				</textField>
 				<textField pattern="¤ #,##0.00">
 					<reportElement x="368" y="1" width="63" height="15" uuid="4bfb2998-07dc-4987-b5db-dbf946224103"/>
-					<textElement textAlignment="Right"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$V{doctotal_3}]]></textFieldExpression>
 				</textField>
 				<textField pattern="¤ #,##0.00">
 					<reportElement x="431" y="1" width="69" height="15" uuid="eb3bbd7b-bb6f-479b-b418-39799483b1ce"/>
-					<textElement textAlignment="Right"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$V{doctotal_4}]]></textFieldExpression>
 				</textField>
 				<textField pattern="¤ #,##0.00">
 					<reportElement x="500" y="1" width="42" height="15" uuid="c60fb551-531c-4d2b-833d-3161e661dc74"/>
-					<textElement textAlignment="Right"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$V{utilidad_2}]]></textFieldExpression>
 				</textField>
 			</band>
@@ -394,7 +406,7 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 					<printWhenExpression><![CDATA[$F{peymethod}.equals("2")]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
-					<font fontName="SansSerif" size="10"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
 			</textField>
@@ -403,7 +415,7 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 					<printWhenExpression><![CDATA[$F{peymethod}.equals("3")]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
-					<font fontName="SansSerif" size="10"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
 			</textField>
@@ -412,14 +424,14 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 					<printWhenExpression><![CDATA[$F{peymethod}.equals("4")]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
-					<font fontName="SansSerif" size="10"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="50" y="0" width="55" height="15" uuid="bcf13113-1eab-441b-bd6d-3b14f221c6e1"/>
 				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="10"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{canceled}.equals("Y")?$F{numatcard}+"-C":$F{numatcard}]]></textFieldExpression>
 			</textField>
@@ -428,18 +440,22 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 					<printWhenExpression><![CDATA[$F{peymethod}.equals("1")]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right">
-					<font fontName="SansSerif" size="10"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{doctotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
 				<reportElement x="500" y="0" width="42" height="15" uuid="be906277-b69b-44cf-8677-82f33eec8dec"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{utilidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
 				<reportElement x="215" y="0" width="45" height="15" uuid="542f8522-8f34-457c-bb37-edb7bebccfd7"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{costo}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -542,33 +558,43 @@ and tablecode=9) doctypename, SUM(d.stockpricestockprice * d.quantity) as costo,
 				<reportElement x="0" y="0" width="260" height="16" uuid="d5ad3630-495f-45d4-b614-2b644924d74e"/>
 				<box rightPadding="8"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<text><![CDATA[Ventas Totales:]]></text>
 			</staticText>
 			<textField pattern="¤ #,##0.00">
 				<reportElement x="260" y="0" width="55" height="16" uuid="38506e85-574a-47ae-8869-2c6ca063b09a"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{doctotal_5}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
 				<reportElement x="315" y="0" width="53" height="16" uuid="be93b11f-10b9-47ef-b18e-77674eb190e2"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{doctotal_6}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
 				<reportElement x="368" y="0" width="63" height="16" uuid="061a8ef5-47c0-4bb4-8847-b625be0f2c8d"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{doctotal_7}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
 				<reportElement x="431" y="0" width="69" height="16" uuid="4add9d92-8504-4ddf-aa99-8e8756850751"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{doctotal_8}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
 				<reportElement x="500" y="0" width="42" height="16" uuid="8261a366-e58d-42bf-84fc-96a1e5b38f6f"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{utilidad_1}]]></textFieldExpression>
 			</textField>
 		</band>

@@ -16,7 +16,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select docnum,doctype,docstatus,docdate,
+		<![CDATA[select docnum,doctype,docstatus,docdate,p.docentry,p.numatcard,
 cardcode,cardname,p.vatsum,p.doctotal,p.peymethod,p.usersign,(select catvalue from cat_tab1_catalogos where catcode=p.doctype
 and tablecode=(select tablecode from cat_tab0_tables where tablename='TypesInvoices')) doctypename,
 (select catvalue from cat_tab1_catalogos where catcode=p.peymethod
@@ -31,25 +31,40 @@ order by docnum,d.linenum]]>
 	</field>
 	<field name="doctype" class="java.lang.String"/>
 	<field name="docstatus" class="java.lang.String">
-		<fieldDescription><![CDATA[Status de documento]]></fieldDescription>
+		<fieldDescription><![CDATA[Status de documento
+]]></fieldDescription>
 	</field>
 	<field name="docdate" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha doc.]]></fieldDescription>
+		<fieldDescription><![CDATA[Fecha doc.
+]]></fieldDescription>
+	</field>
+	<field name="docentry" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Entrada doc.emis.
+]]></fieldDescription>
+	</field>
+	<field name="numatcard" class="java.lang.String">
+		<fieldDescription><![CDATA[NÃºmero de referencia del SN
+]]></fieldDescription>
 	</field>
 	<field name="cardcode" class="java.lang.String">
-		<fieldDescription><![CDATA[Proveedor por defecto]]></fieldDescription>
+		<fieldDescription><![CDATA[Proveedor por defecto
+]]></fieldDescription>
 	</field>
 	<field name="cardname" class="java.lang.String">
-		<fieldDescription><![CDATA[Nombre SN]]></fieldDescription>
+		<fieldDescription><![CDATA[Nombre SN
+]]></fieldDescription>
 	</field>
 	<field name="vatsum" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Impuesto total]]></fieldDescription>
+		<fieldDescription><![CDATA[Impuesto total
+]]></fieldDescription>
 	</field>
 	<field name="doctotal" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Total del documento]]></fieldDescription>
+		<fieldDescription><![CDATA[Total del documento
+]]></fieldDescription>
 	</field>
 	<field name="peymethod" class="java.lang.String">
-		<fieldDescription><![CDATA[Forma de pago]]></fieldDescription>
+		<fieldDescription><![CDATA[Forma de pago
+]]></fieldDescription>
 	</field>
 	<field name="usersign" class="java.lang.Integer">
 		<fieldDescription><![CDATA[Firma de usuario]]></fieldDescription>
@@ -57,22 +72,28 @@ order by docnum,d.linenum]]>
 	<field name="doctypename" class="java.lang.String"/>
 	<field name="doctypepay" class="java.lang.String"/>
 	<field name="itemcode" class="java.lang.String">
-		<fieldDescription><![CDATA[NÃºmero de artÃ­culo]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de artÃ­culo
+]]></fieldDescription>
 	</field>
 	<field name="dscription" class="java.lang.String">
-		<fieldDescription><![CDATA[DescripciÃ³n del artÃ­culo]]></fieldDescription>
+		<fieldDescription><![CDATA[DescripciÃ³n del artÃ­culo
+]]></fieldDescription>
 	</field>
 	<field name="quantity" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Cantidad en doc.]]></fieldDescription>
+		<fieldDescription><![CDATA[Cantidad en doc.
+]]></fieldDescription>
 	</field>
 	<field name="price" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Precio]]></fieldDescription>
+		<fieldDescription><![CDATA[Precio
+]]></fieldDescription>
 	</field>
 	<field name="gtotal" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Total bruto]]></fieldDescription>
+		<fieldDescription><![CDATA[Total bruto
+]]></fieldDescription>
 	</field>
 	<field name="linetotal" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[Total lÃ­neas]]></fieldDescription>
+		<fieldDescription><![CDATA[Total lÃ­neas
+]]></fieldDescription>
 	</field>
 	<field name="dvatsum" class="java.math.BigDecimal"/>
 	<variable name="PAGE_TOTAL" class="java.lang.Integer" resetType="Page" calculation="DistinctCount">
@@ -92,76 +113,85 @@ order by docnum,d.linenum]]>
 		<groupHeader>
 			<band height="16">
 				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-					<reportElement x="9" y="0" width="60" height="16" uuid="7bf7f824-b85e-4e02-822d-5db31414650b"/>
+					<reportElement x="30" y="0" width="60" height="16" uuid="7bf7f824-b85e-4e02-822d-5db31414650b"/>
 					<textElement>
-						<font size="8" isBold="true"/>
+						<font size="9" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{docdate}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="69" y="0" width="68" height="16" uuid="819e02b2-1378-4a7e-b88b-30d9f2d1c2b7"/>
+					<reportElement x="90" y="0" width="68" height="16" uuid="819e02b2-1378-4a7e-b88b-30d9f2d1c2b7"/>
 					<textElement>
-						<font size="8" isBold="true"/>
+						<font size="9" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{docnum}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{numatcard}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="305" y="0" width="167" height="16" uuid="3c4baf3e-b8bc-4b8a-95e4-a62b9862ce1a"/>
+					<reportElement x="326" y="0" width="146" height="16" uuid="3c4baf3e-b8bc-4b8a-95e4-a62b9862ce1a"/>
 					<textElement>
-						<font size="8" isBold="true"/>
+						<font size="9" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{cardname}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="137" y="0" width="112" height="16" uuid="18c1d3cb-19e8-4eee-b82d-f1d155aee7a5"/>
+					<reportElement x="158" y="0" width="112" height="16" uuid="18c1d3cb-19e8-4eee-b82d-f1d155aee7a5"/>
 					<textElement>
-						<font size="10" isBold="true"/>
+						<font size="9" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{doctypename}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="249" y="0" width="56" height="16" uuid="a6d9bd41-c043-48f2-9389-5f26cb24e637"/>
+					<reportElement x="270" y="0" width="56" height="16" uuid="a6d9bd41-c043-48f2-9389-5f26cb24e637"/>
 					<textElement>
-						<font isBold="true"/>
+						<font size="9" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{doctypepay}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="0" width="30" height="16" uuid="bb97b534-1dfd-46ae-a799-9d87e3430b5f"/>
+					<textElement>
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{docentry}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="16">
+			<band height="32">
 				<textField isBlankWhenNull="true">
-					<reportElement x="69" y="0" width="180" height="16" uuid="0ceca8da-a09a-4369-8820-afc38f97c75d"/>
+					<reportElement x="90" y="0" width="180" height="16" uuid="0ceca8da-a09a-4369-8820-afc38f97c75d"/>
 					<box leftPadding="5"/>
 					<textElement>
-						<font size="8" isBold="true"/>
+						<font size="9" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{doctypename}]]></textFieldExpression>
 				</textField>
-				<textField pattern="###0.0000" isBlankWhenNull="true">
-					<reportElement x="249" y="0" width="56" height="16" uuid="a9a354c9-8b70-4e3c-9a95-bf547a8ed5e8"/>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="270" y="0" width="56" height="16" uuid="a9a354c9-8b70-4e3c-9a95-bf547a8ed5e8"/>
 					<textElement textAlignment="Right">
-						<font size="8" isBold="true"/>
+						<font size="9" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{grpQuantity}]]></textFieldExpression>
 				</textField>
-				<textField pattern="¤ #,##0.0000" isBlankWhenNull="true">
-					<reportElement x="361" y="0" width="56" height="16" uuid="7b56c5bf-8c48-47a8-bca4-fc7b1d9d06a5"/>
+				<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+					<reportElement x="382" y="0" width="56" height="16" uuid="7b56c5bf-8c48-47a8-bca4-fc7b1d9d06a5"/>
 					<textElement textAlignment="Right">
-						<font size="8" isBold="true"/>
+						<font size="9" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{grpGtotal}]]></textFieldExpression>
 				</textField>
-				<textField pattern="¤ #,##0.0000" isBlankWhenNull="true">
-					<reportElement x="305" y="0" width="56" height="16" uuid="d4af3d4e-e986-45cc-afe6-aa28faadf72b"/>
+				<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+					<reportElement x="326" y="0" width="56" height="16" uuid="d4af3d4e-e986-45cc-afe6-aa28faadf72b"/>
 					<textElement textAlignment="Right">
-						<font size="8" isBold="true"/>
+						<font size="9" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{grpLinetotal}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="9" y="0" width="60" height="16" uuid="c8880bf4-421d-44d4-bab7-69f8682c89aa"/>
-					<textElement textAlignment="Right"/>
+					<reportElement x="30" y="0" width="60" height="16" uuid="c8880bf4-421d-44d4-bab7-69f8682c89aa"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
 					<text><![CDATA[Sub-Total]]></text>
 				</staticText>
 			</band>
@@ -257,77 +287,82 @@ order by docnum,d.linenum]]>
 				<reportElement x="0" y="28" width="472" height="1" uuid="7b81c6dd-2c3d-4769-8cca-af681afaa32d"/>
 			</line>
 			<staticText>
-				<reportElement x="9" y="3" width="60" height="26" uuid="b9396e94-e07c-4da6-995a-8b89598a9f3b"/>
+				<reportElement x="30" y="3" width="60" height="26" uuid="b9396e94-e07c-4da6-995a-8b89598a9f3b"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="69" y="3" width="68" height="26" uuid="8874626f-e49d-408a-9c51-92107636a918"/>
+				<reportElement x="90" y="3" width="68" height="26" uuid="8874626f-e49d-408a-9c51-92107636a918"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Número de documento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="137" y="3" width="56" height="26" uuid="0e9bcb72-0067-4b1f-b1b0-8bd9c01621b8"/>
+				<reportElement x="158" y="3" width="56" height="26" uuid="0e9bcb72-0067-4b1f-b1b0-8bd9c01621b8"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Tipo Doc.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="193" y="3" width="56" height="26" uuid="37856523-2ff8-4fe3-9103-b194ab43fbd4"/>
+				<reportElement x="214" y="3" width="56" height="26" uuid="37856523-2ff8-4fe3-9103-b194ab43fbd4"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Tipo Pago]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="249" y="3" width="56" height="26" uuid="df65aad8-3838-4230-ace4-f38a6545cc3e"/>
+				<reportElement x="270" y="3" width="56" height="26" uuid="df65aad8-3838-4230-ace4-f38a6545cc3e"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[Cantidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="305" y="3" width="56" height="26" uuid="9056bb14-601d-47aa-8cbe-a0bb8e2a6742"/>
+				<reportElement x="326" y="3" width="56" height="26" uuid="9056bb14-601d-47aa-8cbe-a0bb8e2a6742"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[Costo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="361" y="3" width="56" height="26" uuid="e498174a-38c4-4775-be1b-01b0954b5182"/>
+				<reportElement x="382" y="3" width="56" height="26" uuid="e498174a-38c4-4775-be1b-01b0954b5182"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Compra
 Facturada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="3" width="30" height="26" uuid="c4ca1d6e-599f-424a-a560-1875a459284e"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Id]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
 	<detail>
 		<band height="16" splitType="Stretch">
 			<textField>
-				<reportElement x="9" y="0" width="60" height="16" uuid="3669aac0-5789-439c-85eb-a9dc31612b18"/>
+				<reportElement x="30" y="0" width="60" height="16" uuid="3669aac0-5789-439c-85eb-a9dc31612b18"/>
 				<textElement>
-					<font size="8"/>
+					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{itemcode}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="69" y="0" width="180" height="16" uuid="16479c7b-f490-4fe2-af3a-d0a23bc4a088"/>
+				<reportElement x="90" y="0" width="180" height="16" uuid="16479c7b-f490-4fe2-af3a-d0a23bc4a088"/>
 				<textElement>
-					<font size="8"/>
+					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{dscription}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.0000">
-				<reportElement x="249" y="0" width="56" height="16" uuid="14cab1db-b6c1-46bb-8c3a-a0f9d135c150"/>
+			<textField pattern="#,##0.00">
+				<reportElement x="270" y="0" width="56" height="16" uuid="14cab1db-b6c1-46bb-8c3a-a0f9d135c150"/>
 				<textElement textAlignment="Right">
-					<font size="8"/>
+					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤ #,##0.0000">
-				<reportElement x="305" y="0" width="56" height="16" uuid="746496ed-9bf8-4864-b94a-f7a681df31ef"/>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="326" y="0" width="56" height="16" uuid="746496ed-9bf8-4864-b94a-f7a681df31ef"/>
 				<textElement textAlignment="Right">
-					<font size="8"/>
+					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{linetotal}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤ #,##0.0000">
-				<reportElement x="361" y="0" width="56" height="16" uuid="374ec05b-904e-433b-83bc-5d78511730a8"/>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="382" y="0" width="56" height="16" uuid="374ec05b-904e-433b-83bc-5d78511730a8"/>
 				<textElement textAlignment="Right">
-					<font size="8"/>
+					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{gtotal}]]></textFieldExpression>
 			</textField>
