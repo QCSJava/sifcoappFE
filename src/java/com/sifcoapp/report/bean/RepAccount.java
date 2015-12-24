@@ -99,7 +99,6 @@ public class RepAccount implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="PRINT">
     public void print(int _type) throws Exception {
         EnterpriseTO resp = new EnterpriseTO();
@@ -285,21 +284,25 @@ public class RepAccount implements Serializable {
             if (this.ftype == 9) {
                 _reportname = "/account/BDjournal";
                 _reportTitle = "DIARIO MAYOR";
-                
-                
+
                 reportParameters.put("startdate", this.getFdatefrom());
                 reportParameters.put("enddate", this.getFdateto());
                 reportParameters.put("account", this.getAccount());
             }
-            
-            if (this.ftype == 10) {
-                _reportname = "/account/flowAccounts";
-                _reportTitle = "Estado de Flujos de Efectivo";
-                
+
+            if (this.ftype == 10 || this.ftype == 12) {
+                if (this.ftype == 10) {
+                    _reportname = "/account/flowAccounts";
+                    _reportTitle = "Estado de Flujos de Efectivo";
+                } else {
+                    _reportname = "/account/rptECP";
+                    _reportTitle = "Estado de cambios en el patrimonio";
+                }
+
                 reportParameters.put("pdocdate", this.getFdatefrom());
                 reportParameters.put("PDOCDATE2", this.getFdateto());
                 reportParameters.put("level", this.getReportLevel());
-                
+
                 //firma1
                 reportParameters.put("F1_NAME", ParameterEJBClient.getParameterbykey(19).getValue1());
                 reportParameters.put("F1_TITLE", ParameterEJBClient.getParameterbykey(19).getValue2());
@@ -316,25 +319,25 @@ public class RepAccount implements Serializable {
                 reportParameters.put("F4_NAME", ParameterEJBClient.getParameterbykey(22).getValue1());
                 reportParameters.put("F4_TITLE", ParameterEJBClient.getParameterbykey(22).getValue2());
             }
-            
+
             if (this.ftype == 11) {
                 _reportname = "/account/BudgetReport";
                 _reportTitle = "Reporte de presupuesto ";
-                
-                reportParameters.put("pdocdate",sumarFecha(this.getFdateto(), 1));
+
+                reportParameters.put("pdocdate", sumarFecha(this.getFdateto(), 1));
                 //reportParameters.put("PDOCDATE2", this.getFdateto());
-                
+
                 //where t0.acctcode like '1%' and t0.levels <= 5
                 //where t0.levels <= 5 and t0.acctcode like '1%' 
-                String where=" ";
+                String where = " ";
                 if (this.reportLevel > 0) {
-                    where = where + " where t0.levels <= "+this.reportLevel+" ";
+                    where = where + " where t0.levels <= " + this.reportLevel + " ";
                 }
-                if (this.account != null && this.account.length()>0) {
-                    where = where + "and t0.acctcode like '"+this.account+"%' ";//'1%'";
+                if (this.account != null && this.account.length() > 0) {
+                    where = where + "and t0.acctcode like '" + this.account + "%' ";//'1%'";
                 }
                 reportParameters.put("PWHERE", where);
-                
+
             }
 
             reportParameters.put("reportName", _reportTitle);
@@ -410,7 +413,6 @@ public class RepAccount implements Serializable {
     }//cierre de funcion
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones varias">
     public Date sumarFecha(Date fecha, int dias) {
 

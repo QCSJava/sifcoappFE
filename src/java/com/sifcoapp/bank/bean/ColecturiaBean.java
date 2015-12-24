@@ -607,8 +607,10 @@ public class ColecturiaBean implements Serializable {
                 this.No = _res.getDocentry();
                 this.newColect.setDocentry(_res.getDocentry());
                 faceMessage(_res.getMensaje());
-
-                estateActualizar();
+                
+                cleanBean(1);
+                estateGuardar();
+                //estateActualizar();
 
             } else {
                 faceMessage(_res.getMensaje());
