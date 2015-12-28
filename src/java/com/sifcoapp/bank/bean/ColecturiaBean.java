@@ -126,7 +126,6 @@ public class ColecturiaBean implements Serializable {
     private String url;
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Load de pantalla">
     @PostConstruct
     public void initForm() {
@@ -159,7 +158,6 @@ public class ColecturiaBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Autocomplete Socio" > 
     public List<String> compSocioCode(String query) {
         List _result = null;
@@ -212,7 +210,6 @@ public class ColecturiaBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocioName() {
         String[] newName = nameSocio.split("-");
@@ -246,16 +243,16 @@ public class ColecturiaBean implements Serializable {
                 try {
                     System.out.println("articulo unico, llenar campos en pantalla");
                     BusinesspartnerTO art = (BusinesspartnerTO) socio.get(0);
-                  
+
                     ctlAcc = art.getDebpayacct();
                     codSocio = art.getCardcode();
                     nameSocio = art.getCardname();
                     group = art.getGroupcode();
                     if (varEstados == 1) {
-                       llenarListaDetalles();
-                        doTotal(); 
+                        llenarListaDetalles();
+                        doTotal();
                     }
-                    
+
                 } catch (Exception ex) {
                     Logger.getLogger(CheckForPaymentBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -351,34 +348,29 @@ public class ColecturiaBean implements Serializable {
 
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="upd contex">
-    public void updTotal(){
-        //faceMessage("entro");
+    public void updTotal() {
         doTotal();
     }
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Total detalles">
     public void doTotal() {
-        //faceMessage("entro upd total");
         this.t2 = 0.0;
-        for (Object lst : lstTable) {
-            ColecturiaDetailTO det = (ColecturiaDetailTO) lst;
-            //faceMessage(det.getValue1());
-            if (det.getPaidsum() != null ){//&& this.lineNum != det.getLinenum()) {
-                try {
+        try {
+            for (Object lst : lstTable) {
+                ColecturiaDetailTO det = (ColecturiaDetailTO) lst;
+                if (det.getPaidsum() != null) {
                     Double var = det.getPaidsum();
                     this.t2 = this.t2 + var;
-                } catch (Exception e) {
-                    faceMessage(e.getMessage() + " " + e.getCause());
                 }
-
             }
+        } catch (Exception e) {
+            faceMessage("Error en calculo de total... " + e.getMessage());
         }
         t2 = formatNumber2(t2);
         doTotalAct();
-        //RequestContext.getCurrentInstance().execute("PF('btnf').focus();");
     }
 
     public void doTotalAct() {
@@ -387,7 +379,7 @@ public class ColecturiaBean implements Serializable {
             if (lineNum != det.getLinenum()) {
                 String val = det.getValue1();//.replace(",","");
                 if (val != null && val.contains(",")) {
-                    val = det.getValue1().replace(",", "");
+                    val = det.getValue1().replace(",","");
                 }
                 if (val != null && det.getConfirmed().equals("Y")) {//SUMA
                     double aux = Double.parseDouble(val) + det.getPaidsum();
@@ -398,7 +390,6 @@ public class ColecturiaBean implements Serializable {
                         det.setValue3(formatNumber(aux));
                     }
                 }
-
             } else {
                 det.setValue3("0.00");
             }
@@ -607,7 +598,7 @@ public class ColecturiaBean implements Serializable {
                 this.No = _res.getDocentry();
                 this.newColect.setDocentry(_res.getDocentry());
                 faceMessage(_res.getMensaje());
-                
+
                 cleanBean(1);
                 estateGuardar();
                 //estateActualizar();
@@ -669,7 +660,6 @@ public class ColecturiaBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="BUSCAR EN BASE">
     public void doSearch() {
         ColecturiaInTO search = new ColecturiaInTO();
@@ -753,11 +743,11 @@ public class ColecturiaBean implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     public Double formatNumber2(Double doctotal) {
-        DecimalFormat df;
-        df = new DecimalFormat("#,###.##");
+        //DecimalFormat df;
+        //df = new DecimalFormat("#,###.00");
         return (Math.floor(100 * doctotal) / 100);
     }
-    
+
     public void reload() throws IOException {
         // ...
 
@@ -904,7 +894,7 @@ public class ColecturiaBean implements Serializable {
         this.setFechaDoc(var.getDocdate());
         this.setFechaPago(var.getTaxdate());
         this.group = var.getPrinted();
-        
+
         this.documento = var.getSeries() + "";
         this.estado = var.getTranstype() + "";
 
@@ -1102,9 +1092,7 @@ public class ColecturiaBean implements Serializable {
     }//final funcion
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="G & S">
-
     public String getGroup() {
         return group;
     }
@@ -1112,7 +1100,7 @@ public class ColecturiaBean implements Serializable {
     public void setGroup(String group) {
         this.group = group;
     }
-    
+
     public String getUrl() {
         return url;
     }
@@ -1450,7 +1438,6 @@ public class ColecturiaBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="IMPRIMIR FORMA 2">
     public String printInvoice() throws UnsupportedEncodingException {
         //faceMessage(getApplicationUri());

@@ -99,6 +99,7 @@ public class RepAccount implements Serializable {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="PRINT">
     public void print(int _type) throws Exception {
         EnterpriseTO resp = new EnterpriseTO();
@@ -292,11 +293,19 @@ public class RepAccount implements Serializable {
 
             if (this.ftype == 10 || this.ftype == 12) {
                 if (this.ftype == 10) {
-                    _reportname = "/account/flowAccounts";
                     _reportTitle = "Estado de Flujos de Efectivo";
+                    
+                    if (_type == 1) {
+                        _reportname = "/account/flowAccountsEX";
+                    }else
+                        _reportname = "/account/flowAccounts";
                 } else {
-                    _reportname = "/account/rptECP";
                     _reportTitle = "Estado de cambios en el patrimonio";
+                    
+                    if (_type == 1) {
+                        _reportname = "/account/rptECP_EX";
+                    }else
+                        _reportname = "/account/rptECP";
                 }
 
                 reportParameters.put("pdocdate", this.getFdatefrom());
@@ -413,6 +422,7 @@ public class RepAccount implements Serializable {
     }//cierre de funcion
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Funciones varias">
     public Date sumarFecha(Date fecha, int dias) {
 

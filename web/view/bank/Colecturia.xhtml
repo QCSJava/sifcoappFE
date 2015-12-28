@@ -160,12 +160,14 @@
                                         <p:inputText id="valor1" tabindex="9" value="#{det.paidsum}" size="10" 
                                                      disabled="#{colecturiaBean.common || colecturiaBean.ifCancelacion? true:false}" 
                                                      readonly="#{det.linenum == 17? true:det.linenum == 21? true:det.linenum == 23?true:false}"
-                                                     onfocus="$('input[type=text]').focus(function(){	   
-                                                     this.select();
-                                                     });">
-                                                     <f:convertNumber minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
-                                            <p:ajax event="change" listener="#{colecturiaBean.updTotal}"
-                                                    process="@all" update="tableDetailColet"/>
+                                                     onfocus="$('input[type=text]').focus(function () {
+                                                                 this.select();
+                                                             });">
+                                            <f:convertNumber minFractionDigits="#{commonBean.minFractionDigits1}" 
+                                                             maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                            
+                                            <p:ajax event="change" listener="#{colecturiaBean.doTotal}"
+                                                    process="@this valor1" update="tableDetailColet:t2"/>
                                         </p:inputText>
                                     </p:column> 
 
@@ -177,9 +179,9 @@
                                         <p:row>
                                             <p:column footerText="" style="width: 8%; font-size: #{commonBean.sizeFont1}"/>
                                             <p:column colspan="2" footerText="Total: " style="text-align:right; font-size: #{commonBean.sizeFont1}"/>
-                                            <p:column footerText="#{colecturiaBean.t1}" style="width: 8%; font-size: #{commonBean.sizeFont1}"/>
+                                            <p:column />
                                             <p:column id="t2" footerText="$ #{colecturiaBean.t2}" style="width: 8%; font-size: #{commonBean.sizeFont1}"/>
-                                            <p:column footerText="#{colecturiaBean.t3}" style="width: 8%; font-size: #{commonBean.sizeFont1}"/>
+                                            <p:column />
                                         </p:row>
                                     </p:columnGroup>
 
