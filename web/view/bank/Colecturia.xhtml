@@ -166,8 +166,9 @@
                                             <f:convertNumber minFractionDigits="#{commonBean.minFractionDigits1}" 
                                                              maxFractionDigits="#{commonBean.minFractionDigits1}"/>
                                             
+                                            
                                             <p:ajax event="change" listener="#{colecturiaBean.doTotal}"
-                                                    process="@this valor1" update="tableDetailColet:t2"/>
+                                                    process="@this valor1" update="tableDetailColet"/>
                                         </p:inputText>
                                     </p:column> 
 
@@ -184,7 +185,12 @@
                                             <p:column />
                                         </p:row>
                                     </p:columnGroup>
-
+                                    
+                                    <!--
+                                    <f:facet name="footer">
+                                                #/{colecturiaBean.lstTable.stream().map(det-> det.paidsum).sum()}
+                                    </f:facet>
+                                    -->
                                 </p:dataTable>
                             </div>    
                         </div>

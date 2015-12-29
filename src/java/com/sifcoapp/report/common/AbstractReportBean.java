@@ -70,6 +70,9 @@ public abstract class AbstractReportBean implements Serializable {
 
         PDF, HTML, EXCEL, RTF, FILE
     }
+
+    //ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+    //String realPath  = (String) servletContext.getRealPath("/"); // Sustituye "/" por el directorio ej: "/upload"
     private ExportOption exportOption;
     private final String COMPILE_DIR = "/reports/design/";
     //private final String COMPILE_DIR = "/reports/compile/";
@@ -99,7 +102,9 @@ public abstract class AbstractReportBean implements Serializable {
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
         HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
         //ReportConfigUtil.compileReport(context, getCompileDir(), getCompileFileName());
-        File reportFile = new File(ReportConfigUtil.getJasperFilePath(request, getCompileDir(), getCompileFileName() + ".jasper"));
+        //File reportFile = new File(ReportConfigUtil.getJasperFilePath(request, getCompileDir(), getCompileFileName() + ".jasper"));
+        File reportFile = new File("C:\\reports\\", getCompileFileName() + ".jasper");
+
         //AdminDAO adminDAO = new AdminDAO();
         //System.err.println("Ip cliente: " + response.getRemoteAddr());
         Connection conn = null;
@@ -108,19 +113,19 @@ public abstract class AbstractReportBean implements Serializable {
 
             JasperPrint jasperPrint = ReportConfigUtil.fillReport(reportFile, getReportParameters(), conn);
             conn.close();
-            if (getExportOption().equals(ExportOption.HTML)  ) {
+            if (getExportOption().equals(ExportOption.HTML)) {
                 ReportConfigUtil.exportReportAsHtml(jasperPrint, response.getWriter());
             } else if (getExportOption().equals(ExportOption.EXCEL)) {
-                ReportConfigUtil.exportReportAsExcel(jasperPrint, response.getWriter(),context, externalContext,this.getFileName());
+                ReportConfigUtil.exportReportAsExcel(jasperPrint, response.getWriter(), context, externalContext, this.getFileName());
             } else if (getExportOption().equals(ExportOption.FILE)) {
-                ReportConfigUtil.exportToPDFFile(context, externalContext, jasperPrint,this.getFileName());
+                ReportConfigUtil.exportToPDFFile(context, externalContext, jasperPrint, this.getFileName());
             } else {
                 //String filename = "archivo.pdf";
                 //response.setHeader("Content-Disposition", "inline;filename=\"" + filename + "\"");
                 request.getSession().setAttribute(BaseHttpServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, jasperPrint);
-                
-                externalContext.redirect(request.getContextPath() + "/servlets/report/" + getExportOption()+"?faces-redirect=true");
-                
+
+                externalContext.redirect(request.getContextPath() + "/servlets/report/" + getExportOption() + "?faces-redirect=true");
+
             }
         } catch (Exception ex) {
             ex.printStackTrace();
