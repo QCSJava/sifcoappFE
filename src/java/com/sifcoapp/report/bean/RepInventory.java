@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 import javax.validation.constraints.Digits;
 import org.primefaces.event.SelectEvent;
@@ -36,7 +36,7 @@ import org.primefaces.event.SelectEvent;
  * @author ri00642
  */
 @ManagedBean(name = "rinventory")
-@RequestScoped
+@SessionScoped
 public class RepInventory implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="VARIABLES">
@@ -60,7 +60,6 @@ public class RepInventory implements Serializable {
     private String almacen;
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="INIT">
     @PostConstruct
     public void initForm() {
@@ -136,11 +135,6 @@ public class RepInventory implements Serializable {
             _reportname = "/inventory/InvKardex";
             _reportTitle = "Tarjeta de Inventario";
 
-            /*if (check) {
-             reportParameters.put("movimiento"," join ");
-             }else
-             reportParameters.put("movimiento"," left join ");
-             */
             if (!almacen.equals("-1")) {
                 reportParameters.put("WithAlm", " and t0.loccode = '" + this.almacen + "'");
                 reportParameters.put("WithAlm2", " and t4.whscode = '" + this.almacen + "'");
@@ -156,41 +150,6 @@ public class RepInventory implements Serializable {
                 reportParameters.put("WithArt", ""); //and t0.itemcode = 'INV0000295'");
                 reportParameters.put("WithArt2", ""); //and t3.itemcode = 'INV0000295'");
             }
-
-            int dia1, mes1, anio1, dia2, mes2, anio2;
-            String diaS1, Smes1, Sdia2, Smes2;
-
-            dia1 = Del.get(Calendar.DAY_OF_MONTH);
-            if (dia1 < 10) {
-                diaS1 = "0" + dia1;
-            } else {
-                diaS1 = dia1 + "";
-            }
-            mes1 = Del.get(Calendar.MONTH);
-            mes1 = mes1 + 1;
-            if (mes1 < 10) {
-                Smes1 = "0" + mes1;
-            } else {
-                Smes1 = mes1 + "";
-            }
-            anio1 = Del.get(Calendar.YEAR);
-
-            dia2 = Al.get(Calendar.DAY_OF_MONTH);
-            if (dia2 < 10) {
-                Sdia2 = "0" + dia2;
-            } else {
-                Sdia2 = dia2 + "";
-            }
-            mes2 = Al.get(Calendar.MONTH);
-            mes2 = mes2 + 1;
-            if (mes2 < 10) {
-                Smes2 = "0" + mes2;
-            } else {
-                Smes2 = mes2 + "";
-            }
-            anio2 = Al.get(Calendar.YEAR);
-
-            reportParameters.put("PFECHAREPORTE", "Del " + diaS1 + "/" + Smes1 + "/" + anio1 + " Al " + Sdia2 + "/" + Smes2 + "/" + anio2);
 
         }
 
@@ -221,8 +180,55 @@ public class RepInventory implements Serializable {
             }
         }
 
+        if (this.ftype == 4) {
+            _reportname = "/inventory/InventoryControlDiesel";
+            _reportTitle = "hoja de control diesel";
+        }
+        
+        if (this.ftype == 5) {
+            _reportname = "/inventory/DieselGlobal";
+            _reportTitle = "Informe Anual de Compras y Ventas de combustible Diesel";
+        }
+
+        //--------------------------------
+        int dia1, mes1, anio1, dia2, mes2, anio2;
+        String diaS1, Smes1, Sdia2, Smes2;
+
+        dia1 = Del.get(Calendar.DAY_OF_MONTH);
+        if (dia1 < 10) {
+            diaS1 = "0" + dia1;
+        } else {
+            diaS1 = dia1 + "";
+        }
+        mes1 = Del.get(Calendar.MONTH);
+        mes1 = mes1 + 1;
+        if (mes1 < 10) {
+            Smes1 = "0" + mes1;
+        } else {
+            Smes1 = mes1 + "";
+        }
+        anio1 = Del.get(Calendar.YEAR);
+
+        dia2 = Al.get(Calendar.DAY_OF_MONTH);
+        if (dia2 < 10) {
+            Sdia2 = "0" + dia2;
+        } else {
+            Sdia2 = dia2 + "";
+        }
+        mes2 = Al.get(Calendar.MONTH);
+        mes2 = mes2 + 1;
+        if (mes2 < 10) {
+            Smes2 = "0" + mes2;
+        } else {
+            Smes2 = mes2 + "";
+        }
+        anio2 = Al.get(Calendar.YEAR);
+
+        reportParameters.put("PFECHAREPORTE", "Del " + diaS1 + "/" + Smes1 + "/" + anio1 + " Al " + Sdia2 + "/" + Smes2 + "/" + anio2);
+        //--------------------------------
+
         reportParameters.put("corpName", resp.getCrintHeadr());
-        reportParameters.put("pdocdate", this.getFdatefrom());       
+        reportParameters.put("pdocdate", this.getFdatefrom());
         reportParameters.put("PDOCDATE2", this.getFdateto());
         reportParameters.put("PWHERE", _whereclausule);
         reportParameters.put("PWHERESR", _whereclausuleSR);

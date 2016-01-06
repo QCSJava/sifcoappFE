@@ -97,6 +97,20 @@ public class repBanksBean implements Serializable {
             
             reportParameters.put("user", this.user);
         }
+        
+        if (this.ftype == 2) {
+            _reportname = "/bank/Colecturia";
+            _reportTitle = "Reporte consolidado de colecturia";
+            
+            reportParameters.put("user", this.user);
+        }
+        
+        if (this.ftype == 3) {
+            _reportname = "/bank/DetailColecturia";
+            _reportTitle = "Reporte detallado de colecturia";
+            
+            reportParameters.put("user", this.user);
+        }
 
         ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////

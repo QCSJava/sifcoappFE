@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DieselGlobal" language="groovy" pageWidth="612" pageHeight="792" columnWidth="472" leftMargin="85" rightMargin="55" topMargin="35" bottomMargin="35" uuid="25dfb083-d6d4-46eb-8f6e-6a457c88bb38">
+	<property name="ireport.zoom" value="1.1000000000000016"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="corpName" class="java.lang.String">
+		<defaultValueExpression><![CDATA["ACOETMISAB DE R.L."]]></defaultValueExpression>
+	</parameter>
+	<parameter name="user" class="java.lang.String"/>
+	<parameter name="PDOCDATE2" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pdocdate" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[/*Saldo Inicial*/
+select  t3.itemcode  "codigo",
+	t3.itemname "Descripcion",
+	'1' "Mes",
+	'INVENTARIO INICIAL' "Mes2",
+	coalesce(q1.cantidad,0.0) "cantidad",
+	coalesce(q1.entrada,0.0) "entrada",
+	coalesce(q1.salida,0.0) "salida",
+	coalesce(q1.precios,0.0) "precios",
+	coalesce(q1.total,0.0) "total",
+	coalesce(q1.total,0.0) "total1",
+	coalesce(q1.openstock,0.0) as "costos",
+	'I'  as "tipo",
+	'INVENTARIO INICIAL' as tipo2
+
+from cat_art0_articles t3
+join cat_art1_brancharticles t4 on t3.itemcode = t4.itemcode AND T3.invntitem = 'Y' left join /* @variable*/ (
+
+select
+	t0.itemcode "codigo",
+	t0.dscription "Descripcion",
+	t0.loccode "almacen",
+	sum(t2.inqty) - sum(t2.outqty) "cantidad",
+	sum(t2.inqty)  "entrada",
+	sum(t2.outqty) "salida",
+	sum(t0.price)  "precios",
+	sum(case when t2.inqty > 0 then t2.openstock else t2.openstock * -1 end) "openstock",
+	sum(case when t2.inqty > 0 then t0.doctotal else t0.doctotal * -1 end) "total"
+from 	adm_inl0_inventorylog t0 left join cat_obj0_objectype t1 on t0.transtype = to_number(t1.objtype,'99')
+	join adm_wjl0_warehousejournal t2 on t0.messageid = t2.messageid
+where 	t0.docdate < $P{pdocdate}  /* @variable*/
+	and t0.itemcode = 'INV0000001' /* @variable*/
+group by t0.itemcode, t0.dscription, t0.loccode
+) q1 on t3.itemcode = q1.codigo and t4.whscode = q1.almacen
+where  	1 = 1
+	and t3.itemcode = 'INV0000001' /* @variable*/
+
+union all
+
+/*Ventas*/
+select
+	t0.itemcode "codigo",
+	t0.dscription "Descripcion",
+	extract(month from t0.docdate) "Mes",
+	to_char(to_timestamp (extract(month from t0.docdate)::text, 'MM'), 'TMMonth')  "mes2",
+	sum(case when t2.inqty > 0 then t0.quantity else t0.quantity * -1 end) "cantidad",
+	sum(t2.inqty)  "entrada",
+	sum(t2.outqty) "salida",
+	avg(t0.price) "precios",
+	sum(t0.doctotal) "total",
+	sum(case when t2.inqty > 0 then t0.doctotal else t0.doctotal * -1 end) "total1",
+	sum(case when t2.inqty > 0 then t2.openstock else t2.openstock * -1 end) "openstock",
+	'S' as "tipo",
+	'(MENOS ) VENTAS' as tipo2
+
+from 	adm_inl0_inventorylog t0 left join cat_obj0_objectype t1 on t0.transtype = to_number(t1.objtype,'99')
+	join adm_wjl0_warehousejournal t2 on t0.messageid = t2.messageid
+	join cat_art0_articles t3  on t3.itemcode = t0.itemcode
+	left join sal_sal0_sales t4 on t4.docentry = t0.docentry and to_number(t4.objtype,'99') = t0.transtype
+where 	1=1 and T3.invntitem = 'Y' and t0.docdate >= $P{pdocdate}  and t0.docdate <= $P{PDOCDATE2}
+	and t0.itemcode = 'INV0000001'
+	and t0.transtype = 10
+	and t4.canceled = 'N'
+group by t0.itemcode, t0.dscription, extract(month from t0.docdate)
+
+union all
+
+/*Compras*/
+select
+	t0.itemcode "codigo",
+	t0.dscription "Descripcion",
+	extract(month from t0.docdate) "Mes",
+	to_char(to_timestamp (extract(month from t0.docdate)::text, 'MM'), 'TMMonth')  "mes2",
+	sum(case when t2.inqty > 0 then t0.quantity else t0.quantity * -1 end) "cantidad",
+	sum(t2.inqty)  "entrada",
+	sum(t2.outqty) "salida",
+	avg(t0.price) "precios",
+	sum(t0.doctotal) "total",
+	sum(case when t2.inqty > 0 then t0.doctotal else t0.doctotal * -1 end) "total1",
+	sum(case when t2.inqty > 0 then t2.openstock else t2.openstock * -1 end) "openstock",
+	'E' as "tipo",
+	'(MAS) COMPRAS' as tipo2
+
+from 	adm_inl0_inventorylog t0 left join cat_obj0_objectype t1 on t0.transtype = to_number(t1.objtype,'99')
+	join adm_wjl0_warehousejournal t2 on t0.messageid = t2.messageid
+	join cat_art0_articles t3  on t3.itemcode = t0.itemcode
+	left join pur_pur0_purchase t4 on t4.docentry = t0.docentry and to_number(t4.objtype,'99') = t0.transtype
+where 	1=1 and T3.invntitem = 'Y' and t0.docdate >= $P{pdocdate}  and t0.docdate <= $P{PDOCDATE2}
+	and t0.itemcode = 'INV0000001'
+	and t0.transtype in(20,-1)
+	and (t4.canceled = 'N' or t4.canceled is null)
+group by t0.itemcode, t0.dscription, extract(month from t0.docdate)
+
+
+order by "codigo", "Mes", "tipo"]]>
+	</queryString>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="Descripcion" class="java.lang.String"/>
+	<field name="Mes" class="java.lang.Double"/>
+	<field name="Mes2" class="java.lang.String"/>
+	<field name="cantidad" class="java.math.BigDecimal"/>
+	<field name="entrada" class="java.math.BigDecimal"/>
+	<field name="salida" class="java.math.BigDecimal"/>
+	<field name="precios" class="java.math.BigDecimal"/>
+	<field name="total" class="java.math.BigDecimal"/>
+	<field name="total1" class="java.math.BigDecimal"/>
+	<field name="costos" class="java.math.BigDecimal"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="tipo2" class="java.lang.String"/>
+	<variable name="costos_1" class="java.math.BigDecimal" resetType="Group" resetGroup="Tipo" calculation="Sum">
+		<variableExpression><![CDATA[$F{costos}]]></variableExpression>
+	</variable>
+	<variable name="costos_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{costos}]]></variableExpression>
+	</variable>
+	<variable name="cantidad_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{cantidad}]]></variableExpression>
+	</variable>
+	<variable name="cantidad_2" class="java.math.BigDecimal" resetType="Group" resetGroup="Tipo" calculation="Sum">
+		<variableExpression><![CDATA[$F{cantidad}]]></variableExpression>
+	</variable>
+	<group name="Tipo">
+		<groupExpression><![CDATA[$F{tipo}]]></groupExpression>
+		<groupHeader>
+			<band height="27">
+				<printWhenExpression><![CDATA[!$F{tipo}.equals( "I" )]]></printWhenExpression>
+				<textField>
+					<reportElement x="0" y="7" width="187" height="20" uuid="3848bb05-9831-48fa-9152-7ad9c66d2c67"/>
+					<textFieldExpression><![CDATA[$F{tipo2}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="21">
+				<textField pattern="#,##0.00;-#,##0.00">
+					<reportElement x="282" y="0" width="95" height="15" uuid="e56d5c5c-8324-43b5-9231-96be374b32e1"/>
+					<box rightPadding="5"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{tipo}.equals( "S" )?$V{costos_1}*-1:$V{costos_1}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="187" y="0" width="95" height="15" uuid="b55b95f8-e783-4bb6-ac68-61971629c955"/>
+					<box rightPadding="5"/>
+					<textFieldExpression><![CDATA[$V{cantidad_2}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="82" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="472" height="20" uuid="bcbba91f-6f47-4b79-a4fd-9afd4d35f7a1"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{corpName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="154" y="61" width="30" height="20" uuid="b11b3100-3a27-4bc8-aef7-fb8b521863cf"/>
+				<box rightPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Del:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="183" y="61" width="55" height="20" uuid="171fd4f3-2497-40ea-a328-87b29b9982b8"/>
+				<textFieldExpression><![CDATA[$P{pdocdate}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="257" y="61" width="65" height="20" uuid="a48f616e-a276-43cd-bcd4-33f184ff3af0"/>
+				<textFieldExpression><![CDATA[$P{PDOCDATE2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="238" y="61" width="19" height="20" uuid="8f6b70f1-f8a1-474f-bac0-893fe09a187d"/>
+				<box rightPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Al:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="41" width="472" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b7807fa5-92ff-4a59-be4d-316e360fa73c"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[INFORME ANUAL DE COMPRAS Y VENTAS DE COMBUSTIBLE DIESEL EN GALONES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="21" width="472" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="a7aa66ba-c469-45e6-abd3-af05391edf5b"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[SECCIÓN: ESTACIÓN DE COMBUSTIBLE DIESEL.]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="15" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="187" height="20" uuid="4e505da2-bdfb-44d3-bc1e-4aa1bb2dbb7a"/>
+				<box>
+					<topPen lineWidth="2.0" lineStyle="Double"/>
+					<bottomPen lineWidth="2.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Movimientos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="187" y="0" width="95" height="20" uuid="06d4b671-d15b-4d5a-9eeb-c7314d4da04d"/>
+				<box>
+					<topPen lineWidth="2.0" lineStyle="Double"/>
+					<bottomPen lineWidth="2.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[(Expresado en GLS)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="282" y="0" width="95" height="20" uuid="505f2a20-aec9-4030-a61d-84068cb4db3a"/>
+				<box>
+					<topPen lineWidth="2.0" lineStyle="Double"/>
+					<bottomPen lineWidth="2.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[(Expresado en US $)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="377" y="0" width="95" height="20" uuid="f4080960-f864-499e-b92b-dc1fb9515c6f"/>
+				<box>
+					<topPen lineWidth="2.0" lineStyle="Double"/>
+					<bottomPen lineWidth="2.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[(Promedio en US $)]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="187" height="15" uuid="0f74cc4c-d501-485a-8b68-0e2bdee98f4e"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{Mes2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="282" y="0" width="95" height="15" uuid="4da65b43-14b2-47f2-9610-739d4a06efb3"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{tipo}.equals( "S" )?$F{costos}*-1:$F{costos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="187" y="0" width="95" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="866e77be-6780-4e30-9377-5c6df6725131"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo}.equals( "S" )?$F{cantidad}*-1:$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="377" y="0" width="95" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="d4ae0a33-7623-4841-8230-24df21882671"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}.doubleValue() == 0.0? 0.0:$F{costos}/$F{cantidad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="42" splitType="Stretch">
+			<textField>
+				<reportElement x="360" y="0" width="57" height="39" uuid="d17a5196-abd1-45dc-82bd-d8fa4f9a1bdb"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="417" y="0" width="55" height="39" uuid="ad8d673e-f67b-4d13-918c-ea4dfa92b75b"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="0" y="24" width="360" height="15" uuid="ecb3942c-dbf9-4732-b4f0-54158237d201"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="360" height="24" uuid="1ae75fa8-a9ec-4de5-90b0-120976c5e507"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{JASPER_REPORT}.getName()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="19" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="187" height="15" uuid="09245886-5f77-454e-afcd-5dcf7afb7a0f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTALES]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="282" y="0" width="95" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="ab779776-e9c5-47ca-9070-8be53319327d"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{costos_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="187" y="0" width="95" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="9feb8773-6598-4fb5-822d-1f8ce0872178"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{cantidad_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="377" y="0" width="95" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="e58290b4-60ad-446b-92b2-2c23050f926f"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{costos_2}/$V{cantidad_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
