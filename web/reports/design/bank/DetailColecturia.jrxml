@@ -18,7 +18,7 @@
 	from  ges_col1_colecturiadetail t1
 	join ges_col0_colecturia t2  on t2.docentry = t1.docentry
 	join adm_usr0_user t3 on t2.usersign = t3.usersign
-	where t3.nickname = 'Hugo'
+	where t3.nickname = $P{user}
 	and t2.docdate >= $P{pdocdate}
 	and t2.docdate <= $P{PDOCDATE2}
 	order by  t2.docentry, t1.linenum, t2.series]]>

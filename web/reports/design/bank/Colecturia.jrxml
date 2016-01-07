@@ -13,6 +13,7 @@
 	<parameter name="pdocdate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="userNick" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select t0.linenum, t0.dscription, coalesce(q0.monto,0.0) monto
 from ges_col2_colecturiaconcept t0 left join
@@ -21,8 +22,10 @@ from ges_col2_colecturiaconcept t0 left join
 	from  ges_col1_colecturiadetail t1
 	join ges_col0_colecturia t2  on t2.docentry = t1.docentry
 	join adm_usr0_user t3 on t2.usersign = t3.usersign
-	where t2.docdate >= $P{pdocdate} and t2.docdate <= $P{PDOCDATE2} and  t3.nickname = $P{user}
+	where t2.docdate >= $P{pdocdate} and t2.docdate <= $P{PDOCDATE2}
 	and t2.transtype = 1 and t2.series = 1
+	--and  t3.nickname =
+	$P{user}
 	group by t1.linenum) q0
 on t0.linenum = q0.linenum
 order by t0.linenum]]>
@@ -94,7 +97,7 @@ order by t0.linenum]]>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{user}.equals( "" )? "TODOS":$P{user}.toUpperCase()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{user}.equals( "" )? "TODOS":$P{userNick}.toUpperCase()]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

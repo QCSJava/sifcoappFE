@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_ARD_subreport2" language="groovy" pageWidth="484" pageHeight="16" columnWidth="484" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="8cfd116e-7933-4b10-96a6-bc3712ca8c52">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="pdocdate" class="java.util.Date"/>
+	<parameter name="PDOCDATE2" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="levels" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from sp_get_update_balance($P{pdocdate},$P{PDOCDATE2}) as q1
+	where (acctcode like '1203%' or acctcode like '1204%' or acctcode like '1207%') and levels <= $P{levels}]]>
+	</queryString>
+	<field name="acctcode" class="java.lang.String"/>
+	<field name="acctname" class="java.lang.String"/>
+	<field name="sal_inicio" class="java.math.BigDecimal"/>
+	<field name="sal_debe" class="java.math.BigDecimal"/>
+	<field name="sal_haber" class="java.math.BigDecimal"/>
+	<field name="postable" class="java.lang.String"/>
+	<field name="levels" class="java.lang.Integer"/>
+	<field name="grpline" class="java.lang.Integer"/>
+	<field name="fathernum" class="java.lang.String"/>
+	<field name="groupmask" class="java.lang.Integer"/>
+	<field name="acttype" class="java.lang.String"/>
+	<field name="objtype" class="java.lang.String"/>
+	<field name="counter" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement x="414" y="0" width="70" height="16" uuid="9f8f8420-d3f5-43da-b1e2-1bbe28ab5d2d"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{sal_inicio}.doubleValue() +
+$F{sal_debe}.doubleValue() -
+$F{sal_haber}.doubleValue()]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="229" y="0" width="60" height="16" uuid="81446eb4-6889-4932-bca5-41f2e340f2d7"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{sal_debe}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="179" y="0" width="50" height="16" uuid="9a120003-9358-40b1-95bd-2448f0b1b562"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{sal_inicio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="330" y="0" width="84" height="16" uuid="f3b749e3-bdbc-40e1-ba71-fcc300192b93"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="179" height="16" uuid="c886788d-eab2-432d-aa13-69a5aa1469f7"/>
+				<textFieldExpression><![CDATA[$F{acctcode}+" "+$F{acctname}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="289" y="0" width="41" height="16" uuid="56c43737-c06b-4a5b-a8ac-856dce776a12"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{sal_haber}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

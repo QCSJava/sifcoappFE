@@ -1,57 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_ARD" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0b70276d-373d-4386-98ad-46dd0bb96fa4">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_ARD" language="groovy" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0b70276d-373d-4386-98ad-46dd0bb96fa4">
+	<property name="ireport.zoom" value="0.9090909090909091"/>
+	<property name="ireport.x" value="114"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="corpName" class="java.lang.String"/>
 	<parameter name="pdocdate" class="java.util.Date"/>
 	<parameter name="PDOCDATE2" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Valentin\\Documents\\NetBeansProjects\\sifcoappFE\\web\\reports\\design\\account\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="levels" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[SELECT  Q1.acctcode, Q1.acctname, Q1.sal_anterior, Q1.sal_final, variacion, variacion2,  Q1.levels, Q1.groupmask, Q1.acttype, Q1.TIPO,
-CASE WHEN variacion2 > 0.01 then 'AUMENTO EN '
-	WHEN variacion2 < -0.01 THEN 'DISMINUCIÓN EN '
-	WHEN variacion2 = 0 THEN 'SIN VARIACIÓN EN '
-	ELSE 'MISTAKE '
-END AS acctname2
-FROM (
-
-	select T1.acctcode, T1.acctname,
-	coalesce( T0.sal_inicio,0.00) AS sal_anterior,
-	coalesce(T1.sal_inicio,0.00) AS sal_final,
-	coalesce(T1.sal_inicio,0.00) - coalesce( T0.sal_inicio,0.00) as variacion,
-	CASE WHEN T1.groupmask IN (1) then (coalesce(T1.sal_inicio,0.00) - coalesce( T0.sal_inicio,0.00)) * -1
-		else coalesce(T1.sal_inicio,0.00) - coalesce( T0.sal_inicio,0.00)
-		end AS Variacion2,
-	T0.levels, T0.groupmask, T0.acttype,
-	CASE WHEN T1.acctcode like '310101%' THEN '1'
-		WHEN T1.acctcode like '310301%' THEN '2'
-		WHEN T1.acctcode like '310302%' THEN '3'
-		WHEN T1.acctcode like '310303%' THEN '4'
-		WHEN T1.acctcode like '310401%' THEN '5'
-		WHEN T1.acctcode like '310501%' THEN '6'
-		WHEN T1.acctcode like '310601%' THEN '7'
-		WHEN T1.acctcode like '310701%' THEN '8'
-		else 'N' END AS TIPO
-	from sp_get_update_genera_balance('01-12-2015') T0 JOIN
-	sp_get_update_genera_balance('28-12-2015') T1 ON T0.acctcode =T1.acctcode
-
-) Q1
-
-WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
+		<![CDATA[select 1 as num]]>
 	</queryString>
-	<field name="acctcode" class="java.lang.String"/>
-	<field name="acctname" class="java.lang.String"/>
-	<field name="sal_anterior" class="java.math.BigDecimal"/>
-	<field name="sal_final" class="java.math.BigDecimal"/>
-	<field name="variacion" class="java.math.BigDecimal"/>
-	<field name="variacion2" class="java.math.BigDecimal"/>
-	<field name="levels" class="java.lang.Integer"/>
-	<field name="groupmask" class="java.lang.Integer"/>
-	<field name="acttype" class="java.lang.String"/>
-	<field name="tipo" class="java.lang.String"/>
-	<field name="acctname2" class="java.lang.String"/>
+	<field name="num" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -63,12 +29,12 @@ WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
 				<text><![CDATA[EXPRESADO EN DÓLARES AMERICANOS U.M. USD$]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="20" width="752" height="20" uuid="163658f0-2223-4b10-ae7e-8ebf4745efbd"/>
+				<reportElement x="10" y="59" width="752" height="20" uuid="163658f0-2223-4b10-ae7e-8ebf4745efbd"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[(CUADRO DE ACTIVO FIJO, RETIROS Y DEPRECIACIÓN ART. 67) R.A.C.T.]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="0" width="752" height="20" uuid="e95e235f-b7c8-45e4-826d-0d649c7bf00f"/>
+				<reportElement x="0" y="20" width="752" height="20" uuid="e95e235f-b7c8-45e4-826d-0d649c7bf00f"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{corpName}]]></textFieldExpression>
 			</textField>
@@ -81,46 +47,7 @@ WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
 	<pageHeader>
 		<band height="48" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="212" height="48" uuid="04d3ac57-2270-488d-8d64-33643d6f4775"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[NOMBRE DE LA CUENTA]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Transparent" x="447" y="0" width="235" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="9068848c-63bd-4aa2-88ef-9c5f343e15d2"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
-					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[DEPRECIACION Y AMORTIZACIÓN]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Transparent" x="212" y="0" width="235" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="6515fd60-b70e-420d-8116-5c77295011ca"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
-					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[ACTIVO FIJO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Transparent" x="682" y="0" width="70" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="bb30e6b9-3c2b-418d-9f9c-8ac078015642"/>
+				<reportElement mode="Transparent" x="898" y="0" width="70" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="bb30e6b9-3c2b-418d-9f9c-8ac078015642"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -134,7 +61,7 @@ WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="212" y="16" width="50" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="41d3f1e8-675c-4892-8021-25b8487ccac6"/>
+				<reportElement mode="Transparent" x="179" y="16" width="50" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="41d3f1e8-675c-4892-8021-25b8487ccac6"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -148,7 +75,7 @@ WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
 				<text><![CDATA[saldo al]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="262" y="16" width="50" height="32" forecolor="#000000" backcolor="#FFFFFF" uuid="1e27b103-f4a1-4279-a030-594960e16f60"/>
+				<reportElement mode="Transparent" x="229" y="16" width="60" height="32" forecolor="#000000" backcolor="#FFFFFF" uuid="1e27b103-f4a1-4279-a030-594960e16f60"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -162,7 +89,7 @@ WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
 				<text><![CDATA[Adiciones]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="312" y="16" width="41" height="32" forecolor="#000000" backcolor="#FFFFFF" uuid="1f75cfa1-e91a-403c-b491-43a01530b02b"/>
+				<reportElement mode="Transparent" x="289" y="16" width="41" height="32" forecolor="#000000" backcolor="#FFFFFF" uuid="1f75cfa1-e91a-403c-b491-43a01530b02b"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -176,21 +103,7 @@ WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
 				<text><![CDATA[Bajas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="353" y="16" width="47" height="32" forecolor="#000000" backcolor="#FFFFFF" uuid="8ece0602-a06f-4b8d-9c22-0b62cca71222"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Ajustes]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Transparent" x="400" y="16" width="47" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="88dc0ebf-1e72-4eb6-8206-acbb866d5a9d"/>
+				<reportElement mode="Transparent" x="414" y="16" width="70" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="88dc0ebf-1e72-4eb6-8206-acbb866d5a9d"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -204,7 +117,7 @@ WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
 				<text><![CDATA[saldo al]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="212" y="32" width="50" height="16" uuid="06dce6cf-ba7d-4b6a-b15f-b2101e2b1b12"/>
+				<reportElement x="179" y="32" width="50" height="16" uuid="06dce6cf-ba7d-4b6a-b15f-b2101e2b1b12"/>
 				<box>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -216,7 +129,7 @@ WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
 				<textFieldExpression><![CDATA[$P{pdocdate}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="400" y="32" width="47" height="16" uuid="b65bad03-2366-439b-8f13-9db568cf4293"/>
+				<reportElement x="414" y="32" width="70" height="16" uuid="b65bad03-2366-439b-8f13-9db568cf4293"/>
 				<box>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -228,7 +141,7 @@ WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
 				<textFieldExpression><![CDATA[$P{pdocdate}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Transparent" x="447" y="16" width="50" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="a02aa823-1c2c-42bb-850f-d2a6f486dc47"/>
+				<reportElement mode="Transparent" x="663" y="16" width="50" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="a02aa823-1c2c-42bb-850f-d2a6f486dc47"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -242,7 +155,7 @@ WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
 				<text><![CDATA[saldo al]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="447" y="32" width="50" height="16" uuid="e9f7374f-bd31-4d2b-adb9-e749a85e579d"/>
+				<reportElement x="663" y="32" width="50" height="16" uuid="e9f7374f-bd31-4d2b-adb9-e749a85e579d"/>
 				<box>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -254,7 +167,7 @@ WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
 				<textFieldExpression><![CDATA[$P{pdocdate}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Transparent" x="557" y="16" width="41" height="32" forecolor="#000000" backcolor="#FFFFFF" uuid="3e558bc1-5e41-493d-88b6-0d402b1d91a5"/>
+				<reportElement mode="Transparent" x="773" y="16" width="41" height="32" forecolor="#000000" backcolor="#FFFFFF" uuid="3e558bc1-5e41-493d-88b6-0d402b1d91a5"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -268,7 +181,7 @@ WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
 				<text><![CDATA[Bajas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="497" y="16" width="60" height="32" forecolor="#000000" backcolor="#FFFFFF" uuid="90abc581-2248-4cd0-9ee7-177125e3010f"/>
+				<reportElement mode="Transparent" x="713" y="16" width="60" height="32" forecolor="#000000" backcolor="#FFFFFF" uuid="90abc581-2248-4cd0-9ee7-177125e3010f"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -282,7 +195,7 @@ WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
 				<text><![CDATA[Provisiones]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="598" y="16" width="84" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="38aa66ca-1f55-47f4-9166-1f7456e05924"/>
+				<reportElement mode="Transparent" x="814" y="16" width="84" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="38aa66ca-1f55-47f4-9166-1f7456e05924"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -296,7 +209,7 @@ WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
 				<text><![CDATA[Ajustes]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="598" y="32" width="42" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="3efe8424-8efd-4f3f-b3f6-88da729e31a0"/>
+				<reportElement mode="Transparent" x="814" y="32" width="42" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="3efe8424-8efd-4f3f-b3f6-88da729e31a0"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -310,7 +223,7 @@ WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
 				<text><![CDATA[Debe]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="640" y="32" width="42" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="25cbc84a-f929-403a-bdb6-fa6fea083bf1"/>
+				<reportElement mode="Transparent" x="856" y="32" width="42" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="25cbc84a-f929-403a-bdb6-fa6fea083bf1"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -324,7 +237,7 @@ WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
 				<text><![CDATA[Haber]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="682" y="16" width="70" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="30f1db14-f990-4c81-8307-8cc673f9e97e"/>
+				<reportElement mode="Transparent" x="898" y="16" width="70" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="30f1db14-f990-4c81-8307-8cc673f9e97e"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -338,7 +251,7 @@ WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
 				<text><![CDATA[saldo al]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="682" y="32" width="70" height="16" uuid="cc9ec464-5733-4c3c-b15e-3d1bf1dcc478"/>
+				<reportElement x="898" y="32" width="70" height="16" uuid="cc9ec464-5733-4c3c-b15e-3d1bf1dcc478"/>
 				<box>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -347,10 +260,143 @@ WHERE Q1.TIPO <> 'N' AND levels <= 4  ORDER BY TIPO,  acctcode]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{pdocdate}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="484" y="0" width="179" height="48" uuid="e533d343-22f7-4ef8-9c50-7823c3e4b3a8"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[NOMBRE DE LA CUENTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="330" y="16" width="84" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="738ff97f-3fff-4c97-b0b5-4819b00d057e"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Ajustes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="330" y="32" width="42" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="c2917099-e82b-4676-8f0c-483b8a690e47"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Debe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="372" y="32" width="42" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="a59650aa-03f2-4c53-b4e5-996bab982435"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Haber]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="179" height="48" uuid="04d3ac57-2270-488d-8d64-33643d6f4775"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[NOMBRE DE LA CUENTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="663" y="0" width="305" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="9068848c-63bd-4aa2-88ef-9c5f343e15d2"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[DEPRECIACION Y AMORTIZACIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="179" y="0" width="305" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="6515fd60-b70e-420d-8116-5c77295011ca"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[ACTIVO FIJO]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="125" splitType="Stretch"/>
+		<band height="16" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="484" height="16" uuid="655716c4-e337-42c9-81e7-0d52a1b69c7d"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PDOCDATE2">
+					<subreportParameterExpression><![CDATA[$P{PDOCDATE2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="corpName">
+					<subreportParameterExpression><![CDATA[$P{corpName}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="levels">
+					<subreportParameterExpression><![CDATA[$P{levels}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pdocdate">
+					<subreportParameterExpression><![CDATA[$P{pdocdate}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "report_ARD_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="484" y="0" width="484" height="16" uuid="45b39c1f-9e5e-4469-ac70-24d12c068757"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PDOCDATE2">
+					<subreportParameterExpression><![CDATA[$P{PDOCDATE2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="corpName">
+					<subreportParameterExpression><![CDATA[$P{corpName}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="levels">
+					<subreportParameterExpression><![CDATA[$P{levels}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pdocdate">
+					<subreportParameterExpression><![CDATA[$P{pdocdate}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "report_ARD_subreport2.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
 	</detail>
 	<columnFooter>
 		<band height="45" splitType="Stretch"/>
