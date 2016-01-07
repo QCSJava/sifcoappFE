@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DetailColecturia" language="groovy" pageWidth="612" pageHeight="792" columnWidth="472" leftMargin="85" rightMargin="55" topMargin="35" bottomMargin="35" uuid="25dfb083-d6d4-46eb-8f6e-6a457c88bb38">
+	<property name="ireport.zoom" value="1.1000000000000016"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="corpName" class="java.lang.String">
+		<defaultValueExpression><![CDATA["ACOETMISAB DE R.L."]]></defaultValueExpression>
+	</parameter>
+	<parameter name="user" class="java.lang.String"/>
+	<parameter name="PDOCDATE2" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pdocdate" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select t2.series, t2.docentry, t1.linenum, t1.dscription,  t2.cardname, t1.paidsum monto, case when t2.series = 1 then 'Creación' else 'Reversión' end as tipo
+	from  ges_col1_colecturiadetail t1
+	join ges_col0_colecturia t2  on t2.docentry = t1.docentry
+	join adm_usr0_user t3 on t2.usersign = t3.usersign
+	where t3.nickname = 'Hugo'
+	and t2.docdate >= $P{pdocdate}
+	and t2.docdate <= $P{PDOCDATE2}
+	order by  t2.docentry, t1.linenum, t2.series]]>
+	</queryString>
+	<field name="series" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Serie]]></fieldDescription>
+	</field>
+	<field name="docentry" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Entrada doc.emis.]]></fieldDescription>
+	</field>
+	<field name="linenum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[NÃºmero de lÃ­nea]]></fieldDescription>
+	</field>
+	<field name="dscription" class="java.lang.String">
+		<fieldDescription><![CDATA[DescripciÃ³n del artÃ­culo]]></fieldDescription>
+	</field>
+	<field name="cardname" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre SN]]></fieldDescription>
+	</field>
+	<field name="monto" class="java.math.BigDecimal"/>
+	<field name="tipo" class="java.lang.String"/>
+	<variable name="monto_1" class="java.math.BigDecimal" resetType="Group" resetGroup="Tipo" calculation="Sum">
+		<variableExpression><![CDATA[$F{monto}]]></variableExpression>
+	</variable>
+	<variable name="monto_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{series}== 1?$F{monto}:($F{monto}.doubleValue()*-1)]]></variableExpression>
+	</variable>
+	<group name="Tipo">
+		<groupExpression><![CDATA[$F{tipo}]]></groupExpression>
+		<groupHeader>
+			<band height="16">
+				<textField>
+					<reportElement x="0" y="0" width="183" height="15" uuid="14a8a6ee-d63f-4b85-a1d9-8644a48ec145"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="34">
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+					<reportElement mode="Transparent" x="417" y="0" width="55" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="6d615175-726d-4179-a8f9-51de94ec1353"/>
+					<box>
+						<topPen lineWidth="2.0" lineStyle="Double"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{monto_1}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="0" width="417" height="15" uuid="ba70f3af-1b6f-464d-ace3-3e6287c14fbe"/>
+					<box>
+						<topPen lineWidth="2.0" lineStyle="Double"/>
+					</box>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Totales " + $F{tipo}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="472" height="20" uuid="bcbba91f-6f47-4b79-a4fd-9afd4d35f7a1"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{corpName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="154" y="40" width="30" height="20" uuid="b11b3100-3a27-4bc8-aef7-fb8b521863cf"/>
+				<box rightPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Del:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="183" y="40" width="55" height="20" uuid="171fd4f3-2497-40ea-a328-87b29b9982b8"/>
+				<textFieldExpression><![CDATA[$P{pdocdate}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="257" y="40" width="65" height="20" uuid="a48f616e-a276-43cd-bcd4-33f184ff3af0"/>
+				<textFieldExpression><![CDATA[$P{PDOCDATE2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="238" y="40" width="19" height="20" uuid="8f6b70f1-f8a1-474f-bac0-893fe09a187d"/>
+				<box rightPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Al:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="20" width="472" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b7807fa5-92ff-4a59-be4d-316e360fa73c"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Reporte Detallado de Colecturía]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="15" splitType="Stretch">
+			<staticText>
+				<reportElement x="305" y="0" width="55" height="15" uuid="c0015e7c-672d-4943-b8f9-b603e34cd2fb"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[usuario:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="360" y="0" width="112" height="15" uuid="7fb0de1b-3747-4983-a5d4-aba0b9297c6d"/>
+				<box leftPadding="5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{user}.equals( "" )? "TODOS":$P{user}.toUpperCase()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="238" y="0" width="179" height="20" uuid="4e505da2-bdfb-44d3-bc1e-4aa1bb2dbb7a"/>
+				<box>
+					<topPen lineWidth="2.0" lineStyle="Double"/>
+					<bottomPen lineWidth="2.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="65" height="20" uuid="b1be7855-d6fc-4e9b-bb67-640ec10b3609"/>
+				<box>
+					<topPen lineWidth="2.0" lineStyle="Double"/>
+					<bottomPen lineWidth="2.0" lineStyle="Double"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Documento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="65" y="0" width="118" height="20" uuid="71ea8ea9-ae60-43d8-8ba9-4ac96a53db6a"/>
+				<box>
+					<topPen lineWidth="2.0" lineStyle="Double"/>
+					<bottomPen lineWidth="2.0" lineStyle="Double"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Socio	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="0" width="55" height="20" uuid="06d4b671-d15b-4d5a-9eeb-c7314d4da04d"/>
+				<box>
+					<topPen lineWidth="2.0" lineStyle="Double"/>
+					<bottomPen lineWidth="2.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="183" y="0" width="55" height="20" uuid="edfaecc1-1164-4a8b-8f8d-54a4221f6a0f"/>
+				<box>
+					<topPen lineWidth="2.0" lineStyle="Double"/>
+					<bottomPen lineWidth="2.0" lineStyle="Double"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Linea]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="65" height="15" uuid="59d6b434-176c-46c6-8c24-b2e83cc5c40d"/>
+				<textFieldExpression><![CDATA[$F{docentry}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="65" y="0" width="118" height="15" uuid="e0010e67-eace-4e4e-9597-48ef72542712"/>
+				<textFieldExpression><![CDATA[$F{cardname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="184" y="0" width="54" height="15" uuid="c960d4f0-e81d-43db-8325-e6bb7cb905dd"/>
+				<textFieldExpression><![CDATA[$F{linenum}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="238" y="0" width="179" height="15" uuid="d0512932-c923-4f51-b17e-cd55f12540ba"/>
+				<textFieldExpression><![CDATA[$F{dscription}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="417" y="0" width="55" height="15" uuid="7b85322a-f65f-4cec-a1d1-9e1524d54b23"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="42" splitType="Stretch">
+			<textField>
+				<reportElement x="360" y="0" width="57" height="39" uuid="d17a5196-abd1-45dc-82bd-d8fa4f9a1bdb"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="417" y="0" width="55" height="39" uuid="ad8d673e-f67b-4d13-918c-ea4dfa92b75b"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="0" y="24" width="360" height="15" uuid="ecb3942c-dbf9-4732-b4f0-54158237d201"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="360" height="24" uuid="1ae75fa8-a9ec-4de5-90b0-120976c5e507"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{JASPER_REPORT}.getName()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="19" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="417" height="15" uuid="09245886-5f77-454e-afcd-5dcf7afb7a0f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTALES]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="417" y="0" width="55" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="586e7228-7032-4a28-aaf8-991a0894e8af"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{monto_2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

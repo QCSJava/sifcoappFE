@@ -47,9 +47,11 @@
                         <p:spacer width="0" height="10"/>
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2"><p:outputLabel  value="Tipo de Reporte:" for="isActive" ></p:outputLabel></div>
-                            <div class="ui-grid-col-2">
+                            <div class="ui-grid-col-8">
                                 <p:selectOneRadio layout="pageDirection" required="true" id="isActive" value="#{repBanksBean.ftype}">
                                     <div class="ui-grid-col-1"><f:selectItem itemLabel="Control de Ingresos" itemValue="1" /></div>
+                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Reporte consolidado de colecturia" itemValue="2" /></div>
+                                    <div class="ui-grid-col-1"><f:selectItem itemLabel="Reporte detallado de colecturia" itemValue="3" /></div>
                                 </p:selectOneRadio></div>
 
                         </div>

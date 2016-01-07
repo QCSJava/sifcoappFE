@@ -346,7 +346,15 @@ public class RepAccount implements Serializable {
                     where = where + "and t0.acctcode like '" + this.account + "%' ";//'1%'";
                 }
                 reportParameters.put("PWHERE", where);
-
+            }
+            
+            if (this.ftype == 13) {
+                _reportname = "/account/OldAccountBalances";
+                _reportTitle = "Reporte de cxc ";
+                
+                reportParameters.put("levels", this.getReportLevel());
+                reportParameters.put("pdocdate", this.getFdatefrom());
+                reportParameters.put("PDOCDATE2", this.getFdateto());
             }
 
             reportParameters.put("reportName", _reportTitle);
