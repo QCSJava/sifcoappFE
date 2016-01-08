@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_ARD_subreport1" language="groovy" pageWidth="484" pageHeight="16" columnWidth="484" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="75924367-4505-4d47-a538-d31c145fcabd">
-	<property name="ireport.zoom" value="1.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_ARD_subreport1" language="groovy" pageWidth="484" pageHeight="17" columnWidth="484" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="75924367-4505-4d47-a538-d31c145fcabd">
+	<property name="ireport.zoom" value="1.6105100000000008"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="pdocdate" class="java.util.Date"/>
@@ -11,61 +11,124 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select sal_inicio, sal_debe, sal_haber from sp_get_update_balance($P{pdocdate},$P{PDOCDATE2}) as q0
+		<![CDATA[select coalesce(sal_inicio,0.0) as sal_inicio, coalesce(sal_debe,0.0) as sal_debe,
+coalesce(sal_haber,0.0) as sal_haber, acctcode,acctname
+from sp_get_update_balance($P{pdocdate},$P{PDOCDATE2}) as q0
 	where (acctcode like '1201%' or acctcode like '1202%' or acctcode like '1206%') and levels <= $P{levels}]]>
 	</queryString>
-	<field name="acctcode" class="java.lang.String"/>
-	<field name="acctname" class="java.lang.String"/>
 	<field name="sal_inicio" class="java.math.BigDecimal"/>
 	<field name="sal_debe" class="java.math.BigDecimal"/>
 	<field name="sal_haber" class="java.math.BigDecimal"/>
-	<field name="postable" class="java.lang.String"/>
-	<field name="levels" class="java.lang.Integer"/>
-	<field name="grpline" class="java.lang.Integer"/>
-	<field name="fathernum" class="java.lang.String"/>
-	<field name="groupmask" class="java.lang.Integer"/>
-	<field name="acttype" class="java.lang.String"/>
-	<field name="objtype" class="java.lang.String"/>
-	<field name="counter" class="java.lang.Integer"/>
+	<field name="acctcode" class="java.lang.String"/>
+	<field name="acctname" class="java.lang.String"/>
+	<variable name="sal_inicio_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{sal_inicio}]]></variableExpression>
+	</variable>
+	<variable name="sal_debe_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{sal_debe}]]></variableExpression>
+	</variable>
+	<variable name="sal_haber_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{sal_haber}]]></variableExpression>
+	</variable>
+	<variable name="sal_inicio_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{sal_inicio}.doubleValue() +
+$F{sal_debe}.doubleValue() -
+$F{sal_haber}.doubleValue()]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
 		<band height="16">
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="179" y="0" width="50" height="16" uuid="8470defc-4ae8-4767-bf9f-651d0d964966"/>
+				<reportElement x="179" y="0" width="70" height="16" uuid="8470defc-4ae8-4767-bf9f-651d0d964966"/>
 				<box rightPadding="3"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{sal_inicio}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="229" y="0" width="60" height="16" uuid="0f3e1ad7-1625-44b4-b3eb-f22383ff00e9"/>
+				<reportElement x="249" y="0" width="52" height="16" uuid="0f3e1ad7-1625-44b4-b3eb-f22383ff00e9"/>
 				<box rightPadding="3"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{sal_debe}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="289" y="0" width="41" height="16" uuid="d65eecb3-7dbb-418d-a221-0592026a4abc"/>
+				<reportElement x="301" y="0" width="53" height="16" uuid="d65eecb3-7dbb-418d-a221-0592026a4abc"/>
 				<box rightPadding="3"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{sal_haber}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="330" y="0" width="84" height="16" uuid="c626f4f0-a1e7-41d7-b94c-cdca003a6441"/>
-				<text><![CDATA[]]></text>
-			</staticText>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="414" y="0" width="70" height="16" uuid="9eb89387-5b7c-47b2-a72f-b5f559866ee3"/>
 				<box rightPadding="3"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{sal_inicio}.doubleValue() +
 $F{sal_debe}.doubleValue() -
 $F{sal_haber}.doubleValue()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="0" width="179" height="16" uuid="cf5b0526-be96-489d-a82d-f4c70bea1a50"/>
-				<textFieldExpression><![CDATA[$F{acctcode}+" "+$F{acctname}]]></textFieldExpression>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acctcode}+" - "+$F{acctname}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
+	<summary>
+		<band height="17">
+			<textField pattern="#,##0.00">
+				<reportElement x="179" y="1" width="70" height="16" uuid="4bdcfe29-4514-4c5d-9195-7c4a747fdc41"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sal_inicio_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="249" y="1" width="52" height="16" uuid="505d34ae-27fa-46d0-95a0-07777de34892"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sal_debe_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="1" width="179" height="16" uuid="6944e427-dd27-4401-aa03-47b7fd6db2c5"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="301" y="1" width="53" height="16" uuid="4ac9e588-7f55-455c-b331-c4e3004d45b5"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sal_haber_1}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="484" height="1" uuid="7f8b674c-c42d-4bbf-927f-f2d6e027218a"/>
+			</line>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="414" y="1" width="70" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="915567d8-5b6d-40b7-8416-f0cdb794062a"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sal_inicio_2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
 </jasperReport>
