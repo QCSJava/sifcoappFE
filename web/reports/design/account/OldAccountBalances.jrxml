@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OldAccountBalances" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4b34cc8b-aec3-42e5-aaf5-51d483c5ac08">
-	<property name="ireport.zoom" value="1.9487171000000025"/>
-	<property name="ireport.x" value="516"/>
+	<property name="ireport.zoom" value="1.6105100000000019"/>
+	<property name="ireport.x" value="55"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="corpName" class="java.lang.String">
 		<defaultValueExpression><![CDATA["ACOETMISAB DE R.L."]]></defaultValueExpression>
@@ -15,7 +15,6 @@
 	</parameter>
 	<queryString>
 		<![CDATA[select *
-
 from sp_get_update_cxc($P{PDOCDATE2})
 where (acctcode like '1102%' or acctcode like '1103%' or acctcode like '1104%' or acctcode like '1105%')  and levels <= $P{levels} and sal_inicio <> 0.0
 order by acctcode]]>
