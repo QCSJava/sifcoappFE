@@ -32,7 +32,7 @@ public class repBanksBean implements Serializable {
     private Date fdateto;
     private String user;
     private int ftype;
-    
+
     @ManagedProperty(value = "#{reportsBean}")
     private ReportsBean bean;
 //</editor-fold>
@@ -70,7 +70,6 @@ public class repBanksBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="PRINT">
     public void print(int _type) {
         ////////////////////////////////////////////////////////////////////////
@@ -82,7 +81,7 @@ public class repBanksBean implements Serializable {
         String _reportTitle = null;
         EnterpriseTO resp = null;
         this.bean = new ReportsBean();
-        
+
         try {
             resp = AdminEJBService.getEnterpriseInfo();
         } catch (Exception ex) {
@@ -94,28 +93,38 @@ public class repBanksBean implements Serializable {
         if (this.ftype == 1) {
             _reportname = "/bank/RevenueControl";
             _reportTitle = "CONTROL DE INGRESOS";
-            
+
             reportParameters.put("user", this.user);
         }
-        
+
         if (this.ftype == 2) {
             _reportname = "/bank/Colecturia";
             _reportTitle = "Reporte consolidado de colecturia";
-            
+
             //and  t3.nickname = $P{user} userNick
-            
             reportParameters.put("user", "");
-            if (this.user != null && this.user.length()>0) {
-                reportParameters.put("user", " and t3.nickname = "+this.user);
-                reportParameters.put("userNick", this.user);
+            if (this.user != null && this.user.length() > 0) {
+                reportParameters.put("user", this.user);
+                reportParameters.put("where", "t2.docdate >= $P{pdocdate} and t2.docdate <= $P{PDOCDATE2}"
+                        + " and t2.transtype = 1 and t2.series = 1"
+                        + " and  t3.nickname = $P{user}");
+            }else{
+                reportParameters.put("where", "t2.docdate >= $P{pdocdate} and t2.docdate <= $P{PDOCDATE2}"
+                        + " and t2.transtype = 1 and t2.series = 1");
             }
         }
-        
+
         if (this.ftype == 3) {
             _reportname = "/bank/DetailColecturia";
             _reportTitle = "Reporte detallado de colecturia";
-            
-            reportParameters.put("user", this.user);
+
+            reportParameters.put("user", "");
+            if (this.user != null && this.user.length() > 0) {
+                reportParameters.put("user", this.user);
+                reportParameters.put("where", " where t2.docdate >= $P{pdocdate} and t2.docdate <= $P{PDOCDATE2} and t3.nickname = $P{user} order by  t2.docentry, t1.linenum, t2.series");
+            } else {
+                reportParameters.put("where", " where t2.docdate >= $P{pdocdate} and t2.docdate <= $P{PDOCDATE2} order by  t2.docentry, t1.linenum, t2.series");
+            }
         }
 
         ////////////////////////////////////////////////////////////////////////
@@ -192,7 +201,6 @@ public class repBanksBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="funciones varias">
     public repBanksBean() {
     }

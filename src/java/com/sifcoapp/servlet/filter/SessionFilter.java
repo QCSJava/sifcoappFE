@@ -39,8 +39,8 @@ public class SessionFilter implements Filter {
         LicenseBean LicBean = new LicenseBean();
         if (objeto != null) {
             LicBean = (LicenseBean) objeto;
-        }
-        */
+        }*/
+        
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         String url = request.getServletPath();
