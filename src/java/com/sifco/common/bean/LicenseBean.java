@@ -36,7 +36,7 @@ public class LicenseBean implements Serializable {
         return license;
     }
 
-    public static final String getSerialNumber() {
+    public String getSerialNumber() {
 
         if (sn != null) {
             return sn;
