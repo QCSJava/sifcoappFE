@@ -5,13 +5,13 @@
  */
 package com.sifcoapp.servlet.filter;
 
-/**
- *
- * @author ri00642
- */
+import com.sifcoapp.client.ParameterEJBClient;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
@@ -28,29 +28,35 @@ import javax.servlet.http.HttpSession;
 
 public class SessionFilter implements Filter {
 
+//<editor-fold defaultstate="collapsed" desc="Variables">
     private ArrayList<String> urlList;
     private static String sn = null;
-
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="Destroy">
+    @Override
     public void destroy() {
     }
-
-    public void doFilter(ServletRequest req, ServletResponse res,
-            FilterChain chain) throws IOException, ServletException {
-
-        ServletContext context = req.getServletContext();
-        if (context.getAttribute("license") == null) {
-            System.out.println("Licencia no verificada...");
-            context.setAttribute("license", verifyLicense());//setea license en true o false
-        }
-        if (context.getAttribute("license").equals(true)) {
-            System.out.println("Licencia valida");
-        } else {
-            System.out.println("Licencia no valida");
-        }
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="doFilter">
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         String url = request.getServletPath();
+
+        ServletContext context = req.getServletContext();
+        if (context.getAttribute("license") == null) {
+            System.out.println("Procesador no verificado...");
+            context.setAttribute("license", verifyLicense());//setea license en true o false
+        }
+        if (context.getAttribute("license").equals(false)) {
+            System.out.println("Procesador invalido");
+            response.sendRedirect(request.getContextPath() + "/faces/login.xhtml");
+            chain.doFilter(req, res);
+        }
 
         url = request.getRequestURI().toString();
         boolean allowedRequest = false;
@@ -87,20 +93,16 @@ public class SessionFilter implements Filter {
             System.out.println("session");
             String _username = null;
             if (null != session) {
-                //System.out.println(session);
                 _username = (String) session.getAttribute("username");
             }
 
             System.out.println("url no permitida " + url);
 
-            //if (null == session || _username==null) {
             if (null == session || _username == null) {
                 System.out.println("sesion null " + url);
-                response.sendRedirect(request.getContextPath() + "/faces/login.xhtml");
-                //System.out.println("sesion nula redirecciona sino es index, login ni jafax?faces-redirect=true");    
+                response.sendRedirect(request.getContextPath() + "/faces/login.xhtml");   
             } else {
                 ArrayList<String> urlListUsr = (ArrayList<String>) session.getAttribute("urlsUser");
-                //if (!urlListUsr.contains(url)) {
                 if (url.contains("/sifcoappFE/faces/javax.faces.resource/")
                         || url.contains("login")
                         || url.contains("/sifcoappFE/servlets/report/PDF")
@@ -118,9 +120,9 @@ public class SessionFilter implements Filter {
                 } else {
                     System.out.println("perfil invalido " + url);
                     int _validurl = 0;
-                    for (int x = 0; x < urlListUsr.size(); x++) {
-                        System.out.println(urlListUsr.get(x));
-                        if (url.contains(urlListUsr.get(x))) {
+                    for (String urlListUsr1 : urlListUsr) {
+                        //System.out.println(urlListUsr1);
+                        if (url.contains(urlListUsr1)) {
                             _validurl = 1;
                         }
                     }
@@ -130,51 +132,54 @@ public class SessionFilter implements Filter {
                         System.out.println("perfil invalido " + url);
                         response.sendRedirect(request.getContextPath() + "/faces/login.xhtml");
                     }
-
                 }
-                //response.sendRedirect(request.getContextPath() + "/faces/login.xhtml");
-                // }
             }
         }
-
-        chain.doFilter(req, res);
+        try {
+            chain.doFilter(req, res);
+        } catch (IOException | ServletException e) {
+            System.out.println(e.getMessage() +" - "+ e.getCause());
+        } 
     }
-
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="init">
+    @Override
     public void init(FilterConfig config) throws ServletException {
         String urls = config.getInitParameter("avoid-urls");
         StringTokenizer token = new StringTokenizer(urls, ",");
 
-        urlList = new ArrayList<String>();
+        urlList = new ArrayList<>();
 
         while (token.hasMoreTokens()) {
             urlList.add(token.nextToken());
             System.out.println("agregando token" + token.nextToken());
         }
     }
-
-    /*
-     * Rutilio Iraheta
-     * Julio 2015
-     * Valida las urls por perfil
-     */
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="checkProfile">
     public void checkProfile(HttpSession session) {
         ArrayList<String> urlListUsr;
         urlListUsr = (ArrayList<String>) session.getAttribute("urlsUser");
 
     }
-
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="verifyLicense">
     private boolean verifyLicense() {
-        if ("4B402343K".equals(getSerialNumber())) {
-            System.out.println("Licencia verificada correctamente: "+getSerialNumber());
+        if (readSerial().equals(getSerialNumber())) {
+            System.out.println("Procesador valido...: " + getSerialNumber());
             return true;
         } else {
-            System.out.println("Solicite una licencia, esta es invalida: "+getSerialNumber());
+            System.out.println("Error en procesador, este no es valido: " + getSerialNumber());
             return false;
         }
     }
-
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="getSerialNumber">
     public String getSerialNumber() {
-
         if (sn != null) {
             return sn;
         }
@@ -219,7 +224,69 @@ public class SessionFilter implements Filter {
         if (sn == null) {
             throw new RuntimeException("Cannot find computer SN");
         }
-
-        return sn;
+        return encryptSerial(sn);
     }
-}
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="encryptSerial">
+    private String encryptSerial(String numSerial) {
+        byte[] digest = null;
+        byte[] buffer = numSerial.getBytes();
+
+        try {
+            String algorithm = "MD5";
+            MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
+            messageDigest.reset();
+            messageDigest.update(buffer);
+            digest = messageDigest.digest();
+        } catch (NoSuchAlgorithmException ex) {
+            System.out.println("Error creando Digest: " + ex.getMessage());
+        }
+        return toHexadecimal(digest);
+    }
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="toHexadecimal">
+    private String toHexadecimal(byte[] digest) {
+        String hash = "";
+        for (byte aux : digest) {
+            int b = aux & 0xff;
+            if (Integer.toHexString(b).length() == 1) {
+                hash += "0";
+            }
+            hash += Integer.toHexString(b);
+        }
+        //System.out.println("read md5 ini--------------------------------------------");
+        //System.out.println(hash);
+        //System.out.println("read md5 fin--------------------------------------------");
+        return hash;
+    }
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="readSerial">
+    private String readSerial() {
+        String serialNum = "", dir="";
+        
+        try {
+            ParameterEJBClient ParameterEJBClient = new ParameterEJBClient();
+            dir = ParameterEJBClient.getParameterbykey(28).getValue1();
+            
+            FileReader fr = new FileReader(dir);
+            int valor = fr.read();
+            while (valor != -1) {
+                serialNum = serialNum + ((char) valor);
+                //System.out.print((char) valor);
+                valor = fr.read();
+            }
+            fr.close();
+        } catch (IOException e) {
+            System.out.println("Error E/S: " + e.getMessage());
+        }
+        //System.out.println("read text-----------------------------------------------");
+        //System.out.println(serialNum);
+        //System.out.println("read text fin-------------------------------------------");
+        return serialNum;
+    }
+//</editor-fold>
+    
+}//Cierre de claase
