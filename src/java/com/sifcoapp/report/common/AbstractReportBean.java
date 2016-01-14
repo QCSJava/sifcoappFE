@@ -131,15 +131,18 @@ public abstract class AbstractReportBean implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="prepareReport">
     protected void prepareReport() throws JRException, IOException {
-        ParameterEJBClient ParameterEJBClient = new ParameterEJBClient();
-        String dir = ParameterEJBClient.getParameterbykey(29).getValue1();
-        //"C:\\reports\\"
-
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         ServletContext context = (ServletContext) externalContext.getContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
         HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
-        File reportFile = new File(dir, getCompileFileName() + ".jasper");
+        
+        if (context.getAttribute("dirRep") == null) {
+            ParameterEJBClient ParameterEJBClient = new ParameterEJBClient();
+            String dir = ParameterEJBClient.getParameterbykey(29).getValue1();
+            context.setAttribute("dirRep", dir);
+        }
+        
+        File reportFile = new File((String) context.getAttribute("dirRep"), getCompileFileName() + ".jasper");
 
         Connection conn = null;
         try {
