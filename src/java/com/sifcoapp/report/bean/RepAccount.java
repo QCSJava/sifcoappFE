@@ -356,6 +356,15 @@ public class RepAccount implements Serializable {
                 reportParameters.put("pdocdate", this.getFdatefrom());
                 reportParameters.put("PDOCDATE2", this.getFdateto());
             }
+            
+            if (this.ftype == 14) {
+                _reportname = "/account/OldAccountBalancesCxP";
+                _reportTitle = "Reporte de cxp ";
+                
+                reportParameters.put("levels", this.getReportLevel());
+                reportParameters.put("pdocdate", this.getFdatefrom());
+                reportParameters.put("PDOCDATE2", this.getFdateto());
+            }
 
             reportParameters.put("reportName", _reportTitle);
             reportParameters.put("corpName", resp.getCrintHeadr());

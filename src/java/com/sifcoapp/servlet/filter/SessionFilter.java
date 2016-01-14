@@ -9,14 +9,16 @@ package com.sifcoapp.servlet.filter;
  *
  * @author ri00642
  */
-import com.sifco.common.bean.LicenseBean;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.StringTokenizer;
-import javax.faces.context.FacesContext;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -27,20 +29,25 @@ import javax.servlet.http.HttpSession;
 public class SessionFilter implements Filter {
 
     private ArrayList<String> urlList;
+    private static String sn = null;
 
     public void destroy() {
     }
 
     public void doFilter(ServletRequest req, ServletResponse res,
             FilterChain chain) throws IOException, ServletException {
-        /*
-        FacesContext ctxt = FacesContext.getCurrentInstance();
-        Object objeto = ctxt.getExternalContext().getApplicationMap().get("LicenseBean");
-        LicenseBean LicBean = new LicenseBean();
-        if (objeto != null) {
-            LicBean = (LicenseBean) objeto;
+
+        ServletContext context = req.getServletContext();
+        if (context.getAttribute("license") == null) {
+            System.out.println("Licencia no verificada...");
+            context.setAttribute("license", verifyLicense());//setea license en true o false
         }
-        */
+        if (context.getAttribute("license").equals(true)) {
+            System.out.println("Licencia valida");
+        } else {
+            System.out.println("Licencia no valida");
+        }
+
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         String url = request.getServletPath();
@@ -154,5 +161,65 @@ public class SessionFilter implements Filter {
         ArrayList<String> urlListUsr;
         urlListUsr = (ArrayList<String>) session.getAttribute("urlsUser");
 
+    }
+
+    private boolean verifyLicense() {
+        if ("4B402343K".equals(getSerialNumber())) {
+            System.out.println("Licencia verificada correctamente: "+getSerialNumber());
+            return true;
+        } else {
+            System.out.println("Solicite una licencia, esta es invalida: "+getSerialNumber());
+            return false;
+        }
+    }
+
+    public String getSerialNumber() {
+
+        if (sn != null) {
+            return sn;
+        }
+
+        OutputStream os = null;
+        InputStream is = null;
+
+        Runtime runtime = Runtime.getRuntime();
+        Process process = null;
+        try {
+            process = runtime.exec(new String[]{"wmic", "bios", "get", "serialnumber"});
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        os = process.getOutputStream();
+        is = process.getInputStream();
+
+        try {
+            os.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Scanner sc = new Scanner(is);
+        try {
+            while (sc.hasNext()) {
+                String next = sc.next();
+                if ("SerialNumber".equals(next)) {
+                    sn = sc.next().trim();
+                    break;
+                }
+            }
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        if (sn == null) {
+            throw new RuntimeException("Cannot find computer SN");
+        }
+
+        return sn;
     }
 }

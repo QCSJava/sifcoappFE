@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OldAccountBalances" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4b34cc8b-aec3-42e5-aaf5-51d483c5ac08">
-	<property name="ireport.zoom" value="1.6105100000000019"/>
-	<property name="ireport.x" value="55"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OldAccountBalancesCxP" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4b34cc8b-aec3-42e5-aaf5-51d483c5ac08">
+	<property name="ireport.zoom" value="1.4641000000000017"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="corpName" class="java.lang.String">
 		<defaultValueExpression><![CDATA["ACOETMISAB DE R.L."]]></defaultValueExpression>
@@ -14,10 +14,8 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select *
-from sp_get_update_cxc($P{PDOCDATE2})
-where (acctcode like '1102%' or acctcode like '1103%' or acctcode like '1104%' or acctcode like '1105%')  and levels <= $P{levels} and sal_inicio <> 0.0
-order by acctcode]]>
+		<![CDATA[select * from sp_get_update_cxp()
+where sal_inicio >0 and levels <= $P{levels}]]>
 	</queryString>
 	<field name="acctcode" class="java.lang.String"/>
 	<field name="acctname" class="java.lang.String"/>
@@ -76,7 +74,7 @@ order by acctcode]]>
 			<staticText>
 				<reportElement x="0" y="20" width="752" height="20" uuid="ef7bf422-4f3b-462f-8511-a491983f09b1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[(RESUMEN DE ANTIGUEDAD DE SALDOS DE CUENTAS Y DOCUMENTOS POR COBRAR A CLIENTES ART. 67H) R.A.C.T.]]></text>
+				<text><![CDATA[RESUMEN DE ANTIGUEDAD DE SALDOS DE CUENTAS Y DOCUMENTOS POR PAGAR ]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="0" y="0" width="752" height="20" uuid="55815410-aba2-4ecd-8004-05b8587b1178"/>

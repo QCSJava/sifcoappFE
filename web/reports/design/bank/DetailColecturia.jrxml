@@ -13,30 +13,36 @@
 	<parameter name="pdocdate" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="where" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select t2.series, t2.docentry, t1.linenum, t1.dscription,  t2.cardname, t1.paidsum monto, case when t2.series = 1 then 'Creación' else 'Reversión' end as tipo
 	from  ges_col1_colecturiadetail t1
 	join ges_col0_colecturia t2  on t2.docentry = t1.docentry
 	join adm_usr0_user t3 on t2.usersign = t3.usersign
-	where t3.nickname = 'Hugo'
-	and t2.docdate >= $P{pdocdate}
-	and t2.docdate <= $P{PDOCDATE2}
-	order by  t2.docentry, t1.linenum, t2.series]]>
+	$P!{where}
+	]]>
 	</queryString>
 	<field name="series" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Serie]]></fieldDescription>
+		<fieldDescription><![CDATA[Serie
+]]></fieldDescription>
 	</field>
 	<field name="docentry" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Entrada doc.emis.]]></fieldDescription>
+		<fieldDescription><![CDATA[Entrada doc.emis.
+]]></fieldDescription>
 	</field>
 	<field name="linenum" class="java.lang.Integer">
-		<fieldDescription><![CDATA[NÃºmero de lÃ­nea]]></fieldDescription>
+		<fieldDescription><![CDATA[NÃºmero de lÃ­nea
+]]></fieldDescription>
 	</field>
 	<field name="dscription" class="java.lang.String">
-		<fieldDescription><![CDATA[DescripciÃ³n del artÃ­culo]]></fieldDescription>
+		<fieldDescription><![CDATA[DescripciÃ³n del artÃ­culo
+]]></fieldDescription>
 	</field>
 	<field name="cardname" class="java.lang.String">
-		<fieldDescription><![CDATA[Nombre SN]]></fieldDescription>
+		<fieldDescription><![CDATA[Nombre SN
+]]></fieldDescription>
 	</field>
 	<field name="monto" class="java.math.BigDecimal"/>
 	<field name="tipo" class="java.lang.String"/>
