@@ -6,9 +6,13 @@
 package com.sifcoapp.servlet.filter;
 
 import com.sifcoapp.client.ParameterEJBClient;
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -32,13 +36,13 @@ public class SessionFilter implements Filter {
     private ArrayList<String> urlList;
     private static String sn = null;
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="Destroy">
     @Override
     public void destroy() {
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="doFilter">
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
@@ -100,7 +104,7 @@ public class SessionFilter implements Filter {
 
             if (null == session || _username == null) {
                 System.out.println("sesion null " + url);
-                response.sendRedirect(request.getContextPath() + "/faces/login.xhtml");   
+                response.sendRedirect(request.getContextPath() + "/faces/login.xhtml");
             } else {
                 ArrayList<String> urlListUsr = (ArrayList<String>) session.getAttribute("urlsUser");
                 if (url.contains("/sifcoappFE/faces/javax.faces.resource/")
@@ -138,11 +142,11 @@ public class SessionFilter implements Filter {
         try {
             chain.doFilter(req, res);
         } catch (IOException | ServletException e) {
-            System.out.println(e.getMessage() +" - "+ e.getCause());
-        } 
+            System.out.println(e.getMessage() + " - " + e.getCause());
+        }
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="init">
     @Override
     public void init(FilterConfig config) throws ServletException {
@@ -157,7 +161,7 @@ public class SessionFilter implements Filter {
         }
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="checkProfile">
     public void checkProfile(HttpSession session) {
         ArrayList<String> urlListUsr;
@@ -165,69 +169,99 @@ public class SessionFilter implements Filter {
 
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="verifyLicense">
     private boolean verifyLicense() {
         if (readSerial().equals(getSerialNumber())) {
-            System.out.println("Procesador valido...: " + getSerialNumber());
+            System.out.println("Procesador valido...");
             return true;
         } else {
-            System.out.println("Error en procesador, este no es valido: " + getSerialNumber());
+            System.out.println("Error en procesador, este no es valido");
             return false;
         }
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="getSerialNumber">
     public String getSerialNumber() {
-        if (sn != null) {
-            return sn;
-        }
+        /*if (sn != null) {
+         return sn;
+         }
 
-        OutputStream os = null;
-        InputStream is = null;
+         OutputStream os = null;
+         InputStream is = null;
 
-        Runtime runtime = Runtime.getRuntime();
-        Process process = null;
+         Runtime runtime = Runtime.getRuntime();
+         Process process = null;
+         try {
+         process = runtime.exec(new String[]{"wmic", "bios", "get", "serialnumber"});
+         } catch (IOException e) {
+         throw new RuntimeException(e);
+         }
+
+         os = process.getOutputStream();
+         is = process.getInputStream();
+
+         try {
+         os.close();
+         } catch (IOException e) {
+         throw new RuntimeException(e);
+         }
+
+         Scanner sc = new Scanner(is);
+         try {
+         while (sc.hasNext()) {
+         String next = sc.next();
+         if ("SerialNumber".equals(next)) {
+         sn = sc.next().trim();
+         break;
+         }
+         }
+         } finally {
+         try {
+         is.close();
+         } catch (IOException e) {
+         throw new RuntimeException(e);
+         }
+         }
+
+         if (sn == null) {
+         throw new RuntimeException("Cannot find computer SN");
+         }*/
+        String result = "";
         try {
-            process = runtime.exec(new String[]{"wmic", "bios", "get", "serialnumber"});
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+            File file = File.createTempFile("realhowto", ".vbs");
+            file.deleteOnExit();
+            FileWriter fw = new java.io.FileWriter(file);
 
-        os = process.getOutputStream();
-        is = process.getInputStream();
+            String vbs
+                    = "Set objWMIService = GetObject(\"winmgmts:\\\\.\\root\\cimv2\")\n"
+                    + "Set colItems = objWMIService.ExecQuery _ \n"
+                    + "   (\"Select * from Win32_Processor\") \n"
+                    + "For Each objItem in colItems \n"
+                    + "    Wscript.Echo objItem.ProcessorId \n"
+                    + "    exit for  ' do the first cpu only! \n"
+                    + "Next \n";
 
-        try {
-            os.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        Scanner sc = new Scanner(is);
-        try {
-            while (sc.hasNext()) {
-                String next = sc.next();
-                if ("SerialNumber".equals(next)) {
-                    sn = sc.next().trim();
-                    break;
-                }
+            fw.write(vbs);
+            fw.close();
+            Process p = Runtime.getRuntime().exec("cscript //NoLogo " + file.getPath());
+            BufferedReader input
+                    = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            while ((line = input.readLine()) != null) {
+                result += line;
             }
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            input.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        if (sn == null) {
-            throw new RuntimeException("Cannot find computer SN");
-        }
-        return encryptSerial(sn);
+        //System.out.println("sn" + ": " + result.trim());
+        String add = "generationqualityconsulting";
+        return encryptSerial(result.trim() + add);
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="encryptSerial">
     private String encryptSerial(String numSerial) {
         byte[] digest = null;
@@ -245,7 +279,7 @@ public class SessionFilter implements Filter {
         return toHexadecimal(digest);
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="toHexadecimal">
     private String toHexadecimal(byte[] digest) {
         String hash = "";
@@ -262,15 +296,15 @@ public class SessionFilter implements Filter {
         return hash;
     }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="readSerial">
     private String readSerial() {
-        String serialNum = "", dir="";
-        
+        String serialNum = "", dir = "";
+
         try {
             ParameterEJBClient ParameterEJBClient = new ParameterEJBClient();
             dir = ParameterEJBClient.getParameterbykey(28).getValue1();
-            
+
             FileReader fr = new FileReader(dir);
             int valor = fr.read();
             while (valor != -1) {
@@ -288,5 +322,5 @@ public class SessionFilter implements Filter {
         return serialNum;
     }
 //</editor-fold>
-    
+
 }//Cierre de claase
