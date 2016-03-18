@@ -479,8 +479,23 @@ public class SalesBean implements Serializable {
                                 Logger.getLogger(SalesBean.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             Double price = art.getPrice(precioArt);
+                            Double factor = art.getSalPackUn();
                             if (price == -1 || price < 0) {
                                 faceMessage("Articulo sin precio de venta");
+                            }
+                            if (factor != null) {
+                                if (factor == 0.0) {
+                                    newPrecio = price;
+                                } else {
+                                    if (factor > 0) {
+                                        newPrecio = price / factor;
+                                    } else {
+                                        faceMessage("Factor articulo incorrecto " + factor);
+                                    }
+                                }
+
+                            } else {
+                                //faceMessage("no hay factor");
                                 newPrecio = price;
                             }
                             if (!alm.equals("-1")) {//revisar-----------------------

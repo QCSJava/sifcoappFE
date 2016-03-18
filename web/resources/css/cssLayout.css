@@ -3,7 +3,6 @@
 
 #top {
     position: relative;
-    //background-color: #036fab;
     background-color: #D0D7DE;
     color: white;
     padding: 5px;
@@ -19,7 +18,6 @@
 
 #left {
     float: left;
-    //background-color: #cccccc;
     background-color: white;
     padding: 5px;
     width: 5px;
@@ -40,7 +38,6 @@
 
 .left_content {
     background-color: white;
-    //background-color: #dddddd;
     padding: 10px;
     margin-left: 200px;
 }

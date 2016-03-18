@@ -75,7 +75,7 @@
                             </div>
                             <div class="ui-grid-col-1">
                                 <p:commandButton tabindex="10" id="botonAgregar" actionListener="#{JournalEntry.accionAgregar}" value="Agregar"   icon="ui-icon-check" validateClient="true"
-                                                 update="@parent table,Codigocuenta,nombrecuenta,debe,haber"
+                                                 update="table,Codigocuenta,nombrecuenta,debe,haber"
                                                  process="@this  Codigocuenta nombrecuenta debe haber" disabled="#{JournalEntry.disableComun}"/>
                             </div>
                         </div>
@@ -173,9 +173,21 @@
                                         <p:row>
                                             <p:column></p:column>
                                             <p:column></p:column>
-                                            <p:column style="text-align: right" footerText="Totales:" />
-                                            <p:column id="totloc" footerText="$#{JournalEntry.loctotal}" />
-                                            <p:column id="totsys" footerText="$#{JournalEntry.systotal}" />                                                        
+                                            <p:column style="text-align: right" footerText="Totales:" />                                                
+                                            <p:column id="totloc">
+                                                <f:facet name="footer">
+                                                    <h:outputText value="$#{JournalEntry.loctotal}" >
+                                                        <f:convertNumber type="currency" currencySymbol="$" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
+                                            <p:column id="totsys">   
+                                                 <f:facet name="footer">
+                                                    <h:outputText value="$#{JournalEntry.systotal}"  >
+                                                        <f:convertNumber type="currency" currencySymbol="$" />
+                                                    </h:outputText>
+                                                </f:facet>
+                                            </p:column>
                                         </p:row>
                                     </p:columnGroup>
                                 </p:dataTable>

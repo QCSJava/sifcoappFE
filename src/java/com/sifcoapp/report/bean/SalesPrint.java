@@ -168,8 +168,6 @@ public class SalesPrint extends HttpServlet {
                         + "        <meta charset=\"UTF-8\">\n"
                         + "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
                         + "<script type=\"text/javascript\">\n"
-                        + "window.print();\n"
-                        + "window.open('', '_self', ''); window.close(); \n"
                         + "</script>"
                         + "\n"
                         + "    </head>\n"

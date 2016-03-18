@@ -18,6 +18,7 @@ import com.sifcoapp.objects.catalogos.Common;
 import com.sifcoapp.objects.common.to.ResultOutTO;
 import com.sifcoapp.report.bean.ReportsBean;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -81,6 +82,7 @@ public class JournalEntry implements Serializable {
     private String transcode;//nº transaccion
     private Double loctotal = 0.0;//total padredebe
     private Double systotal = 0.0;//totalhaber
+    private BigDecimal tempBig = new BigDecimal(0);
 
     //para el detalle
     private String account;//codigocuenta
@@ -480,10 +482,12 @@ public class JournalEntry implements Serializable {
             if (validarNull()) {
                 JournalEntryLinesTO nuevoDetalle = new JournalEntryLinesTO();
                 if (debit != null) {
-                    loctotal = loctotal + debit;
+                    tempBig =  new BigDecimal(loctotal).add(new BigDecimal(debit));
+                    loctotal = tempBig.doubleValue();
                 }
                 if (credit != null) {
-                    systotal = systotal + credit;
+                    tempBig =  new BigDecimal(systotal).add(new BigDecimal(credit));
+                    systotal = tempBig.doubleValue();
                 }
                 nuevoDetalle.setAccount(account);
                 nuevoDetalle.setAcctname(shortname);
@@ -529,10 +533,12 @@ public class JournalEntry implements Serializable {
             var1 = getListaDetalles().remove(this.selectDetail);
             var2 = listaPadre.remove(this.selectDetail);
             if (selectDetail.getDebit() != null) {
-                this.loctotal = this.loctotal - this.selectDetail.getDebit();
+                tempBig =  new BigDecimal(this.loctotal).subtract(new BigDecimal(this.selectDetail.getDebit()));
+                this.loctotal = tempBig.doubleValue();
             }
             if (selectDetail.getCredit() != null) {
-                this.systotal = this.systotal - this.selectDetail.getCredit();
+                 tempBig =  new BigDecimal(this.systotal).subtract(new BigDecimal(this.selectDetail.getCredit()));
+                this.systotal = tempBig.doubleValue();
             }
             this.selectDetail = null;
             if (var1 && var2) {

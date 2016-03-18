@@ -51,7 +51,7 @@ public class SessionFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) res;
         String url = request.getServletPath();
 
-        ServletContext context = req.getServletContext();
+        /*ServletContext context = req.getServletContext();
         if (context.getAttribute("license") == null) {
             System.out.println("Procesador no verificado...");
             context.setAttribute("license", verifyLicense());//setea license en true o false
@@ -60,7 +60,7 @@ public class SessionFilter implements Filter {
             System.out.println("Procesador invalido");
             response.sendRedirect(request.getContextPath() + "/faces/login.xhtml");
             chain.doFilter(req, res);
-        }
+        }*/
 
         url = request.getRequestURI().toString();
         boolean allowedRequest = false;

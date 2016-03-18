@@ -10,6 +10,7 @@ import com.sifcoapp.objects.bank.to.ColecturiaDetailTO;
 import com.sifcoapp.objects.bank.to.ColecturiaTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -67,7 +68,7 @@ public class ColectPrint extends HttpServlet {
                     + "\n"
                     + "    <body style=\"font-size: 12px; font-family: sans-serif; line-height: 0px\">\n"
                     + "        <!-- tamanio de factura 566x453px-->\n"
-                    + "        <div style=\"width: 720px\">\n"
+                    + "        <div style=\"width: 1100px\">\n"
                     + "\n"
                     + "            <table style=\"width:100%\" border=\"0\">\n"
                     + "                <!-- Encabezado-->\n"
@@ -153,8 +154,8 @@ public class ColectPrint extends HttpServlet {
                     val3="";
                 }else{
                     if (var2.getValue1() == null && var2.getValue3() == null) {
-                        val1="0.0";
-                        val3="0.0";
+                        val1="0.00";
+                        val3="0.00";
                     }else{
                         val1=var2.getValue1();
                         val3=var2.getValue3();
@@ -170,7 +171,7 @@ public class ColectPrint extends HttpServlet {
                         + "                                    " + val1 + "\n"
                         + "                                </td>\n"
                         + "                                <td style=\"width: 10%; text-align: right\">\n"
-                        + "                                    " + var2.getPaidsum() + "\n"
+                        + "                                    " + truncarDouble(var2.getPaidsum()) + "\n"
                         + "                                </td>\n"
                         + "                                <td style=\"width: 10%; text-align: right\">\n"
                         + "                                    " + val3 + "\n"
@@ -222,7 +223,7 @@ public class ColectPrint extends HttpServlet {
                     + "                                                0.00\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"text-align: right; width: 32%\">\n"
-                    + "                                                " + newColect.getDoctotal() + "\n"
+                    + "                                                " + truncarDouble(newColect.getDoctotal()) + "\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"text-align: right\">\n"
                     + "                                                0.00\n"
@@ -246,6 +247,7 @@ public class ColectPrint extends HttpServlet {
                     + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
+                    + "                            <tr style=\"height: 300px\">	</tr>\n"
                     + "                        </table>\n"
                     + "                    </td>\n"
                     + "                </tr>\n"
@@ -258,6 +260,12 @@ public class ColectPrint extends HttpServlet {
         }
     }
 
+     private String truncarDouble(Double doctotal) {
+        NumberFormat  df;
+        df = new DecimalFormat("#,###0.00");
+        System.out.println(df.format(doctotal));
+        return df.format(doctotal);
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -295,6 +303,5 @@ public class ColectPrint extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }// </editor-fold>    
 }
