@@ -27,13 +27,13 @@
                             <span class="ui-separator">
                                 <span class="ui-icon ui-icon-grip-dotted-vertical" />
                             </span>
-                            <p:commandButton tabindex="-1" title="Nuevo" icon="fa fa-file-o" actionListener="#{purchaseQuotationBean.botonNuevo}"
+                            <p:commandButton tabindex="-1" title="Nuevo" icon="ui-icon-document" actionListener="#{purchaseQuotationBean.botonNuevo}"
                                              update="frmQuotation, newCod newNomArt newCantidad newPrecio newTotal newUnidad newExistencia"
                                              process="@this,   inTipoDoc  inReferencia">
 
                             </p:commandButton>
 
-                            <p:commandButton tabindex="-1" title="Buscar" icon="fa fa-search"  process="@this" actionListener="#{purchaseQuotationBean.botonBuscar}"
+                            <p:commandButton tabindex="-1" title="Buscar" icon="ui-icon-search"  process="@this" actionListener="#{purchaseQuotationBean.botonBuscar}"
                                              update="frmQuotation">
 
                             </p:commandButton>
