@@ -51,6 +51,10 @@
                     <!-- Div Principal -->
                     <div  class="ui-grid ui-grid-responsive" id="divPrincipal">
 
+                         <p:contextMenu id="DeleteDeli" rendered="#{checkForPaymentBean.renderedContex}">
+                             <p:menuitem value="Anular" actionListener="#{checkForPaymentBean.ContextPrincipal}" process="@all"/>
+                        </p:contextMenu>
+                            
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-1"><p:outputLabel value="En favor de"/> </div>
                             <div class="ui-grid-col-5">
@@ -264,14 +268,19 @@
                                 <h:outputText value="#{Rec.signature}" />
                             </p:column>
 
-                            <p:column headerText="Fecha Contabilizacion" sortBy="#{Rec.pmntdate}" style="width: 12%">
+                            <p:column headerText="Fecha Contabilizacion" sortBy="#{Rec.pmntdate}" style="width: 10%">
                                 <h:outputText value="#{Rec.pmntdate}" >
                                     <f:convertDateTime pattern="dd/MM/yyyy" />
                                 </h:outputText>
                             </p:column>
 
-                            <p:column headerText="Importe" sortBy="#{Rec.checksum}" style="width: 9%">
+                            <p:column headerText="Importe" sortBy="#{Rec.checksum}" style="width: 8%">
                                 <h:outputText value="#{Rec.checksum}">
+                                </h:outputText>
+                            </p:column>
+                            
+                            <p:column headerText="Cancelado" sortBy="#{Rec.canceled}" style="width: 3%">
+                                <h:outputText value="#{Rec.canceled}">
                                 </h:outputText>
                             </p:column>
 
@@ -353,6 +362,32 @@
                                     </div>
                                     <div class="ui-grid-col-1">
                                         <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  onclick="PF('dlgPtr').hide();" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
+                
+                 <h:form>
+                    <p:dialog closeOnEscape="true" header="Confirmacion" widgetVar="dlgC3" width="230" modal="true" resizable="false">
+                        <p:panel>
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-10">
+                                        <h:outputText value="¿Desea continuar con la Anulación del Cheque?" />
+                                    </div>
+                                </div>
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{checkForPaymentBean.confirmDialog3}" />
+                                    </div>
+                                    <div class="ui-grid-col-4">
+
+                                    </div>
+                                    <div class="ui-grid-col-1">
+                                        <p:commandButton value="No"  styleClass="ui-confirmdialog-yes"  actionListener="#{checkForPaymentBean.cancelDialog3}" />
                                     </div>
                                 </div>
                             </div>

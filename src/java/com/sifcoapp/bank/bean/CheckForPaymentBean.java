@@ -125,7 +125,10 @@ public class CheckForPaymentBean implements Serializable {
     //
     private String url;
 
+    private boolean renderedContex;
+
 //</editor-fold> 
+
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -216,6 +219,7 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="Autocompletado de CUENTA ">
     public List<String> completeName(String query) {
         List _result = null;
@@ -375,6 +379,7 @@ public class CheckForPaymentBean implements Serializable {
 
         this.idCheck = true;
         this.common = false;
+        this.renderedContex = false;
 
         RequestContext.getCurrentInstance().update("frmCheck");
 
@@ -387,6 +392,7 @@ public class CheckForPaymentBean implements Serializable {
 
             this.idCheck = true;
             this.common = true;
+            this.renderedContex = true;
 
             RequestContext.getCurrentInstance().update("frmprt");
             showHideDialog("dlgPtr", 1);
@@ -397,6 +403,8 @@ public class CheckForPaymentBean implements Serializable {
 
             this.idCheck = true;
             this.common = true;
+            this.renderedContex = true;
+
             RequestContext.getCurrentInstance().update("frmCheck");
         }
     }
@@ -407,6 +415,7 @@ public class CheckForPaymentBean implements Serializable {
 
         this.idCheck = false;
         this.common = false;
+        this.renderedContex = false;
 
         RequestContext.getCurrentInstance().update("frmCheck");
     }
@@ -437,6 +446,11 @@ public class CheckForPaymentBean implements Serializable {
                 break;
 
         }
+
+    }
+
+    public void ContextPrincipal(ActionEvent actionEvent) {
+        showHideDialog("dlgC3", 1);
 
     }
 //</editor-fold>
@@ -485,6 +499,32 @@ public class CheckForPaymentBean implements Serializable {
             } else {
                 faceMessage(_res.getMensaje());
             }
+        } catch (Exception ex) {
+            Logger.getLogger(CheckForPaymentBean.class.getName()).log(Level.SEVERE, null, ex);
+            faceMessage("ERROR " + ex.getMessage() + "-" + ex.getCause());
+            System.out.println("ËRROR " + ex.getMessage() + "-" + ex.getCause());
+        }
+    }
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="ANULAR CHEQUE">
+    public void doSaveAnnular() {
+        try {
+            ResultOutTO _res = null;
+
+            _res = BankEJBClient.ges_cfp0_checkforpayment_annular(idInterno);
+
+            if (_res.getCodigoError() == 0) {//se realizo correctamente
+
+                CheckForPaymentTO var = BankEJBClient.get_cfp0_checkforpaymentByKey(_res.getDocentry());
+                llenarPantalla(var);
+                faceMessage(_res.getMensaje());
+                estateActualizar();
+                
+            } else {
+                faceMessage(_res.getMensaje());
+            }
+
         } catch (Exception ex) {
             Logger.getLogger(CheckForPaymentBean.class.getName()).log(Level.SEVERE, null, ex);
             faceMessage("ERROR " + ex.getMessage() + "-" + ex.getCause());
@@ -649,6 +689,7 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="Botones toolbar " > 
     public void botonNuevo(ActionEvent actionEvent) {
         if (varEstados != 2 && validarClear()) {
@@ -695,6 +736,7 @@ public class CheckForPaymentBean implements Serializable {
     }
 
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     public void confirmDialog(ActionEvent actionEvent) {
         showHideDialog("dlgC2", 2);
@@ -710,6 +752,11 @@ public class CheckForPaymentBean implements Serializable {
     public void cancelDialog(ActionEvent actionEvent) {
         RequestContext rc = RequestContext.getCurrentInstance();
         rc.execute("PF('dlgC2').hide();");
+    }
+
+    public void cancelDialog3(ActionEvent actionEvent) {
+        RequestContext rc = RequestContext.getCurrentInstance();
+        rc.execute("PF('dlgC3').hide();");
     }
 
     public void cancelDialog2(ActionEvent actionEvent) {
@@ -740,6 +787,11 @@ public class CheckForPaymentBean implements Serializable {
         }
 
         RequestContext.getCurrentInstance().update("frmCheck");
+    }
+
+    public void confirmDialog3(ActionEvent actionEvent) {
+        showHideDialog("dlgC3", 2);
+        doSaveAnnular();
     }
 
     public void selectDialogBill() {
@@ -1178,7 +1230,16 @@ public class CheckForPaymentBean implements Serializable {
         this.NoCheque = NoCheque;
     }
 
+    public boolean isRenderedContex() {
+        return renderedContex;
+    }
+
+    public void setRenderedContex(boolean renderedContex) {
+        this.renderedContex = renderedContex;
+    }
+
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="IMPRIMIR FORMA 2">
     public String printInvoice() throws UnsupportedEncodingException {
         //faceMessage(getApplicationUri());

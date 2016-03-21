@@ -1302,14 +1302,14 @@ public class SalesBean implements Serializable {
         searchDeli.setCardname(socioNeg);
         searchDeli.setDocstatus("O");
 
-        searchDeli.setDocdate(fechaConta);
-        searchDeli.setTaxdate(fechaDoc);
+        //searchDeli.setDocdate(fechaConta);
+        //searchDeli.setTaxdate(fechaDoc);
 
-        if (refe == 0) {
-            searchDeli.setNumatcard(vacio);
-        } else {
-            searchDeli.setNumatcard(refe + "");
-        }
+        //if (refe == 0) {
+        //    searchDeli.setNumatcard(vacio);
+        //} else {
+        //    searchDeli.setNumatcard(refe + "");
+        //}
 
         try {
             listaBusquedaRemision = SalesEJBService.getDelivery(searchDeli);
