@@ -369,7 +369,8 @@ public class ColecturiaBean implements Serializable {
         } catch (Exception e) {
             faceMessage("Error en calculo de total... " + e.getMessage());
         }
-        t2 = formatNumber2(t2);
+        //t2 = formatNumber(t2);
+        t2 =  Double.parseDouble(formatNumber(t2));
         doTotalAct();
     }
 
@@ -756,7 +757,7 @@ public class ColecturiaBean implements Serializable {
     }
 
     public String formatNumber(Double num) {
-        String st = null;
+        /*String st = null;
         try {
             NumberFormat nf = NumberFormat.getInstance();
             nf.setMaximumFractionDigits(2);
@@ -768,7 +769,13 @@ public class ColecturiaBean implements Serializable {
             faceMessage("Error format Number");
         }
 
-        return st;
+        return st;*/
+        
+        DecimalFormat df;
+        df = new DecimalFormat("#,###0.00");
+        return df.format(num);
+        
+        
     }
 
     public boolean validarClear() {

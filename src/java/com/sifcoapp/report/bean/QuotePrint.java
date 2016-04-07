@@ -362,8 +362,8 @@ public class QuotePrint extends HttpServlet {
 
     private String truncarDouble(Double doctotal) {
         DecimalFormat df;
-        df = new DecimalFormat("#,###.##");
-        return df.format(Math.floor(100 * doctotal) / 100);
+        df = new DecimalFormat("#,###0.00");
+        return df.format(doctotal);
     }
 
 }

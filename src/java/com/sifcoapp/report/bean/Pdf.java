@@ -287,8 +287,8 @@ public class Pdf extends HttpServlet {
                     + "</body>\n"
                     + "</html>"
             );
-        }
-    }
+        } 
+   }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -331,8 +331,8 @@ public class Pdf extends HttpServlet {
 
     private String truncarDouble(Double doctotal) {
         DecimalFormat df;
-        df = new DecimalFormat("#,###.##");
-        return df.format(Math.floor(100 * doctotal) / 100);
+        df = new DecimalFormat("#,###0.00");
+        return df.format(doctotal);
     }
 
 }//cierre de clase

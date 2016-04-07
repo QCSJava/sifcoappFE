@@ -582,7 +582,7 @@ public class ConciliationBean implements Serializable {
     }
 
     public Double formatNum(Double num) {
-        DecimalFormat df = new DecimalFormat("#.00");
+        DecimalFormat df = new DecimalFormat("#,###0.00");
         return Double.parseDouble(df.format(num));
     }
 

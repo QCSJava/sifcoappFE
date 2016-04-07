@@ -263,7 +263,6 @@ public class ColectPrint extends HttpServlet {
      private String truncarDouble(Double doctotal) {
         NumberFormat  df;
         df = new DecimalFormat("#,###0.00");
-        System.out.println(df.format(doctotal));
         return df.format(doctotal);
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

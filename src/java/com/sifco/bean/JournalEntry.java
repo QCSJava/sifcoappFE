@@ -958,7 +958,7 @@ public class JournalEntry implements Serializable {
         setTransid(var.getTransid());
         setMemo(var.getMemo());
         setLoctotal(var.getLoctotal());
-        setSystotal(var.getSystotal());
+        setSystotal(var.getLoctotal());
         for (Object detalle : var.getJournalentryList()) {
             JournalEntryLinesTO det = (JournalEntryLinesTO) detalle;
             this.listaDetalles.add(det);

@@ -347,8 +347,8 @@ public class RemisionPrint extends HttpServlet {
     //<editor-fold defaultstate="collapsed" desc="Formato Numeros NO USADA">
     public String formatNumber(Double doctotal) {
         DecimalFormat df;
-        df = new DecimalFormat("#,###.##");
-        return df.format(Math.floor(100 * doctotal) / 100);
+        df = new DecimalFormat("#,###0.00");
+        return df.format(doctotal);
     }
 
 //</editor-fold>
