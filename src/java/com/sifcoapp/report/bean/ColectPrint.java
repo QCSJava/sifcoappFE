@@ -10,6 +10,7 @@ import com.sifcoapp.objects.bank.to.ColecturiaDetailTO;
 import com.sifcoapp.objects.bank.to.ColecturiaTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.text.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -36,18 +37,34 @@ public class ColectPrint extends HttpServlet {
         BankEJBClient BankEJBClient = new BankEJBClient();
         ColecturiaTO newColect = new ColecturiaTO();
         String nombre = request.getParameter("bar");
+
+        BigDecimal antes = new BigDecimal(0);
+        BigDecimal despues = new BigDecimal(0);
+
         try {
             //nombre = session.getAttribute("username").toString().toUpperCase();
             newColect = BankEJBClient.get_ges_colecturiaByKey_print(Integer.parseInt(request.getParameter("foo")));
         } catch (Exception e) {
         }
-        
+
         String doc = "";
         if (newColect.getSeries() == 1) {
             doc = "CREACION";
-        }else
+        } else {
             doc = "REVERSION";
-        
+        }
+
+        for (Object lines : newColect.getColecturiaDetail()) {
+            ColecturiaDetailTO line = (ColecturiaDetailTO) lines;
+
+            if (!line.getDocsubtype().equals("N"))//Incluir solo los elementos que se visualice el saldo
+            {
+                //Sumar elementos conceptos que resten y restar los que sumen
+                System.out.println(line.getValue1() +  " - " + line.getValue3());
+                antes = antes.add(new BigDecimal(line.getValue1().replace(",", "") ));
+                despues = despues.add(new BigDecimal(line.getValue3().replace(",", "")));
+            }
+        }
 
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -85,7 +102,7 @@ public class ColectPrint extends HttpServlet {
                     + "                                    ACOETMISAB DE R.L.\n"
                     + "                                </td>\n"
                     + "                                <td style=\"width: 10%\">\n"
-                    + "                                    RECIBO: " + newColect.getDocentry()+ "\n"
+                    + "                                    RECIBO: " + newColect.getDocentry() + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                        </table>\n"
@@ -93,7 +110,7 @@ public class ColectPrint extends HttpServlet {
                     + "                        <table style=\"height: 20px; width: 100%\">\n"
                     + "                            <tr >\n"
                     + "                                <td style=\"width: 75%\">\n"
-                    + "                                    SOCIO: " + newColect.getJrnlmemo().toUpperCase() + "\n"
+                    + "                                    SOCIO: " + newColect.getCardcode() + " - " + newColect.getJrnlmemo().toUpperCase() + "\n"
                     + "                                </td>\n"
                     + "                                <td style=\"width: 25%\">\n"
                     + "                                   DOCUMENTO: " + doc + "\n"
@@ -108,7 +125,7 @@ public class ColectPrint extends HttpServlet {
                     + "                                </td>\n"
                     + "\n"
                     + "                                <td style=\"width: 35%\">\n"
-                    + "                                    FECHA DE PAGADO: " + newColect.getTaxdate()+ "\n"
+                    + "                                    FECHA DE PAGADO: " + newColect.getTaxdate() + "\n"
                     + "                                </td>\n"
                     + "                                <td >\n"
                     + "                                    APLICADO A: SOCIO\n"
@@ -150,17 +167,17 @@ public class ColectPrint extends HttpServlet {
                 ColecturiaDetailTO var2 = (ColecturiaDetailTO) det.get(i);
                 String val1, val3;
                 if (var2.getDocsubtype().equals("N")) {
-                    val1="";
-                    val3="";
-                }else{
+                    val1 = "";
+                    val3 = "";
+                } else {
                     if (var2.getValue1() == null && var2.getValue3() == null) {
-                        val1="0.00";
-                        val3="0.00";
-                    }else{
-                        val1=var2.getValue1();
-                        val3=var2.getValue3();
+                        val1 = "0.00";
+                        val3 = "0.00";
+                    } else {
+                        val1 = var2.getValue1();
+                        val3 = var2.getValue3();
                     }
-                    
+
                 }
                 out.println(
                         "                            <tr style=\"height: 18px\">\n"
@@ -220,13 +237,13 @@ public class ColectPrint extends HttpServlet {
                     + "                                    <table style=\"width: 100%\" border=\"0\">\n"
                     + "                                        <tr>\n"
                     + "                                            <td style=\"text-align: right; width: 39%\">\n"
-                    + "                                                0.00\n"
+                    + "                                                " + truncarDouble(antes.doubleValue()) + "\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"text-align: right; width: 32%\">\n"
                     + "                                                " + truncarDouble(newColect.getDoctotal()) + "\n"
                     + "                                            </td>\n"
                     + "                                            <td style=\"text-align: right\">\n"
-                    + "                                                0.00\n"
+                    + "                                                " + truncarDouble(despues.doubleValue()) + "\n"
                     + "                                            </td>\n"
                     + "                                        </tr>\n"
                     + "                                    </table>\n"
@@ -260,11 +277,12 @@ public class ColectPrint extends HttpServlet {
         }
     }
 
-     private String truncarDouble(Double doctotal) {
-        NumberFormat  df;
+    private String truncarDouble(Double doctotal) {
+        NumberFormat df;
         df = new DecimalFormat("#,###0.00");
         return df.format(doctotal);
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
