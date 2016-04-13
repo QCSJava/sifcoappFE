@@ -93,7 +93,7 @@ public class ColectPrint extends HttpServlet {
                     + "                        <table style=\"height: 20px; width: 100%\">\n"
                     + "                            <tr >\n"
                     + "                                <td style=\"width: 75%\">\n"
-                    + "                                    SOCIO: " + newColect.getCardname().toUpperCase() + "\n"
+                    + "                                    SOCIO: " + newColect.getJrnlmemo().toUpperCase() + "\n"
                     + "                                </td>\n"
                     + "                                <td style=\"width: 25%\">\n"
                     + "                                   DOCUMENTO: " + doc + "\n"

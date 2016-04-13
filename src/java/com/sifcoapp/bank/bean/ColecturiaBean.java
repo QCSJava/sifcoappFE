@@ -370,7 +370,7 @@ public class ColecturiaBean implements Serializable {
             faceMessage("Error en calculo de total... " + e.getMessage());
         }
         //t2 = formatNumber(t2);
-        t2 =  Double.parseDouble(formatNumber(t2));
+        //t2 =  Double.parseDouble(formatNumber(t2));
         doTotalAct();
     }
 

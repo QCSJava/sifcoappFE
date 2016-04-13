@@ -150,7 +150,7 @@ public class RemisionPrint extends HttpServlet {
                     + "                                <td style=\"width: 80px\">\n"
                     + "                                </td>\n"
                     + "                                <td >\n"
-                    + "                                    " + var.getCardname().toUpperCase() + "\n"
+                    + "                                    " + var.getBplname().toUpperCase() + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                            <tr style=\"height: 17px\">\n"

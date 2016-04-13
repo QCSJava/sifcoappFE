@@ -137,7 +137,7 @@ public class Pdf extends HttpServlet {
                     + "\n"
                     + "                                </td>\n"
                     + "                                <td style=\"width: 65%\">\n"
-                    + "                                    " + var.getCardcode() + "-" + var.getCardname().toUpperCase() + "\n"
+                    + "                                    " + var.getCardcode() + "-" + var.getBplname().toUpperCase() + "\n"
                     + "                                </td>\n"
                     + "                                <td>\n"
                     + "                                    " + var.getDocdate() + " HORA: " + hora + ":" + minutos + "\n"
