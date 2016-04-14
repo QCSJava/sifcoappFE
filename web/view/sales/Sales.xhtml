@@ -63,7 +63,7 @@
                             <p:commandButton tabindex="-1" title="Buscar" icon="fa fa-search"  process="@this" actionListener="#{salesBean.botonBuscar}"
                                              update="frmSales">
                             </p:commandButton>
-                                
+
                             <p:commandButton tabindex="-1" ajax="false" action="#{salesBean.printInvoice()}" icon="fa fa-print" />
                             <p:commandButton immediate="true" tabindex="-1" ajax="false" action="#{salesBean.printCoti()}" icon="fa fa-file-text-o" />
                         </f:facet>
@@ -159,6 +159,19 @@
                                     <p:ajax event="change" update="botonAgregar inSocio inCodSocio inForPago inAlm newCod newNomArt newCantidad"/>
                                 </p:selectOneMenu>
                             </div>
+                        </div>
+                        <p:spacer height="#{salesBean.spacer}" width="0"/>
+                         <div class="ui-grid-row">
+                            <div class="ui-grid-col-2"><p:outputLabel value="Cliente" for="inclient"/></div>
+                            <!--
+                                    <f:validateDoubleRange  minimum="0"  disabled="#/{salesBean.varEstados == 3 || salesBean.varEstados == 2? true:false}"/>-->
+                            <div class="ui-grid-col-2">
+                                <p:inputText maxlength="100" id="inclient" size="30" value="#{salesBean.clientName}">
+                                </p:inputText> 
+                            </div>
+                            <div class="ui-grid-col-4"></div>
+                            <div class="ui-grid-col-2"></div>
+                            <div class="ui-grid-col-2"></div>
                         </div>
 
                         <p:spacer height="35" width="0"/>
@@ -377,7 +390,7 @@
                                 <div class="ui-grid-col-10">
                                     <!-- BOTON PRINCIPAL -->
                                     <p:commandButton tabindex="0" id="botonPrincipal" value="#{salesBean.botonEstado}" actionListener="#{salesBean.botonPrincipal}"
-                                                     process="@this inNo inEstado inSocio inCodSocio inEquipo inReferencia f1 f2 inTipoDoc inForPago inComent inAlm"
+                                                     process="@this inNo inEstado inSocio inCodSocio inclient inEquipo inReferencia f1 f2 inTipoDoc inForPago inComent inAlm"
                                                      update="frmSales"  >
                                     </p:commandButton>
                                     <p:defaultCommand target="botonPrincipal" />
@@ -556,7 +569,7 @@
                         </p:dataTable>
                     </p:dialog> 
                 </h:form>
-                
+
                 <h:form id="frmprt">
                     <p:dialog header="Confirmacion" widgetVar="dlgPtr" width="230" modal="false" resizable="false">
                         <p:focus for="qw" />
@@ -571,7 +584,7 @@
                                 <div class="ui-grid-row">
                                     <div class="ui-grid-col-1">
                                         <p:commandButton id="qw" ajax="false" action="#{salesBean.printInvoice()}" icon="fa fa-print" onclick="PF('dlgPtr').hide();" />
-                                       <!-- <h:commandButton action="#/{salesBean.printInvoice()}" onclick="PF('dlgPtr').hide();"/>-->
+                                        <!-- <h:commandButton action="#/{salesBean.printInvoice()}" onclick="PF('dlgPtr').hide();"/>-->
                                     </div>
                                     <div class="ui-grid-col-4">
 
@@ -584,7 +597,7 @@
                         </p:panel> 
                     </p:dialog>
                 </h:form>
-                
+
             </ui:define>
         </ui:composition>
     </body>

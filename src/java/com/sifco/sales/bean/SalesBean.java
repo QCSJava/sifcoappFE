@@ -98,6 +98,7 @@ public class SalesBean implements Serializable {
     private String estadoDoc;       //Estado de Documento
     private String socioNeg;        //Socio de Negocio
     private String codSocio;        //Codigo de Socio
+    private String clientName;      //Nombre de cleitne adicional
     private int equipo;             //Equipo
     private int refe;            //Referencia
 
@@ -198,7 +199,6 @@ public class SalesBean implements Serializable {
     private String url;
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -326,7 +326,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocio(SelectEvent event) {
         String[] newName = socioNeg.split("-");
@@ -551,7 +550,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Boton Agregar al DATATABLE">
     public void accionAgregar(ActionEvent actionEvent) {
         try {
@@ -685,7 +683,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Calcular Impuestos y TOTAL">
     public void calcularTotalBill(ArrayList<SalesDetailTO> listaArt) {
         Double totalAux = 0.0;
@@ -703,7 +700,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="funciones para calculos de impuestos">
     public Double calcularGravadas(ArrayList<SalesDetailTO> listaArt) {
         Double sumTotal = 0.0;
@@ -803,7 +799,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Eliminar del dataTable" > 
     public void deleteDetalle() {
         try {
@@ -1004,6 +999,7 @@ public class SalesBean implements Serializable {
         newBill.setUsersign((int) session.getAttribute("usersign"));
         newBill.setCardname(socioNeg);
         newBill.setCardcode(codSocio);
+        newBill.setNamenp(clientName);
         newBill.setRef2("" + equipo);
         newBill.setNumatcard(getRefe() + "");
         newBill.setDocdate(fechaConta);
@@ -1259,7 +1255,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="COPY FROM REMISION">
     public void copyFromRemision() {
         //faceMessage("Copiar desde remision");
@@ -1304,13 +1299,11 @@ public class SalesBean implements Serializable {
 
         //searchDeli.setDocdate(fechaConta);
         //searchDeli.setTaxdate(fechaDoc);
-
         //if (refe == 0) {
         //    searchDeli.setNumatcard(vacio);
         //} else {
         //    searchDeli.setNumatcard(refe + "");
         //}
-
         try {
             listaBusquedaRemision = SalesEJBService.getDelivery(searchDeli);
         } catch (Exception e) {
@@ -1413,7 +1406,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Seleccionar un almacen y Forma de pago">
     public void stateChange1(ValueChangeEvent event) {
 
@@ -1520,7 +1512,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     private boolean validatePrice() {
         if (this.newPrecio < 0) {
@@ -1622,6 +1613,7 @@ public class SalesBean implements Serializable {
         setEstadoDoc(var.getDocstatus());
 
         setSocioNeg(var.getCardname());
+        setClientName(var.getNamenp());
         setCodSocio(var.getCardcode());
         setEquipo(Integer.parseInt(var.getRef2()));
         //setRefe(var.getRef1());
@@ -1738,6 +1730,7 @@ public class SalesBean implements Serializable {
         this.docEntry = 0;
         this.socioNeg = null;
         this.codSocio = null;
+        this.clientName = null;
         this.equipo = 0;
         this.refe = 0;
         this.alm = null;
@@ -1794,7 +1787,7 @@ public class SalesBean implements Serializable {
             return true;
         }
         try {
-            if (socioNeg != null || codSocio != null || refe > 0 || !alm.equals("-1")) {
+            if (socioNeg != null || codSocio != null ) {
                 return true;
             }
         } catch (Exception e) {
@@ -1895,7 +1888,7 @@ public class SalesBean implements Serializable {
                 return "/view/sales/Sales.xhtml";
             }
         }
-        return null; 
+        return null;
     }
 //</editor-fold>
 
@@ -2367,6 +2360,21 @@ public class SalesBean implements Serializable {
     public String getCodSocio() {
         return codSocio;
     }
+    
+        /**
+     * @return the clientName
+     */
+    public String getClientName() {
+        return clientName;
+    }
+
+    /**
+     * @param clientName the clientName to set
+     */
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+    
 
     public void setCodSocio(String codSocio) {
         this.codSocio = codSocio;
@@ -2557,5 +2565,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold> 
-    
+
+
 }//Cierre de clase

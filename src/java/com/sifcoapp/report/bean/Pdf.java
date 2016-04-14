@@ -44,13 +44,13 @@ public class Pdf extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(true);
         String var5 = (String) session.getAttribute("username");
-        
-        
+
         SalesTO var = new SalesTO();
         CatalogTO _R = new CatalogTO();
         String numberToletter = null;
         Double total = 0.0;
         String nombreVendedor = "";
+        String nombreCliente = "";
         //hora de impresion
         Calendar calendario = new GregorianCalendar();
         int hora, minutos;
@@ -72,6 +72,13 @@ public class Pdf extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(Pdf.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        if (var.getNamenp() == null || var.getNamenp().equals("")) {
+            nombreCliente = var.getCardcode() + "-" + var.getBplname().toUpperCase();
+        } else {
+            nombreCliente = var.getNamenp().toUpperCase();
+        }
+
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -137,7 +144,7 @@ public class Pdf extends HttpServlet {
                     + "\n"
                     + "                                </td>\n"
                     + "                                <td style=\"width: 65%\">\n"
-                    + "                                    " + var.getCardcode() + "-" + var.getBplname().toUpperCase() + "\n"
+                    + "                                    " + nombreCliente + "\n"
                     + "                                </td>\n"
                     + "                                <td>\n"
                     + "                                    " + var.getDocdate() + " HORA: " + hora + ":" + minutos + "\n"
@@ -173,8 +180,7 @@ public class Pdf extends HttpServlet {
                     + "\n"
                     + "                        <!-- DETALLES -->\n"
                     + "                        <table style=\"width:100%\" border=\"0\">\n"
-                    + "                            <!-- Detalles de factura 148px -->\n");           
-            
+                    + "                            <!-- Detalles de factura 148px -->\n");
 
             int tam = var.getSalesDetails().size();
             List det = var.getSalesDetails();
@@ -287,8 +293,8 @@ public class Pdf extends HttpServlet {
                     + "</body>\n"
                     + "</html>"
             );
-        } 
-   }
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
