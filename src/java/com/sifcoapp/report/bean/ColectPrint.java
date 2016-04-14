@@ -60,9 +60,15 @@ public class ColectPrint extends HttpServlet {
             if (!line.getDocsubtype().equals("N"))//Incluir solo los elementos que se visualice el saldo
             {
                 //Sumar elementos conceptos que resten y restar los que sumen
-                System.out.println(line.getValue1() +  " - " + line.getValue3());
-                antes = antes.add(new BigDecimal(line.getValue1().replace(",", "") ));
-                despues = despues.add(new BigDecimal(line.getValue3().replace(",", "")));
+                System.out.println(line.getValue1() + " - " + line.getValue3() + " - confirmer " +line.getConfirmed() );
+                if (!line.getConfirmed().equals("N")) {
+                    antes = antes.subtract(new BigDecimal(line.getValue1().replace(",", "")));
+                    despues = despues.subtract(new BigDecimal(line.getValue3().replace(",", "")));
+                } else {
+                    antes = antes.add(new BigDecimal(line.getValue1().replace(",", "")));
+                    despues = despues.add(new BigDecimal(line.getValue3().replace(",", "")));
+                }
+
             }
         }
 
@@ -279,7 +285,7 @@ public class ColectPrint extends HttpServlet {
 
     private String truncarDouble(Double doctotal) {
         NumberFormat df;
-        df = new DecimalFormat("#,###0.00");
+        df = new DecimalFormat("###,###.##");
         return df.format(doctotal);
     }
 
