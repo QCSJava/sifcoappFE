@@ -1076,6 +1076,7 @@ public class SalesBean implements Serializable {
         newBill.setUsersign((int) session.getAttribute("usersign"));
         newBill.setCardname(socioNeg);
         newBill.setCardcode(codSocio);
+        newBill.setNamenp(clientName);
         newBill.setRef2("" + equipo);
 
         newBill.setNumatcard(refe + "");
