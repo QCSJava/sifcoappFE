@@ -106,7 +106,7 @@ public class PurchaseBean implements Serializable {
     @Digits(integer = 14, fraction = 2, message = "Cantidad inadecuada")
     private Double newCantidad;     //Cantidad
 
-    @Digits(integer = 14, fraction = 4, message = "Precio inadecuado")
+    @Digits(integer = 14, fraction = 6, message = "Precio inadecuado")
     private Double newPrecio;       //Precio
 
     private Double newTotal;        //Total de detalle
