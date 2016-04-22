@@ -40,6 +40,8 @@ public class ColectPrint extends HttpServlet {
 
         BigDecimal antes = new BigDecimal(0);
         BigDecimal despues = new BigDecimal(0);
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");  
 
         try {
             //nombre = session.getAttribute("username").toString().toUpperCase();
@@ -102,11 +104,11 @@ public class ColectPrint extends HttpServlet {
                     + "                        <table style=\"height: 20px\">\n"
                     + "                            <tr >\n"
                     + "                                <td style=\"width: 20%\">\n"
-                    + "                                    FECHA EMITIDO: " + newColect.getDocdate() + "\n"
+                    + "                                    FECHA EMITIDO: " + sdf.format(newColect.getDocdate()) + "\n"
                     + "                                </td>\n"
-                    + "                                <td style=\"width: 25%\">\n"
+                    + "                                <td style=\"width: 25%\"> <strong>\n"
                     + "                                    ACOETMISAB DE R.L.\n"
-                    + "                                </td>\n"
+                    + "                                </strong></td>\n"
                     + "                                <td style=\"width: 10%\">\n"
                     + "                                    RECIBO: " + newColect.getDocentry() + "\n"
                     + "                                </td>\n"
@@ -131,7 +133,7 @@ public class ColectPrint extends HttpServlet {
                     + "                                </td>\n"
                     + "\n"
                     + "                                <td style=\"width: 35%\">\n"
-                    + "                                    FECHA DE PAGADO: " + newColect.getTaxdate() + "\n"
+                    + "                                    FECHA DE PAGADO: " + sdf.format(newColect.getTaxdate()) + "\n"
                     + "                                </td>\n"
                     + "                                <td >\n"
                     + "                                    APLICADO A: SOCIO\n"
@@ -285,7 +287,7 @@ public class ColectPrint extends HttpServlet {
 
     private String truncarDouble(Double doctotal) {
         NumberFormat df;
-        df = new DecimalFormat("###,###.##");
+        df = new DecimalFormat("###,###0.00");
         return df.format(doctotal);
     }
 

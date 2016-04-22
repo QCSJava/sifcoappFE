@@ -1297,6 +1297,7 @@ public class SalesBean implements Serializable {
         searchDeli.setCardcode(codSocio);
         searchDeli.setCardname(socioNeg);
         searchDeli.setDocstatus("O");
+        
 
         //searchDeli.setDocdate(fechaConta);
         //searchDeli.setTaxdate(fechaDoc);

@@ -23,6 +23,7 @@ import com.sifcoapp.objects.common.to.ResultOutTO;
 import com.sifcoapp.objects.sales.to.DeliveryDetailTO;
 import com.sifcoapp.objects.sales.to.DeliveryInTO;
 import com.sifcoapp.objects.sales.to.DeliveryTO;
+import groovy.util.logging.Commons;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -939,6 +940,8 @@ public class DeliveryBean implements Serializable {
             //setear id anterior
             newDelivery.setReceiptnum(this.getIdAnterior());
             newDelivery.setSeries(4);
+            newDelivery.setDocstatus(Common.DocStatusClose);
+
         }
 
         try {
