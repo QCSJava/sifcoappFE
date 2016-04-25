@@ -159,7 +159,7 @@ public class ColectPrint extends HttpServlet {
                     + "                                    VALOR CARGOS\n"
                     + "                                </td>\n"
                     + "                                <td style=\"text-align: right\">\n"
-                    + "                                    SALDO ACTUAL\n"
+                    + "                                    SALDO\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                        </table>\n"
