@@ -13,6 +13,7 @@ import com.sifcoapp.objects.sales.to.DeliveryTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -46,26 +47,30 @@ public class RemisionPrint extends HttpServlet {
         //hora de impresion
         Calendar calendario = new GregorianCalendar();
         int h, m;
-        String hora,minutos;
+        String hora, minutos;
         h = calendario.get(Calendar.HOUR);
         m = calendario.get(Calendar.MINUTE);
-        
+
         if (h < 10) {
-            hora = "0"+h;
-        }else
-            hora = ""+h;
-        
+            hora = "0" + h;
+        } else {
+            hora = "" + h;
+        }
+
         if (m < 10) {
-            minutos = "0"+m;
-        }else
-            minutos = ""+m;
-        
+            minutos = "0" + m;
+        } else {
+            minutos = "" + m;
+        }
+
         CatalogTO _R = new CatalogTO();
         CatalogTO _R2 = new CatalogTO();
 
-        String formaPago = "", tipoDoc = "", Usuario = "", fecha = "";
+        String formaPago = "", tipoDoc = "", Usuario = "";
         Usuario = request2.getParameter("bar").toUpperCase();
 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        
         try {
             SalesEJBService = new SalesEJBClient();
             AdminEJBService = new AdminEJBClient();
@@ -73,10 +78,10 @@ public class RemisionPrint extends HttpServlet {
             _R = AdminEJBService.findCatalogByKey(var.getPeymethod(), 8);
             formaPago = _R.getCatvalue().toUpperCase();
             AdminEJBService = new AdminEJBClient();
-            _R2 = AdminEJBService.findCatalogByKey(var.getSeries()+"", 9);
+            _R2 = AdminEJBService.findCatalogByKey(var.getSeries() + "", 9);
             tipoDoc = _R2.getCatvalue().toUpperCase();
             total = formatNumber(var.getDoctotal());
-            fecha = setFecha(var.getDocdate());
+            //fecha = setFecha(var.getDocdate());
 
         } catch (Exception ex) {
             Logger.getLogger(RemisionPrint.class.getName()).log(Level.SEVERE, null, ex);
@@ -140,7 +145,7 @@ public class RemisionPrint extends HttpServlet {
                     + "\n"
                     + "                                </td>\n"
                     + "                                <td >\n"
-                    + "                                    " + fecha + " HORA: " + hora + ":" + minutos + "\n"
+                    + "                                    " + sdf.format(var.getDocdate()) + " HORA: " + hora + ":" + minutos + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                        </table>\n"
@@ -150,7 +155,7 @@ public class RemisionPrint extends HttpServlet {
                     + "                                <td style=\"width: 80px\">\n"
                     + "                                </td>\n"
                     + "                                <td >\n"
-                    + "                                    " + var.getBplname().toUpperCase() + "\n"
+                    + "                                    " + var.getCardcode() + "-" + var.getBplname().toUpperCase() + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                            <tr style=\"height: 17px\">\n"
@@ -247,8 +252,8 @@ public class RemisionPrint extends HttpServlet {
                             + "\n"
                             + "                                <td style=\"width: 70px\">" + var2.getQuantity() + "</td>\n"
                             + "                                <td style=\"width: 265px\">" + detalle + "</td>\n"
-                            + "                                <td style=\"width: 60px\">$" + formatNumber(var2.getPrice()) + "</td>\n"
-                            + "                                <td >$" + formatNumber(var2.getLinetotal()) + "</td>\n"
+                            + "                                <td style=\"width: 60px\">$" + formatNumber(var2.getGtotal()) + "</td>\n"
+                            + "                                <td >$" + formatNumber(var2.getGtotal()) + "</td>\n"
                             + "\n"
                             + "                            </tr>\n");
 
@@ -271,7 +276,7 @@ public class RemisionPrint extends HttpServlet {
                     + "                                <td ></td>\n"
                     + "                                <td ></td>\n"
                     + "                                <td ></td>\n"
-                    + "                                <td >$"+total+"</td>\n"
+                    + "                                <td >$" + total + "</td>\n"
                     + "                            </tr>\n"
                     + "                </tr>\n"
                     + "            </table>\n"
@@ -292,7 +297,7 @@ public class RemisionPrint extends HttpServlet {
                     + "                <tr>\n"
                     + "                    <td/>\n"
                     + "                    <td style=\"vertical-align: top\">\n"
-                    + "                        "+Usuario+"\n"
+                    + "                        " + Usuario + "\n"
                     + "                    </td>\n"
                     + "                </tr>\n"
                     + "            </table>\n"
@@ -352,30 +357,31 @@ public class RemisionPrint extends HttpServlet {
     }
 
 //</editor-fold>
-
     private String setFecha(Date docdate) {
-        
+
         Calendar Del = GregorianCalendar.getInstance();
         Del.setTime(docdate);
         int dia1, mes1, anio1;
-            String diaS1,Smes1;
-            
-            dia1 = Del.get(Calendar.DAY_OF_MONTH);
-            if (dia1<10) {
-                diaS1 = "0"+dia1;
-            }else
-                diaS1 = dia1+"";
-            mes1 = Del.get(Calendar.MONTH);
-            mes1 = mes1 + 1;
-            if (mes1<10) {
-                Smes1 = "0"+mes1;
-            }else
-                Smes1 = mes1+"";
-            anio1 = Del.get(Calendar.YEAR);
-            
-        String _R = diaS1+"/"+Smes1+"/"+anio1;
+        String diaS1, Smes1;
+
+        dia1 = Del.get(Calendar.DAY_OF_MONTH);
+        if (dia1 < 10) {
+            diaS1 = "0" + dia1;
+        } else {
+            diaS1 = dia1 + "";
+        }
+        mes1 = Del.get(Calendar.MONTH);
+        mes1 = mes1 + 1;
+        if (mes1 < 10) {
+            Smes1 = "0" + mes1;
+        } else {
+            Smes1 = mes1 + "";
+        }
+        anio1 = Del.get(Calendar.YEAR);
+
+        String _R = diaS1 + "/" + Smes1 + "/" + anio1;
         return _R;
-        
+
     }
 }//cierre de clase
 

@@ -89,6 +89,7 @@ public class DeliveryBean implements Serializable {
     private String codSocio;        //Codigo de Socio
     private int equipo;             //Equipo
     private int refe;            //Referencia
+    private int refeAnt;            //Referencia
 
     private Date fechaConta = new Date();   //Fecha Contabilizacion
     private Date fechaDoc = new Date();     //Fecha Documento
@@ -977,7 +978,7 @@ public class DeliveryBean implements Serializable {
         String vacio = null;
         newDelivery.setObjtype("" + 12);
         newDelivery.setDocentry(docEntry);
-        newDelivery.setSeries(docNum);
+        newDelivery.setSeries(tipoDoc);
         newDelivery.setDocstatus(estadoDoc);
 
         newDelivery.setUsersign((int) session.getAttribute("usersign"));
@@ -994,7 +995,7 @@ public class DeliveryBean implements Serializable {
 
         newDelivery.setDocdate(fechaConta);
         newDelivery.setTaxdate(fechaDoc);
-        newDelivery.setDoctype("" + tipoDoc);
+        newDelivery.setDoctype("I");
         newDelivery.setPeymethod("" + formaPago);
         newDelivery.setTowhscode(alm);
 
@@ -1600,10 +1601,12 @@ public class DeliveryBean implements Serializable {
             faceMessage("No se puede anular");
         } else {
             faceMessage("Anular Remision");
+            this.refeAnt = this.refe;
             estateGuardar();
             this.ifCancelacion = true;
             this.idAnterior = docNum;
             docNum = 0;
+            this.refe = this.refeAnt;
             RequestContext.getCurrentInstance().update("frmDelivery");
         }
     }

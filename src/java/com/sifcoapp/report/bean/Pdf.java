@@ -15,6 +15,7 @@ import com.sifcoapp.report.common.numerosAletras;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -56,7 +57,8 @@ public class Pdf extends HttpServlet {
         int hora, minutos;
         hora = calendario.get(Calendar.HOUR);
         minutos = calendario.get(Calendar.MINUTE);
-
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); 
+        
         try {
             convertNumber = new numerosAletras() {
             };
@@ -147,7 +149,7 @@ public class Pdf extends HttpServlet {
                     + "                                    " + nombreCliente + "\n"
                     + "                                </td>\n"
                     + "                                <td>\n"
-                    + "                                    " + var.getDocdate() + " HORA: " + hora + ":" + minutos + "\n"
+                    + "                                    " + sdf.format(var.getDocdate()) + " HORA: " + hora + ":" + minutos + "\n"
                     + "                                </td>\n"
                     + "                            </tr>\n"
                     + "                            <tr style=\"height: 18px\">\n"
