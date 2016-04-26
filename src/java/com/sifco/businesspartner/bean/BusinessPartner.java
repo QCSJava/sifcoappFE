@@ -1418,6 +1418,31 @@ public class BusinessPartner implements Serializable {
         }
         return results;
     }
+    
+     public List<String> compSocioCode(String query) {
+        List _result = null;
+
+        BusinesspartnerInTO in = new BusinesspartnerInTO();
+        in.setCardcode(query);
+        //in.setCardtype("C");
+
+        try {
+            _result = CatalogEJB.get_businesspartner(in);
+
+        } catch (Exception e) {
+            faceMessage("Error en autocompletado");
+        }
+
+        List<String> results = new ArrayList<>();
+
+        Iterator<BusinesspartnerTO> iterator = _result.iterator();
+
+        while (iterator.hasNext()) {
+            BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
+            results.add(articulo.getCardcode());
+        }
+        return results;
+    }
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Evento al seleccionar del autocomplete" > 
