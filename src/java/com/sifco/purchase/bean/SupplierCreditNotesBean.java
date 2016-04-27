@@ -973,7 +973,7 @@ public class SupplierCreditNotesBean implements Serializable {
         newSupplier.setCardcode(codSocio);
         newSupplier.setRef2("" + equipo);
         newSupplier.setNumatcard(refe);
-
+        newSupplier.setDocduedate(fechaConta);
         newSupplier.setDocdate(fechaConta);
         newSupplier.setTaxdate(fechaDoc);
 
