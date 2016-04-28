@@ -905,7 +905,7 @@ public class ArticlesBean implements Serializable {
         }
         if (!listaBusqueda.isEmpty()) {
             if (listaBusqueda.size() == 1) {
-                faceMessage("Elemento unico encontrado");
+                //faceMessage("Elemento unico encontrado");
                 newArticle = (ArticlesTO) listaBusqueda.get(0);
                 try {
                     ArticlesTO var2 = AdminEJBService.getArticlesByKey(newArticle.getItemCode());
