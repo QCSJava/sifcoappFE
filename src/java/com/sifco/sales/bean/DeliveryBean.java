@@ -5,6 +5,7 @@
  */
 package com.sifco.sales.bean;
 
+import com.ocpsoft.pretty.faces.util.StringUtils;
 import com.sifco.login.bean.Util;
 import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.client.CatalogEJBClient;
@@ -171,6 +172,7 @@ public class DeliveryBean implements Serializable {
     private String url;
 
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -289,6 +291,7 @@ public class DeliveryBean implements Serializable {
     }
 
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocioCod(String code) {
         List socio = new Vector();
@@ -358,6 +361,9 @@ public class DeliveryBean implements Serializable {
             //faceMessage(event.getObject().toString());
             List _result = null;
 
+            //Partir codigo, y quitar el codigo viejo            
+            newNomArt = StringUtils.isBlank(newNomArt)?newNomArt:newNomArt.substring(0,newNomArt.lastIndexOf("»")-1);
+            
             ArticlesInTO in = new ArticlesInTO();
             in.setItemCode(newCod);
             in.setItemName(newNomArt);
@@ -489,6 +495,7 @@ public class DeliveryBean implements Serializable {
     }
 
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="Boton Agregar al DATATABLE">
     public void accionAgregar(ActionEvent actionEvent) {
         try {
@@ -597,6 +604,7 @@ public class DeliveryBean implements Serializable {
     }
 
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="Calcular Impuestos y TOTAL">
     public void calcularTotalBill(ArrayList<DeliveryDetailTO> listaArt) {
         Double totalAux = 0.0;
@@ -614,6 +622,7 @@ public class DeliveryBean implements Serializable {
     }
 
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="funciones para calculos de impuestos">
     public Double calcularGravadas(ArrayList<DeliveryDetailTO> listaArt) {
         Double sumTotal = 0.0;
@@ -712,6 +721,7 @@ public class DeliveryBean implements Serializable {
     }
 
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="Eliminar del dataTable" > 
     public void deleteDetalle() {
         try {
@@ -942,7 +952,6 @@ public class DeliveryBean implements Serializable {
             newDelivery.setReceiptnum(this.getIdAnterior());
             newDelivery.setSeries(4);
             newDelivery.setDocstatus(Common.DocStatusClose);
-
         }
 
         try {
@@ -1174,6 +1183,7 @@ public class DeliveryBean implements Serializable {
      }
      */
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="Seleccionar un almacen y Forma de pago">
     public void stateChange1(ValueChangeEvent event) {
 
@@ -1272,6 +1282,7 @@ public class DeliveryBean implements Serializable {
     }
 
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="Select Tipo Documento">
     public void changeTipoDoc() {
         String num;
@@ -1302,6 +1313,7 @@ public class DeliveryBean implements Serializable {
     }
 
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     private boolean validatePrice() {
         if (this.newPrecio < 0) {

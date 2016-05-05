@@ -5,6 +5,7 @@
  */
 package com.sifco.purchase.bean;
 
+import com.ocpsoft.pretty.faces.util.StringUtils;
 import com.sifco.login.bean.Util;
 import com.sifco.sales.bean.SalesBean;
 import com.sifcoapp.client.AccountingEJBClient;
@@ -450,6 +451,9 @@ public class SupplierCreditNotesBean implements Serializable {
         if (event.getObject().toString() != null) {
             List _result = null;
 
+            //Partir codigo, y quitar el codigo viejo            
+            newNomArt = StringUtils.isBlank(newNomArt)?newNomArt:newNomArt.substring(0,newNomArt.lastIndexOf("»")-1);
+            
             ArticlesInTO in = new ArticlesInTO();
             in.setItemCode(newCod);
             in.setItemName(newNomArt);
@@ -973,7 +977,7 @@ public class SupplierCreditNotesBean implements Serializable {
         newSupplier.setCardcode(codSocio);
         newSupplier.setRef2("" + equipo);
         newSupplier.setNumatcard(refe);
-
+        newSupplier.setDocduedate(fechaConta);
         newSupplier.setDocdate(fechaConta);
         newSupplier.setTaxdate(fechaDoc);
 

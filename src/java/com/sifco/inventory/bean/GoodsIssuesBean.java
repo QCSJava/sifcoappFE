@@ -5,6 +5,7 @@
  */
 package com.sifco.inventory.bean;
 
+import com.ocpsoft.pretty.faces.util.StringUtils;
 import com.sifco.login.bean.Util;
 import com.sifcoapp.client.AccountingEJBClient;
 import com.sifcoapp.client.AdminEJBClient;
@@ -417,6 +418,7 @@ public class GoodsIssuesBean implements Serializable {
     }
 
     //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -462,14 +464,14 @@ public class GoodsIssuesBean implements Serializable {
 
         } catch (Exception e) {
         }
-
+        
         List<String> results = new ArrayList<String>();
 
         Iterator<ArticlesTO> iterator = _result.iterator();
 
         while (iterator.hasNext()) {
             ArticlesTO articulo = (ArticlesTO) iterator.next();
-            results.add(articulo.getItemName());
+            results.add(articulo.getItemName()+ " » " + articulo.getSww());
         }
         return results;
     }
@@ -579,6 +581,9 @@ public class GoodsIssuesBean implements Serializable {
         List articulos = new Vector();
         String var = null;
 
+       //Partir codigo, y quitar el codigo viejo            
+       newNomArt = StringUtils.isBlank(newNomArt)?newNomArt:newNomArt.substring(0,newNomArt.lastIndexOf("»")-1);
+        
         ArticlesInTO in = new ArticlesInTO();
         in.setItemCode(newCod);
         in.setItemName(newNomArt);
@@ -877,6 +882,7 @@ public class GoodsIssuesBean implements Serializable {
     }
 
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="Guardar en base" > 
     public void saveIssues() {
         int line = 0;

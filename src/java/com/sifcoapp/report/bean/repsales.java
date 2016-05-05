@@ -5,6 +5,7 @@
  */
 package com.sifcoapp.report.bean;
 
+import com.ocpsoft.pretty.faces.util.StringUtils;
 import com.sifco.inventory.bean.GoodsReceiptBean;
 import com.sifco.login.bean.Util;
 import com.sifcoapp.client.AdminEJBClient;
@@ -532,7 +533,7 @@ public class repsales implements Serializable {
 
         while (iterator.hasNext()) {
             ArticlesTO articulo = (ArticlesTO) iterator.next();
-            results.add(articulo.getItemName());
+            results.add(articulo.getItemName()+ " » " + articulo.getSww());
         }
         return results;
     }
@@ -571,6 +572,9 @@ public class repsales implements Serializable {
         if (event.getObject().toString() != var) {
             List _result = null;
 
+            //Partir codigo, y quitar el codigo viejo            
+            newNomArt = StringUtils.isBlank(newNomArt)?newNomArt:newNomArt.substring(0,newNomArt.lastIndexOf("»")-1);
+            
             ArticlesInTO in = new ArticlesInTO();
             in.setItemCode(newCod);
             in.setItemName(newNomArt);
