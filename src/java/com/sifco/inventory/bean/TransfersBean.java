@@ -5,6 +5,7 @@
  */
 package com.sifco.inventory.bean;
 
+import com.ocpsoft.pretty.faces.util.StringUtils;
 import com.sifco.login.bean.Util;
 import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.client.InventoryEJBClient;
@@ -472,7 +473,7 @@ public class TransfersBean implements Serializable{
 
         while (iterator.hasNext()) {
             ArticlesTO articulo = (ArticlesTO) iterator.next();
-            results.add(articulo.getItemName());
+           results.add(articulo.getItemName()+ " » " + articulo.getSww());
         }
         return results;
     }
@@ -543,6 +544,9 @@ public class TransfersBean implements Serializable{
 
         if (event.getObject().toString() != var) {
             List _result = null;
+            
+            //Partir codigo, y quitar el codigo viejo            
+            newNomArt = StringUtils.isBlank(newNomArt)?newNomArt:newNomArt.substring(0,newNomArt.lastIndexOf("»")-1);
             
             ArticlesInTO in = new ArticlesInTO();
             in.setItemCode(newCod);

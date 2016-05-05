@@ -5,6 +5,7 @@
  */
 package com.sifcoapp.report.bean;
 
+import com.ocpsoft.pretty.faces.util.StringUtils;
 import com.sifco.inventory.bean.GoodsReceiptBean;
 import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.objects.admin.to.ArticlesInTO;
@@ -281,6 +282,9 @@ public class RepInventory implements Serializable {
         if (event.getObject().toString() != var) {
             List _result = null;
 
+            //Partir codigo, y quitar el codigo viejo            
+            newNomArt = StringUtils.isBlank(newNomArt)?newNomArt:newNomArt.substring(0,newNomArt.lastIndexOf("»")-1);
+            
             ArticlesInTO in = new ArticlesInTO();
             in.setItemCode(newCod);
             in.setItemName(newNomArt);

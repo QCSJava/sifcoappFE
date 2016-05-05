@@ -5,6 +5,7 @@
  */
 package com.sifco.purchase.bean;
 
+import com.ocpsoft.pretty.faces.util.StringUtils;
 import com.sifco.login.bean.Util;
 import com.sifco.businesspartner.bean.BusinessPartner;
 import com.sifcoapp.client.AccountingEJBClient;
@@ -426,6 +427,9 @@ public class PurchaseQuotationBean implements Serializable {
         if (event.getObject().toString() != null) {
             List _result = null;
 
+            //Partir codigo, y quitar el codigo viejo            
+            newNomArt = StringUtils.isBlank(newNomArt)?newNomArt:newNomArt.substring(0,newNomArt.lastIndexOf("»")-1);
+            
             ArticlesInTO in = new ArticlesInTO();
             in.setItemCode(newCod);
             in.setItemName(newNomArt);

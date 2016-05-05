@@ -5,6 +5,7 @@
  */
 package com.sifco.sales.bean;
 
+import com.ocpsoft.pretty.faces.util.StringUtils;
 import com.sifco.login.bean.Util;
 import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.client.CatalogEJBClient;
@@ -357,6 +358,9 @@ public class CreditNotesBean implements Serializable {
         if (event.getObject().toString() != null) {
             List _result = null;
 
+            //Partir codigo, y quitar el codigo viejo            
+            newNomArt = StringUtils.isBlank(newNomArt)?newNomArt:newNomArt.substring(0,newNomArt.lastIndexOf("»")-1);
+            
             ArticlesInTO in = new ArticlesInTO();
             in.setItemCode(newCod);
             in.setItemName(newNomArt);

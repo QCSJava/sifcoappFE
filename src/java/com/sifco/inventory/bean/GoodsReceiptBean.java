@@ -5,6 +5,7 @@
  */
 package com.sifco.inventory.bean;
 
+import com.ocpsoft.pretty.faces.util.StringUtils;
 import com.sifco.login.bean.Util;
 import com.sifco.businesspartner.bean.BusinessPartner;
 import com.sifcoapp.assignment.bean.AccassignmentBean;
@@ -461,6 +462,7 @@ public class GoodsReceiptBean implements Serializable {
         ArticlesInTO in = new ArticlesInTO();
         in.setItemCode(var);
         in.setItemName(query);
+        in.setAssetItem("Y");
 
         try {
             _result = AdminEJBService.getArticles(in);
@@ -474,7 +476,7 @@ public class GoodsReceiptBean implements Serializable {
 
         while (iterator.hasNext()) {
             ArticlesTO articulo = (ArticlesTO) iterator.next();
-            results.add(articulo.getItemName());
+            results.add(articulo.getItemName()+ " » " + articulo.getSww());
         }
         return results;
     }
@@ -629,6 +631,9 @@ public class GoodsReceiptBean implements Serializable {
         if (event.getObject().toString() != var) {
             List _result = null;
 
+            //Partir codigo, y quitar el codigo viejo            
+            newNomArt = StringUtils.isBlank(newNomArt)?newNomArt:newNomArt.substring(0,newNomArt.lastIndexOf("»")-1);
+            
             ArticlesInTO in = new ArticlesInTO();
             in.setItemCode(newCod);
             in.setItemName(newNomArt);

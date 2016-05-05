@@ -5,6 +5,7 @@
  */
 package com.sifco.sales.bean;
 
+import com.ocpsoft.pretty.faces.util.StringUtils;
 import com.sifco.login.bean.Util;
 import com.sifcoapp.client.AdminEJBClient;
 import com.sifcoapp.client.CatalogEJBClient;
@@ -326,6 +327,56 @@ public class SalesBean implements Serializable {
         return results;
     }
 
+    public List<String> completeText(String query) {
+        List _result = null;
+        String var = null;
+
+        ArticlesInTO in = new ArticlesInTO();
+        in.setItemCode(var);
+        in.setItemName(query);
+
+        try {
+            _result = AdminEJBService.getArticles(in);
+
+        } catch (Exception e) {
+        }
+
+        List<String> results = new ArrayList<String>();
+
+        Iterator<ArticlesTO> iterator = _result.iterator();
+
+        while (iterator.hasNext()) {
+            ArticlesTO articulo = (ArticlesTO) iterator.next();
+            results.add(articulo.getItemName()+ " » " + articulo.getSww());
+        }
+        return results;
+    }
+
+    public List<String> completeCode(String query) {
+        List _result = null;
+        String var = null;
+
+        ArticlesInTO in = new ArticlesInTO();
+        in.setItemCode(query);
+        in.setItemName(var);
+
+        try {
+            _result = AdminEJBService.getArticles(in);
+
+        } catch (Exception e) {
+        }
+
+        List<String> results = new ArrayList<String>();
+
+        Iterator<ArticlesTO> iterator = _result.iterator();
+
+        while (iterator.hasNext()) {
+            ArticlesTO articulo = (ArticlesTO) iterator.next();
+            results.add(articulo.getItemCode());
+        }
+        return results;
+    }
+
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
@@ -396,6 +447,9 @@ public class SalesBean implements Serializable {
             //faceMessage(event.getObject().toString());
             List _result = null;
 
+            //Partir codigo, y quitar el codigo viejo            
+            newNomArt = StringUtils.isBlank(newNomArt)?newNomArt:newNomArt.substring(0,newNomArt.lastIndexOf("»")-1);
+                        
             ArticlesInTO in = new ArticlesInTO();
             in.setItemCode(newCod);
             in.setItemName(newNomArt);
