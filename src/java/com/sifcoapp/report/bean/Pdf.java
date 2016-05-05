@@ -45,20 +45,23 @@ public class Pdf extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(true);
         String var5 = (String) session.getAttribute("username");
+        
+        
 
         SalesTO var = new SalesTO();
         CatalogTO _R = new CatalogTO();
         String numberToletter = null;
         Double total = 0.0;
         String nombreVendedor = "";
-        String nombreCliente = "";
+		String nombreCliente = "";
         //hora de impresion
         Calendar calendario = new GregorianCalendar();
         int hora, minutos;
         hora = calendario.get(Calendar.HOUR);
         minutos = calendario.get(Calendar.MINUTE);
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); 
-        
+
         try {
             convertNumber = new numerosAletras() {
             };
@@ -75,11 +78,12 @@ public class Pdf extends HttpServlet {
             Logger.getLogger(Pdf.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        if (var.getNamenp() == null || var.getNamenp().equals("")) {
+		if (var.getNamenp() == null || var.getNamenp().equals("")) {
             nombreCliente = var.getCardcode() + "-" + var.getBplname().toUpperCase();
         } else {
             nombreCliente = var.getNamenp().toUpperCase();
         }
+		
 
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -106,15 +110,15 @@ public class Pdf extends HttpServlet {
                     + "\n"
                     + "    <body style=\"font-size: 12px; font-family: sans-serif; line-height: 0px\">\n"
                     + "        <!-- tamanio de factura 566x453px-->\n"
-                    + "        <div style=\"width: 1350px; height: 500px\">\n"
+                    + "        <div style=\"width: 690px; height: 453px\">\n"
                     + "\n"
                     + "            <table style=\"width:100%\" border=\"0\">\n"
                     + "                <!-- borde top y unica fila-->\n"
                     + "                <tr>\n"
-                    + "                    <td style=\"height: 85px\">\n"
+                    + "                    <td style=\"height: 145px\">\n"
                     + "\n"
                     + "                    </td>\n"
-                    + "                    <td style=\"height: 85px\">\n"
+                    + "                    <td style=\"height: 145px\">\n"
                     + "                        <table border=\"0\" style=\"width: 100%\">\n"
                     + "                            <tr>\n"
                     + "                                <td style=\"height: 25px; width: 60%\">\n"
@@ -146,7 +150,7 @@ public class Pdf extends HttpServlet {
                     + "\n"
                     + "                                </td>\n"
                     + "                                <td style=\"width: 65%\">\n"
-                    + "                                    " + nombreCliente + "\n"
+                    + "                                     " + nombreCliente + "\n"
                     + "                                </td>\n"
                     + "                                <td>\n"
                     + "                                    " + sdf.format(var.getDocdate()) + " HORA: " + hora + ":" + minutos + "\n"
@@ -175,18 +179,19 @@ public class Pdf extends HttpServlet {
                     + "                            <tr style=\"height: 2px\"/>\n"
                     + "\n"
                     + "                            <!-- header detalles 30px -->\n"
-                    + "                            <tr style=\"height: 45px\">\n"
+                    + "                            <tr style=\"height: 55px\">\n"
+
                     + "                                <td colspan=\"7\"></td>\n"
                     + "                            </tr>\n"
                     + "                        </table>\n"
                     + "\n"
                     + "                        <!-- DETALLES -->\n"
-                    + "                        <table style=\"width:100%\" border=\"0\">\n"
+                    + "                        <table border=\"0\">\n"
                     + "                            <!-- Detalles de factura 148px -->\n");
 
             int tam = var.getSalesDetails().size();
             List det = var.getSalesDetails();
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 10; i++) {
 
                 if (i < tam) {
                     SalesDetailTO var2 = (SalesDetailTO) det.get(i);
@@ -199,14 +204,17 @@ public class Pdf extends HttpServlet {
                     out.println(
                             "                            <tr style=\"height: 18px; width: 100%\" >\n"
                             + "\n"
-                            + "                                <td style=\"width: 5%\"> </td>"
-                            + "                                <td style=\"width: 9%\">" + var2.getQuantity() + "</td>\n"
-                            + "                                <td style=\"width: 12.5%\">" + var2.getItemcode() + "</td>\n"
-                            + "                                <td style=\"width: 39%\">" + des.toUpperCase() + "</td>\n"
-                            + "                                <td style=\"width: 8.5%\">$" + truncarDouble(var2.getPriceafvat()) + "</td>\n"
-                            + "                                <td style=\"width: 7.5%\">" + "$0.00" + "</td>\n"
-                            + "                                <td style=\"width: 5.5%\">" + "$0.00" + "</td>\n"
-                            + "                                <td style=\"width: 13%\">$" + truncarDouble(var2.getGtotal()) + "</td>\n"
+                            + "                                <td style=\"width: 40px\">" + var2.getQuantity() + "</td>\n"
+
+
+                            + "                                <td style=\"width: 100px\">" + var2.getItemcode() + "</td>\n"
+                            + "                                <td style=\"width: 270px\">" + des.toUpperCase() + "</td>\n"
+                            + "                                <td style=\"width: 60px\">$" + truncarDouble(var2.getPriceafvat()) + "</td>\n"
+                            + "                                <td style=\"width: 50px\">" + "$0.00" + "</td>\n"
+                            + "                                <td style=\"width: 50px\">" + "$0.00" + "</td>\n"
+
+
+                            + "                                <td style=\"width: 10px\">$" + truncarDouble(var2.getGtotal()) + "</td>\n"
                             + "\n"
                             + "                            </tr>\n");
 
@@ -215,14 +223,21 @@ public class Pdf extends HttpServlet {
                     out.println(
                             "<tr style=\"height: 18px; width: 100%\" >\n"
                             + "\n"
-                            + "                                <td style=\"width: 5%\"> </td>"
-                            + "                                <td style=\"width: 9%\">" + vacio + "</td>\n"
-                            + "                                <td style=\"width: 12.5%\">" + vacio + "</td>\n"
-                            + "                                <td style=\"width: 39%\">" + vacio + "</td>\n"
-                            + "                                <td style=\"width: 8.5%\">" + vacio + "</td>\n"
-                            + "                                <td style=\"width: 7.5%\">" + vacio + "</td>\n"
-                            + "                                <td style=\"width: 5.5%\">" + vacio + "</td>\n"
-                            + "                                <td style=\"width: 13%\">" + vacio + "</td>\n"
+                            + "                                <td style=\"width: 40px\">" + vacio + "</td>\n"
+                            + "                                <td style=\"width: 100px\">" + vacio + "</td>\n"
+                            + "                                <td style=\"width: 270px\">" + vacio + "</td>\n"
+                            + "                                <td style=\"width: 60px\">" + vacio + "</td>\n"
+                            + "                                <td style=\"width: 50px\">" + vacio + "</td>\n"
+                            + "                                <td style=\"width: 50px\">" + vacio + "</td>\n"
+                            + "                                <td style=\"width: 10px\">" + vacio + "</td>\n"
+
+
+
+
+
+
+
+
                             + "\n"
                             + "                            </tr>\n");
                 }
@@ -234,11 +249,12 @@ public class Pdf extends HttpServlet {
                     + "            </table>\n"
                     + "\n"
                     + "            <!-- TOTALES -->\n"
-                    + "            <table style=\"width:100%\" border=\"0\">\n"
+                    + "            <table border=\"0\">\n"
                     + "                <!-- Parte de totales de factura -->\n"
                     + "                <tr style=\"height: 18px\">\n"
-                    + "                    <td style=\"width: 10%\"/>\n"
-                    + "                    <td valign=\"bot\" style=\"width:77\">\n"
+                    + "                    <td style=\"width: 50px\"/>\n"
+
+                    + "                    <td valign=\"bot\" style=\"width: 545px\">\n"
                     + "                        " + numberToletter + "\n"
                     + "                    </td>\n"
                     + "                    <td valign=\"bot\">\n"
@@ -246,8 +262,10 @@ public class Pdf extends HttpServlet {
                     + "                    </td>\n"
                     + "                </tr>\n"
                     + "                <tr style=\"height: 15.8px\">\n"
-                    + "                    <td style=\"width: 10%\"/>\n"
-                    + "                    <td style=\"width: 77%\">\n"
+                    + "                    <td/>\n"
+                    + "                    <td>\n"
+
+
                     + "                        vendedor: " + nombreVendedor + "\n"
                     + "                    </td>\n"
                     + "                    <td>\n"
@@ -255,24 +273,30 @@ public class Pdf extends HttpServlet {
                     + "                    </td>\n"
                     + "                </tr>\n"
                     + "                <tr style=\"height: 15.8px\">\n"
-                    + "                    <td style=\"width: 10%\"/>\n"
-                    + "                    <td style=\"width: 77%\"/>\n"
+                    + "                    <td style=\"width: 50px\"/>\n"
+                    + "                    <td   style=\"width: 100px\">\n"
+
+
                     + "                    </td>\n"
                     + "                    <td>\n"
                     + "                        $0.00\n"
                     + "                    </td>\n"
                     + "                </tr>\n"
                     + "                <tr style=\"height: 15.8px\">\n"
-                    + "                    <td style=\"width: 10%\"/>\n"
-                    + "                    <td style=\"width: 77%\"/>\n"
+                    + "                    <td style=\"width: 50px\"/>\n"
+                    + "                    <td   style=\"width: 100px\">\n"
+
+
                     + "                    </td>\n"
                     + "                    <td>\n"
                     + "                        $0.00\n"
                     + "                    </td>\n"
                     + "                </tr>\n"
                     + "                <tr style=\"height: 15.8px\">\n"
-                    + "                    <td style=\"width: 10%\"/>\n"
-                    + "                    <td style=\"width: 77%\"/>\n"
+                    + "                    <td style=\"width: 50px\"/>\n"
+                    + "                    <td  style=\"width: 100px\">\n"
+
+
                     + "                    </td>\n"
                     + "                    <td>\n"
                     + "                        $" + truncarDouble(total) + "\n"
