@@ -211,20 +211,20 @@
                             </div>
                             <div class="ui-grid-col-1">
                                 <p:inputText tabindex="13" required="true" id="newCantidad" value="#{salesBean.newCantidad}" label="Cantidad" size="10" disabled="#{salesBean.disabledComun}">
-                                    <p:ajax event="keyup" update="newTotal" listener="#{salesBean.calcularTotal}"/>
+                                    <p:ajax event="keyup" update="newPrecio newTotal" listener="#{salesBean.calcularTotal}"/>
                                 </p:inputText>
 
                             </div>
                             <p:spacer width="15" height="0"/>
                             <div class="ui-grid-col-1">
-                                <p:outputLabel id="newPrecio" value="#{salesBean.newPrecio}">
+                                <p:outputLabel id="newPrecio" value="#{salesBean.newPriceafvat}">
                                     <f:convertNumber minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
                                 </p:outputLabel>
 
                             </div>
                             <p:spacer width="15" height="0"/>
                             <div class="ui-grid-col-1">
-                                <h:outputText id="newTotal"         value="#{salesBean.newTotal}">
+                                <h:outputText id="newTotal"         value="#{salesBean.newTotalafvat}">
                                     <f:convertNumber minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
                                 </h:outputText>
                             </div>

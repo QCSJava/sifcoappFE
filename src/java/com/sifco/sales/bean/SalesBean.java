@@ -121,8 +121,11 @@ public class SalesBean implements Serializable {
     @Digits(integer = 14, fraction = 2, message = "Cantidad inadecuada")
     private Double newCantidad;     //Cantidad
 
+    private ArticlesTO newArticle = new ArticlesTO();
     private Double newPrecio;       //Precio
+    private Double newPriceafvat;   //Precio con impuestos incluidos
     private Double newTotal;        //Total de detalle
+    private Double newTotalafvat;  //Total despues de impuestos
     private String newUnidad;       //Unidad de Medida
     private Double newExistencia;   //Existencia
 
@@ -482,7 +485,8 @@ public class SalesBean implements Serializable {
                         newUnidad = art.getSalUnitMsr();
                         newExistencia = art.getOnHand();
 
-                        art = AdminEJBService.getArticlesByKey(newCod);
+                        art =  AdminEJBService.getArticlesByKey(newCod);
+                        newArticle = art;
                         Double factor = art.getSalPackUn();
                         Double price = art.getPrice(precioArt);
                         if (price == -1 || price < 0) {
@@ -530,6 +534,7 @@ public class SalesBean implements Serializable {
                             newExistencia = art.getOnHand();
                             try {
                                 art = AdminEJBService.getArticlesByKey(newCod);
+                                newArticle = art;
                             } catch (Exception ex) {
                                 Logger.getLogger(SalesBean.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -585,6 +590,37 @@ public class SalesBean implements Serializable {
                  Double dou = Double.valueOf(st);
                  //newTotal = dou;*/
                 newTotal = aux;
+                
+                // Calcular total con impuestos
+                ArticlesTO thisArt = new ArticlesTO();
+                CatalogTO thisCat = new CatalogTO();
+                
+                thisArt = newArticle;
+                  if (thisArt.getWtliable().equals("Y")) {
+                     
+                        if (thisArt.getVatgourpsa().equals("FOV")) {
+                            thisCat = (CatalogTO) thisArt.getVatgourpsaList().get(0);
+                            Double impIVA = (Integer.parseInt(thisCat.getCatvalue()) + 0.0) / 100; //%de IVA
+                            Double impFOV = Double.parseDouble(thisCat.getCatvalue2());
+                            Double impCOT = Double.parseDouble(thisCat.getCatvalue3());
+
+                            setNewPriceafvat((newPrecio) + (newPrecio * impIVA) + (impFOV) + (impCOT));
+                            //Double descuentos = 0.0;
+
+                        } else {
+                            //faceMessage("articulo aplica a X impuesto de descripcion1");
+                            thisCat = (CatalogTO) thisArt.getVatgourpsaList().get(0);
+                            Double impIVA = (Integer.parseInt(thisCat.getCatvalue()) + 0.0) / 100; //%de IVA
+                            setNewPriceafvat((newPrecio) + (newPrecio * impIVA)); //(precio unitario * cantidad) * 0.13%
+                         
+                        }
+                    } else {
+                        Double impIVA = 0.0; //%de IVA
+                        setNewPriceafvat((newPrecio) + (newPrecio * impIVA)); //total + impuesto de iva
+                    }
+                
+                  setNewTotalafvat(getNewPriceafvat()*newCantidad);
+                
             }
         } catch (Exception e) {
             System.out.println(e.getMessage() + " - " + e.getCause());
@@ -635,7 +671,7 @@ public class SalesBean implements Serializable {
                 newDetalle.setLinenum(UUID.randomUUID().hashCode());
 
                 try {
-                    thisArt = AdminEJBService.getArticlesByKey(newCod);
+                    thisArt = newArticle;//AdminEJBService.getArticlesByKey(newCod);
 
                     if (thisArt.getWtliable().equals("Y")) {
                         newDetalle.setTaxstatus("Y");
@@ -1831,8 +1867,10 @@ public class SalesBean implements Serializable {
         newCod = null;
         newNomArt = null;
         newPrecio = null;
+        newPriceafvat = null;
         newCantidad = null;
         newTotal = null;
+        newTotalafvat = null;
         newUnidad = null;
         newExistencia = null;
 
@@ -2541,6 +2579,22 @@ public class SalesBean implements Serializable {
     public void setNewPrecio(Double newPrecio) {
         this.newPrecio = newPrecio;
     }
+    
+    
+    /**
+     * @return the newPriceafvat
+     */
+    public Double getNewPriceafvat() {
+        return newPriceafvat;
+    }
+
+    /**
+     * @param newPriceafvat the newPriceafvat to set
+     */
+    public void setNewPriceafvat(Double newPriceafvat) {
+        this.newPriceafvat = newPriceafvat;
+    }
+
 
     public Double getNewTotal() {
         return newTotal;
@@ -2550,6 +2604,20 @@ public class SalesBean implements Serializable {
         this.newTotal = newTotal;
     }
 
+    /**
+     * @return the newTotalafvat
+     */
+    public Double getNewTotalafvat() {
+        return newTotalafvat;
+    }
+
+    /**
+     * @param newTotalafvat the newTotalafvat to set
+     */
+    public void setNewTotalafvat(Double newTotalafvat) {
+        this.newTotalafvat = newTotalafvat;
+    }
+    
     public String getNewUnidad() {
         return newUnidad;
     }
