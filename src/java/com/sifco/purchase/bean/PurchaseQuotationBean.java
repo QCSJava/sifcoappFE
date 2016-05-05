@@ -257,7 +257,7 @@ public class PurchaseQuotationBean implements Serializable {
 
         while (iterator.hasNext()) {
             BusinesspartnerTO articulo = (BusinesspartnerTO) iterator.next();
-            results.add(articulo.getCardcode()+"-"+articulo.getCardname());
+            results.add(articulo.getCardcode() + "-" + articulo.getCardname());
         }
         return results;
     }
@@ -428,8 +428,8 @@ public class PurchaseQuotationBean implements Serializable {
             List _result = null;
 
             //Partir codigo, y quitar el codigo viejo            
-            newNomArt = StringUtils.isBlank(newNomArt)?newNomArt:newNomArt.substring(0,newNomArt.lastIndexOf("»")-1);
-            
+            newNomArt = StringUtils.isBlank(newNomArt) ? newNomArt : newNomArt.substring(0, newNomArt.lastIndexOf("»") - 1);
+
             ArticlesInTO in = new ArticlesInTO();
             in.setItemCode(newCod);
             in.setItemName(newNomArt);

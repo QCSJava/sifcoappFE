@@ -462,7 +462,6 @@ public class GoodsReceiptBean implements Serializable {
         ArticlesInTO in = new ArticlesInTO();
         in.setItemCode(var);
         in.setItemName(query);
-        in.setAssetItem("Y");
 
         try {
             _result = AdminEJBService.getArticles(in);
