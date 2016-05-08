@@ -363,7 +363,7 @@ public class Pdf extends HttpServlet {
 
     private String truncarDouble(Double doctotal) {
         DecimalFormat df;
-        df = new DecimalFormat("#,###0.00");
+        df = new DecimalFormat("#,##0.00");
         return df.format(doctotal);
     }
 

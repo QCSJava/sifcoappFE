@@ -766,7 +766,7 @@ public class DieselPrint extends HttpServlet {
 //</editor-fold>
     private String truncarDouble(Double doctotal) {
         DecimalFormat df;
-        df = new DecimalFormat("#,###0.00");
+        df = new DecimalFormat("#,##0.00");
         return df.format(doctotal);
     }
 

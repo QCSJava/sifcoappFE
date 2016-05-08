@@ -772,7 +772,7 @@ public class ColecturiaBean implements Serializable {
         return st;*/
         
         DecimalFormat df;
-        df = new DecimalFormat("#,###0.00");
+        df = new DecimalFormat("#,##0.00");
         return df.format(num);
         
         
