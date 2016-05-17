@@ -11,6 +11,7 @@ import com.sifcoapp.client.BankEJBClient;
 import com.sifcoapp.client.CatalogEJBClient;
 import com.sifcoapp.client.ParameterEJBClient;
 import com.sifcoapp.objects.admin.to.CatalogTO;
+import com.sifcoapp.objects.admin.to.EnterpriseTO;
 import com.sifcoapp.objects.bank.to.ColecturiaConceptTO;
 import com.sifcoapp.objects.bank.to.ColecturiaDetailTO;
 import com.sifcoapp.objects.bank.to.ColecturiaInTO;
@@ -20,6 +21,9 @@ import com.sifcoapp.objects.catalog.to.BusinesspartnerTO;
 import com.sifcoapp.objects.catalogos.Common;
 import com.sifcoapp.objects.common.to.ResultOutTO;
 import com.sifcoapp.objects.sales.to.SalesTO;
+import com.sifcoapp.report.bean.ReportsBean;
+import com.sifcoapp.report.bean.repPurchases;
+import com.sifcoapp.report.common.AbstractReportBean;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -30,8 +34,10 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,6 +68,7 @@ public class ColecturiaBean implements Serializable {
     private static AdminEJBClient AdminEJBService;
     //__________________________________________________________________________
     //Pantalla
+    private ReportsBean bean;
     private int No;             //Numero de documento
     private Date fechaDoc = new Date();      //Fecha documento
     private Date fechaPago = new Date();     //Fecha de pago 
@@ -1443,13 +1450,27 @@ public class ColecturiaBean implements Serializable {
     public void setSelectDet(ColecturiaDetailTO selectDet) {
         this.selectDet = selectDet;
     }
+    
+    /**
+     * @return the bean
+     */
+    public ReportsBean getBean() {
+        return bean;
+    }
+
+    /**
+     * @param bean the bean to set
+     */
+    public void setBean(ReportsBean bean) {
+        this.bean = bean;
+    }
 
 //</editor-fold>
 //<editor-fold defaultstate="collapsed" desc="IMPRIMIR FORMA 2">
-    public String printInvoice() throws UnsupportedEncodingException {
+    public void printInvoice() throws UnsupportedEncodingException {
         //faceMessage(getApplicationUri());
         //System.out.println(getApplicationUri()+"||----------------------------------------------------------------");
-        setUrl(getApplicationUri());
+        /*setUrl(getApplicationUri());
         String nombre = session.getAttribute("username").toString().toUpperCase();
         if (newColect.getDocentry() > 0) {
             String foo = newColect.getDocentry() + "";
@@ -1460,7 +1481,28 @@ public class ColecturiaBean implements Serializable {
         } else {
             faceMessage("No se puede imprimir");
             return "/view/bank/Colecturia.xhtml";
+        }*/
+        Map<String, Object> reportParameters = new HashMap<>();
+        String _reportname = null;
+        String _reportTitle = null;
+        EnterpriseTO resp = null;
+        try {
+            resp = AdminEJBService.getEnterpriseInfo();
+        } catch (Exception ex) {
+            Logger.getLogger(repPurchases.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        _reportname = "/bank/RptColecturia1";
+        _reportTitle = "##-Colecturia-" + No ;
+        reportParameters.put("pdocnum", No);
+        this.bean = new ReportsBean();
+        getBean().setExportOption(AbstractReportBean.ExportOption.valueOf(AbstractReportBean.ExportOption.class, "EXCEL"));
+        getBean().setFileName(_reportTitle);
+        
+        getBean().setParameters(reportParameters);
+        getBean().setReportName(_reportname);
+        getBean().execute();
+        
     }
 //</editor-fold>
 
