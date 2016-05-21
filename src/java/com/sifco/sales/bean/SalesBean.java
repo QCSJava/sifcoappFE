@@ -350,7 +350,7 @@ public class SalesBean implements Serializable {
 
         while (iterator.hasNext()) {
             ArticlesTO articulo = (ArticlesTO) iterator.next();
-            results.add(articulo.getItemName()+ " » " + articulo.getSww());
+            results.add(articulo.getItemName() + " » " + articulo.getSww());
         }
         return results;
     }
@@ -451,8 +451,8 @@ public class SalesBean implements Serializable {
             List _result = null;
 
             //Partir codigo, y quitar el codigo viejo            
-            newNomArt = StringUtils.isBlank(newNomArt)?newNomArt:newNomArt.substring(0,newNomArt.lastIndexOf("»")-1);
-                        
+            newNomArt = StringUtils.isBlank(newNomArt) ? newNomArt : newNomArt.substring(0, newNomArt.lastIndexOf("»") - 1);
+
             ArticlesInTO in = new ArticlesInTO();
             in.setItemCode(newCod);
             in.setItemName(newNomArt);
@@ -485,7 +485,7 @@ public class SalesBean implements Serializable {
                         newUnidad = art.getSalUnitMsr();
                         newExistencia = art.getOnHand();
 
-                        art =  AdminEJBService.getArticlesByKey(newCod);
+                        art = AdminEJBService.getArticlesByKey(newCod);
                         newArticle = art;
                         Double factor = art.getSalPackUn();
                         Double price = art.getPrice(precioArt);
@@ -590,37 +590,37 @@ public class SalesBean implements Serializable {
                  Double dou = Double.valueOf(st);
                  //newTotal = dou;*/
                 newTotal = aux;
-                
+
                 // Calcular total con impuestos
                 ArticlesTO thisArt = new ArticlesTO();
                 CatalogTO thisCat = new CatalogTO();
-                
+
                 thisArt = newArticle;
-                  if (thisArt.getWtliable().equals("Y")) {
-                     
-                        if (thisArt.getVatgourpsa().equals("FOV")) {
-                            thisCat = (CatalogTO) thisArt.getVatgourpsaList().get(0);
-                            Double impIVA = (Integer.parseInt(thisCat.getCatvalue()) + 0.0) / 100; //%de IVA
-                            Double impFOV = Double.parseDouble(thisCat.getCatvalue2());
-                            Double impCOT = Double.parseDouble(thisCat.getCatvalue3());
+                if (thisArt.getWtliable().equals("Y")) {
 
-                            setNewPriceafvat((newPrecio) + (newPrecio * impIVA) + (impFOV) + (impCOT));
-                            //Double descuentos = 0.0;
+                    if (thisArt.getVatgourpsa().equals("FOV")) {
+                        thisCat = (CatalogTO) thisArt.getVatgourpsaList().get(0);
+                        Double impIVA = (Integer.parseInt(thisCat.getCatvalue()) + 0.0) / 100; //%de IVA
+                        Double impFOV = Double.parseDouble(thisCat.getCatvalue2());
+                        Double impCOT = Double.parseDouble(thisCat.getCatvalue3());
 
-                        } else {
-                            //faceMessage("articulo aplica a X impuesto de descripcion1");
-                            thisCat = (CatalogTO) thisArt.getVatgourpsaList().get(0);
-                            Double impIVA = (Integer.parseInt(thisCat.getCatvalue()) + 0.0) / 100; //%de IVA
-                            setNewPriceafvat((newPrecio) + (newPrecio * impIVA)); //(precio unitario * cantidad) * 0.13%
-                         
-                        }
+                        setNewPriceafvat((newPrecio) + (newPrecio * impIVA) + (impFOV) + (impCOT));
+                        //Double descuentos = 0.0;
+
                     } else {
-                        Double impIVA = 0.0; //%de IVA
-                        setNewPriceafvat((newPrecio) + (newPrecio * impIVA)); //total + impuesto de iva
+                        //faceMessage("articulo aplica a X impuesto de descripcion1");
+                        thisCat = (CatalogTO) thisArt.getVatgourpsaList().get(0);
+                        Double impIVA = (Integer.parseInt(thisCat.getCatvalue()) + 0.0) / 100; //%de IVA
+                        setNewPriceafvat((newPrecio) + (newPrecio * impIVA)); //(precio unitario * cantidad) * 0.13%
+
                     }
-                
-                  setNewTotalafvat(getNewPriceafvat()*newCantidad);
-                
+                } else {
+                    Double impIVA = 0.0; //%de IVA
+                    setNewPriceafvat((newPrecio) + (newPrecio * impIVA)); //total + impuesto de iva
+                }
+
+                setNewTotalafvat(getNewPriceafvat() * newCantidad);
+
             }
         } catch (Exception e) {
             System.out.println(e.getMessage() + " - " + e.getCause());
@@ -1005,6 +1005,7 @@ public class SalesBean implements Serializable {
             showHideDialog("dlgPtr", 1);
 
             RequestContext.getCurrentInstance().update("frmSales");
+
             /*try {
              reload();
              } catch (IOException ex) {
@@ -1022,11 +1023,6 @@ public class SalesBean implements Serializable {
             this.required1 = true;
             this.rendered = false;
             this.actBtn = true;
-
-            try {
-                reload();
-            } catch (IOException ex) {
-            }
         }
 
     }
@@ -1199,9 +1195,7 @@ public class SalesBean implements Serializable {
                 // docEntry = _res.getDocentry();
                 // docNum = docEntry; //
                 faceMessage(_res.getMensaje());
-
                 estateActualizar();
-
             } else {
                 faceMessage(_res.getMensaje() + " Error al guardar");
             }
@@ -1394,7 +1388,6 @@ public class SalesBean implements Serializable {
         searchDeli.setCardcode(codSocio);
         searchDeli.setCardname(socioNeg);
         searchDeli.setDocstatus("O");
-        
 
         //searchDeli.setDocdate(fechaConta);
         //searchDeli.setTaxdate(fechaDoc);
@@ -1630,13 +1623,18 @@ public class SalesBean implements Serializable {
     }
 
     public void confirmDialog() {
+        //RequestContext.getCurrentInstance().update("frmCalculos");
+
         showHideDialog("dlgC2", 2);
+
         if (varEstados == 1) {
             doSave();
+            RequestContext.getCurrentInstance().update("frmCalculos");
+            showHideDialog("dlgCambio", 1);
 
         } else {
             if (varEstados == 2) {
-                doUpdate();
+                doUpdate();               
             }
         }
     }
@@ -1891,7 +1889,7 @@ public class SalesBean implements Serializable {
             return true;
         }
         try {
-            if (socioNeg != null || codSocio != null ) {
+            if (socioNeg != null || codSocio != null) {
                 return true;
             }
         } catch (Exception e) {
@@ -2464,8 +2462,8 @@ public class SalesBean implements Serializable {
     public String getCodSocio() {
         return codSocio;
     }
-    
-        /**
+
+    /**
      * @return the clientName
      */
     public String getClientName() {
@@ -2478,7 +2476,6 @@ public class SalesBean implements Serializable {
     public void setClientName(String clientName) {
         this.clientName = clientName;
     }
-    
 
     public void setCodSocio(String codSocio) {
         this.codSocio = codSocio;
@@ -2579,8 +2576,7 @@ public class SalesBean implements Serializable {
     public void setNewPrecio(Double newPrecio) {
         this.newPrecio = newPrecio;
     }
-    
-    
+
     /**
      * @return the newPriceafvat
      */
@@ -2594,7 +2590,6 @@ public class SalesBean implements Serializable {
     public void setNewPriceafvat(Double newPriceafvat) {
         this.newPriceafvat = newPriceafvat;
     }
-
 
     public Double getNewTotal() {
         return newTotal;
@@ -2617,7 +2612,7 @@ public class SalesBean implements Serializable {
     public void setNewTotalafvat(Double newTotalafvat) {
         this.newTotalafvat = newTotalafvat;
     }
-    
+
     public String getNewUnidad() {
         return newUnidad;
     }
@@ -2699,6 +2694,4 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold> 
-
-
 }//Cierre de clase

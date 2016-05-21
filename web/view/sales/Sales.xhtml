@@ -12,7 +12,6 @@
                 padding: 0;
             }
         </style>-->
-
     </h:head>
 
     <body>
@@ -161,7 +160,7 @@
                             </div>
                         </div>
                         <p:spacer height="#{salesBean.spacer}" width="0"/>
-                         <div class="ui-grid-row">
+                        <div class="ui-grid-row">
                             <div class="ui-grid-col-2"><p:outputLabel value="Cliente" for="inclient"/></div>
                             <!--
                                     <f:validateDoubleRange  minimum="0"  disabled="#/{salesBean.varEstados == 3 || salesBean.varEstados == 2? true:false}"/>-->
@@ -488,8 +487,8 @@
                     </p:dialog>
                 </h:form>
 
-                <h:form>
-                    <p:dialog header="Confirmacion" widgetVar="dlgC2" width="230" modal="true" resizable="false">
+                <h:form id="frmConfirm">                  
+                    <p:dialog header="Confirmacion" widgetVar="dlgC2" width="230" modal="true" resizable="false" >
                         <p:panel id="panel">
                             <div class="ui-grid ui-grid-responsive">
                                 <div class="ui-grid-row">
@@ -500,8 +499,8 @@
                                 <p:spacer height="15"/>
                                 <div class="ui-grid-row">
                                     <div class="ui-grid-col-1">
-                                        <p:focus for="btn" context="panel"/>
-                                        <p:commandButton id="btn" value="Si"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="#{salesBean.confirmDialog}" ajax="false" />
+                                        <p:focus for="btnacept1" context="panel"/>
+                                        <p:commandButton id="btnacept1" value="Si" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="#{salesBean.confirmDialog}" onstart="btnacept1.disable()" ajax="true" />
                                     </div>
                                     <div class="ui-grid-col-4">
 
@@ -598,6 +597,115 @@
                     </p:dialog>
                 </h:form>
 
+                <!-- Formulario para calculos de cambio -->  
+                <h:form id="frmCalculos">                    
+                    <script type="text/javascript">
+                        /**
+                         * Funcion que se ejecuta cada vez que se añade una letra en un cuadro de texto
+                         * Suma los valores de los cuadros de texto
+                         */
+                        function sumar()
+                        {
+                            var valor1 = verificar("frmCalculos:inTotalc");
+                            var valor2 = verificar("frmCalculos:inEfectivo");
+                            // realizamos la suma de los valores y los ponemos en la casilla del
+                            // formulario que contiene el total
+                            var total = parseFloat(valor2) - parseFloat(valor1);
+                            document.getElementById("frmCalculos:inCambio").value = total.toFixed(2);
+                        }
+
+                        /**
+                         * Funcion para verificar los valores de los cuadros de texto. Si no es un
+                         * valor numerico, cambia de color el borde del cuadro de texto
+                         */
+                        function verificar(id)
+                        {
+                            var obj = document.getElementById(id);
+                            if (obj.value == "")
+                                value = "0";
+                            else
+                                value = obj.value;
+                            if (validate_importe(value, 1))
+                            {
+                                // marcamos como erroneo
+                                obj.style.borderColor = "#808080";
+                                return value;
+                            } else {
+                                // marcamos como erroneo
+                                obj.style.borderColor = "#f00";
+                                return 0;
+                            }
+                        }
+
+                        /**
+                         * Funcion para validar el importe
+                         * Tiene que recibir:
+                         *  El valor del importe (Ej. document.formName.operator)
+                         *  Determina si permite o no decimales [1-si|0-no]
+                         * Devuelve:
+                         *  true-Todo correcto
+                         *  false-Incorrecto
+                         */
+                        function validate_importe(value, decimal)
+                        {
+                            var patron = new RegExp("^([0-9])*$");
+                            if (decimal === undefined)
+                                decimal = 0;
+
+                            if (decimal === 1)
+                            {
+                                // Permite decimales tanto por . como por ,
+                                patron = new RegExp("^[0-9]+((,|\.)[0-9]{1,2})?$");
+                            } else {
+                                // Numero entero normal
+                                patron = new RegExp("^([0-9])*$");
+                            }
+
+                            return true;
+                        }
+                    </script>
+
+                    <p:dialog closeOnEscape="true" header="Cambio" widgetVar="dlgCambio" width="600" modal="true" resizable="false">
+                        <p:focus for="qww" />
+                        <p:panel>                               
+                            <div class="ui-grid ui-grid-responsive">
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-col-3"><p:spacer/></div>
+                                <div class="ui-grid-col-3"><p:outputLabel style="text-align: right; font-size:30px; " value="Efectivo" for="inEfectivo"/></div>                                
+                                <div class="ui-grid-col-1">
+                                    <p:inputText  style="text-align: right; font-size:30px; " readonly="false" id="inEfectivo" size="10" value="" onkeyup="sumar();">
+                                        <f:convertNumber  minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                    </p:inputText>
+                                </div>
+                            </div> 
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-col-3"><p:spacer/></div>
+                                <div class="ui-grid-col-3"><p:outputLabel style="text-align: right; font-size:30px; "  value="Total" for="inTotalc"/></div>                                
+                                <div class="ui-grid-col-1">
+                                    <p:inputText  style="text-align: right; font-size:30px; " readonly="true" id="inTotalc" size="10" value="#{salesBean.total}">
+                                        <f:convertNumber  minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                    </p:inputText>
+                                </div>
+                            </div> 
+                            <div class="ui-grid ui-grid-responsive">
+                                <p:spacer height="15"/>
+                                <div class="ui-grid-col-3"><p:spacer/></div>
+                                <div class="ui-grid-col-3"><p:outputLabel style="text-align: right; font-size:30px; "  value="Cambio" for="inCambio"/></div>                                
+                                <div class="ui-grid-col-1">
+                                    <p:inputText  style="text-align: right; font-size:30px; " readonly="true" id="inCambio" size="10" value="0.0">
+                                        <f:convertNumber  minFractionDigits="#{commonBean.minFractionDigits1}" maxFractionDigits="#{commonBean.minFractionDigits1}"/>
+                                    </p:inputText>
+                                </div>
+
+
+                                <div class="ui-grid-row"></div>
+                                <div class="ui-grid-col-1">
+                                    <p:commandButton   value="Cerrar"  id="qww"  styleClass="ui-confirmdialog-yes"  onclick="PF('dlgCambio').hide();"/>
+                                </div>
+                            </div>
+                        </p:panel> 
+                    </p:dialog>
+                </h:form>
             </ui:define>
         </ui:composition>
     </body>
