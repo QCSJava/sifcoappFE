@@ -120,17 +120,18 @@ public abstract class numerosAletras implements Serializable {
             converted.append(convertNumber(String.valueOf(cientos)));
         }
 
-        converted.append("DOLARES CON " + String.valueOf(getDigitAt(splitNumber[1], 1))
-                + String.valueOf(getDigitAt(splitNumber[1], 0)) + "/100 CTVS.");
-
-        /*// Descompone los centavos
-         int centavos = Integer.parseInt(String.valueOf(getDigitAt(splitNumber[1], 1))
-         + String.valueOf(getDigitAt(splitNumber[1], 0)));
+        // Descompone los centavos
+        String centavos = splitNumber[1];
+        int lech = centavos.length();
+         int centavos1 = Integer.parseInt(String.valueOf(centavos.length()> 1?centavos.charAt(1):'0'));
+         
+         int centavos2 = Integer.parseInt(String.valueOf(centavos.length()> 0?centavos.charAt(0):'0'));
          //  + String.valueOf(getDigitAt(splitNumber[1], 0)));
-         if (centavos == 1)
-         converted.append(centavos + "/100 CTVS.");
-         else if (centavos > 1)
-         converted.append(centavos + "/100 CTVS.");*/
+         centavos2 = centavos2*10;
+         centavos2 = centavos2 + centavos1;
+         
+         converted.append("DOLARES CON " + centavos2 + "/100 CTVS.");
+
         return converted.toString();
     }
 
@@ -184,6 +185,12 @@ public abstract class numerosAletras implements Serializable {
     private static int getDigitAt(String origin, int position) {
         if (origin.length() > position && position >= 0) {
             return origin.charAt(origin.length() - position - 1) - 48;
+        }
+        return 0;
+    }
+     private static int getDigitAt2(String origin, int position) {
+        if (origin.length() > position && position >= 0) {
+            return origin.charAt(position - 1);
         }
         return 0;
     }
