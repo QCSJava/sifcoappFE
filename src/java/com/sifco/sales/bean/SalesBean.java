@@ -1141,6 +1141,10 @@ public class SalesBean implements Serializable {
                 docNum = docEntry; //
                 faceMessage(_res.getMensaje());
                 estateActualizar();
+                
+                RequestContext.getCurrentInstance().update("frmCalculos");
+                showHideDialog("dlgCambio", 1);
+                
             } else {
                 faceMessage(_res.getMensaje());
             }
@@ -1628,10 +1632,7 @@ public class SalesBean implements Serializable {
         showHideDialog("dlgC2", 2);
 
         if (varEstados == 1) {
-            doSave();
-            RequestContext.getCurrentInstance().update("frmCalculos");
-            showHideDialog("dlgCambio", 1);
-
+            doSave();            
         } else {
             if (varEstados == 2) {
                 doUpdate();               
