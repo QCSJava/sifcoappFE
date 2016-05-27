@@ -203,7 +203,6 @@ public class SalesBean implements Serializable {
     private String url;
 
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="Load de Pantalla" >    
     @PostConstruct
     public void initForm() {
@@ -381,7 +380,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="Seleccionar de autocomplete de Socio, Name o Cod">
     public void selectSocio(SelectEvent event) {
         String[] newName = socioNeg.split("-");
@@ -642,7 +640,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="Boton Agregar al DATATABLE">
     public void accionAgregar(ActionEvent actionEvent) {
         try {
@@ -776,7 +773,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="Calcular Impuestos y TOTAL">
     public void calcularTotalBill(ArrayList<SalesDetailTO> listaArt) {
         Double totalAux = 0.0;
@@ -794,7 +790,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="funciones para calculos de impuestos">
     public Double calcularGravadas(ArrayList<SalesDetailTO> listaArt) {
         Double sumTotal = 0.0;
@@ -894,7 +889,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="Eliminar del dataTable" > 
     public void deleteDetalle() {
         try {
@@ -1141,10 +1135,7 @@ public class SalesBean implements Serializable {
                 docNum = docEntry; //
                 faceMessage(_res.getMensaje());
                 estateActualizar();
-                
-                RequestContext.getCurrentInstance().update("frmCalculos");
-                showHideDialog("dlgCambio", 1);
-                
+
             } else {
                 faceMessage(_res.getMensaje());
             }
@@ -1350,7 +1341,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="COPY FROM REMISION">
     public void copyFromRemision() {
         //faceMessage("Copiar desde remision");
@@ -1502,7 +1492,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="Seleccionar un almacen y Forma de pago">
     public void stateChange1(ValueChangeEvent event) {
 
@@ -1609,7 +1598,6 @@ public class SalesBean implements Serializable {
     }
 
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias">
     private boolean validatePrice() {
         if (this.newPrecio < 0) {
@@ -1632,10 +1620,10 @@ public class SalesBean implements Serializable {
         showHideDialog("dlgC2", 2);
 
         if (varEstados == 1) {
-            doSave();            
+            doSave();
         } else {
             if (varEstados == 2) {
-                doUpdate();               
+                doUpdate();
             }
         }
     }
@@ -1968,9 +1956,15 @@ public class SalesBean implements Serializable {
             }
         } else {
             faceMessage("No se puede imprimir");
+
             return "/view/sales/Sales.xhtml";
         }
         return null;
+    }
+
+    public void showCambio() {
+        RequestContext.getCurrentInstance().update("frmCalculos");
+        showHideDialog("dlgCambio", 1);
     }
 //</editor-fold>
 
