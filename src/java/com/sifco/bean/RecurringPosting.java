@@ -1387,9 +1387,16 @@ public class RecurringPosting implements Serializable {
                 JournalEntryTO padreJournal = new JournalEntryTO();
                 if (fecha.equals("true")) {
                     padreJournal.setRefdate(_date);
+                    padreJournal.setDuedate(_date);
+                    padreJournal.setStornodate(_date);
+                    padreJournal.setTaxdate(_date);
                 } else {
                     padreJournal.setRefdate(nuevo.getNextdeu());
+                    padreJournal.setDuedate(nuevo.getNextdeu());
+                    padreJournal.setStornodate(nuevo.getNextdeu());
+                    padreJournal.setTaxdate(nuevo.getNextdeu());
                 }
+                padreJournal.setBaseref(nuevo.getRcurcode());
                 padreJournal.setMemo(nuevo.getMemo());
                 padreJournal.setRef1(nuevo.getRef1());
                 padreJournal.setRef2(nuevo.getRef2());
