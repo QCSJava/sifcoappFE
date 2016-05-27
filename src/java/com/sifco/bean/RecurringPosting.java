@@ -814,7 +814,7 @@ public class RecurringPosting implements Serializable {
         this.LstExecute.clear();
         RecurringPostingsInTO in = new RecurringPostingsInTO();
         in.setUsersign((int) session.getAttribute("usersign"));
-        this.LstExecute = AccountingEJBClient.getrecurringPosting_user(in);
+        this.LstExecute = AccountingEJBClient.getrecurringPostingExecute(in.getUsersign());
         totalVolumen = 0.00;
         Iterator<RecurringPostingsTO> iterator = LstExecute.iterator();
         while (iterator.hasNext()) {
