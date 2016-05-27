@@ -22,10 +22,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -90,8 +92,11 @@ public class JournalEntry implements Serializable {
     private Double debit;//debe y haber
     private Double credit;
     private String debcred;//indicador de credito/debito C/D
+    
+    private boolean renderedContex;
 
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="Getters and setters">
     public AccountingEJBClient getAccountingEJBClient() {
         return AccountingEJBClient;
@@ -99,6 +104,14 @@ public class JournalEntry implements Serializable {
 
     public void setAccountingEJBClient(AccountingEJBClient AccountingEJBClient) {
         this.AccountingEJBClient = AccountingEJBClient;
+    }
+    
+    public boolean isRenderedContex() {
+        return renderedContex;
+    }
+
+    public void setRenderedContex(boolean renderedContex) {
+        this.renderedContex = renderedContex;
     }
 
     public ReportsBean getBean() {
@@ -369,6 +382,7 @@ public class JournalEntry implements Serializable {
     }
 
 //</editor-fold>
+
 //<editor-fold defaultstate="collapsed" desc="init de la ventana">
     @PostConstruct
     public void initForm() {
@@ -482,11 +496,11 @@ public class JournalEntry implements Serializable {
             if (validarNull()) {
                 JournalEntryLinesTO nuevoDetalle = new JournalEntryLinesTO();
                 if (debit != null) {
-                    tempBig =  new BigDecimal(loctotal).add(new BigDecimal(debit));
+                    tempBig = new BigDecimal(loctotal).add(new BigDecimal(debit));
                     loctotal = tempBig.doubleValue();
                 }
                 if (credit != null) {
-                    tempBig =  new BigDecimal(systotal).add(new BigDecimal(credit));
+                    tempBig = new BigDecimal(systotal).add(new BigDecimal(credit));
                     systotal = tempBig.doubleValue();
                 }
                 nuevoDetalle.setAccount(account);
@@ -533,11 +547,11 @@ public class JournalEntry implements Serializable {
             var1 = getListaDetalles().remove(this.selectDetail);
             var2 = listaPadre.remove(this.selectDetail);
             if (selectDetail.getDebit() != null) {
-                tempBig =  new BigDecimal(this.loctotal).subtract(new BigDecimal(this.selectDetail.getDebit()));
+                tempBig = new BigDecimal(this.loctotal).subtract(new BigDecimal(this.selectDetail.getDebit()));
                 this.loctotal = tempBig.doubleValue();
             }
             if (selectDetail.getCredit() != null) {
-                 tempBig =  new BigDecimal(this.systotal).subtract(new BigDecimal(this.selectDetail.getCredit()));
+                tempBig = new BigDecimal(this.systotal).subtract(new BigDecimal(this.selectDetail.getCredit()));
                 this.systotal = tempBig.doubleValue();
             }
             this.selectDetail = null;
@@ -565,6 +579,7 @@ public class JournalEntry implements Serializable {
         this.setRefdate(d);
         this.setTaxdate(d);
         this.setDuedate(d);
+        this.renderedContex = false;
         RequestContext.getCurrentInstance().update("formJournal");
     }
 
@@ -574,6 +589,7 @@ public class JournalEntry implements Serializable {
         this.disableComun = true;
         this.disableX = true;
         this.disableY = true;
+        this.renderedContex = true;
         RequestContext.getCurrentInstance().update("formJournal");
     }
 
@@ -586,6 +602,7 @@ public class JournalEntry implements Serializable {
         this.setRefdate(null);
         this.setTaxdate(null);
         this.setDuedate(null);
+        this.renderedContex = false;
         RequestContext.getCurrentInstance().update("formJournal");
     }
     //</editor-fold>
@@ -850,16 +867,17 @@ public class JournalEntry implements Serializable {
         } else {
             searchJournal.setBaseref(baseref);
         }
-        
+
         if (credit != null && credit > 0) {
             searchJournal.setLoctotal(credit);
         }
-        
+
         if (memo != null && !memo.equals("")) {
             searchJournal.setMemo(memo);
-        }else
+        } else {
             searchJournal.setMemo(null);
-        
+        }
+
         searchJournal.setTransid(transid);
 
         try {
@@ -1015,4 +1033,25 @@ public class JournalEntry implements Serializable {
     }
 //</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="Reversión">
+   public void revertJournal (){
+        faceMessage("Revertir registro en diario");
+        
+        //Intercambiar el debe con el haber        
+        listaPadre = new Vector();
+        for (Object receipt : listaDetalles) {
+            Double temp = 0.0;
+            JournalEntryLinesTO var = (JournalEntryLinesTO) receipt;       
+            
+            temp = var.getCredit();
+            var.setCredit(var.getDebit());
+            var.setDebit(temp); 
+            listaPadre.add(receipt);
+        }
+        this.memo = ("Reversión - " + memo);
+       
+        estateGuardar();
+   }
+    
+//</editor-fold>
 }//cierre de clase

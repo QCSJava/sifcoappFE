@@ -37,7 +37,11 @@
 
                     <!-- readonly="#'{JournalEntry.disable}" -->
                     <div class="ui-grid ui-grid-responsive">
-
+                        
+                        <p:contextMenu id="Revert" rendered="#{JournalEntry.renderedContex}">
+                            <p:menuitem value="Revertir" actionListener="#{JournalEntry.revertJournal}"  icon="ui-icon-close"/>
+                        </p:contextMenu>
+                        
                         <div class="ui-grid-row">
                             <div class="ui-grid-col-2"><h:outputText  value="Número"></h:outputText></div>
                             <div class="ui-grid-col-2"><h:outputText value="Fecha Contabilizacion" ></h:outputText></div>
