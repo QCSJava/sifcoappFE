@@ -1049,7 +1049,7 @@ public class JournalEntry implements Serializable {
             listaPadre.add(receipt);
         }
         this.memo = ("Reversión - " + memo);
-       
+        this.transid = 0;
         estateGuardar();
    }
     
