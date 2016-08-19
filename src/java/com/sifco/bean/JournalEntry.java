@@ -92,11 +92,10 @@ public class JournalEntry implements Serializable {
     private Double debit;//debe y haber
     private Double credit;
     private String debcred;//indicador de credito/debito C/D
-    
+
     private boolean renderedContex;
 
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="Getters and setters">
     public AccountingEJBClient getAccountingEJBClient() {
         return AccountingEJBClient;
@@ -105,7 +104,7 @@ public class JournalEntry implements Serializable {
     public void setAccountingEJBClient(AccountingEJBClient AccountingEJBClient) {
         this.AccountingEJBClient = AccountingEJBClient;
     }
-    
+
     public boolean isRenderedContex() {
         return renderedContex;
     }
@@ -382,7 +381,6 @@ public class JournalEntry implements Serializable {
     }
 
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="init de la ventana">
     @PostConstruct
     public void initForm() {
@@ -495,14 +493,16 @@ public class JournalEntry implements Serializable {
         try {
             if (validarNull()) {
                 JournalEntryLinesTO nuevoDetalle = new JournalEntryLinesTO();
-                if (debit != null) {
-                    tempBig = new BigDecimal(loctotal).add(new BigDecimal(debit));
-                    loctotal = tempBig.doubleValue();
-                }
-                if (credit != null) {
-                    tempBig = new BigDecimal(systotal).add(new BigDecimal(credit));
-                    systotal = tempBig.doubleValue();
-                }
+                 if (debit != null) {
+                 tempBig = new BigDecimal(loctotal).add(new BigDecimal(debit));
+                 loctotal = tempBig.doubleValue();
+                 loctotal = round(loctotal,2);
+                 }
+                 if (credit != null) {
+                 tempBig = new BigDecimal(systotal).add(new BigDecimal(credit));
+                 systotal = tempBig.doubleValue();
+                 systotal = round(systotal,2);
+                 }
                 nuevoDetalle.setAccount(account);
                 nuevoDetalle.setAcctname(shortname);
                 nuevoDetalle.setDebit(debit);
@@ -546,14 +546,18 @@ public class JournalEntry implements Serializable {
             boolean var1, var2;
             var1 = getListaDetalles().remove(this.selectDetail);
             var2 = listaPadre.remove(this.selectDetail);
+
             if (selectDetail.getDebit() != null) {
-                tempBig = new BigDecimal(this.loctotal).subtract(new BigDecimal(this.selectDetail.getDebit()));
-                this.loctotal = tempBig.doubleValue();
-            }
-            if (selectDetail.getCredit() != null) {
-                tempBig = new BigDecimal(this.systotal).subtract(new BigDecimal(this.selectDetail.getCredit()));
-                this.systotal = tempBig.doubleValue();
-            }
+             tempBig = new BigDecimal(this.loctotal).subtract(new BigDecimal(this.selectDetail.getDebit()));
+             this.loctotal = tempBig.doubleValue();
+             this.loctotal = round(this.loctotal,2);
+             }
+             if (selectDetail.getCredit() != null) {
+             tempBig = new BigDecimal(this.systotal).subtract(new BigDecimal(this.selectDetail.getCredit()));
+             this.systotal = tempBig.doubleValue();
+             this.systotal = round(this.systotal,2);
+             }
+          
             this.selectDetail = null;
             if (var1 && var2) {
                 faceMessage("Articulo Eliminado.");
@@ -999,8 +1003,19 @@ public class JournalEntry implements Serializable {
         }
         return true;
     }
-//</editor-fold>
 
+    public static double round(double value, int places) {
+        if (places < 0) {
+            throw new IllegalArgumentException();
+        }
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
+    }
+
+//</editor-fold>
 //<editor-fold defaultstate="collapsed" desc="print">
     public void print() {
         if (this.newJournal.getTransid() > 0 && this.varEstados == 2) {
@@ -1034,24 +1049,24 @@ public class JournalEntry implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Reversión">
-   public void revertJournal (){
+    public void revertJournal() {
         faceMessage("Revertir registro en diario");
-        
+
         //Intercambiar el debe con el haber        
         listaPadre = new Vector();
         for (Object receipt : listaDetalles) {
             Double temp = 0.0;
-            JournalEntryLinesTO var = (JournalEntryLinesTO) receipt;       
-            
+            JournalEntryLinesTO var = (JournalEntryLinesTO) receipt;
+
             temp = var.getCredit();
             var.setCredit(var.getDebit());
-            var.setDebit(temp); 
+            var.setDebit(temp);
             listaPadre.add(receipt);
         }
         this.memo = ("Reversión - " + memo);
         this.transid = 0;
         estateGuardar();
-   }
-    
+    }
+
 //</editor-fold>
 }//cierre de clase
