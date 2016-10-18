@@ -96,7 +96,7 @@ public class BusinessPartner implements Serializable {
     private String paymblock;
     private boolean wtliable;
     private String ninum;
-    
+
     private String wtcode;
     private String vatregnum;
     private String industry;
@@ -161,9 +161,6 @@ public class BusinessPartner implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="getters and setters">
-    
-    
-
     public String getCodigoCuenta4() {
         return codigoCuenta4;
     }
@@ -171,9 +168,7 @@ public class BusinessPartner implements Serializable {
     public void setCodigoCuenta4(String codigoCuenta4) {
         this.codigoCuenta4 = codigoCuenta4;
     }
-    
-    
-    
+
     public BusinesspartnerAcountTO getSelectAcc() {
         return selectAcc;
     }
@@ -1174,9 +1169,9 @@ public class BusinessPartner implements Serializable {
         for (BusinesspartnerAcountTO obj : listaAccAddTable) {
             obj.setCardcode(cardcode);
             /*obj.setAcctcode(codigoCuenta);
-            obj.setAcctcode2(codigoCuenta2);
-            obj.setAcctcode3(codigoCuenta3);
-            obj.setAcctcode4(codigoCuenta4);*/
+             obj.setAcctcode2(codigoCuenta2);
+             obj.setAcctcode3(codigoCuenta3);
+             obj.setAcctcode4(codigoCuenta4);*/
             obj.setBalance(0.0);
             listaAccAdd.add(obj);
         }
@@ -1308,7 +1303,6 @@ public class BusinessPartner implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="BUSCAR EN BASE">
     public void doSearch() {
         if (CatalogEJB == null) {
@@ -1337,8 +1331,9 @@ public class BusinessPartner implements Serializable {
 
         if (nit.equals("")) {
             search.setNit(vacio);
-        }else
+        } else {
             search.setNit(nit);
+        }
 
         try {
             listaBusqueda = CatalogEJB.get_businesspartner(search);
@@ -1418,8 +1413,8 @@ public class BusinessPartner implements Serializable {
         }
         return results;
     }
-    
-     public List<String> compSocioCode(String query) {
+
+    public List<String> compSocioCode(String query) {
         List _result = null;
 
         BusinesspartnerInTO in = new BusinesspartnerInTO();
@@ -1574,14 +1569,27 @@ public class BusinessPartner implements Serializable {
     public void addAcc() {
         if (validAddAcc() && validCod()) {
             BusinesspartnerAcountTO newDet = new BusinesspartnerAcountTO();
+            newDet.setCardcode(cardcode);
             newDet.setAcctcode(codigoCuenta);
             newDet.setAcctype(inNumero);
             newDet.setAcctcode2(codigoCuenta2);
             newDet.setAcctcode3(codigoCuenta3);
             newDet.setAcctcode4(codigoCuenta4);
-
-            this.listaAccAddTable.add(newDet);
-            //this.listaAccAdd.add(newDet);
+           
+            try {
+                _result = CatalogEJB.inv_cat_bpa_businesspartnerAcount_mtto(newDet, Common.MTTOINSERT);
+                if (_result.getCodigoError() == 0) {//se realizo correctamente
+                    
+                    this.listaAccAddTable.add(newDet);
+                    faceMessage(_result.getMensaje());
+                    //ListaGeneral.clear();
+                } else {
+                    faceMessage(_result.getMensaje());
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(BusinessPartner.class.getName()).log(Level.SEVERE, null, ex);
+                faceMessage("Ha ocurrido un error, informe al administrador del sistema");
+            }
 
             clearAdd();
         }
@@ -1595,7 +1603,6 @@ public class BusinessPartner implements Serializable {
     }
 
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Funciones Varias frmDialog">
     private boolean validCod() {
         for (BusinesspartnerAcountTO obj : listaAccAddTable) {
@@ -1609,7 +1616,19 @@ public class BusinessPartner implements Serializable {
     }
 
     public void deleteAcc() {
-        listaAccAddTable.remove(selectAcc);
+        try {
+            _result = CatalogEJB.inv_cat_bpa_businesspartnerAcount_mtto(selectAcc, Common.MTTODELETE);
+            if (_result.getCodigoError() == 0) {//se realizo correctamente
+                listaAccAddTable.remove(selectAcc);
+                faceMessage(_result.getMensaje());
+                //ListaGeneral.clear();
+            } else {
+                faceMessage(_result.getMensaje());
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(BusinessPartner.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         selectAcc = null;
     }
 
@@ -1832,5 +1851,4 @@ public class BusinessPartner implements Serializable {
     }
 
 //</editor-fold>
-    
 }//cierre de clase
