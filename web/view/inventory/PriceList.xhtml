@@ -221,7 +221,7 @@
                                         <p:outputLabel value="No editable" rendered="#{Rec.pricelist == 1 or Rec.pricelist == 2? true:false}"/>
                                     </p:column>
 
-                                    <p:column headerText="Manual"  style="width:6%;text-align:center">
+                                    <p:column headerText="Manual"  style="width:6%;text-align:center" sortBy="#{Rec.dscription}">
                                         <p:cellEditor>
                                             <f:facet name="output">
                                                 <p:selectBooleanCheckbox value="#{Rec.ovrwritten == true? priceListBean.vTrue :priceListBean.vFalse}" disabled="true"/>

@@ -86,6 +86,7 @@ public class DailyClosingColectBean implements Serializable {
 //<editor-fold defaultstate="collapsed" desc="GUARDAR EN BASE">
     public void doSave() {
         try {
+            updTabla(fecha);//03/09/2018 - Evitar inconsistenicas la generación de la partida y los documentos cerrados.
             ColecturiaTO newColect = new ColecturiaTO();
             newColect.setDocdate(fecha);
             newColect.setUsersign(userSign);

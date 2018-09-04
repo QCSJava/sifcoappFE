@@ -6,7 +6,20 @@
     </context-param>
     <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>redmond</param-value>
+        <param-value>start</param-value>
+        <!--param-value>rocket</param-value>
+        <param-value>dark-hive</param-value>
+        <param-value>delta</param-value>
+        <param-value>excite-bike</param-value>
+        <param-value>hot-sneaks</param-value>
+        <param-value>sam</param-value>
+        <param-value>humanity</param-value>
+        <param-value>pepper-grinder</param-value>
+        <param-value>south-street</param-value>
+        <param-value>cupertino</param-value>
+        <param-value>bootstrap</param-value>
+        <param-value>start</param-value>
+        <param-value>redmond</param-value-->        
     </context-param>
     <context-param>
         <param-name>primefaces.FONT_AWESOME</param-name>

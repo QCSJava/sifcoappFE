@@ -79,7 +79,8 @@ public class DailyClosingBean implements Serializable{
         try {
             faceMessage("Actualizando saldo...");
             this.saldoTrans = AccountingEJBClient.getSaldoSales(fecha, userSign);
-            RequestContext.getCurrentInstance().update("frmDaily1");
+            this.comment = AccountingEJBClient.getCommentSales(fecha, userSign);
+            RequestContext.getCurrentInstance().update("frmDaily1"); 
         } catch (Exception e) {
             faceMessage("Error get saldos: " +e.getMessage()+" "+e.getCause());
         }
